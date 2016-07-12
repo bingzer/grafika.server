@@ -36,6 +36,7 @@ jspm_packages
 # Optional REPL history
 .node_repl_history
 
+**/server/*/*.js
 node_modules/
 bower_components/
 typings/
