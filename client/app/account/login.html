@@ -1,0 +1,37 @@
+<md-content>
+<form>
+	<div layout-margin layout-padding layout="column" layout-align="center center">	
+		<md-input-container class="md-block">
+			<label>Email Address</label>
+			<input ng-model="vm.username" type="email" required>
+			<div ng-messages="vm.username.$error">
+				<div ng-message="required">Email is required.</div>
+				<div ng-message="email">Your email address is invalid</div>
+			</div>
+		</md-input-container>
+		<md-input-container class="md-block">
+			<label>Password</label>
+			<input ng-model="vm.password" type="password" required>
+			<div ng-messages="vm.password.$error">
+				<div ng-message="required">Password is required.</div>
+			</div>
+		</md-input-container>
+		<md-input-container class="md-block" ng-show="vm.isRegistering">
+			<label>Confirm</label>
+			<input ng-model="vm.passwordConfirm" type="password" required>
+			<div ng-messages="vm.passwordConfirm.$error">
+				<div ng-message="required">Please confirm your password</div>
+				<div ng-repeat="errorMessage in errorMessages">
+					<!-- use ng-message-exp for a message whose key is given by an expression -->
+					<div ng-message-exp="errorMessage.type">{{ errorMessage.text }}</div>
+				</div>
+			</div>
+
+		</md-input-container>
+		<div layout-wrap layout="row" layout-align="end center">
+			<md-button class="md-raised" ng-click="vm.register()">Register</md-button>
+			<md-button ng-show="!vm.isRegistering" class="md-raised md-primary" ng-click="vm.login()">Login</md-button>
+		</div>
+	</div>
+</form>
+</md-content>

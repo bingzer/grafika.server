@@ -1,0 +1,20 @@
+{
+  "name": "grafika",
+  "description": "Grafika",
+  "main": "",
+  "authors": [
+    "Ricky <ricky@bingzer.com>"
+  ],
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "q": "latest",
+    "grafika.js": "0.9.0"
+  }
+}

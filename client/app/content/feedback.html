@@ -1,0 +1,28 @@
+<div layout="row" ng-controller="ContentController as vm" ng-init="vm.page.links[2].selected=true" flex>
+	<form name="feedbackForm" layout="row" layout-align="center start" flex>
+	<div layout="column" layout="column" layout-margin layout-padding flex-gt-md="75" flex>
+		<p class="md-subtitle">
+			Thank you for submitting feedback.
+		</p>
+		<md-input-container>
+			<label>Area</label>
+			<md-select ng-model="vm.feedback.category" md-on-close="vm.filter()">
+				<md-option ng-value="category" ng-repeat="category in vm.feedbackCategories" ng-bind="category" ng-required="true"></md-option>
+			</md-select>
+		</md-input-container>
+		<md-input-container>
+			<label>Subject</label>
+			<input type="text" ng-model="vm.feedback.subject" ng-required="true">
+		</md-input-container>
+		<md-input-container>
+			<label>Feedback</label>
+			<textarea ng-model="vm.feedback.content" ng-required="true"></textarea>
+		</md-input-container>
+		<div layout="row" layout-align="end">
+			<md-button class="md-button md-raised md-primary" ng-click="vm.sendFeedback()" ng-disabled="feedbackForm.$invalid">
+				Send
+			</md-button>
+		</div>
+	</div>
+	</form>
+</div>

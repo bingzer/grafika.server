@@ -4,14 +4,39 @@ import * as cookieParser from 'cookie-parser';
 import * as bodyParser from 'body-parser';
 import * as morgan from 'morgan';
 import * as methodOverride from 'method-override';
-
 import * as winston from 'winston';
-import config = require('./server/configs/config');
+import * as passport from 'passport';
 
+import * as config from './server/configs/config';
+import * as mongooseConfig from './server/configs/mongoose';
+import * as routeConfig from './server/configs/routes';
 
-var app = express();
+let app = express();
 
 var server = app.listen(process.env.PORT || 3000, () => {
     winston.info('Grafika version : ' + config.setting.$version);
+	winston.info('Server is starting at port ' + server.address().port);
+	winston.info('   URL address (config): ' + config.setting.$server.$url);
+
+    app.use(bodyParser.urlencoded({ extended: false }))
+    app.use(bodyParser.json())
+    app.use(cookieParser());
+    app.use(methodOverride());
+    app.use(morgan('dev'));
+
+    app.use(session({ secret: config.setting.$client.$sessionSecret, name: 'grafika.session', resave: true, saveUninitialized: true })); // session secret    
+    app.use(passport.initialize());
+    app.use(passport.session()); // persistent login sessions
     
+    config.setting.validate();
+    mongooseConfig.initialize();
+    routeConfig.initialize(app);
+    
+    app.use("/", express.static(__dirname + "/client"));
+    app.all('/*', function(req, res, next) {
+        // Just send the index.html for other files to support HTML5Mode
+        res.sendFile('index.html', { root: __dirname + '/client' });
+    });
+
+    winston.info('Server is started');
 });

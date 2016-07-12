@@ -1,0 +1,19 @@
+<div layout="column">
+    <div class="canvas-container" style="border-bottom: 1px solid lightgray">
+        <canvas id="canvas" style="width: 100%"></canvas>
+
+        <md-button class="md-fab" aria-label="Play"
+            ng-click="vm.grafika.play()" 
+            style="position: absolute; right: 16; bottom: 8">
+            <i class="material-icons">play_arrow</i>
+        </md-button>
+    </div>
+
+    <div layout="column" layout-margin>
+        <p class="md-title">{{vm.grafika.getAnimation().name}}</p>
+        <div flex>
+            <md-button class="md-raised" ui-sref="editor({_id: vm.grafika.getAnimation()._id})">Edit</md-button>
+        </div>
+        <p class="md-caption">{{vm.grafika.getAnimation().description}}</p>
+    </div>
+</div>

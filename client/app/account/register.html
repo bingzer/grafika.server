@@ -1,0 +1,39 @@
+<md-dialog style="width: 400px">
+<form name="registrationForm" novalidate>
+	<md-toolbar>
+		<div class="md-toolbar-tools">
+			<h4 ng-bind="'Sign up'" flex></h4>
+            <md-button class="md-icon-button" ng-click="vm.close()">
+                <i class="material-icons">close</i>
+            </md-button>
+		</div>
+	</md-toolbar>
+	<md-dialog-content>
+		<div class="md-dialog-content" layout="column">
+			<div layout="column">
+				<md-input-container>
+					<label>Name</label>
+					<input type="text" ng-model="vm.name" ng-disabled="vm.busy" ng-required="true" ng-disabled="vm.busy">
+				</md-input-container>
+				<md-input-container>
+					<label>Email</label>
+					<input type="email" ng-model="vm.email" ng-disabled="vm.busy" ng-required="true" ng-disabled="vm.busy">
+				</md-input-container>
+			</div>
+			<div layout="column">
+				<p class="md-caption">
+					By signing up you agree to our <a href="/eula">license agreement</a>.<br/>
+					You can also read our <a href="/privacy-policy">privacy policy</a><br/>
+					<br/>
+					<span ng-bind="vm.message"></span>
+				</p>
+			</div>
+		</div>
+	</md-dialog-content>
+	<md-dialog-actions layout="row">
+		<span flex></span>
+		<md-button type="button" class="md-mini md-warn" ng-click="vm.close()" ng-disabled="vm.busy">Close</md-button>
+		<md-button class="md-mini md-primary" ng-click="vm.register()" ng-disabled="vm.busy || registrationForm.$invalid">Sign up</md-button>
+	</md-dialog-actions>
+</form>
+</md-dialog>

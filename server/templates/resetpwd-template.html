@@ -1,0 +1,49 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <title>{{email.title}}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+</head>
+<body style="font-family: Arial, sans-serif;">
+<td bgcolor="#ffffff" style="padding: 40px 30px 40px 30px;">
+  <table border="0" cellpadding="0" cellspacing="0" width="100%">
+    <tr>
+      <td colspan="3">
+        <img src="https://s3.amazonaws.com/stdx/logo.png" alt="StickDraw logo"/>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="3">
+        <div style="margin: 16px">
+          <p>
+            Hi {{email.user}}, you've requested to reset your password.<br/>
+            If this is a mistake, please send an email to <a href="mailto: stickdraw@bingzer.com">stickdraw@bingzer.com</a> to report this<br/>
+          </p>
+          <p>
+            Click the link below to navigate to the StickDraw's web site to reset your password:<br/>
+            <a href="{{email.link}}">Reset my password</a>
+          </p>
+          <p>
+            <br/><br/><br/>
+            Thanks,<br/><br/><br/>
+            StickDraw Team
+          </p>
+        </div>
+      </td>
+    </tr>
+    <tr style="margin-top: 48px">
+      <td>
+        <div style="margin: 16px; font-size: small; font-weight: 300"><a href="{{email.privacyUrl}}">Privacy</a></div>
+      </td>
+      <td>
+        <div style="margin: 16px; font-size: small; font-weight: 300"><a href="{{email.homeUrl}}">StickDraw</a></div>
+      </td>
+      <td>
+        <div style="margin: 16px; font-size: small; font-weight: 300">StickDraw Team</div>
+      </td>
+    </tr>
+  </table>
+</td>
+</body>
+</html>

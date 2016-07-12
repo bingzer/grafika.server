@@ -1,0 +1,10 @@
+Hi {{email.user}}, you've requested to reset your password.
+If this is a mistake, please send an email to stickdraw@bingzer.com to report this
+
+Copy and paste the link below to the your browser's address bar to the StickDraw's web site to reset your password:
+{{email.link}}
+
+
+Thanks,
+
+StickDraw Team

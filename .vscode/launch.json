@@ -15,7 +15,11 @@
                 "--nolazy"
             ],
             "env": {
-                "NODE_ENV": "development"
+                "NODE_ENV": "development",
+                "server_url": "http://localhost:3000/",
+                "server_database_url": "mongodb://localhost/grafika",
+                "server_superSecret": "123",
+                "client_sessionSecret": "abc"
             },
             "externalConsole": false,
             "sourceMaps": false,

@@ -1,3 +1,5 @@
+import ensure = require('../libs/ensure');
+import * as winston from 'winston';
 let pkg = require('../../package.json');
 let env = process.env;
 
@@ -15,10 +17,24 @@ class Setting implements IConfig {
 	constructor() {
 		this.name = 'Grafika Web Server';
 		this.version = pkg.version;
+		this.server = new Server();
+		this.client = new Client();
 	}
 
     public validate() : void {
-        this.server.validate();
+		try {
+			ensure.notNullOrEmpty(this.name);
+			ensure.notNullOrEmpty(this.version);
+
+			this.server.validate();
+			this.client.validate();
+
+			winston.info('Settings [OK]');
+		}
+		catch (e) {
+			winston.error('Settings [FAILED]');
+			winston.error(e);
+		}
     }
 
 	public get $name(): string {
@@ -56,7 +72,7 @@ class Server implements IConfig {
 
     constructor() {
         this.version = pkg.version;
-        this.url = env.server_database_url;
+        this.url = env.server_url;
         this.databaseUrl = env.server_database_url;
         this.superSecret = env.server_superSecret;
         this.mailService = env.server_mailer_service;
@@ -68,6 +84,10 @@ class Server implements IConfig {
     }
 
     public validate() : void {
+		ensure.notNullOrEmpty(this.version, "version");
+		ensure.notNullOrEmpty(this.url, "server_url");
+		ensure.notNullOrEmpty(this.databaseUrl, "server_database_url");
+		ensure.notNullOrEmpty(this.superSecret, "server_superSecret");
     }
 
 	public get $version(): string {
@@ -120,11 +140,16 @@ class Client implements IConfig {
 	private sessionSecret: string;
 
 	constructor() {
-		this.sessionSecret = env("client_sessionSecret");
+		this.sessionSecret = env.client_sessionSecret;
 	}
 
     public validate() : void {
+		ensure.notNullOrEmpty(this.sessionSecret, "version");
     }
+
+	public get $sessionSecret(): string {
+		return this.sessionSecret;
+	}
 	
 }
 

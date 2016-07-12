@@ -1,13 +1,27 @@
 "use strict";
+var ensure = require('../libs/ensure');
+var winston = require('winston');
 var pkg = require('../../package.json');
 var env = process.env;
 var Setting = (function () {
     function Setting() {
         this.name = 'Grafika Web Server';
         this.version = pkg.version;
+        this.server = new Server();
+        this.client = new Client();
     }
     Setting.prototype.validate = function () {
-        this.server.validate();
+        try {
+            ensure.notNullOrEmpty(this.name);
+            ensure.notNullOrEmpty(this.version);
+            this.server.validate();
+            this.client.validate();
+            winston.info('Settings [OK]');
+        }
+        catch (e) {
+            winston.error('Settings [FAILED]');
+            winston.error(e);
+        }
     };
     Object.defineProperty(Setting.prototype, "$name", {
         get: function () {
@@ -42,7 +56,7 @@ var Setting = (function () {
 var Server = (function () {
     function Server() {
         this.version = pkg.version;
-        this.url = env.server_database_url;
+        this.url = env.server_url;
         this.databaseUrl = env.server_database_url;
         this.superSecret = env.server_superSecret;
         this.mailService = env.server_mailer_service;
@@ -53,6 +67,10 @@ var Server = (function () {
         this.mailFrom = env.server_mailer_from;
     }
     Server.prototype.validate = function () {
+        ensure.notNullOrEmpty(this.version, "version");
+        ensure.notNullOrEmpty(this.url, "server_url");
+        ensure.notNullOrEmpty(this.databaseUrl, "server_database_url");
+        ensure.notNullOrEmpty(this.superSecret, "server_superSecret");
     };
     Object.defineProperty(Server.prototype, "$version", {
         get: function () {
@@ -128,10 +146,18 @@ var Server = (function () {
 }());
 var Client = (function () {
     function Client() {
-        this.sessionSecret = env("client_sessionSecret");
+        this.sessionSecret = env.client_sessionSecret;
     }
     Client.prototype.validate = function () {
+        ensure.notNullOrEmpty(this.sessionSecret, "version");
     };
+    Object.defineProperty(Client.prototype, "$sessionSecret", {
+        get: function () {
+            return this.sessionSecret;
+        },
+        enumerable: true,
+        configurable: true
+    });
     return Client;
 }());
 var setting = new Setting();

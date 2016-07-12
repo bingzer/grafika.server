@@ -7,19 +7,27 @@
         "node_modules": true,
         "bower_components": true,
 
-        "**/*.js": true,
-        "**/*.js.map": true,
+        "**/index.js": true,
+        "**/index.js.map": true,
         "**/.tscache": true,
-        "**/typings": true
+        "**/typings": true,
+        "**/*.tmp.txt": true,
+        "**/*.log": true,
+        "**/server/*/*.js": true,
+        "**/server/*/*.js.map": true,
     },
     "search.exclude": {
         "node_modules": true,
         "bower_components": true,
 
-        "**/*.js": true,
-        "**/*.js.map": true,
+        "**/index.js": true,
+        "**/index.js.map": true,
         "**/.tscache": true,
-        "**/typings": true
+        "**/typings": true,
+        "**/*.tmp.txt": true,
+        "**/*.log": true,
+        "**/server/*/*.js": true,
+        "**/server/*/*.js.map": true,
     },
 
     "typescript.tsdk": "node_modules/typescript/lib"

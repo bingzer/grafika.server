@@ -7,8 +7,8 @@
     "url": "https://bingzer.visualstudio.com/DefaultCollection/_git/grafika"
   },
   "scripts": {
-    "postinstall": "grunt",
-    "start": "node server.js"
+    "postinstall": "typings install && grunt",
+    "start": "node index.js"
   },
   "license": "UNLICENSED",
   "dependencies": {
@@ -19,6 +19,7 @@
     "express": "*",
     "express-jwt": "^3.4.0",
     "express-session": "^1.14.0",
+    "fs-extra": "^0.30.0",
     "grunt": "*",
     "grunt-bower-task": "*",
     "grunt-cli": "*",
@@ -29,7 +30,6 @@
     "method-override": "*",
     "mongoose": "*",
     "morgan": "^1.7.0",
-    "node-fs-extra": "^0.8.1",
     "nodemailer": "^2.4.2",
     "passport": "^0.3.2",
     "passport-facebook": "2.1.1",
