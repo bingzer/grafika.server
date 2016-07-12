@@ -4,6 +4,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks("grunt-bower-task");
     grunt.loadNpmTasks("grunt-contrib-uglify");
     grunt.loadNpmTasks("grunt-contrib-copy");
+    grunt.loadNpmTasks('grunt-typings');
     grunt.registerTask("default", ["clean", "bower:install", "ts"]);
     grunt.option('force', true);
 
@@ -23,6 +24,9 @@ module.exports = function (grunt) {
             default: {
                 tsconfig: true
             }
+        },
+        typings: {
+            install: {}
         }
     });
 }
