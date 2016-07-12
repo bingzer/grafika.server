@@ -1,0 +1,45 @@
+{
+  "name": "grafika",
+  "version": "0.0.2",
+  "description": "",
+  "repository": {
+    "type": "git",
+    "url": "https://bingzer.visualstudio.com/DefaultCollection/_git/grafika"
+  },
+  "scripts": {
+    "postinstall": "grunt",
+    "start": "node server.js"
+  },
+  "license": "UNLICENSED",
+  "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
+    "body-parser": "*",
+    "cookie-parser": "^1.4.3",
+    "crypto-js": "^3.1.6",
+    "express": "*",
+    "express-jwt": "^3.4.0",
+    "express-session": "^1.14.0",
+    "grunt": "*",
+    "grunt-bower-task": "*",
+    "grunt-cli": "*",
+    "grunt-contrib-clean": "*",
+    "grunt-contrib-copy": "*",
+    "grunt-contrib-uglify": "*",
+    "grunt-ts": "*",
+    "method-override": "*",
+    "mongoose": "*",
+    "morgan": "^1.7.0",
+    "node-fs-extra": "^0.8.1",
+    "nodemailer": "^2.4.2",
+    "passport": "^0.3.2",
+    "passport-facebook": "2.1.1",
+    "passport-google-oauth": "^1.0.0",
+    "passport-jwt": "^2.1.0",
+    "passport-local": "^1.0.0",
+    "passport-oauth2-jwt-bearer": "^0.1.1",
+    "path": "^0.12.7",
+    "q": "^1.4.1",
+    "underscore": "*",
+    "winston": "*"
+  }
+}
