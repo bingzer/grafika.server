@@ -129,7 +129,7 @@ UserSchema.methods.validActivationTimestamp = function(): boolean{
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-export const User = restful.mongoose.model<IUser>('users', UserSchema);
+export const User = mongoose.model<IUser>('users', UserSchema);
 
 export function checkAvailability(user : IUser) : $q.IPromise<{}> {
     var deferred = $q.defer();

@@ -47,4 +47,4 @@ export const AnimationSchema = new mongoose.Schema({
     frames       : { type: [Array], select: false }
 });
 
-export const Animation = restful.mongoose.model<IAnimation>('animations', AnimationSchema);
+export const Animation = mongoose.model<IAnimation>('animations', AnimationSchema);
