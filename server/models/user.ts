@@ -1,4 +1,4 @@
-import * as mongoose from 'mongoose';
+import restful = require('../libs/restful');
 
 import $q         = require('q');
 var bcrypt        = require('bcrypt-nodejs');
@@ -8,7 +8,7 @@ function randomUsername(){
     return 'user-' + (("000000" + (Math.random()*Math.pow(36,6) << 0).toString(36)).slice(-6));;
 }
 
-export interface IUser extends mongoose.Document {
+export interface IUser extends restful.mongoose.Document {
     email: string;
     username: string;
     firstName: string;
@@ -65,7 +65,7 @@ export interface IGoogle extends IAccount {
     displayName: string;
 }
 
-export const UserSchema = new mongoose.Schema({
+export const UserSchema = new restful.mongoose.Schema({
     firstName           : String,
     lastName            : String,
     username            : { type: String, lowercase: true, trim: true, required: true, default: randomUsername() },
@@ -128,7 +128,7 @@ UserSchema.methods.validActivationTimestamp = function(): boolean{
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-export const User = mongoose.model<IUser>('users', UserSchema);
+export const User = restful.mongoose.model<IUser>('users', UserSchema);
 
 export function checkAvailability(user : IUser) : $q.IPromise<{}> {
     var deferred = $q.defer();

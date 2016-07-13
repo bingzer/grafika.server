@@ -1,6 +1,6 @@
-import * as mongoose from 'mongoose';
+import restful = require('../libs/restful');
 
-export interface IAnimation extends mongoose.Document {
+export interface IAnimation extends restful.mongoose.Document {
     _id: string;
 
     name: string;
@@ -24,7 +24,7 @@ export interface IAnimation extends mongoose.Document {
     frames: any[];
 }
 
-export const AnimationSchema = new mongoose.Schema({
+export const AnimationSchema = new restful.mongoose.Schema({
     name         : { type: String, required: true },
     description  : String,
 
@@ -46,4 +46,4 @@ export const AnimationSchema = new mongoose.Schema({
     frames       : { type: [Array], select: false }
 });
 
-export const Animation = mongoose.model<IAnimation>('animations', AnimationSchema);
+export const Animation = restful.mongoose.model<IAnimation>('animations', AnimationSchema);
