@@ -1,4 +1,5 @@
 import restful = require('../libs/restful');
+import * as mongoose from 'mongoose';
 
 import $q         = require('q');
 var bcrypt        = require('bcrypt-nodejs');
@@ -65,7 +66,7 @@ export interface IGoogle extends IAccount {
     displayName: string;
 }
 
-export const UserSchema = new restful.mongoose.Schema({
+export const UserSchema = new mongoose.Schema({
     firstName           : String,
     lastName            : String,
     username            : { type: String, lowercase: true, trim: true, required: true, default: randomUsername() },

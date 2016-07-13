@@ -1,4 +1,5 @@
 import restful = require('../libs/restful');
+import * as mongoose from 'mongoose';
 
 export interface IAnimation extends restful.mongoose.Document {
     _id: string;
@@ -24,7 +25,7 @@ export interface IAnimation extends restful.mongoose.Document {
     frames: any[];
 }
 
-export const AnimationSchema = new restful.mongoose.Schema({
+export const AnimationSchema = new mongoose.Schema({
     name         : { type: String, required: true },
     description  : String,
 
