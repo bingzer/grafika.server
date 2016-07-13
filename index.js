@@ -10,6 +10,7 @@ var passport = require('passport');
 var config = require('./server/configs/config');
 var mongooseConfig = require('./server/configs/mongoose');
 var routeConfig = require('./server/configs/routes');
+var passportConfig = require('./server/configs/passport');
 var app = express();
 var server = app.listen(process.env.PORT || 3000, function () {
     winston.info('Grafika version : ' + config.setting.$version);
@@ -24,8 +25,9 @@ var server = app.listen(process.env.PORT || 3000, function () {
     app.use(passport.initialize());
     app.use(passport.session());
     config.setting.validate();
-    mongooseConfig.initialize();
     routeConfig.initialize(app);
+    mongooseConfig.initialize();
+    passportConfig.initialize();
     app.use("/", express.static(__dirname + "/client"));
     app.all('/*', function (req, res, next) {
         res.sendFile('index.html', { root: __dirname + '/client' });

@@ -1,15 +1,15 @@
-import restful = require('../libs/restful');
 import * as mongoose from 'mongoose';
+import restful = require('../libs/restful');
 
 import $q         = require('q');
 var bcrypt        = require('bcrypt-nodejs');
 var crypto        = require('crypto-js');
 
 function randomUsername(){
-    return 'user-' + (("000000" + (Math.random()*Math.pow(36,6) << 0).toString(36)).slice(-6));;
+    return 'user-' + (("000000" + (Math.random()*Math.pow(36,6) << 0).toString(36)).slice(-6));
 }
 
-export interface IUser extends restful.mongoose.Document {
+export interface IUser extends mongoose.Document {
     email: string;
     username: string;
     firstName: string;
@@ -129,7 +129,7 @@ UserSchema.methods.validActivationTimestamp = function(): boolean{
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-export const User = mongoose.model<IUser>('users', UserSchema);
+var User = <mongoose.Model<IUser>> restful.model('users', UserSchema);
 
 export function checkAvailability(user : IUser) : $q.IPromise<{}> {
     var deferred = $q.defer();
@@ -163,3 +163,5 @@ export function ensureAdminExists() : void {
 		}
 	});
 };
+
+export { User };

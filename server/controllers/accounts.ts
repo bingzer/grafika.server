@@ -25,7 +25,7 @@ export function login(req: express.Request, res: express.Response, next: express
             if (!user) return next(400);
             req.login(user, function (err){
                 if (err) return next(err);
-                return res.status(200).send({token: signToken(user)}); 
+                return res.send({token: signToken(user)}); 
             });
         })(req, res, next);
 };
@@ -34,13 +34,13 @@ export function register(req: express.Request, res: express.Response, next: expr
     passport.authenticate('local-signup', (err, user, info) => {
         if (err) return next(err);
         if (!user) return next(400);
-        else res.status(200).send();
+        else res.sendStatus(200);
     })(req, res, next);  
 };
 
 export function authenticate(req: any, res: any, next: express.NextFunction){
-    if (req.isAuthenticated()) res.status(200).send({token: signToken(req.user)});
-    res.send(200);
+    if (req.isAuthenticated()) res.send({token: signToken(req.user)});
+    else res.sendStatus(200);
     // else {
     //     res.status(200).send({token: signToken( accountHelper.createPublicUser() )});
     // }
@@ -54,7 +54,7 @@ export function changePassword(req: any, res: any, next: express.NextFunction){
             user.local.registered = true;
             user.local.password = user.generateHash(req.body.newPwd);
             user.save();
-            res.status(201).send();
+            res.sendStatus(201);
         }
     });
 };
@@ -74,7 +74,7 @@ export function resetPassword(req: express.Request, res: express.Response, next:
                 user.activation.timestamp = new Date();
                 user.save();
                 mailer.sendResetEmail(user)
-                    .then(function (){ res.status(200).send(); })
+                    .then(function (){ res.sendStatus(200); })
                     .catch(function (err){
                         user.activation.hash      = null;
                         user.activation.timestamp = null;

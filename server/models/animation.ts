@@ -1,7 +1,7 @@
-import restful = require('../libs/restful');
 import * as mongoose from 'mongoose';
+import restful = require('../libs/restful');
 
-export interface IAnimation extends restful.mongoose.Document {
+export interface IAnimation extends mongoose.Document {
     _id: string;
 
     name: string;
@@ -47,4 +47,42 @@ export const AnimationSchema = new mongoose.Schema({
     frames       : { type: [Array], select: false }
 });
 
-export const Animation = mongoose.model<IAnimation>('animations', AnimationSchema);
+var Animation = <mongoose.Model<IAnimation>> restful.model('animations', AnimationSchema);
+Animation.methods(['get', 'put', 'post', 'delete']);
+Animation.before('post', function (req, res, next) {
+    // check for date time
+    if (!req.body.dateCreated) req.body.dateCreated = Date.now();
+    if (!req.body.dateModified) req.body.dateModified = Date.now();
+    if (!req.body.userId) req.body.userId = req.user._doc._id;
+    
+    next();
+});
+// -- Frames
+Animation.route('frames', {
+    detail: true,
+    handler: function (req, res, next) {
+        if (req.method === 'GET') {
+            Animation.findOne({_id: req.params.id}, "frames").lean().exec(function (err, result){
+                res.send(result.frames);
+            });
+        }
+        else if (req.method == 'POST') {
+            Animation.findOne({_id: req.params.id}, function (err, result) {
+                result._doc.frames = req.body;
+                result.save();
+                res.send(201);
+            });
+        }
+        else next(400);
+    }
+});
+// -- Resources
+Animation.route('resources', {
+    detail: true,
+    handler: function (req, res, next) {
+        next();
+    }
+});
+
+var anim: IAnimation = Animation;
+export { anim as Animation };

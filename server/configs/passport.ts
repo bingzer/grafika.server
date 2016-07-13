@@ -17,6 +17,8 @@ passport.deserializeUser((id, done) => {
     });
 });
 
-// -- strategies
-passport.use('local-signup', new SignupStrategy());
-passport.use('local-signin', new SigninStrategy());
+export function initialize(){
+    // -- strategies
+    passport.use('local-signup', new SignupStrategy());
+    passport.use('local-login', new SigninStrategy());
+}

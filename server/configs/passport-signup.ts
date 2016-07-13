@@ -7,7 +7,7 @@ import * as mailer from '../libs/mailer';
 ////////////////////////////////////////////////////////////////////////////////
 
 class Options implements IStrategyOptions {
-    usernameField: string = 'email';
+    usernameField: string = 'username';
     usernamePassword: string = 'password';
     passReqToCallback: boolean = true;
 }

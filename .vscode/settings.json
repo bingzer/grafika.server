@@ -13,8 +13,8 @@
         "**/typings": true,
         "**/*.tmp.txt": true,
         "**/*.log": true,
-        "**/server/*/*.js": true,
-        "**/server/*/*.js.map": true,
+        "**/server/**/*.js": true,
+        "**/server/**/*.js.map": true,
     },
     "search.exclude": {
         "node_modules": true,
@@ -26,7 +26,6 @@
         "**/typings": true,
         "**/*.tmp.txt": true,
         "**/*.log": true,
-        "**/server/*/*.js": true,
         "**/server/*/*.js.map": true,
     },
 

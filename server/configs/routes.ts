@@ -6,6 +6,7 @@ import * as winston from 'winston';
 import * as accountController from '../controllers/accounts';
 import * as config from '../configs/config';
 import { Animation } from '../models/animation';
+import { User } from '../models/user';
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -145,6 +146,10 @@ export function initialize(app) {
     app.delete('/api/animations/', useSessionOrJwt, useAnimAccess); // delete
     app.get('/api/animations/:_id/frames', useAnimAccess); // get frames
     app.post('/api/animations/:_id/frames', useSessionOrJwt, useAnimAccess);
+    
+    // --------------- Restful Registeration -------------------------//
+    User.register(app, '/api/users');
+    Animation.register(app, '/api/animations');
 
     // --------------- Error handlers -------------------------//
     app.use(handleErrors);

@@ -10,6 +10,7 @@ import * as passport from 'passport';
 import * as config from './server/configs/config';
 import * as mongooseConfig from './server/configs/mongoose';
 import * as routeConfig from './server/configs/routes';
+import * as passportConfig from './server/configs/passport';
 
 let app = express();
 
@@ -29,8 +30,10 @@ var server = app.listen(process.env.PORT || 3000, () => {
     app.use(passport.session()); // persistent login sessions
     
     config.setting.validate();
-    mongooseConfig.initialize();
+
     routeConfig.initialize(app);
+    mongooseConfig.initialize();
+    passportConfig.initialize();
     
     app.use("/", express.static(__dirname + "/client"));
     app.all('/*', function(req, res, next) {
