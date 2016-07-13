@@ -26,7 +26,7 @@ var server = app.listen(process.env.PORT || 3000, function () {
     app.use(passport.session());
     config.setting.validate();
     routeConfig.initialize(app);
-    mongooseConfig.initialize();
+    mongooseConfig.initialize(app);
     passportConfig.initialize();
     app.use("/", express.static(__dirname + "/client"));
     app.all('/*', function (req, res, next) {

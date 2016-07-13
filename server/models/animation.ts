@@ -2,8 +2,6 @@ import * as mongoose from 'mongoose';
 import restful = require('../libs/restful');
 
 export interface IAnimation extends mongoose.Document {
-    _id: string;
-
     name: string;
     description: string;
 
@@ -68,7 +66,7 @@ Animation.route('frames', {
         }
         else if (req.method == 'POST') {
             Animation.findOne({_id: req.params.id}, function (err, result) {
-                result._doc.frames = req.body;
+                result.frames = req.body;
                 result.save();
                 res.send(201);
             });
@@ -84,5 +82,4 @@ Animation.route('resources', {
     }
 });
 
-var anim: IAnimation = Animation;
-export { anim as Animation };
+export { Animation };
