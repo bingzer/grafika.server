@@ -1,0 +1,124 @@
+declare var Grafika;
+
+declare namespace Grafika {
+    interface IGrafika {
+        initialize(any: string, option?: IOption, anim?: Grafika.IAnimation);
+
+        getAnimation(): Grafika.IAnimation;
+        setAnimation(animation: Grafika.IAnimation);
+        saveAnimation();
+
+        play();
+        pause();
+        isPlaying(): boolean;
+
+        isModified(): boolean;
+        save();
+
+        getFrame(): Grafika.IFrame;
+        getFrames(): [Grafika.IFrame];
+        setFrames(frames: [Grafika.IFrame]);
+        saveFrame();
+        nextFrame();
+        previousFrame();
+        navigateToFrame(index: number);
+
+        findSelectedGraphics(x: number, y: number): [Grafika.Graphics.IGraphic];
+        getSelectedGraphics(): [Grafika.Graphics.IGraphic];
+        deleteSelectedGraphics();
+        currentGraphic(): Grafika.Graphics.IGraphic;
+
+        setOptions(options: Grafika.IOption);
+
+    }
+
+    interface IOption {
+        backgroundColor?: string;
+        foregroundColor?: string;
+        brushSize?: number;
+        graphic?: string;
+        graphicFill?: boolean;
+        useCarbonCopy?: boolean;
+        useNavigationtext?: boolean;
+        drawingMode?: string;
+        debugMode?: boolean;
+    }
+
+    interface IRectangleBound {
+        x: number;
+        y: number;
+        width: number;
+        height: number;
+    }
+
+    interface IDrawable {
+        //randomUid(): string;
+    }
+
+    interface IAnimation extends IDrawable {
+        _id: any | string;
+
+        name: string;
+        description: string;
+
+        timer: number;
+        width: number;
+        height: number;
+
+        dateCreated: Date;
+        dateModified: Date;
+
+        views: number;
+        rating: number;
+        category: string;
+
+        isPublic: boolean;
+        author: string;
+        userId: string;
+
+        frames: [Grafika.IFrame];
+    }
+
+    interface IFrame extends IDrawable {
+        id: string;
+        index: number;
+        backgroundColor: string;
+        foregroundColor: string;
+        layers: [Grafika.ILayer];
+    }
+
+    interface ILayer extends IDrawable {
+        id: string;
+        index: number;
+        graphics: [Grafika.Graphics.IGraphic];
+    }
+}
+
+declare namespace Grafika.Graphics {
+
+    interface IGraphic {
+        id: string;
+        index: number;
+        x: number;
+        y: number;
+        width: number;
+        height: number;
+        backgroundColor: string;
+        foregroundColor: string;
+        isFilled: boolean;
+        type: string;
+        brushSize: number;
+        isVisible: boolean;
+
+        getBounds(): IRectangleBound;
+        contains(x: number, y: number): boolean;
+        isValid(): boolean;
+        draw(context: any | CanvasRenderingContext2D);
+        move(context: any | CanvasRenderingContext2D, x: number, y: number, lastX: number, lastY: number);
+        invoke(context: any | CanvasRenderingContext2D, eventType: string, eventX: number, eventY: number);
+    }
+}
+
+declare module 'Grafika' {
+    export = Grafika;
+}

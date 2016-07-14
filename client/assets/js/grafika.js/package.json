@@ -1,0 +1,19 @@
+{
+  "name": "grafika-js",
+  "version": "0.9.0",
+  "devDependencies": {
+    "bower": "^1.7.9",
+    "grunt": "^0.4.5",
+    "grunt-bower-task": "^0.4.0",
+    "grunt-contrib-clean": "^1.0.0",
+    "grunt-contrib-copy": "1.0.0",
+    "grunt-contrib-jshint": "~0.10.0",
+    "grunt-contrib-nodeunit": "~0.4.1",
+    "grunt-contrib-qunit": "^1.2.0",
+    "grunt-contrib-uglify": "~0.5.0",
+    "grunt-string-replace": "^1.2.1"
+  },
+  "scripts": {
+    "test": "grunt qunit"
+  }
+}
