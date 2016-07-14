@@ -5,7 +5,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks("grunt-contrib-uglify");
     grunt.loadNpmTasks("grunt-contrib-copy");
     grunt.loadNpmTasks('grunt-typings');
-    grunt.registerTask("default", ["clean", "bower:install", "ts"]);
+    grunt.registerTask("default", ["clean", "bower:install", "typings", "ts"]);
     grunt.option('force', true);
 
     grunt.initConfig({

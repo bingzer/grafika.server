@@ -32,7 +32,7 @@ var server = app.listen(process.env.PORT || 3000, () => {
     config.setting.validate();
 
     routeConfig.initialize(app);
-    mongooseConfig.initialize();
+    mongooseConfig.initialize(app);
     passportConfig.initialize();
     
     app.use("/", express.static(__dirname + "/client"));

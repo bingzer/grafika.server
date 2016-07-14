@@ -6,6 +6,7 @@
         "**/.DS_Store": true,
         "node_modules": true,
         "bower_components": true,
+        "**/grafika.mongodb/": true,
 
         "**/index.js": true,
         "**/index.js.map": true,
@@ -15,10 +16,14 @@
         "**/*.log": true,
         "**/server/**/*.js": true,
         "**/server/**/*.js.map": true,
+        "**/client/**/*.js": true,
+        "**/client/**/*.js.map": true
+        
     },
     "search.exclude": {
         "node_modules": true,
         "bower_components": true,
+        "**/grafika.mongodb/": true,
 
         "**/index.js": true,
         "**/index.js.map": true,

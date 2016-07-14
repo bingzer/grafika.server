@@ -42,3 +42,6 @@ node_modules/
 bower_components/
 typings/
 .vscode/launch.json
+
+**/grafika.mongodb
+*.tmp.txt
