@@ -7,10 +7,10 @@ import * as methodOverride from 'method-override';
 import * as winston from 'winston';
 import * as passport from 'passport';
 
-import * as config from './server/configs/config';
 import * as mongooseConfig from './server/configs/mongoose';
 import * as routeConfig from './server/configs/routes';
 import * as passportConfig from './server/configs/passport';
+import * as config from './server/configs/config'
 
 let app = express();
 
