@@ -88,6 +88,7 @@ class Server implements IConfig {
 		ensure.notNullOrEmpty(this.url, "server_url");
 		ensure.notNullOrEmpty(this.databaseUrl, "server_database_url");
 		ensure.notNullOrEmpty(this.superSecret, "server_superSecret");
+		ensure.notNullOrEmpty(this.mailService, "server_mailer_service");
     }
 
 	public get $version(): string {
