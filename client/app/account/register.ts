@@ -1,4 +1,4 @@
-module grafikaApp {
+module GrafikaApp {
     export class RegisterController extends DialogController {
         message: string = 'After signing up, you will receive email to activate your account.';
         name: string = '';
@@ -24,13 +24,15 @@ module grafikaApp {
             this.message = 'Sending verification email...';
             this.busy = true;
             this.authService.register({ name: this.name, email: this.email, password: 'fake-password'})
-                .then(function (res){
+                .then((res) => {
                     if (res.status == 200) this.message = "Email has been sent";
                     else this.handleError(res);
                     this.busy = false;
                     this.done = true;
                 })
-                .catch(this.handleError);
+                .catch((error) => {
+                    return this.handleError(error);
+                });
         }
 
         handleError(err){

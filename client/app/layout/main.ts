@@ -1,5 +1,5 @@
-module grafikaApp {
-    export class Maincontroller {
+module GrafikaApp {
+    export class MainController {
         public static $inject = [
             'appCommon',
             'authService'

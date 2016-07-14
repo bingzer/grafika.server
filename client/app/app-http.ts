@@ -1,4 +1,4 @@
-module grafikaApp {
+module GrafikaApp {
     export function AuthInterceptor(
         $window: ng.IWindowService,
         $location: ng.ILocationService
@@ -7,8 +7,8 @@ module grafikaApp {
         return {
             request: function (config) {
                 config.headers = config.headers || {};
-                if (!config.headers['cors'] && $window.sessionStorage.getItem('token')) {
-                    config.headers.put('Authorization', 'Bearer ' + $window.sessionStorage.getItem('token'));
+                if (!config.cors && $window.sessionStorage.getItem('token')) {
+                    config.headers.Authorization = 'Bearer ' + $window.sessionStorage.getItem('token');
                 }
                 return config;
             },

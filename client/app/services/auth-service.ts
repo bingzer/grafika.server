@@ -1,4 +1,4 @@
-module grafikaApp {
+module GrafikaApp {
     export class AuthService {
 
         private user: User;
@@ -24,7 +24,7 @@ module grafikaApp {
         
         login(user: any, provider: string): ng.IPromise<any> {
             if (!provider)
-                return this.apiService.post('accounts', user).success(this.authenticate);
+                return this.apiService.post('accounts', user).success(() => this.authenticate());
             else {
                 window.location.href = this.appCommon.appConfig.apiBaseUrl + 'accounts/' + provider.toLowerCase();
                 return this.appCommon.$q.when(true);
@@ -59,7 +59,7 @@ module grafikaApp {
             this.appCommon.$cookieStore.remove('stdx.session');
         }
         
-        authenticate(skipLogout): ng.IPromise<any>{
+        authenticate(skipLogout?: boolean): ng.IPromise<any>{
             var deferred = this.appCommon.$q.defer();
             this.apiService.post('accounts/authenticate')
                     .success((res) => { 
@@ -113,7 +113,7 @@ module grafikaApp {
             if (this.user) return this.user;
             
             var token = this.jwtHelper.decodeToken(this.appCommon.$window.sessionStorage.getItem('token'));
-            var payload = <any> token;
+            var payload = token._doc;
             var user = new User();
             user._id = payload._id;
             user.firstName = payload.given_name || payload.firstName;

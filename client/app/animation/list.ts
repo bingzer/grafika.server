@@ -1,4 +1,4 @@
-module grafikaApp {
+module GrafikaApp {
     export class AnimationListController {
         animations: Animation[];
 

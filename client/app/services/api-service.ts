@@ -1,5 +1,5 @@
 
-module grafikaApp {
+module GrafikaApp {
     export class ApiService {
 		public static $inject = [
 			'$http',
@@ -14,19 +14,31 @@ module grafikaApp {
         }
 
         get(path: string): ng.IHttpPromise<any> {
-            return this.$http.get(this.url(path)).error(this.log);
+            return this.$http.get(this.url(path))
+                .error((data, status, headers, config) => {
+                    return this.log(data, status, headers, config)
+                });
         }
 
         post(path: string, data?: any): ng.IHttpPromise<any> {
-            return this.$http.post(this.url(path), data).error(this.log);
+            return this.$http.post(this.url(path), data)
+                .error((data, status, headers, config) => {
+                    return this.log(data, status, headers, config)
+                });
         }
 
         put(path: string, data?: any): ng.IHttpPromise<any> {
-            return this.$http.put(this.url(path), data).error(this.log);
+            return this.$http.put(this.url(path), data)
+                .error((data, status, headers, config) => {
+                    return this.log(data, status, headers, config)
+                });
         }
 
         delete(path: string): ng.IHttpPromise<any> {
-            return this.$http.delete(this.url(path)).error(this.log);
+            return this.$http.delete(this.url(path))
+                .error((data, status, headers, config) => {
+                    return this.log(data, status, headers, config)
+                });
         }
 
         url(path) : string {

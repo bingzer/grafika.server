@@ -1,6 +1,4 @@
-/// <reference path="../grafika.d.ts"/>
-
-module grafikaApp {
+module GrafikaApp {
     export class AnimationDetailController {
         grafika: any;
 
@@ -11,14 +9,16 @@ module grafikaApp {
             'frameService'
         ];
         constructor(
-            public $rootScope: ng.IRootScopeService,
-            public $stateParams: ng.ui.IStateParamsService,
-            public animationService: AnimationService,
-            public frameService: FrameService
+            $rootScope: ng.IRootScopeService,
+            $stateParams: ng.ui.IStateParamsService,
+            animationService: AnimationService,
+            frameService: FrameService
         ){
-            this.animationService.get($stateParams['_id']).then(function (res) {
+            this.grafika = new Grafika();
+
+            animationService.get($stateParams['_id']).then((res) => {
                 this.grafika.initialize('#canvas', { useNavigationText: false, useCarbonCopy: false }, res.data);
-                frameService.get(this.grafika.getAnimation()).then(function (res) {
+                frameService.get(this.grafika.getAnimation()).then((res) => {
                     this.grafika.setFrames(res.data);
                 })
             });

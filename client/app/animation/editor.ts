@@ -1,6 +1,6 @@
-module grafikaApp {
+module GrafikaApp {
     export class AnimationEditorController {
-        grafika: any;
+        grafika: any = new Grafika();
 
         public static $inject = [
             '$rootScope',
@@ -18,9 +18,9 @@ module grafikaApp {
         }
 
         load() {
-            this.animationService.get(this.$stateParams['_id']).then(function (res) {
+            this.animationService.get(this.$stateParams['_id']).then((res) => {
                 this.grafika.initialize('#canvas', { drawingMode: 'paint' }, res.data);
-                this.frameService.get(this.grafika.getAnimation()).then(function (res) {
+                this.frameService.get(this.grafika.getAnimation()).then((res) => {
                     this.grafika.setFrames(res.data);
                 })
             });

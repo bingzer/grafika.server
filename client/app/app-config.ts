@@ -1,4 +1,4 @@
-module grafikaApp {
+module GrafikaApp {
     export class AppConfig {
         appTitle: string = 'Grafika';
         appVersion: string = '0.9.0';

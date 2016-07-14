@@ -1,4 +1,4 @@
-module grafikaApp {
+module GrafikaApp {
     export class IntroController {
         public static $inject = [
             '$window',

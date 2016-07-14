@@ -88,7 +88,7 @@ function redirectHome(req: express.Request, res: express.Response, next: express
 }
 
 function isAdministrator(req: any) {
-    return req.user && req.user && req.user.roles.indexOf('administrator') > -1;
+    return req.user && req.user.roles && req.user.roles.indexOf('administrator') > -1;
 }
 
 function handleErrors(err, req: express.Request, res: express.Response, next: express.NextFunction) {

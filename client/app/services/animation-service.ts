@@ -1,4 +1,4 @@
-module grafikaApp {
+module GrafikaApp {
     export class AnimationService {
 		public static $inject = [
 			'appCommon',
@@ -20,16 +20,22 @@ module grafikaApp {
 		list(paging?: any) {
 			if (!paging) paging = this.createPaging();
 			var query = this.createPagingQuery(paging);
-			return this.apiService.get('animations' + query).then(this.injectThumbnailUrl);
+			return this.apiService.get('animations' + query).then((res) => {
+				return this.injectThumbnailUrl(res)
+			});
 		}
 		get(_id) {
-			return this.apiService.get('animations/' + _id).then(this.injectThumbnailUrl);
+			return this.apiService.get('animations/' + _id).then((res) => {
+				return this.injectThumbnailUrl(res)
+			});
 		}
 		del(_id) {
 			return this.apiService.delete('animations/' + _id);
 		}
 		update(anim: Animation) {
-			return this.apiService.put('animations/' + anim._id, anim).then(this.injectThumbnailUrl);
+			return this.apiService.put('animations/' + anim._id, anim).then((res) => {
+				return this.injectThumbnailUrl(res)
+			});
 		}
 		incrementViewCount(anim) {
 			return this.apiService.post('animations/' + anim._id + '/view');
@@ -39,10 +45,11 @@ module grafikaApp {
 		}
         
 		injectThumbnailUrl(res: any){
-			if (res && res.data){
-				// inject thumbnail to anim
-			}
-			return () => this.appCommon.$q.when(res);
+			return this.appCommon.$q.when(res);
+			// if (res && res.data){
+			// 	// inject thumbnail to anim
+			// }
+			// return () => this.appCommon.$q.when(res);
 		}
 		
 		createPaging(isPublic?: any): any{

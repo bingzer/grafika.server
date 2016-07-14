@@ -1,4 +1,4 @@
-module grafikaApp {
+module GrafikaApp {
     export function Theme($mdThemingProvider: ng.material.IThemingProvider): void {
         $mdThemingProvider.definePalette('teal', {
             '50': '#8affff',

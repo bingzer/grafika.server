@@ -1,4 +1,4 @@
-module grafikaApp {
+module GrafikaApp {
     export class DialogController {
         public static $inject = [
             '$mdDialog'

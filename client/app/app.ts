@@ -1,4 +1,4 @@
-module grafikaApp {
+module GrafikaApp {
     var app = angular.module('app', [
         'ui.router',
         'ngMaterial',
@@ -24,7 +24,7 @@ module grafikaApp {
     app.service('animationService', AnimationService);
     app.service('frameService', FrameService);
 
-    app.controller('MainController', Maincontroller);
+    app.controller('MainController', MainController);
     app.controller('HomeController', HomeController);
     app.controller('IntroController', IntroController);
     app.controller('AnimationCreateController', AnimationCreateController);

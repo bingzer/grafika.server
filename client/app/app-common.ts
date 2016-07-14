@@ -1,4 +1,4 @@
-module grafikaApp {
+module GrafikaApp {
     'use-strict';
 
     export class AppCommon {

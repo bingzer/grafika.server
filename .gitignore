@@ -44,3 +44,4 @@ typings/
 .vscode/launch.json
 
 **/grafika.mongodb
+*.tmp.txt

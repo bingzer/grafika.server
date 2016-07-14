@@ -68,7 +68,7 @@ Animation.route('frames', {
             Animation.findOne({_id: req.params.id}, function (err, result) {
                 result.frames = req.body;
                 result.save();
-                res.send(201);
+                res.sendStatus(201);
             });
         }
         else next(400);

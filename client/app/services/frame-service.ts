@@ -1,4 +1,4 @@
-module grafikaApp {
+module GrafikaApp {
     export class FrameService {
         public static $inject = [
             'appCommon',

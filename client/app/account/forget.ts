@@ -1,4 +1,4 @@
-module grafikaApp {
+module GrafikaApp {
     export class ForgetController {
         public static $inject = [
             '$mdDialog',

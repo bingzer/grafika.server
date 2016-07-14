@@ -1,4 +1,4 @@
-module grafikaApp {
+module GrafikaApp {
     export class LoginController {
         username: string;
         password: string;
@@ -28,15 +28,18 @@ module grafikaApp {
         login(provider: string) {
             var loginProvider = provider;
             this.appCommon.showLoadingModal().then(() =>{
-                    return () => this.authService.login({ username: this.username, password: this.password }, provider);
+                    return this.authService.login({ username: this.username, password: this.password }, provider);
                 })
                 .then((res) => {
                     if (!loginProvider) this.appCommon.navigateHome();
                     else this.appCommon.toast('Connecting to ' + loginProvider);
                 })
-                .then(this.appCommon.hideLoadingModal)
-                .catch(this.reset)
-                .finally(() => { this.username = ''; this.password = ''; })
+                .then(() => {
+                    return this.appCommon.hideLoadingModal();
+                })
+                .finally(() => {
+                    this.reset();
+                })
         }
 
         reset() {

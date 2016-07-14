@@ -1,4 +1,4 @@
-module grafikaApp {
+module GrafikaApp {
     export function KeyboardFilter($window: ng.IWindowService){
         return function(str) {
             if (!str) return;
