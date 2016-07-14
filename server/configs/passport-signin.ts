@@ -15,7 +15,7 @@ class Options implements IStrategyOptions {
 export class SigninStrategy extends Strategy {
     constructor() {
         super(new Options(), (req, username, password, done) => {
-            User.findOne({email: username}, function(err, user) {
+            User.findOne({email: username}, (err, user) => {
                 // if there are any errors, return the error before anything else
                 if (err) return done(err);
                 // if no user is found, return the message

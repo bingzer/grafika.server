@@ -1,9 +1,10 @@
 var GrafikaApp;
 (function (GrafikaApp) {
     var AnimationEditorController = (function () {
-        function AnimationEditorController($rootScope, $stateParams, animationService, frameService) {
+        function AnimationEditorController($rootScope, $stateParams, appCommon, animationService, frameService) {
             this.$rootScope = $rootScope;
             this.$stateParams = $stateParams;
+            this.appCommon = appCommon;
             this.animationService = animationService;
             this.frameService = frameService;
             this.grafika = new Grafika();
@@ -19,13 +20,16 @@ var GrafikaApp;
             });
         };
         AnimationEditorController.prototype.save = function () {
+            var _this = this;
             this.grafika.save();
-            this.animationService.update(this.grafika.getAnimation());
-            this.frameService.update(this.grafika.getAnimation(), this.grafika.getFrames());
+            this.animationService.update(this.grafika.getAnimation()).then(function (res) {
+                _this.appCommon.toast('Saved!');
+            });
         };
         AnimationEditorController.$inject = [
             '$rootScope',
             '$stateParams',
+            'appCommon',
             'animationService',
             'frameService'
         ];

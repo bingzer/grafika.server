@@ -76,7 +76,7 @@ declare namespace Grafika {
         author: string;
         userId: string;
 
-        frames: [Grafika.IFrame];
+        frames: [any | Grafika.IFrame];
     }
 
     interface IFrame extends IDrawable {

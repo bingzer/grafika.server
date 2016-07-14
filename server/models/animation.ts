@@ -23,7 +23,7 @@ export const AnimationSchema = new mongoose.Schema({
     author       : String,
     userId       : { type: String, required: true },
 
-    frames       : { type: [Array], select: false }
+    frames       : { type: [], select: false }
 });
 
 var Animation = <restful.IModel<IAnimation>> restful.model('animations', AnimationSchema);
@@ -32,7 +32,7 @@ Animation.before('post', (req, res, next) => {
     // check for date time
     if (!req.body.dateCreated) req.body.dateCreated = Date.now();
     if (!req.body.dateModified) req.body.dateModified = Date.now();
-    if (!req.body.userId) req.body.userId = req.user._doc._id;
+    if (!req.body.userId) req.body.userId = req.user._id;
     
     next();
 });

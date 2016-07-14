@@ -15,7 +15,7 @@ exports.AnimationSchema = new mongoose.Schema({
     isPublic: { type: Boolean, default: false },
     author: String,
     userId: { type: String, required: true },
-    frames: { type: [Array], select: false }
+    frames: { type: [], select: false }
 });
 var Animation = restful.model('animations', exports.AnimationSchema);
 exports.Animation = Animation;
@@ -26,7 +26,7 @@ Animation.before('post', function (req, res, next) {
     if (!req.body.dateModified)
         req.body.dateModified = Date.now();
     if (!req.body.userId)
-        req.body.userId = req.user._doc._id;
+        req.body.userId = req.user._id;
     next();
 });
 Animation.route('frames', {
