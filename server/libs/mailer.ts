@@ -39,7 +39,7 @@ export function sendVerificationEmail(user: IUser) : $q.Promise<{}> {
             html: results[1].value
         };    
         // send mail with defined transport object
-        mailTransporter.sendMail(mailOptions, function(error, info){
+        mailTransporter.sendMail(mailOptions, (error, info) =>{
             if (error) {
                 winston.error("Unable to sent message", error);
                 deferred.reject(error);

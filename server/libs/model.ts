@@ -17,7 +17,7 @@ var methods = ['get', 'post', 'put', 'delete'], // All HTTP methods, PATCH not c
   },
   valid_alterables = filterable({
       'populate': query('populate'),
-    }, {});
+    }, {}),
   valid_filters = filterable({
       'limit': query('limit'),
       'skip': query('skip'),
@@ -45,7 +45,7 @@ var methods = ['get', 'post', 'put', 'delete'], // All HTTP methods, PATCH not c
       },
       'in': query('in'),
       'nin': query('nin'),
-    });
+    }),
   defaults = function() {
     return {
       routes: {},
@@ -327,7 +327,7 @@ Model.filter = function(req, quer) {
     Object.keys(alterableResponse).filter(function(potential) {
       return valid_alterables.contains(potential, quer);
     }).forEach(function(valid_key) {
-      query = valid_alterables.filter(valid_key, alterableResponse[valid_key], quer);
+      quer = valid_alterables.filter(valid_key, alterableResponse[valid_key], quer);
     });
   });
 
@@ -409,7 +409,7 @@ function getRoute(routes, path) {
 }
 
 function normalizeHandler(fn) {
-  var result = {};
+  var result: any = {};
   result.handler = fn.handler;
   result.detail = fn.detail;
   if ({}.toString.call(fn) == '[object Function]') {
@@ -430,12 +430,12 @@ function isEndpoint(route, method) {
   return endpoints.indexOf(method) > -1 && route[method].handler;
 }
 
-function contains(arr, key) {
+function contains(arr, key): any {
   if (arr.indexOf(key) > -1) return true;
-  for (var obj in arr) {
-    if (obj.method === key) {
+  for (var i = 0; i < arr.length; i++){
+    var obj:any = arr[i];
+    if (obj.method === key)
       return true;
-    }
   }
   return false;
 };

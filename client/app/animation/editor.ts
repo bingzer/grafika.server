@@ -1,6 +1,6 @@
 module GrafikaApp {
     export class AnimationEditorController {
-        grafika: any = new Grafika();
+        grafika: Grafika.IGrafika = new Grafika();
 
         public static $inject = [
             '$rootScope',

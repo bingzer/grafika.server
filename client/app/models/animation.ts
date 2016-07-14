@@ -1,5 +1,5 @@
 module GrafikaApp {
-    export class Animation {
+    export class Animation implements Grafika.IAnimation {
         _id: string;
 
         name: string;
@@ -20,6 +20,6 @@ module GrafikaApp {
         author: string;
         userId: string;
 
-        frames: any[];
+        frames: [Grafika.IFrame];
     }
 }

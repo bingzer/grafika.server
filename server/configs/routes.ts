@@ -113,13 +113,9 @@ function handleErrors(err, req: express.Request, res: express.Response, next: ex
 		}
 		res.status(status).send(msg);
 		
-		winston.error('http code=' + status + (msg ? '  msg=' + msg : ''));
-		if (stack){
-			winston.error(stack);
-		}
+		winston.error('HTTP Error. Status Code=' + status + (msg ? '  msg=' + msg : ''), stack);
     }
-
-    next();
+    else next();
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////

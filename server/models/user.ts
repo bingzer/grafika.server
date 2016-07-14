@@ -9,16 +9,7 @@ function randomUsername(){
     return 'user-' + (("000000" + (Math.random()*Math.pow(36,6) << 0).toString(36)).slice(-6));
 }
 
-export interface IUser extends mongoose.Document {
-    email: string;
-    username: string;
-    firstName: string;
-    lastName: string;
-    dateCreated: Date;
-    dateModified: Date;
-    active: boolean;
-    roles: string[];
-
+export interface IUser extends mongoose.Document, Grafika.IUser {
     prefs: IPreference;
     activation: IActivation;
 
@@ -129,7 +120,7 @@ UserSchema.methods.validActivationTimestamp = function(): boolean{
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-var User = <mongoose.Model<IUser>> restful.model('users', UserSchema);
+var User = <restful.IModel<IUser>> restful.model('users', UserSchema);
 
 export function checkAvailability(user : IUser) : $q.IPromise<{}> {
     var deferred = $q.defer();

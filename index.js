@@ -29,9 +29,13 @@ var server = app.listen(process.env.PORT || 3000, function () {
     mongooseConfig.initialize(app);
     passportConfig.initialize();
     app.use("/", express.static(__dirname + "/client"));
+    app.all('/api/*', function (req, res, next) {
+        res.sendStatus(404);
+    });
     app.all('/*', function (req, res, next) {
         res.sendFile('index.html', { root: __dirname + '/client' });
     });
     winston.info('Server is started');
 });
+module.exports = server;
 //# sourceMappingURL=index.js.map

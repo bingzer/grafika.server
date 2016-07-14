@@ -1,11 +1,10 @@
 module GrafikaApp {
-    export class User {
-        _id: string;
+    export class User implements Grafika.IUser {
+        _id: any | string;
         email: string;
         username: string;
         firstName: string;
         lastName: string;
-        name: string;
         dateCreated: Date;
         dateModified: Date;
         active: boolean;

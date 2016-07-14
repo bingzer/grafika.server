@@ -145,7 +145,7 @@ class Client implements IConfig {
 	}
 
     public validate() : void {
-		ensure.notNullOrEmpty(this.sessionSecret, "version");
+		ensure.notNullOrEmpty(this.sessionSecret, "client_sessionSecret");
     }
 
 	public get $sessionSecret(): string {

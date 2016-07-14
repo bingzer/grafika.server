@@ -7,10 +7,10 @@ import * as methodOverride from 'method-override';
 import * as winston from 'winston';
 import * as passport from 'passport';
 
+import * as config from './server/configs/config'
 import * as mongooseConfig from './server/configs/mongoose';
 import * as routeConfig from './server/configs/routes';
 import * as passportConfig from './server/configs/passport';
-import * as config from './server/configs/config'
 
 let app = express();
 
@@ -36,10 +36,14 @@ var server = app.listen(process.env.PORT || 3000, () => {
     passportConfig.initialize();
     
     app.use("/", express.static(__dirname + "/client"));
-    app.all('/*', function(req, res, next) {
-        // Just send the index.html for other files to support HTML5Mode
+    app.all('/api/*', (req, res, next) => {
+        res.sendStatus(404);
+    });
+    app.all('/*', (req, res, next) => {
         res.sendFile('index.html', { root: __dirname + '/client' });
     });
 
     winston.info('Server is started');
 });
+
+module.exports = server;

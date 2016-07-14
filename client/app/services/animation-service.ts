@@ -14,7 +14,7 @@ module GrafikaApp {
             // nothing
         }
         
-		create(anim: Animation) {
+		create(anim: Grafika.IAnimation) {
 			return this.apiService.post('animations', anim);
 		}
 		list(paging?: any) {
@@ -32,15 +32,15 @@ module GrafikaApp {
 		del(_id) {
 			return this.apiService.delete('animations/' + _id);
 		}
-		update(anim: Animation) {
+		update(anim: Grafika.IAnimation) {
 			return this.apiService.put('animations/' + anim._id, anim).then((res) => {
 				return this.injectThumbnailUrl(res)
 			});
 		}
-		incrementViewCount(anim) {
+		incrementViewCount(anim: Grafika.IAnimation) {
 			return this.apiService.post('animations/' + anim._id + '/view');
 		}
-		getDownloadLink(anim){
+		getDownloadLink(anim: Grafika.IAnimation){
 			return this.appCommon.getBaseUrl() + 'animations/' + anim._id + '/download?token=' + this.authService.getAccessToken();
 		}
         

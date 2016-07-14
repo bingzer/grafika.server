@@ -26,9 +26,6 @@
     "grunt": "*",
     "grunt-bower-task": "*",
     "grunt-cli": "*",
-    "grunt-contrib-clean": "*",
-    "grunt-contrib-copy": "*",
-    "grunt-contrib-uglify": "*",
     "grunt-ts": "*",
     "method-override": "*",
     "mongoose": "*",
@@ -46,7 +43,14 @@
     "winston": "*"
   },
   "devDependencies": {
+    "chai": "^3.5.0",
+    "chai-http": "^3.0.0",
+    "grunt-contrib-clean": "*",
+    "grunt-contrib-copy": "*",
+    "grunt-contrib-uglify": "*",
+    "grunt-mocha-cli": "^2.1.0",
     "grunt-typings": "^0.1.5",
+    "mocha": "^2.5.3",
     "typings": "^1.3.1"
   }
 }

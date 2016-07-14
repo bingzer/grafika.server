@@ -1,26 +1,7 @@
 import * as mongoose from 'mongoose';
 import restful = require('../libs/restful');
 
-export interface IAnimation extends mongoose.Document {
-    name: string;
-    description: string;
-
-    timer: number;
-    width: number;
-    height: number;
-
-    dateCreated: Date;
-    dateModified: Date;
-
-    views: number;
-    rating: number;
-    category: string;
-
-    isPublic: boolean;
-    author: string;
-    userId: string;
-
-    frames: any[];
+export interface IAnimation extends Grafika.IAnimation, mongoose.Document {
 }
 
 export const AnimationSchema = new mongoose.Schema({
@@ -45,9 +26,9 @@ export const AnimationSchema = new mongoose.Schema({
     frames       : { type: [Array], select: false }
 });
 
-var Animation = <mongoose.Model<IAnimation>> restful.model('animations', AnimationSchema);
+var Animation = <restful.IModel<IAnimation>> restful.model('animations', AnimationSchema);
 Animation.methods(['get', 'put', 'post', 'delete']);
-Animation.before('post', function (req, res, next) {
+Animation.before('post', (req, res, next) => {
     // check for date time
     if (!req.body.dateCreated) req.body.dateCreated = Date.now();
     if (!req.body.dateModified) req.body.dateModified = Date.now();
@@ -58,14 +39,14 @@ Animation.before('post', function (req, res, next) {
 // -- Frames
 Animation.route('frames', {
     detail: true,
-    handler: function (req, res, next) {
+    handler: (req, res, next) => {
         if (req.method === 'GET') {
-            Animation.findOne({_id: req.params.id}, "frames").lean().exec(function (err, result){
+            Animation.findOne({_id: req.params.id}, "frames").lean().exec((err, result) =>{
                 res.send(result.frames);
             });
         }
         else if (req.method == 'POST') {
-            Animation.findOne({_id: req.params.id}, function (err, result) {
+            Animation.findOne({_id: req.params.id}, (err, result) => {
                 result.frames = req.body;
                 result.save();
                 res.sendStatus(201);
@@ -77,7 +58,7 @@ Animation.route('frames', {
 // -- Resources
 Animation.route('resources', {
     detail: true,
-    handler: function (req, res, next) {
+    handler: (req, res, next) => {
         next();
     }
 });
