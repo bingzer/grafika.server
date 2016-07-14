@@ -21,7 +21,7 @@ var GrafikaApp;
             var _this = this;
             this.message = 'Sending verification email...';
             this.busy = true;
-            this.authService.register({ name: this.name, email: this.email, password: 'fake-password' })
+            this.authService.register({ name: this.name, username: this.email, password: 'fake-password' })
                 .then(function (res) {
                 if (res.status == 200)
                     _this.message = "Email has been sent";

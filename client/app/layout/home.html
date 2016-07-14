@@ -1,4 +1,4 @@
-<style ng-if="!main.isAuthorized('user')">
+<style ng-if="!vm.isAuthorized('user')">
 	body md-toolbar.navbar {
 		background: transparent;
 	}
@@ -6,7 +6,7 @@
 		display: none
 	}
 </style>
-<div class="intro" layout-fill ng-if="!main.isAuthorized('user')" ng-controller="IntroController">
+<div class="intro" layout-fill ng-if="!vm.isAuthorized('user')" ng-init="vm.initGrafika()">
 	<canvas layout-fill id="intro-canvas"></canvas>
 	<div layout-fill layout="row" layout-align="center center" class="canvas-overlay">
 		<img src="/assets/img/logo.png" />

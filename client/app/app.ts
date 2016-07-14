@@ -4,6 +4,7 @@ module GrafikaApp {
         'ngMaterial',
         'ngCookies',
         'ngMessages',
+        'ngSanitize',
 
         'angular-jwt'
     ]);
@@ -25,8 +26,6 @@ module GrafikaApp {
     app.service('frameService', FrameService);
 
     app.controller('MainController', MainController);
-    app.controller('HomeController', HomeController);
-    app.controller('IntroController', IntroController);
     app.controller('AnimationCreateController', AnimationCreateController);
     app.controller('AnimationDetailController', AnimationDetailController);
     app.controller('AnimationEditorController', AnimationEditorController);

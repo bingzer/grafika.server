@@ -10,12 +10,15 @@ var GrafikaApp;
                 return this.email;
         };
         User.prototype.hasRoles = function (names) {
-            if (!names || names.length == 0)
-                names = ['user'];
+            var roles = [];
+            if (angular.isString(names))
+                roles.push(names);
+            else
+                roles = names;
             var anyRole = false;
             for (var i = 0; i < this.roles.length; i++) {
-                for (var j = 0; j < names.length; j++) {
-                    if (this.roles[i] == names[j])
+                for (var j = 0; j < roles.length; j++) {
+                    if (this.roles[i] == roles[j])
                         anyRole = true;
                     if (anyRole)
                         break;

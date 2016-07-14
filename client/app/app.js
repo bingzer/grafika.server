@@ -5,6 +5,7 @@ var GrafikaApp;
         'ngMaterial',
         'ngCookies',
         'ngMessages',
+        'ngSanitize',
         'angular-jwt'
     ]);
     app.constant('appConfig', new GrafikaApp.AppConfig());
@@ -19,8 +20,6 @@ var GrafikaApp;
     app.service('animationService', GrafikaApp.AnimationService);
     app.service('frameService', GrafikaApp.FrameService);
     app.controller('MainController', GrafikaApp.MainController);
-    app.controller('HomeController', GrafikaApp.HomeController);
-    app.controller('IntroController', GrafikaApp.IntroController);
     app.controller('AnimationCreateController', GrafikaApp.AnimationCreateController);
     app.controller('AnimationDetailController', GrafikaApp.AnimationDetailController);
     app.controller('AnimationEditorController', GrafikaApp.AnimationEditorController);

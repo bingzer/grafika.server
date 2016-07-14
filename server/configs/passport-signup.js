@@ -40,11 +40,14 @@ var SignupStrategy = (function (_super) {
                         return done('Email is taken');
                 }
                 else {
+                    if (!userInfo.name) {
+                        return done("Name is required");
+                    }
                     var nameSplit = userInfo.name.split(' ');
                     userInfo.firstName = nameSplit[0];
                     if (nameSplit.length > 1)
                         userInfo.lastName = nameSplit[1];
-                    userInfo.email = userInfo.email.toLowerCase();
+                    userInfo.email = userInfo.username.toLowerCase();
                     var newUser = new user_1.User();
                     newUser.firstName = userInfo.firstName;
                     newUser.lastName = userInfo.lastName;
