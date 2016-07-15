@@ -1,17 +1,50 @@
 module GrafikaApp {
-    export class ResetController {
+    export class ResetController extends DialogController {
+        title: string;
+        subtitle: string;
+        message: string;
+        newPassword: string;
+        busy: boolean = false;
+        done: boolean = false;
+        closable: boolean;
+
         public static $inject = [
             '$mdDialog',
             'appCommon',
-            'authService'
+            'authService',
+            'hash',
+            'email'
         ];
 
         constructor (
-            $mdDialog: ng.material.IDialogService,
-            appCommon: AppCommon,
-            authService: AuthService
+            public $mdDialog: ng.material.IDialogService,
+            private appCommon: AppCommon,
+            private authService: AuthService,
+            private hash: string,
+            private email: string
         ){
+            super($mdDialog);
+            this.title = 'Set Password';
+            this.subtitle = 'Hi ' + email + ', please set your password';
+        }
 
+        changePassword() {
+            this.busy = true;
+            var user = {
+                hash: this.hash,
+                username: this.email,
+                password: this.newPassword
+            };
+            this.authService.register(user).then((res) => {
+                this.appCommon.toast('Password is sucessfully set, please re-login');
+                this.close();
+            }).catch((res) => {
+                this.message = this.appCommon.formatErrorMessage(res);
+                this.closable = true;
+            }).finally(() => {
+                this.busy = false;
+                this.done = true;
+            });
         }
     }
 }

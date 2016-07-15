@@ -5,6 +5,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks("grunt-contrib-uglify");
     grunt.loadNpmTasks("grunt-contrib-copy");
     grunt.loadNpmTasks('grunt-typings');
+    grunt.loadNpmTasks('grunt-mocha-cli');
     grunt.registerTask("default", ["clean", "bower:install", "typings", "ts"]);
     grunt.option('force', true);
 
@@ -27,6 +28,18 @@ module.exports = function (grunt) {
         },
         typings: {
             install: {}
+        },
+        mochacli: {
+            options: {
+                env: {
+                    server_url: "http://localhost/test",
+                    server_database_url: "mongodb://localhost/grafika-test",
+                    server_superSecret: "ABCD",
+                    server_mailer_service: "postman",
+                    client_sessionSecret: "123"
+                }
+            },
+            all: ['server-test/**/*.js']
         }
     });
 }

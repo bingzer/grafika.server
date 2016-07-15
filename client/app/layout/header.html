@@ -4,34 +4,34 @@
             <img id="logo" src="/assets/img/logo.png" height="75%"/>
         </a>
         <span flex></span>
-        <div ng-if="!main.isAuthorized('user')" layout="row">
+        <div ng-if="!vm.isAuthorized('user')" layout="row">
             <md-button ui-sref="login">Login</md-button>
         </div>
-        <div ng-if="main.isAuthorized('user')" layout="row">
+        <div ng-if="vm.isAuthorized('user')" layout="row">
             <md-button ui-sref="my-animations">My Animations</md-button>
             <md-menu layout="column">
-                <img class="avatar link text-center-vertical" ng-src="{{main.getUser().avatar}}" ng-click="$mdOpenMenu($event)">
+                <img class="avatar link text-center-vertical" ng-src="{{vm.getUser().avatar}}" ng-click="$mdOpenMenu($event)">
                 <md-menu-content width="4">
                     <md-menu-item>
-                        <md-button aria-label="Profile" ng-click="main.navigate('/profile')">
+                        <md-button aria-label="Profile" ng-click="vm.navigate('/profile')">
                             <md-icon>
-                                <img class="avatar avatar-sm link text-center-vertical" ng-src="{{main.getUser().avatar}}" ng-click="$mdOpenMenu($event)">
+                                <img class="avatar avatar-sm link text-center-vertical" ng-src="{{vm.getUser().avatar}}" ng-click="$mdOpenMenu($event)">
                             </md-icon>
-                            <span ng-bind="main.getUser().getDisplayName()"></span>
+                            <span ng-bind="vm.getUser().getDisplayName()"></span>
                         </md-button>
                     </md-menu-item>
                     <md-menu-item>
-                        <md-button ng-click="main.navigate('/settings')">
+                        <md-button ng-click="vm.navigate('/settings')">
                             <md-icon md-font-family="material icons">settings</md-icon>Settings
                         </md-button>
                     </md-menu-item>
-                    <md-menu-item ng-if="main.isAuthorized('administrator')">
-                        <md-button ng-click="main.navigate('/admin')">
+                    <md-menu-item ng-if="vm.isAuthorized('administrator')">
+                        <md-button ng-click="vm.navigate('/admin')">
                             <md-icon md-font-family="material icons">assignment_ind</md-icon>Administrator
                         </md-button>
                     </md-menu-item>
                     <md-divider></md-divider>
-                    <md-menu-item ng-click="main.confirmLogout()">
+                    <md-menu-item ng-click="vm.confirmLogout()">
                         <md-button>
                             <md-icon md-font-family="material icons">lock</md-icon>Log out
                         </md-button>

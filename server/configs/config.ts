@@ -88,6 +88,11 @@ class Server implements IConfig {
 		ensure.notNullOrEmpty(this.url, "server_url");
 		ensure.notNullOrEmpty(this.databaseUrl, "server_database_url");
 		ensure.notNullOrEmpty(this.superSecret, "server_superSecret");
+		ensure.notNullOrEmpty(this.mailService, "server_mailer_service");
+		ensure.notNullOrEmpty(this.mailSmtp, "server_mailer_smtp");
+		ensure.notNullOrEmpty(this.mailPort, "server_mailer_port");
+		ensure.notNullOrEmpty(this.mailUser, "server_mailer_username");
+		ensure.notNullOrEmpty(this.mailPassword, "server_mailer_from");
     }
 
 	public get $version(): string {
@@ -144,7 +149,7 @@ class Client implements IConfig {
 	}
 
     public validate() : void {
-		ensure.notNullOrEmpty(this.sessionSecret, "version");
+		ensure.notNullOrEmpty(this.sessionSecret, "client_sessionSecret");
     }
 
 	public get $sessionSecret(): string {

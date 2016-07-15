@@ -1,14 +1,22 @@
 module GrafikaApp {
     export class MainController {
         public static $inject = [
+            '$window',
+            '$rootScope',
+            '$mdDialog',
             'appCommon',
-            'authService'
+            'authService',
+            'animationService'
         ];
 
         constructor(
-            public appCommon: AppCommon,
-            public authService: AuthService
-        ){
+            private $window: ng.IWindowService,
+            private $rootScope: ng.IRootScopeService,
+            private $mdDialog: ng.material.IDialogService,
+            private appCommon: AppCommon,
+            private authService: AuthService,
+            private animationService: AnimationService
+        ){            
             var query = appCommon.$location.search();
             if (query && query.action){
                 if ((query.action == 'verify' || query.action == 'reset-pwd') && query.hash && query.user){
@@ -25,10 +33,10 @@ module GrafikaApp {
                     appCommon.alert('Unknown action or link has expired');
                     this.cleanUrlQueries();
                 }
-            }      
-        }
+            }
+        }        
 
-        isAuthorize(roles: string | [string]): boolean {
+        isAuthorized(roles: string | [string]): boolean {
             return this.authService.isAuthorized(roles);
         }
 
@@ -38,18 +46,41 @@ module GrafikaApp {
 
         confirmLogout(): void {
             this.appCommon.confirm('Are you sure you want to log out?')
-                .then(this.appCommon.showLoadingModal)
-                .then(this.authService.logout)
-                .then(this.appCommon.hideLoadingModal)
+                .then(() => {
+                    return this.appCommon.showLoadingModal(); 
+                }).then(() => {
+                    return this.authService.logout(); 
+                })
+                .then(() => {
+                    return this.appCommon.hideLoadingModal()
+                })
                 .then(function (){
-                    this.appCommon.toast('Successfully logged out');
+                    return this.appCommon.toast('Successfully logged out');
                 });
         }
+
+        initGrafika() {
+            if (this.isAuthorized('user')) return;
             
+            var grafikaIntro = this.$window['grafikaIntro'];
+            if (!grafikaIntro){
+                grafikaIntro = new Grafika();
+            }
+            grafikaIntro.initialize('#intro-canvas', { drawingMode: 'none', useNavigationText: false, useCarbonCopy: false, loop: true });
+            grafikaIntro.demo.initialize('alphabet');
+            grafikaIntro.getAnimation().timer = 500;
+            grafikaIntro.play();
+            
+            this.$rootScope.$on('$stateChangeStart', (e) => {
+                grafikaIntro.pause();
+            });
+        }
         
         private cleanUrlQueries(){
-            Object.keys(this.appCommon.$location.search()).forEach(function (key){
-               delete this.appCommon.$location.search()[key]; 
+            var keys = this.appCommon.$location.search();
+            var loc = this.appCommon.$location;
+            Object.keys(keys).forEach((key) => {
+               delete loc.search(key, null); 
             });
         }
     }

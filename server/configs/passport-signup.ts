@@ -41,11 +41,14 @@ export class SignupStrategy extends Strategy {
                     else return done('Email is taken');
                 }
                 else {
+                    if (!userInfo.name) {
+                        return done("Name is required");
+                    }
                     var nameSplit = userInfo.name.split(' ');
                     userInfo.firstName = nameSplit[0];
                     if (nameSplit.length > 1)
                         userInfo.lastName = nameSplit[1];
-                    userInfo.email = userInfo.email.toLowerCase();  // lower case    
+                    userInfo.email = userInfo.username.toLowerCase();  // lower case    
                         
                     // if there is no user with that email
                     // create the user
@@ -58,14 +61,14 @@ export class SignupStrategy extends Strategy {
                     newUser.activation.hash      = newUser.generateActivationHash();
                     newUser.activation.timestamp = new Date();
                     // save the user
-                    newUser.save(function(err) {
+                    newUser.save((err) => {
                         if (err) return done(err);
                         if (newUser.validActivationTimestamp()){
                             mailer.sendVerificationEmail(newUser)
-                                .then(function (){
+                                .then(() => {
                                     return done(null, newUser)
                                 })
-                                .catch(function (err){
+                                .catch((err) =>{
                                     newUser.activation.hash      = null;
                                     newUser.activation.timestamp = null;
                                     newUser.save();

@@ -36,11 +36,11 @@ jspm_packages
 # Optional REPL history
 .node_repl_history
 
-**/server/*/*.js
+.tscache/
 **.js.map
 node_modules/
 bower_components/
-typings/
+typings/globals
 .vscode/launch.json
 
 **/grafika.mongodb
