@@ -9,6 +9,7 @@ var Setting = (function () {
         this.version = pkg.version;
         this.server = new Server();
         this.client = new Client();
+        this.auth = new Auth();
     }
     Setting.prototype.validate = function () {
         try {
@@ -16,6 +17,7 @@ var Setting = (function () {
             ensure.notNullOrEmpty(this.version);
             this.server.validate();
             this.client.validate();
+            this.auth.validate();
             winston.info('Settings [OK]');
         }
         catch (e) {
@@ -47,6 +49,13 @@ var Setting = (function () {
     Object.defineProperty(Setting.prototype, "$client", {
         get: function () {
             return this.client;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Setting.prototype, "$auth", {
+        get: function () {
+            return this.auth;
         },
         enumerable: true,
         configurable: true
@@ -164,6 +173,45 @@ var Client = (function () {
         configurable: true
     });
     return Client;
+}());
+var Auth = (function () {
+    function Auth() {
+        this.awsUrl = 'https://s3.amazonaws.com/';
+    }
+    Auth.prototype.validate = function () {
+        ensure.notNullOrEmpty(this.awsBucket, "auth_aws_bucket");
+        ensure.notNullOrEmpty(this.awsId, "auth_aws_id");
+        ensure.notNullOrEmpty(this.awsSecret, "auth_aws_secret");
+    };
+    Object.defineProperty(Auth.prototype, "$awsUrl", {
+        get: function () {
+            return this.awsUrl;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Auth.prototype, "$awsBucket", {
+        get: function () {
+            return this.awsBucket;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Auth.prototype, "$awsId", {
+        get: function () {
+            return this.awsId;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Auth.prototype, "$awsSecret", {
+        get: function () {
+            return this.awsSecret;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    return Auth;
 }());
 var setting = new Setting();
 exports.setting = setting;

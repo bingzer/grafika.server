@@ -1,4 +1,5 @@
 import * as mongoose from 'mongoose';
+import { IResource } from './resource';
 import restful = require('../libs/restful');
 
 export interface IAnimation extends Grafika.IAnimation, mongoose.Document {

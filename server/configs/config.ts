@@ -13,12 +13,14 @@ class Setting implements IConfig {
 
     private server: Server;
 	private client: Client;
+	private auth: Auth;
 
 	constructor() {
 		this.name = 'Grafika Web Server';
 		this.version = pkg.version;
 		this.server = new Server();
 		this.client = new Client();
+		this.auth = new Auth();
 	}
 
     public validate() : void {
@@ -28,6 +30,7 @@ class Setting implements IConfig {
 
 			this.server.validate();
 			this.client.validate();
+			this.auth.validate();
 
 			winston.info('Settings [OK]');
 		}
@@ -52,6 +55,11 @@ class Setting implements IConfig {
 	public get $client(): Client {
 		return this.client;
 	}
+
+	public get $auth(): Auth {
+		return this.auth;
+	}
+	
 
 }
 
@@ -154,6 +162,53 @@ class Client implements IConfig {
 
 	public get $sessionSecret(): string {
 		return this.sessionSecret;
+	}
+	
+}
+
+/**
+ * Auth configuration
+ */
+class Auth implements IConfig {
+	// private googleId : string;
+	// private googleSecret: string;
+	// private googleScopes: [string];
+	// private googleCallbackUrl: string;
+
+	// private facebookId: string;
+	// private facebookSecret: string;
+	// private facebookCallbackUrl: string;
+	// private facebookScopes: [string];
+	// private enableProof: boolean;
+
+	// private disqusSecret: string;
+	// private disqusPublic: string;
+
+	private awsUrl: string = 'https://s3.amazonaws.com/';
+	private awsBucket: string;
+	private awsId: string;
+	private awsSecret: string;
+
+    public validate() : void {
+		ensure.notNullOrEmpty(this.awsBucket, "auth_aws_bucket");
+		ensure.notNullOrEmpty(this.awsId, "auth_aws_id");
+		ensure.notNullOrEmpty(this.awsSecret, "auth_aws_secret");
+    }
+
+	public get $awsUrl(): string  {
+		return this.awsUrl;
+	}
+
+	public get $awsBucket(): string {
+		return this.awsBucket;
+	}
+
+	public get $awsId(): string {
+		return this.awsId;
+	}
+
+	public get $awsSecret(): string {
+		return this.awsSecret;
 	}
 	
 }
