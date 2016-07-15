@@ -3,6 +3,7 @@ var GrafikaApp;
     var AnimationDetailController = (function () {
         function AnimationDetailController($stateParams, appCommon, animationService, frameService, authService) {
             var _this = this;
+            this.canEdit = false;
             animationService.get($stateParams['_id']).then(function (res) {
                 _this.animation = res.data;
                 _this.canEdit = authService.getUser()._id === _this.animation.userId;

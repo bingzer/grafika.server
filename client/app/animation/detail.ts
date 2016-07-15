@@ -1,7 +1,7 @@
 module GrafikaApp {
     export class AnimationDetailController {
         animation: Grafika.IAnimation;
-        canEdit: boolean: false;
+        canEdit: boolean = false;
 
         public static $inject = [
             '$stateParams',
