@@ -30,6 +30,8 @@ declare namespace Grafika {
 
         setOptions(options: Grafika.IOption);
         setCallback(callback: ICallback);
+
+        exts: IExtension;
     }
 
     interface ICallback {
@@ -80,6 +82,8 @@ declare namespace Grafika {
         author: string;
         userId: string;
 
+        thumbnailUrl: string;
+
         frames: [any | Grafika.IFrame];
     }
 
@@ -95,6 +99,18 @@ declare namespace Grafika {
         id: string;
         index: number;
         graphics: [Grafika.Graphics.IGraphic];
+    }
+
+    interface IExtension {
+        copyFrameToNext(): void;
+        downloadAnimation(): void;
+        downloadFrameAsImage(): void;
+        getCanvasBlob(): Blob;
+    }
+
+    interface ICanvasData {
+        mime: string;
+        base64: string;
     }
 }
 
@@ -121,6 +137,13 @@ declare namespace Grafika.Graphics {
         move(context: any | CanvasRenderingContext2D, x: number, y: number, lastX: number, lastY: number);
         invoke(context: any | CanvasRenderingContext2D, eventType: string, eventX: number, eventY: number);
     }
+}
+
+declare namespace Grafika.Extensions {
+    /*
+
+
+    */
 }
 
 declare module 'Grafika' {

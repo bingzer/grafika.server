@@ -3,6 +3,7 @@ var expressJwt = require('express-jwt');
 var mongoose = require('mongoose');
 var winston = require('winston');
 var accountController = require('../controllers/accounts');
+var resourcesController = require('../controllers/resources');
 var config = require('../configs/config');
 var animation_1 = require('../models/animation');
 var user_1 = require('../models/user');
@@ -32,8 +33,8 @@ function useSessionOrJwt(req, res, next) {
         next();
 }
 function useAnimAccess(req, res, next) {
-    var animId = new mongoose.Types.ObjectId(req.params._id);
-    var userId = (req.user && req.user) ? new mongoose.Types.ObjectId(req.user._id) : undefined;
+    var animId = new mongoose.Types.ObjectId(req.params._id || req.params.animationId);
+    var userId = (req.user && req.user._id) ? new mongoose.Types.ObjectId(req.user._id) : undefined;
     var queryAdmin = null;
     var query = null;
     var isAdmin = isAdministrator(req);
@@ -111,6 +112,8 @@ function initialize(app) {
     app.delete('/api/animations/', useSessionOrJwt, useAnimAccess);
     app.get('/api/animations/:_id/frames', useAnimAccess);
     app.post('/api/animations/:_id/frames', useSessionOrJwt, useAnimAccess);
+    app.get('/api/animations/:animationId/thumbnail', useAnimAccess, resourcesController.getThumbnail);
+    app.post('/api/animations/:animationId/thumbnail', useSessionOrJwt, useAnimAccess, resourcesController.createThumbnailSignedUrl);
     user_1.User.register(app, '/api/users');
     animation_1.Animation.register(app, '/api/animations');
     app.use(handleErrors);

@@ -24,6 +24,7 @@ module GrafikaApp {
     app.service('authService', AuthService);
     app.service('animationService', AnimationService);
     app.service('frameService', FrameService);
+    app.service('resourceService', ResourceService);
 
     app.controller('MainController', MainController);
     app.controller('AnimationCreateController', AnimationCreateController);

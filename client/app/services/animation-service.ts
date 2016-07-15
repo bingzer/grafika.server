@@ -3,29 +3,35 @@ module GrafikaApp {
 		public static $inject = [
 			'appCommon',
             'authService',
-            'apiService'
+            'apiService',
+			'resourceService'
 		];
 
         constructor (
             public appCommon: AppCommon,
             public authService: AuthService,
-            public apiService: ApiService
+            public apiService: ApiService,
+			public resourceService: ResourceService
         ){
             // nothing
         }
         
-		create(anim: Grafika.IAnimation) {
+		create(anim: Grafika.IAnimation): ng.IHttpPromise<any> {
 			return this.apiService.post('animations', anim);
 		}
 		list(paging?: Paging): ng.IHttpPromise<[Grafika.IAnimation]> {
 			if (!paging) paging = new Paging();
 			return this.apiService.get<[Grafika.IAnimation]>('animations' + paging.toQueryString()).then((res) => {
-				return this.injectThumbnailUrl(res);
+				res.data.forEach(anim => {
+					anim.thumbnailUrl = this.resourceService.getThumbnailUrl(anim);
+				});
+				return this.appCommon.$q.when(res);
 			});
 		}
 		get(_id): ng.IHttpPromise<Grafika.IAnimation> {
 			return this.apiService.get<Grafika.IAnimation>('animations/' + _id).then((res) => {
-				return this.injectThumbnailUrl(res)
+				res.data.thumbnailUrl = this.resourceService.getThumbnailUrl(res.data);
+				return this.appCommon.$q.when(res);
 			});
 		}
 		del(_id): ng.IHttpPromise<any> {
@@ -33,7 +39,8 @@ module GrafikaApp {
 		}
 		update(anim: Grafika.IAnimation): ng.IHttpPromise<Grafika.IAnimation> {
 			return this.apiService.put<Grafika.IAnimation>('animations/' + anim._id, anim).then((res) => {
-				return this.injectThumbnailUrl(res)
+				res.data.thumbnailUrl = this.resourceService.getThumbnailUrl(res.data);
+				return this.appCommon.$q.when(res);
 			});
 		}
 		incrementViewCount(anim: Grafika.IAnimation): ng.IHttpPromise<any> {
@@ -41,30 +48,6 @@ module GrafikaApp {
 		}
 		getDownloadLink(anim: Grafika.IAnimation): string {
 			return this.appCommon.getBaseUrl() + 'animations/' + anim._id + '/download?token=' + this.authService.getAccessToken();
-		}
-        
-		injectThumbnailUrl(res: any){
-			return this.appCommon.$q.when(res);
-			// if (res && res.data){
-			// 	// inject thumbnail to anim
-			// }
-			// return () => this.appCommon.$q.when(res);
-		}
-		
-		private createPagingQuery(paging){			
-			var query = '?';
-			if (paging){
-				if (paging.userId) query+= '&userId=' + paging.userId;
-				else query += '&isPublic=true';
-
-				if (paging.category) query += '&category=' + paging.category;
-				if (paging.sort) query += '&sort=' + paging.sort;
-				if (paging.count) query += '&limit=' + paging.count;
-				if (paging.page) query += '&skip=' + paging.page;
-				if (paging.query) query += "&query=" + paging.query;
-				if (paging.type) query += "&type=" + paging.type;
-			}
-			return query;
 		}
     }
 }

@@ -1,5 +1,4 @@
 import * as $q from 'q';
-import { IResource } from '../models/resource';
 import { IAnimation } from '../models/animation';
 import { IUser } from '../models/user';
 import * as aws from 'aws-sdk';
@@ -7,12 +6,23 @@ import * as config from '../configs/config';
 
 ////////////////////////////////////////////////////////////////////////////////
 
+interface S3Extensions extends aws.S3 {
+	listObjects(params: any, callback: (err: Error, data: any) => void): void;
+	deleteObjects(params: any, callback: (err: Error, data: any) => void): void;
+}
+
+class AwsHelper {
+	create(): S3Extensions {
+		return <S3Extensions> new aws.S3({ accessKeyId: config.setting.$auth.$awsId, secretAccessKey: config.setting.$auth.$awsSecret });
+	}
+}
+
 export class AwsUsers extends AwsHelper {
 
 	/**
 	 * Creates signed url
 	 */
-	createSignedUrl(user: IUser, imageType?: string, mime?: string) : $q.IPromise<ISignedUrl> {
+	createSignedUrl(user: IUser, imageType?: string, mime?: string) : $q.IPromise<Grafika.ISignedUrl> {
 		var deferred = $q.defer();
 		if (!imageType) imageType = 'avatar';
 		if (!mime) mime = 'image/png';
@@ -59,7 +69,7 @@ export class AwsResources extends AwsHelper {
 	 * Create SignedUrl for resources 
 	 * 
 	 * */
-	createSignedUrl(resource: IResource): ng.IPromise<ISignedUrl>{
+	createSignedUrl(resource: Grafika.IResource): ng.IPromise<Grafika.ISignedUrl>{
 		var deferred = $q.defer();
 		
 		// get signedurl from s3
@@ -79,8 +89,8 @@ export class AwsResources extends AwsHelper {
 	}
 	
 	/** Returns the resource url */
-	getResourceUrl (animId, id): string{
-		return config.setting.$auth.$awsUrl + config.setting.$auth.$awsBucket + '/grafika/resources/' + animId + "/" + id;
+	getResourceUrl (animId: string, resourceId: string): string{
+		return config.setting.$auth.$awsUrl + config.setting.$auth.$awsBucket + '/grafika/animations/' + animId + "/" + resourceId;
 	}
 	
 	/** Delete resource */
@@ -88,7 +98,7 @@ export class AwsResources extends AwsHelper {
 		var deferred = $q.defer();
 		this.create().deleteObject({
 				Bucket: config.setting.$auth.$awsBucket,
-				Key: 'grafika/resources/' + animId + '/' + resourceId
+				Key: 'grafika/animations/' + animId + '/' + resourceId
 			}, function (err, data){
 				if (err) deferred.reject(err);
 				else deferred.resolve(data);
@@ -106,7 +116,7 @@ export class AwsAnimation extends AwsHelper {
 		
 		var params = {
 			Bucket: config.setting.$auth.$awsBucket,
-			Prefix: 'grafika/resources/' + animId
+			Prefix: 'grafika/animations/' + animId
 		};
 		this.create().listObjects(params, (err, data) => {
 			if (err) return deferred.reject(err);			
@@ -117,7 +127,7 @@ export class AwsAnimation extends AwsHelper {
 				}
 			};
 			
-			params.Delete.Objects.push({ Key: 'resources/' + animId });
+			params.Delete.Objects.push({ Key: 'animations/' + animId });
 			data.Contents.forEach(function(content) {
 				params.Delete.Objects.push({Key: content.Key});
 			});
@@ -129,20 +139,4 @@ export class AwsAnimation extends AwsHelper {
 		});
 		return deferred.promise;
 	}
-}
-
-class AwsHelper {
-	create(): S3Extensions {
-		return <S3Extensions> new aws.S3({ accessKeyId: config.setting.$auth.$awsId, secretAccessKey: config.setting.$auth.$awsSecret });
-	}
-}
-
-interface S3Extensions extends aws.S3 {
-	listObjects(params: any, callback: (err: Error, data: any) => void): void;
-	deleteObjects(params: any, callback: (err: Error, data: any) => void): void;
-}
-
-interface ISignedUrl {
-	signedUrl: string;
-	mime: string;	
 }

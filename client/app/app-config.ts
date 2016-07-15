@@ -5,8 +5,8 @@ module GrafikaApp {
         baseUrl: string = ''; // injected by app-controller
         defaultBaseUrl: string = 'https://grafika.herokuapp.com/';  // default url if baseUrl is localhost
         apiBaseUrl: string = '/api/';  // local
-        resourceBaseUrl: string = 'https://s3.amazonaws.com/grafika/resources/';
-        userBaseUrl: string = 'https://s3.amazonaws.com/grafika/users/';
+        animationBaseUrl: string = 'https://s3.amazonaws.com/bingzer/grafika/animations/';
+        userBaseUrl: string = 'https://s3.amazonaws.com/bingzer/grafika/users/';
         fetchSize: number = 25;
     }
 }

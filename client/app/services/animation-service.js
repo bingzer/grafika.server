@@ -1,10 +1,11 @@
 var GrafikaApp;
 (function (GrafikaApp) {
     var AnimationService = (function () {
-        function AnimationService(appCommon, authService, apiService) {
+        function AnimationService(appCommon, authService, apiService, resourceService) {
             this.appCommon = appCommon;
             this.authService = authService;
             this.apiService = apiService;
+            this.resourceService = resourceService;
         }
         AnimationService.prototype.create = function (anim) {
             return this.apiService.post('animations', anim);
@@ -14,13 +15,17 @@ var GrafikaApp;
             if (!paging)
                 paging = new GrafikaApp.Paging();
             return this.apiService.get('animations' + paging.toQueryString()).then(function (res) {
-                return _this.injectThumbnailUrl(res);
+                res.data.forEach(function (anim) {
+                    anim.thumbnailUrl = _this.resourceService.getThumbnailUrl(anim);
+                });
+                return _this.appCommon.$q.when(res);
             });
         };
         AnimationService.prototype.get = function (_id) {
             var _this = this;
             return this.apiService.get('animations/' + _id).then(function (res) {
-                return _this.injectThumbnailUrl(res);
+                res.data.thumbnailUrl = _this.resourceService.getThumbnailUrl(res.data);
+                return _this.appCommon.$q.when(res);
             });
         };
         AnimationService.prototype.del = function (_id) {
@@ -29,7 +34,8 @@ var GrafikaApp;
         AnimationService.prototype.update = function (anim) {
             var _this = this;
             return this.apiService.put('animations/' + anim._id, anim).then(function (res) {
-                return _this.injectThumbnailUrl(res);
+                res.data.thumbnailUrl = _this.resourceService.getThumbnailUrl(res.data);
+                return _this.appCommon.$q.when(res);
             });
         };
         AnimationService.prototype.incrementViewCount = function (anim) {
@@ -38,35 +44,11 @@ var GrafikaApp;
         AnimationService.prototype.getDownloadLink = function (anim) {
             return this.appCommon.getBaseUrl() + 'animations/' + anim._id + '/download?token=' + this.authService.getAccessToken();
         };
-        AnimationService.prototype.injectThumbnailUrl = function (res) {
-            return this.appCommon.$q.when(res);
-        };
-        AnimationService.prototype.createPagingQuery = function (paging) {
-            var query = '?';
-            if (paging) {
-                if (paging.userId)
-                    query += '&userId=' + paging.userId;
-                else
-                    query += '&isPublic=true';
-                if (paging.category)
-                    query += '&category=' + paging.category;
-                if (paging.sort)
-                    query += '&sort=' + paging.sort;
-                if (paging.count)
-                    query += '&limit=' + paging.count;
-                if (paging.page)
-                    query += '&skip=' + paging.page;
-                if (paging.query)
-                    query += "&query=" + paging.query;
-                if (paging.type)
-                    query += "&type=" + paging.type;
-            }
-            return query;
-        };
         AnimationService.$inject = [
             'appCommon',
             'authService',
-            'apiService'
+            'apiService',
+            'resourceService'
         ];
         return AnimationService;
     }());

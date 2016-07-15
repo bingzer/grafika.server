@@ -2,7 +2,7 @@
 	<div class="card" ng-repeat="anim in vm.animations" >
 		<md-whiteframe class="md-whiteframe-1dp" layout="column">
             <a href ui-sref="detail({_id: anim._id})">
-			    <img class="card-image" ng-src="/assets/img/placeholder.png" alt="thumbnail">
+			    <img class="card-image" ng-src="{{anim.thumbnailUrl}}" alt="thumbnail">
             </a>
 			<div class="md-display">{{anim.name}}</div>
 			<div class="md-caption">{{anim.description}}</div>

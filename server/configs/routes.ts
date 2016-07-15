@@ -4,6 +4,7 @@ import * as mongoose from 'mongoose';
 import * as winston from 'winston';
 
 import * as accountController from '../controllers/accounts';
+import * as resourcesController from '../controllers/resources';
 import * as config from '../configs/config';
 import { Animation } from '../models/animation';
 import { User } from '../models/user';
@@ -44,8 +45,8 @@ function useSessionOrJwt(req: express.Request, res: express.Response, next: expr
 
 /** Check animation access */
 function useAnimAccess(req: any, res: express.Response, next: express.NextFunction) {
-    var animId = new mongoose.Types.ObjectId(req.params._id);
-    var userId = (req.user && req.user) ? new mongoose.Types.ObjectId(req.user._id) : undefined;
+    var animId = new mongoose.Types.ObjectId(req.params._id || req.params.animationId);
+    var userId = (req.user && req.user._id) ? new mongoose.Types.ObjectId(req.user._id) : undefined;
     var queryAdmin = null;
     var query = null;
     var isAdmin = isAdministrator(req);
@@ -142,6 +143,10 @@ export function initialize(app) {
     app.delete('/api/animations/', useSessionOrJwt, useAnimAccess); // delete
     app.get('/api/animations/:_id/frames', useAnimAccess); // get frames
     app.post('/api/animations/:_id/frames', useSessionOrJwt, useAnimAccess);
+
+    // ---------------- Thumbnail -----------------------------//
+    app.get('/api/animations/:animationId/thumbnail', useAnimAccess, resourcesController.getThumbnail);
+    app.post('/api/animations/:animationId/thumbnail', useSessionOrJwt, useAnimAccess, resourcesController.createThumbnailSignedUrl);
     
     // --------------- Restful Registeration -------------------------//
     User.register(app, '/api/users');

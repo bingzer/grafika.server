@@ -84,14 +84,14 @@ var AwsResources = (function (_super) {
         });
         return deferred.promise;
     };
-    AwsResources.prototype.getResourceUrl = function (animId, id) {
-        return config.setting.$auth.$awsUrl + config.setting.$auth.$awsBucket + '/grafika/resources/' + animId + "/" + id;
+    AwsResources.prototype.getResourceUrl = function (animId, resourceId) {
+        return config.setting.$auth.$awsUrl + config.setting.$auth.$awsBucket + '/grafika/animations/' + animId + "/" + resourceId;
     };
     AwsResources.prototype.deleteResource = function (animId, resourceId) {
         var deferred = $q.defer();
         this.create().deleteObject({
             Bucket: config.setting.$auth.$awsBucket,
-            Key: 'grafika/resources/' + animId + '/' + resourceId
+            Key: 'grafika/animations/' + animId + '/' + resourceId
         }, function (err, data) {
             if (err)
                 deferred.reject(err);
@@ -113,7 +113,7 @@ var AwsAnimation = (function (_super) {
         var deferred = $q.defer();
         var params = {
             Bucket: config.setting.$auth.$awsBucket,
-            Prefix: 'grafika/resources/' + animId
+            Prefix: 'grafika/animations/' + animId
         };
         this.create().listObjects(params, function (err, data) {
             if (err)
@@ -124,7 +124,7 @@ var AwsAnimation = (function (_super) {
                     Objects: []
                 }
             };
-            params.Delete.Objects.push({ Key: 'resources/' + animId });
+            params.Delete.Objects.push({ Key: 'animations/' + animId });
             data.Contents.forEach(function (content) {
                 params.Delete.Objects.push({ Key: content.Key });
             });

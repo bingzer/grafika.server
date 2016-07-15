@@ -7,7 +7,7 @@ module GrafikaApp {
 		];
 
         constructor (
-            private $http: ng.IHttpService,
+            public $http: ng.IHttpService,
             private appCommon: AppCommon 
         ){
             // nothing

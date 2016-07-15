@@ -189,6 +189,12 @@ class Auth implements IConfig {
 	private awsId: string;
 	private awsSecret: string;
 
+	constructor() {
+		this.awsBucket = env.auth_aws_bucket;
+		this.awsId = env.auth_aws_id;
+		this.awsSecret = env.auth_aws_secret;
+	}
+
     public validate() : void {
 		ensure.notNullOrEmpty(this.awsBucket, "auth_aws_bucket");
 		ensure.notNullOrEmpty(this.awsId, "auth_aws_id");

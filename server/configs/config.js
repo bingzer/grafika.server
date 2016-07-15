@@ -177,6 +177,9 @@ var Client = (function () {
 var Auth = (function () {
     function Auth() {
         this.awsUrl = 'https://s3.amazonaws.com/';
+        this.awsBucket = env.auth_aws_bucket;
+        this.awsId = env.auth_aws_id;
+        this.awsSecret = env.auth_aws_secret;
     }
     Auth.prototype.validate = function () {
         ensure.notNullOrEmpty(this.awsBucket, "auth_aws_bucket");

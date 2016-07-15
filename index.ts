@@ -6,6 +6,7 @@ import * as morgan from 'morgan';
 import * as methodOverride from 'method-override';
 import * as winston from 'winston';
 import * as passport from 'passport';
+import * as cors from 'cors';
 
 import * as config from './server/configs/config'
 import * as mongooseConfig from './server/configs/mongoose';
@@ -19,11 +20,12 @@ var server = app.listen(process.env.PORT || 3000, () => {
 	winston.info('Server is starting at port ' + server.address().port);
 	winston.info('   URL address (config): ' + config.setting.$server.$url);
 
-    app.use(bodyParser.urlencoded({ extended: false }))
-    app.use(bodyParser.json())
+    app.use(bodyParser.urlencoded({ extended: true }));
+    app.use(bodyParser.json({ limit: '5mb'}));
     app.use(cookieParser());
     app.use(methodOverride());
     app.use(morgan('dev'));
+    app.use(cors());
 
     app.use(session({ secret: config.setting.$client.$sessionSecret, name: 'grafika.session', resave: true, saveUninitialized: true })); // session secret    
     app.use(passport.initialize());

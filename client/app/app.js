@@ -19,6 +19,7 @@ var GrafikaApp;
     app.service('authService', GrafikaApp.AuthService);
     app.service('animationService', GrafikaApp.AnimationService);
     app.service('frameService', GrafikaApp.FrameService);
+    app.service('resourceService', GrafikaApp.ResourceService);
     app.controller('MainController', GrafikaApp.MainController);
     app.controller('AnimationCreateController', GrafikaApp.AnimationCreateController);
     app.controller('AnimationDetailController', GrafikaApp.AnimationDetailController);
