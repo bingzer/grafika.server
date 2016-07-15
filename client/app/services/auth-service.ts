@@ -47,7 +47,10 @@ module GrafikaApp {
             return this.apiService.post('accounts/logout').finally(() => {
                 this.clearToken();
                 this.clearSession();
-                return this.authenticate(true).then(this.appCommon.navigateHome);
+                return this.authenticate(true).then(() => {
+                    this.appCommon.navigateHome()
+                    return this.appCommon.$q.when(true); 
+                });
             });
         }
 

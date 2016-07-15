@@ -21,5 +21,7 @@ module GrafikaApp {
         userId: string;
 
         frames: [Grafika.IFrame];
+
+        thumbnailUrl: string;
     }
 }

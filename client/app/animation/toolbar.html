@@ -1,0 +1,89 @@
+<md-toolbar class="md-menu-toolbar">
+    <div layout="row">
+        <md-toolbar-filler layout layout-align="center center">
+            <md-icon md-svg-icon="call:chat"></md-icon>
+        </md-toolbar-filler>
+        <div>
+            <h2 class="md-toolbar-tools">{{vm.grafika.getAnimation().name}}</h2>
+            <md-menu-bar>
+                <md-menu>
+                    <button ng-click="$mdOpenMenu()">File</button>
+                    <md-menu-content>
+                        <md-menu-item>
+                            <md-button ng-click="vm.save()">Save</md-button>
+                        </md-menu-item>
+                        <md-menu-item>
+                            <md-button ng-click="vm.save(true)">Save and Exit</md-button>
+                        </md-menu-item>
+                        <md-menu-divider></md-menu-divider>
+                        <md-menu-item>
+                            <md-button ng-click="vm.grafika.play()">Preview</md-button>
+                        </md-menu-item>
+                        <md-menu-divider></md-menu-divider>
+                        <md-menu-item>
+                            <md-button ng-click="vm.showProperties()">Properties</md-button>
+                        </md-menu-item>
+                    </md-menu-content>
+                </md-menu>
+                <md-menu>
+                    <button ng-click="$mdOpenMenu()">Frames</button>
+                    <md-menu-content>
+                        <md-menu-item class="md-indent">
+                            <md-icon md-svg-icon="next"></md-icon>
+                            <md-button ng-click="vm.grafika.nextFrame()">
+                                Next Frame
+                            </md-button>
+                        </md-menu-item>
+                        <md-menu-item class="md-indent">
+                            <md-icon md-svg-icon="previous"></md-icon>
+                            <md-button ng-click="vm.grafika.previousFrame()">
+                                Previous Frame
+                            </md-button>
+                        </md-menu-item>
+                        <md-menu-item class="md-indent">
+                            <md-menu>
+                                <md-button ng-click="$mdOpenMenu()">Mode</md-button>
+                                <md-menu-content width="3">
+                                    <md-menu-item type="radio" ng-model="vm.settings.presentationMode" value="'presentation'">Presentation</md-menu-item>
+                                    <md-menu-item type="radio" ng-model="vm.settings.presentationMode" value="'edit'">Edit</md-menu-item>
+                                    <md-menu-item type="radio" ng-model="vm.settings.presentationMode" value="'modifiable'">Modifiable</md-menu-item>
+                                </md-menu-content>
+                            </md-menu>
+                        </md-menu-item>
+                        <md-menu-divider></md-menu-divider>
+                        <md-menu-item type="checkbox" ng-model="vm.settings.showRuler">Show ruler</md-menu-item>
+                        <md-menu-item type="checkbox" ng-model="vm.settings.showEquationToolbar">Show equation toolbar</md-menu-item>
+                        <md-menu-item type="checkbox" ng-model="vm.settings.showSpellingSuggestions">Show spelling suggestions</md-menu-item>
+                        <md-menu-divider></md-menu-divider>
+                        <md-menu-item type="checkbox" ng-model="vm.settings.compactControls">Compact controls</md-menu-item>
+                        <md-menu-item type="checkbox" ng-model="vm.settings.fullScreen">Full screen</md-menu-item>
+                    </md-menu-content>
+                </md-menu>
+                <md-menu>
+                    <button ng-click="$mdOpenMenu()">Graphics</button>
+                    <md-menu-content>
+                        <md-menu-divider></md-menu-divider>
+                        <md-menu-item>
+                            <md-button ng-click="vm.grafika.setOptions({ graphic: 'freeform' })">Freeform</md-button>
+                        </md-menu-item>
+                        <md-menu-item>
+                            <md-button ng-click="vm.grafika.setOptions({ graphic: 'rectangle' })">Rectangle</md-button>
+                        </md-menu-item>
+                        <md-menu-item>
+                            <md-button ng-click="vm.grafika.setOptions({ graphic: 'square' })">Square</md-button>
+                        </md-menu-item>
+                        <md-menu-item>
+                            <md-button ng-click="vm.grafika.setOptions({ graphic: 'circle' })">Circle</md-button>
+                        </md-menu-item>
+                        <md-menu-item>
+                            <md-button ng-click="vm.grafika.setOptions({ graphic: 'oval' })">Oval</md-button>
+                        </md-menu-item>
+                        <md-menu-item>
+                            <md-button ng-click="vm.grafika.setOptions({ graphic: 'text' })">Text</md-button>
+                        </md-menu-item>
+                    </md-menu-content>
+                </md-menu>
+            </md-menu-bar>
+        </div>
+    </div>
+</md-toolbar>

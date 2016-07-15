@@ -8,21 +8,22 @@ module GrafikaApp {
 
         public static $inject = [
             '$stateParams',
+            'appCommon',
             'animationService',
             'frameService'
         ];
         constructor(
             private $stateParams: ng.ui.IStateParamsService,
+            private appCommon: AppCommon,
             private animationService: AnimationService,
             private frameService: FrameService
         ){
             this.grafika = new Grafika();
-        }
-
-        load() {
+            
             var controller = this;
             this.animationService.get(this.$stateParams['_id']).then((res) => {
                 this.animationName = res.data.name;
+                this.appCommon.elem('#canvas-container').css('width', res.data.width).css('height', res.data.height);
                 this.grafika.initialize('#canvas', { useNavigationText: false, useCarbonCopy: false }, res.data);
                 this.grafika.setCallback({ on: (ev: string, obj: any) => {
                     switch (ev) {

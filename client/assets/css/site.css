@@ -61,18 +61,18 @@ md-dialog {
 }
 
 /* ---------- Card ------------ */
-.card {
+.animation-card {
 	margin: 16px;
-	width: 196px;
+	width: 256px;
 }
 
-.card > md-whiteframe  {
+.animation-card > md-whiteframe  {
 	padding: 8px;
 }
 
-.card > md-whiteframe img {
+.animation-card > md-whiteframe img {
 	margin: -8px -8px 8px -8px;
-	width: 196px;
+	width: 256px;
 	height: 110px;
 }
 /* -- Main content */

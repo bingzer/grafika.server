@@ -35,7 +35,10 @@ var GrafikaApp;
             return this.apiService.post('accounts/logout').finally(function () {
                 _this.clearToken();
                 _this.clearSession();
-                return _this.authenticate(true).then(_this.appCommon.navigateHome);
+                return _this.authenticate(true).then(function () {
+                    _this.appCommon.navigateHome();
+                    return _this.appCommon.$q.when(true);
+                });
             });
         };
         AuthService.prototype.clearToken = function () {

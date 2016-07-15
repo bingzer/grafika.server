@@ -1,5 +1,5 @@
 <div layout="row" layout-wrap>
-	<div class="card" ng-repeat="anim in vm.animations" >
+	<div class="animation-card" ng-repeat="anim in vm.animations" >
 		<md-whiteframe class="md-whiteframe-1dp" layout="column">
             <a href ui-sref="detail({_id: anim._id})">
 			    <img class="card-image" ng-src="{{anim.thumbnailUrl}}" alt="thumbnail">

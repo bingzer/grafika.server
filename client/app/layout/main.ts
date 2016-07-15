@@ -54,7 +54,7 @@ module GrafikaApp {
                 .then(() => {
                     return this.appCommon.hideLoadingModal()
                 })
-                .then(function (){
+                .then(() => {
                     return this.appCommon.toast('Successfully logged out');
                 });
         }

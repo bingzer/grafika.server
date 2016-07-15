@@ -1,19 +1,23 @@
 var GrafikaApp;
 (function (GrafikaApp) {
     var AnimationDetailController = (function () {
-        function AnimationDetailController($stateParams, appCommon, animationService, frameService, authService) {
+        function AnimationDetailController($stateParams, appCommon, animationService, authService) {
             var _this = this;
+            this.$stateParams = $stateParams;
+            this.appCommon = appCommon;
+            this.animationService = animationService;
+            this.authService = authService;
             this.canEdit = false;
-            animationService.get($stateParams['_id']).then(function (res) {
+            this.animationService.get(this.$stateParams['_id']).then(function (res) {
                 _this.animation = res.data;
-                _this.canEdit = authService.getUser()._id === _this.animation.userId;
+                if (_this.authService.isAuthorized('user'))
+                    _this.canEdit = _this.authService.getUser()._id === _this.animation.userId;
             });
         }
         AnimationDetailController.$inject = [
             '$stateParams',
             'appCommon',
             'animationService',
-            'frameService',
             'authService'
         ];
         return AnimationDetailController;

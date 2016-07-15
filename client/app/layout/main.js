@@ -44,7 +44,7 @@ var GrafikaApp;
                 return _this.appCommon.hideLoadingModal();
             })
                 .then(function () {
-                return this.appCommon.toast('Successfully logged out');
+                return _this.appCommon.toast('Successfully logged out');
             });
         };
         MainController.prototype.initGrafika = function () {
