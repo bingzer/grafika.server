@@ -13,7 +13,9 @@ var GrafikaApp;
         AnimationEditorController.prototype.load = function () {
             var _this = this;
             this.animationService.get(this.$stateParams['_id']).then(function (res) {
-                _this.grafika.initialize('#canvas', { drawingMode: 'paint' }, res.data);
+                var anim = res.data;
+                _this.appCommon.elem('#canvas-container').css('width', anim.width).css('height', anim.height);
+                _this.grafika.initialize('#canvas', { drawingMode: 'paint' }, anim);
                 _this.frameService.get(_this.grafika.getAnimation()).then(function (res) {
                     _this.grafika.setFrames(res.data);
                 });

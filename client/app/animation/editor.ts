@@ -21,7 +21,9 @@ module GrafikaApp {
 
         load() {
             this.animationService.get(this.$stateParams['_id']).then((res) => {
-                this.grafika.initialize('#canvas', { drawingMode: 'paint' }, res.data);
+                var anim = res.data;
+                this.appCommon.elem('#canvas-container').css('width', anim.width).css('height', anim.height);
+                this.grafika.initialize('#canvas', { drawingMode: 'paint' }, anim);
                 this.frameService.get(this.grafika.getAnimation()).then((res) => {
                     this.grafika.setFrames(res.data);
                 })

@@ -12,9 +12,8 @@ var GrafikaApp;
         AnimationService.prototype.list = function (paging) {
             var _this = this;
             if (!paging)
-                paging = this.createPaging();
-            var query = this.createPagingQuery(paging);
-            return this.apiService.get('animations' + query).then(function (res) {
+                paging = new GrafikaApp.Paging();
+            return this.apiService.get('animations' + paging.toQueryString()).then(function (res) {
                 return _this.injectThumbnailUrl(res);
             });
         };
@@ -41,13 +40,6 @@ var GrafikaApp;
         };
         AnimationService.prototype.injectThumbnailUrl = function (res) {
             return this.appCommon.$q.when(res);
-        };
-        AnimationService.prototype.createPaging = function (isPublic) {
-            return {
-                isPublic: isPublic || true,
-                page: 0,
-                count: this.appCommon.appConfig.fetchSize
-            };
         };
         AnimationService.prototype.createPagingQuery = function (paging) {
             var query = '?';

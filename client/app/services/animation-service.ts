@@ -17,30 +17,29 @@ module GrafikaApp {
 		create(anim: Grafika.IAnimation) {
 			return this.apiService.post('animations', anim);
 		}
-		list(paging?: any) {
-			if (!paging) paging = this.createPaging();
-			var query = this.createPagingQuery(paging);
-			return this.apiService.get('animations' + query).then((res) => {
+		list(paging?: Paging): ng.IHttpPromise<[Grafika.IAnimation]> {
+			if (!paging) paging = new Paging();
+			return this.apiService.get<[Grafika.IAnimation]>('animations' + paging.toQueryString()).then((res) => {
+				return this.injectThumbnailUrl(res);
+			});
+		}
+		get(_id): ng.IHttpPromise<Grafika.IAnimation> {
+			return this.apiService.get<Grafika.IAnimation>('animations/' + _id).then((res) => {
 				return this.injectThumbnailUrl(res)
 			});
 		}
-		get(_id) {
-			return this.apiService.get('animations/' + _id).then((res) => {
-				return this.injectThumbnailUrl(res)
-			});
-		}
-		del(_id) {
+		del(_id): ng.IHttpPromise<any> {
 			return this.apiService.delete('animations/' + _id);
 		}
-		update(anim: Grafika.IAnimation) {
-			return this.apiService.put('animations/' + anim._id, anim).then((res) => {
+		update(anim: Grafika.IAnimation): ng.IHttpPromise<Grafika.IAnimation> {
+			return this.apiService.put<Grafika.IAnimation>('animations/' + anim._id, anim).then((res) => {
 				return this.injectThumbnailUrl(res)
 			});
 		}
-		incrementViewCount(anim: Grafika.IAnimation) {
+		incrementViewCount(anim: Grafika.IAnimation): ng.IHttpPromise<any> {
 			return this.apiService.post('animations/' + anim._id + '/view');
 		}
-		getDownloadLink(anim: Grafika.IAnimation){
+		getDownloadLink(anim: Grafika.IAnimation): string {
 			return this.appCommon.getBaseUrl() + 'animations/' + anim._id + '/download?token=' + this.authService.getAccessToken();
 		}
         
@@ -50,14 +49,6 @@ module GrafikaApp {
 			// 	// inject thumbnail to anim
 			// }
 			// return () => this.appCommon.$q.when(res);
-		}
-		
-		createPaging(isPublic?: any): any{
-			return {   
-				isPublic: isPublic || true,
-				page: 0, 
-				count: this.appCommon.appConfig.fetchSize
-			};
 		}
 		
 		private createPagingQuery(paging){			

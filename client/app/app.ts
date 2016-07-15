@@ -30,6 +30,7 @@ module GrafikaApp {
     app.controller('AnimationDetailController', AnimationDetailController);
     app.controller('AnimationEditorController', AnimationEditorController);
     app.controller('AnimationListController', AnimationListController);
+    app.controller('AnimationPlaybackController', AnimationPlaybackController);
     app.controller('MyAnimationsController', MyAnimationsController);
     app.controller('ForgetController', ForgetController);
     app.controller('LoginController', LoginController);

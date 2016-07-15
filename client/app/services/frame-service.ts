@@ -14,10 +14,10 @@ module GrafikaApp {
             // nothing
         }
 
-		get(animation: Grafika.IAnimation): ng.IPromise<any> {
-			return this.apiService.get('animations/' + animation._id + '/frames');
+		get(animation: Grafika.IAnimation): ng.IHttpPromise<[Grafika.IFrame]> {
+			return this.apiService.get<[Grafika.IFrame]>('animations/' + animation._id + '/frames');
 		}
-		update(animation: Grafika.IAnimation, data?: any) {
+		update(animation: Grafika.IAnimation, data: [Grafika.IFrame]): ng.IHttpPromise<Grafika.IFrame> {
 			return this.apiService.post('animations/' + animation._id + '/frames', data);
 		}
     }

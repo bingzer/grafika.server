@@ -24,6 +24,7 @@ var GrafikaApp;
     app.controller('AnimationDetailController', GrafikaApp.AnimationDetailController);
     app.controller('AnimationEditorController', GrafikaApp.AnimationEditorController);
     app.controller('AnimationListController', GrafikaApp.AnimationListController);
+    app.controller('AnimationPlaybackController', GrafikaApp.AnimationPlaybackController);
     app.controller('MyAnimationsController', GrafikaApp.MyAnimationsController);
     app.controller('ForgetController', GrafikaApp.ForgetController);
     app.controller('LoginController', GrafikaApp.LoginController);

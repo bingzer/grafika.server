@@ -29,7 +29,11 @@ declare namespace Grafika {
         currentGraphic(): Grafika.Graphics.IGraphic;
 
         setOptions(options: Grafika.IOption);
+        setCallback(callback: ICallback);
+    }
 
+    interface ICallback {
+        on: (eventName: string, obj: any) => void;
     }
 
     interface IOption {
@@ -39,7 +43,7 @@ declare namespace Grafika {
         graphic?: string;
         graphicFill?: boolean;
         useCarbonCopy?: boolean;
-        useNavigationtext?: boolean;
+        useNavigationText?: boolean;
         drawingMode?: string;
         debugMode?: boolean;
     }

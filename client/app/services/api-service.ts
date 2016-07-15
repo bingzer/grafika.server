@@ -13,7 +13,7 @@ module GrafikaApp {
             // nothing
         }
 
-        get(path: string): ng.IHttpPromise<any> {
+        get<TData>(path: string): ng.IHttpPromise<TData> {
             return this.$http.get(this.url(path))
                 .error((data, status, headers, config) => {
                     return this.log(data, status, headers, config)
@@ -27,7 +27,7 @@ module GrafikaApp {
                 });
         }
 
-        put(path: string, data?: any): ng.IHttpPromise<any> {
+        put<TData>(path: string, data?: any | TData): ng.IHttpPromise<TData> {
             return this.$http.put(this.url(path), data)
                 .error((data, status, headers, config) => {
                     return this.log(data, status, headers, config)

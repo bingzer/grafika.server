@@ -14,6 +14,9 @@ var GrafikaApp;
             this.$mdDialog = $mdDialog;
             this.appConfig = appConfig;
         }
+        AppCommon.prototype.elem = function (selector) {
+            return angular.element(selector);
+        };
         AppCommon.prototype.alert = function (msg, title, okText) {
             var alert = this.$mdDialog.alert()
                 .parent(angular.element(document.body))

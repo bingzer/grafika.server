@@ -20,8 +20,7 @@ module GrafikaApp {
         }
 
         list() {
-            var paging = this.animationService.createPaging();
-            paging.userId = this.authService.getUser()._id;
+            var paging = new Paging({ isPublic: false, userId: this.authService.getUser()._id });
             this.animationService.list(paging).then((res) => {
                 this.animations = res.data;
             });

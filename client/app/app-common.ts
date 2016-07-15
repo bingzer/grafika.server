@@ -31,6 +31,9 @@ module GrafikaApp {
             // nothing
         }
         
+        elem(selector: string): JQuery {
+            return angular.element(selector);
+        }
         alert(msg: string, title?: string, okText?: string) : ng.IPromise<any> {
             var alert = this.$mdDialog.alert()
                 .parent(angular.element(document.body))
