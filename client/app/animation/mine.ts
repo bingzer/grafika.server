@@ -5,12 +5,14 @@ module GrafikaApp {
         public static $inject = [
             '$rootScope',
             '$mdDialog',
+            'appCommon',
             'animationService',
             'authService'
         ];
         constructor(
             private $rootScope: ng.IRootScopeService,
             private $mdDialog: ng.material.IDialogService,
+            private appCommon: AppCommon,
             private animationService: AnimationService,
             private authService: AuthService
         ){
@@ -20,7 +22,7 @@ module GrafikaApp {
         list() {
             var paging = this.animationService.createPaging();
             paging.userId = this.authService.getUser()._id;
-            this.animationService.list(paging).then(function (res){
+            this.animationService.list(paging).then((res) => {
                 this.animations = res.data;
             });
         }
@@ -35,10 +37,8 @@ module GrafikaApp {
                 clickOutsideToClose: true,
                 targetEvent: ev
             }).then((answer) => {
-					//$scope.status = 'You said the information was "' + answer + '".';
-				}, function() {
-					//$scope.status = 'You cancelled the dialog.';
-			});
+                this.appCommon.toast('Animation is created');
+            });
 		} 
     }
 }

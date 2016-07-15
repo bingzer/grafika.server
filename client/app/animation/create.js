@@ -5,22 +5,6 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 var GrafikaApp;
 (function (GrafikaApp) {
-    var DialogController = (function () {
-        function DialogController($mdDialog) {
-            this.$mdDialog = $mdDialog;
-        }
-        DialogController.prototype.close = function () {
-            this.cancel();
-        };
-        DialogController.prototype.cancel = function () {
-            this.$mdDialog.cancel();
-        };
-        DialogController.$inject = [
-            '$mdDialog'
-        ];
-        return DialogController;
-    }());
-    GrafikaApp.DialogController = DialogController;
     var AnimationCreateController = (function (_super) {
         __extends(AnimationCreateController, _super);
         function AnimationCreateController($mdDialog, $state, animationService, frameService) {
@@ -29,8 +13,11 @@ var GrafikaApp;
             this.$state = $state;
             this.animationService = animationService;
             this.frameService = frameService;
+            this.width = 800;
+            this.height = 400;
         }
         AnimationCreateController.prototype.create = function () {
+            var _this = this;
             var anim = new GrafikaApp.Animation();
             anim.name = this.name;
             anim.width = this.width;
@@ -38,8 +25,8 @@ var GrafikaApp;
             anim.isPublic = this.isPublic;
             this.animationService.create(anim).then(function (res) {
                 var anim = res.data;
-                this.$state.go('editor', { _id: anim._id });
-                this.cancel();
+                _this.$state.go('editor', { _id: anim._id });
+                _this.close();
             });
         };
         AnimationCreateController.$inject = [
@@ -49,7 +36,7 @@ var GrafikaApp;
             'frameService'
         ];
         return AnimationCreateController;
-    }(DialogController));
+    }(GrafikaApp.DialogController));
     GrafikaApp.AnimationCreateController = AnimationCreateController;
 })(GrafikaApp || (GrafikaApp = {}));
 //# sourceMappingURL=create.js.map
