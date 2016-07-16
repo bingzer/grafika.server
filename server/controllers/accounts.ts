@@ -3,7 +3,7 @@ import * as crypto from "crypto"
 import * as express from "express";
 import * as passport from "passport";
 
-import { IUser, User, userQuery } from '../models/user';
+import { IUser, User, userQuery, sanitize } from '../models/user';
 import * as mailer from '../libs/mailer';
 import * as config from '../configs/config';
 var jwt            = require('jsonwebtoken');
@@ -39,7 +39,9 @@ export function register(req: express.Request, res: express.Response, next: expr
 };
 
 export function authenticate(req: any, res: any, next: express.NextFunction){
-    if (req.isAuthenticated()) res.send({token: signToken(req.user)});
+    if (req.isAuthenticated()) {
+        res.send({token: signToken(req.user)});
+    }
     else res.sendStatus(200);
     // else {
     //     res.status(200).send({token: signToken( accountHelper.createPublicUser() )});
@@ -90,9 +92,10 @@ export function resetPassword(req: express.Request, res: express.Response, next:
 ////////////////////////////////////////////////////////////////////////////////////////////////
     
 /** Sign token with user credentials in it */
-function signToken(user){
+function signToken(user: any | IUser){
     if (!user) return null;
-    return jwt.sign(user, SECRET, {
+
+    return jwt.sign(sanitize(user), SECRET, {
         expiresIn: '24hr' // expires in 24 hours
     });
 };

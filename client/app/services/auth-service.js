@@ -93,8 +93,7 @@ var GrafikaApp;
             }
             if (this.user)
                 return this.user;
-            var token = this.jwtHelper.decodeToken(this.appCommon.$window.sessionStorage.getItem('token'));
-            var payload = token._doc;
+            var payload = this.jwtHelper.decodeToken(this.appCommon.$window.sessionStorage.getItem('token'));
             var user = new GrafikaApp.User();
             user._id = payload._id;
             user.firstName = payload.given_name || payload.firstName;

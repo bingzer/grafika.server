@@ -11,9 +11,8 @@ passport.serializeUser((user, done) => {
 });
 
 passport.deserializeUser((id, done) => {
-    var exclude = { 'local.password': 0, 'activation': 0};
-    User.findById(id, exclude, (err, user) => {
-        done(err, user);
+    User.findById(id, (err, user) => {
+        done(err, user.sanitize());
     });
 });
 

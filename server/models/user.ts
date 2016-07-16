@@ -22,6 +22,7 @@ export interface IUser extends mongoose.Document, Grafika.IUser {
     validPassword(password: string): boolean;
     validActivationHash(activationHash : string): boolean;
     validActivationTimestamp(): boolean;
+    sanitize(): IUser;
 }
 
 export interface IActivation {
@@ -117,10 +118,25 @@ UserSchema.methods.validActivationTimestamp = function(): boolean{
         return true;
     return false;
 };
+UserSchema.methods.sanitize = function(): IUser {
+    return sanitize(this);
+}
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 var User = <restful.IModel<IUser>> restful.model('users', UserSchema);
+
+export function sanitize(user: IUser | any) : any | IUser {
+    var lean = user;
+    if (user.toObject) {
+        user = user.toObject();
+    }
+    delete user.local;
+    delete user.facebook;
+    delete user.google;
+    delete user.activation;
+    return user;
+}
 
 export function checkAvailability(user : IUser) : $q.IPromise<{}> {
     var deferred = $q.defer();
