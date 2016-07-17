@@ -8,8 +8,8 @@ exports.AnimationSchema = new mongoose.Schema({
     timer: Number,
     width: { type: Number, required: true },
     height: { type: Number, required: true },
-    dateCreated: { type: Date, default: Date.now, required: true },
-    dateModified: { type: Date, default: Date.now, required: true },
+    dateCreated: { type: Number, required: true },
+    dateModified: { type: Number, required: true },
     views: Number,
     rating: Number,
     category: String,
@@ -22,10 +22,11 @@ var Animation = restful.model('animations', exports.AnimationSchema);
 exports.Animation = Animation;
 Animation.methods(['get', 'put', 'post', 'delete']);
 Animation.before('post', function (req, res, next) {
+    var now = Date.now();
     if (!req.body.dateCreated)
-        req.body.dateCreated = Date.now();
+        req.body.dateCreated = now;
     if (!req.body.dateModified)
-        req.body.dateModified = Date.now();
+        req.body.dateModified = now;
     if (!req.body.userId)
         req.body.userId = req.user._id;
     delete req.body._id;

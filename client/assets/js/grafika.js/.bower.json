@@ -18,14 +18,14 @@
   "dependencies": {
     "grunt": "^1.0.1"
   },
-  "version": "0.10.2",
-  "_release": "0.10.2",
+  "version": "0.10.3",
+  "_release": "0.10.3",
   "_resolution": {
     "type": "version",
-    "tag": "v0.10.2",
-    "commit": "04b749c0f3c363a81c86d8e6f68856e2413d3809"
+    "tag": "v0.10.3",
+    "commit": "ee720c02b92f1e62738b045648711c2d446eff68"
   },
   "_source": "https://github.com/bingzer/grafika.js.git",
-  "_target": "0.10.2",
+  "_target": "0.10.3",
   "_originalSource": "grafika.js"
 }
