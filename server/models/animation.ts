@@ -35,6 +35,7 @@ Animation.before('post', (req, res, next) => {
     if (!req.body.dateCreated) req.body.dateCreated = Date.now();
     if (!req.body.dateModified) req.body.dateModified = Date.now();
     if (!req.body.userId) req.body.userId = req.user._id;
+    delete req.body._id;
     
     next();
 });

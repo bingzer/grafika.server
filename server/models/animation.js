@@ -28,6 +28,7 @@ Animation.before('post', function (req, res, next) {
         req.body.dateModified = Date.now();
     if (!req.body.userId)
         req.body.userId = req.user._id;
+    delete req.body._id;
     next();
 });
 Animation.route('frames', {
