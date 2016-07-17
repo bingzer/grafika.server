@@ -104,7 +104,7 @@ var Grafika = function (){
 	this.saveAnimation = function(){
 	    animation.totalFrame = animation.frames.length;
 		animation.modified = false;
-		animation.modifiedDate = new Date();
+		animation.dateModified = new Date();
 		animation.client = {
 			navigator: navigator
 		};

@@ -15,6 +15,6 @@
   ],
   "dependencies": {
     "q": "latest",
-    "grafika.js": "0.10.1"
+    "grafika.js": "0.10.2"
   }
 }
