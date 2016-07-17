@@ -31,6 +31,13 @@ function useSession(req: express.Request, res: express.Response, next: express.N
     else res.send(401);
 };
 
+function extractUser(req: any, res: express.Response, next: express.NextFunction) {
+    if (!req.isAuthenticated())
+        expressJwt({ secret: SECRET, credentialsRequired: false, getToken: findToken })(req, res, next);
+    else 
+        next();
+}
+
 /** Authenticate using jwt token */
 function useJwt(req: express.Request, res: express.Response, next: express.NextFunction) {
     return expressJwt({ secret: SECRET, getToken: findToken })(req, res, next);
@@ -138,14 +145,14 @@ export function initialize(app) {
     // ---------------- Animation -----------------------------//
     app.get('/api/animations');  // List => use nothing
     app.post('/api/animations', useSessionOrJwt); // create
-    app.get('/api/animations/:_id', useAnimAccess); // view
+    app.get('/api/animations/:_id', extractUser, useAnimAccess); // view
     app.put('/api/animations/:_id', useSessionOrJwt, useAnimAccess); // update
     app.delete('/api/animations/', useSessionOrJwt, useAnimAccess); // delete
-    app.get('/api/animations/:_id/frames', useAnimAccess); // get frames
+    app.get('/api/animations/:_id/frames', extractUser, useAnimAccess); // get frames
     app.post('/api/animations/:_id/frames', useSessionOrJwt, useAnimAccess);
 
     // ---------------- Thumbnail -----------------------------//
-    app.get('/api/animations/:animationId/thumbnail', useAnimAccess, resourcesController.getThumbnail);
+    app.get('/api/animations/:animationId/thumbnail', /* extractUser, useAnimAccess, */ resourcesController.getThumbnail);
     app.post('/api/animations/:animationId/thumbnail', useSessionOrJwt, useAnimAccess, resourcesController.createThumbnailSignedUrl);
     
     // --------------- Restful Registeration -------------------------//
