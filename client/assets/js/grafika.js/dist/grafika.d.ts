@@ -33,6 +33,37 @@ declare namespace Grafika {
 
         exts: IExtension;
     }
+    
+    /**
+     * The animation
+     */
+    interface IAnimation extends IDrawable {
+        _id: any | string;
+        localId: string;
+
+        name: string;
+        description: string;
+
+        timer: number;
+        width: number;
+        height: number;
+
+        dateCreated: Date;
+        dateModified: Date;
+
+        views: number;
+        rating: number;
+        category: string;
+
+        isPublic: boolean;
+        author: string;
+        userId: string;
+
+        thumbnailUrl: string;
+
+        totalFrame: number;
+        frames: [any | Grafika.IFrame];
+    }
 
     interface ICallback {
         on: (eventName: string, obj: any) => void;
@@ -59,32 +90,6 @@ declare namespace Grafika {
 
     interface IDrawable {
         //randomUid(): string;
-    }
-
-    interface IAnimation extends IDrawable {
-        _id: any | string;
-
-        name: string;
-        description: string;
-
-        timer: number;
-        width: number;
-        height: number;
-
-        dateCreated: Date;
-        dateModified: Date;
-
-        views: number;
-        rating: number;
-        category: string;
-
-        isPublic: boolean;
-        author: string;
-        userId: string;
-
-        thumbnailUrl: string;
-
-        frames: [any | Grafika.IFrame];
     }
 
     interface IFrame extends IDrawable {

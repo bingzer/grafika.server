@@ -2,6 +2,7 @@
 var mongoose = require('mongoose');
 var restful = require('../libs/restful');
 exports.AnimationSchema = new mongoose.Schema({
+    localId: { type: String },
     name: { type: String, required: true },
     description: String,
     timer: Number,

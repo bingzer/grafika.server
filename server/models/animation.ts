@@ -5,6 +5,8 @@ export interface IAnimation extends Grafika.IAnimation, mongoose.Document {
 }
 
 export const AnimationSchema = new mongoose.Schema({
+    localId      : { type: String },
+
     name         : { type: String, required: true },
     description  : String,
 

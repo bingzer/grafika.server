@@ -16,7 +16,7 @@
     "express-session": "registry:dt/express-session#0.0.0+20160331200931",
     "express-unless": "registry:dt/express-unless#0.0.0+20160317120654",
     "fs-extra": "registry:dt/fs-extra#0.0.0+20160517121359",
-    "grafika.js": "file:shared/grafika.js.d.ts",
+    "grafika.js": "github:bingzer/grafika.js/dist/grafika.d.ts",
     "jquery": "registry:dt/jquery#1.10.0+20160704162008",
     "method-override": "registry:dt/method-override#0.0.0+20160317120654",
     "mime": "registry:dt/mime#0.0.0+20160316155526",
