@@ -1,16 +1,9 @@
 
 module GrafikaApp {
-    export class ApiService {
-		public static $inject = [
-			'$http',
-			'appCommon'
-		];
-
-        constructor (
-            public $http: ng.IHttpService,
-            private appCommon: AppCommon 
-        ){
-            // nothing
+    export class ApiService extends BaseService{
+        public static $inject = ['appCommon', '$http'];
+        constructor (appCommon: AppCommon, public $http: ng.IHttpService){
+            super(appCommon);
         }
 
         get<TData>(path: string): ng.IHttpPromise<TData> {

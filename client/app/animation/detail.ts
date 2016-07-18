@@ -1,24 +1,42 @@
 module GrafikaApp {
-    export class AnimationDetailController {
-        animation: Grafika.IAnimation;
+    export class AnimationDetailController extends BaseAnimationController {
         canEdit: boolean = false;
 
-        public static $inject = [
-            '$stateParams',
-            'appCommon',
-            'animationService',
-            'authService'
-        ];
+        public static $inject = ['appCommon', 'authService', 'animationService', 'frameService', 'resourceService'];
         constructor(
-            private $stateParams: ng.ui.IStateParamsService,
-            private appCommon: AppCommon,
-            private animationService: AnimationService,
-            private authService: AuthService
-        ){
-            this.animationService.get(this.$stateParams['_id']).then((res) => {
-                this.animation = res.data;
-                if (this.authService.isAuthorized('user'))
-                    this.canEdit = this.authService.getUser()._id === this.animation.userId;
+            appCommon: AppCommon, 
+            authService: AuthService, 
+            animationService: AnimationService, 
+            frameService: FrameService, 
+            resourceService: ResourceService){
+            super(appCommon, authService, animationService, frameService, resourceService);
+        }
+        
+        onLoaded(animation: Grafika.IAnimation){
+            if (this.authService.isAuthorized('user'))
+                this.canEdit = this.authService.getUser()._id === this.animation.userId;
+        }
+        edit() {
+            this.appCommon.$state.go("drawing", {_id: this.animation._id});
+        }
+
+        editData(ev: MouseEvent) {
+            this.appCommon.$mdDialog.show({
+                controller: 'AnimationEditController',
+                controllerAs: 'vm',
+                parent: angular.element(document.body),
+                templateUrl: '/app/animation/edit.html',
+                clickOutsideToClose: true,
+                targetEvent: ev
+            }).then(() => this.load());
+        }
+
+        delete(): ng.IPromise<any> {
+            return this.appCommon.confirm('Delete?').then(() => {
+                return this.animationService.delete(this.animation._id).then(() => {
+                    this.appCommon.navigateHome();
+                    return this.appCommon.toast('Deleted');
+                });
             });
         }
     }

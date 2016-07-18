@@ -1,8 +1,14 @@
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
 var GrafikaApp;
 (function (GrafikaApp) {
-    var ResourceService = (function () {
+    var ResourceService = (function (_super) {
+        __extends(ResourceService, _super);
         function ResourceService(appCommon, authService, apiService) {
-            this.appCommon = appCommon;
+            _super.call(this, appCommon);
             this.authService = authService;
             this.apiService = apiService;
         }
@@ -46,13 +52,9 @@ var GrafikaApp;
         ResourceService.prototype.saveThumbnail = function (anim) {
             return this.apiService.post('animations/' + anim._id + '/thumbnail');
         };
-        ResourceService.$inject = [
-            'appCommon',
-            'authService',
-            'apiService'
-        ];
+        ResourceService.$inject = ['appCommon', 'authService', 'apiService'];
         return ResourceService;
-    }());
+    }(GrafikaApp.BaseService));
     GrafikaApp.ResourceService = ResourceService;
 })(GrafikaApp || (GrafikaApp = {}));
 //# sourceMappingURL=resource-service.js.map

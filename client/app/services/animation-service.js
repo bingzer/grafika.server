@@ -1,8 +1,14 @@
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
 var GrafikaApp;
 (function (GrafikaApp) {
-    var AnimationService = (function () {
+    var AnimationService = (function (_super) {
+        __extends(AnimationService, _super);
         function AnimationService(appCommon, authService, apiService, resourceService) {
-            this.appCommon = appCommon;
+            _super.call(this, appCommon);
             this.authService = authService;
             this.apiService = apiService;
             this.resourceService = resourceService;
@@ -28,7 +34,7 @@ var GrafikaApp;
                 return _this.appCommon.$q.when(res);
             });
         };
-        AnimationService.prototype.del = function (_id) {
+        AnimationService.prototype.delete = function (_id) {
             return this.apiService.delete('animations/' + _id);
         };
         AnimationService.prototype.update = function (anim) {
@@ -44,14 +50,9 @@ var GrafikaApp;
         AnimationService.prototype.getDownloadLink = function (anim) {
             return this.appCommon.getBaseUrl() + 'animations/' + anim._id + '/download?token=' + this.authService.getAccessToken();
         };
-        AnimationService.$inject = [
-            'appCommon',
-            'authService',
-            'apiService',
-            'resourceService'
-        ];
+        AnimationService.$inject = ['appCommon', 'authService', 'apiService', 'resourceService'];
         return AnimationService;
-    }());
+    }(GrafikaApp.BaseService));
     GrafikaApp.AnimationService = AnimationService;
 })(GrafikaApp || (GrafikaApp = {}));
 //# sourceMappingURL=animation-service.js.map

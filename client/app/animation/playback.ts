@@ -1,46 +1,45 @@
 module GrafikaApp {
-    export class AnimationPlaybackController {
+    export class AnimationPlaybackController extends BaseAnimationController {
         grafika: Grafika.IGrafika;
         totalFrame: number = 0;
         currentFrame: number = 0;
         isPlaying: boolean = false;
         animationName: string = 'loading...';
-
-        public static $inject = [
-            '$stateParams',
-            'appCommon',
-            'animationService',
-            'frameService'
-        ];
+        
+        public static $inject = ['appCommon', 'authService', 'animationService', 'frameService', 'resourceService'];
         constructor(
-            private $stateParams: ng.ui.IStateParamsService,
-            private appCommon: AppCommon,
-            private animationService: AnimationService,
-            private frameService: FrameService
+            appCommon: AppCommon, 
+            authService: AuthService,
+            protected animationService: AnimationService,
+            protected frameService: FrameService,
+            protected resourceService: ResourceService
         ){
-            this.grafika = new Grafika();
-            
+            super(appCommon, authService, animationService, frameService, resourceService);
+        }
+
+        onLoaded(animation: Grafika.IAnimation) {
             var controller = this;
-            this.animationService.get(this.$stateParams['_id']).then((res) => {
-                this.animationName = res.data.name;
-                this.appCommon.elem('#canvas-container').css('width', res.data.width).css('height', res.data.height);
-                this.grafika.initialize('#canvas', { useNavigationText: false, useCarbonCopy: false }, res.data);
-                this.grafika.setCallback({ on: (ev: string, obj: any) => {
-                    switch (ev) {
-                        case 'frameChanged':
-                            controller.currentFrame = obj;
-                            break;
-                        case 'playing':
-                            controller.isPlaying = obj;
-                            break;
-                    } 
-                }});
-                this.frameService.get(this.grafika.getAnimation()).then((res) => {
-                    this.grafika.setFrames(res.data);
-                    this.totalFrame = res.data.length;
-                    this.currentFrame = 0;
-                })
-            });
+            this.animationName = this.animation.name;
+            this.appCommon.elem('#canvas-container').css('width', this.animation.width).css('height', this.animation.height);
+            if (!this.grafika)
+                this.grafika = new Grafika();
+            this.grafika.initialize('#canvas', { useNavigationText: false, useCarbonCopy: false }, this.animation);
+            this.grafika.setCallback({ on: (ev: string, obj: any) => {
+                switch (ev) {
+                    case 'frameChanged':
+                        controller.currentFrame = obj;
+                        break;
+                    case 'playing':
+                        controller.isPlaying = obj;
+                        break;
+                } 
+            }});
+
+            this.frameService.get(this.grafika.getAnimation()).then((res) => {
+                this.grafika.setFrames(res.data);
+                this.totalFrame = res.data.length;
+                this.currentFrame = 0;
+            })
         }
 
         toggle() {

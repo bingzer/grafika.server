@@ -5,20 +5,12 @@ module GrafikaApp {
         width: number = 800;
         height: number = 400;
         isPublic: boolean;
-
-        public static $inject = [
-            '$mdDialog',
-            '$state',
-            'animationService',
-            'frameService'
-        ];
+        
+        public static $inject = ['appCommon', 'animationService'];
         constructor(
-            public $mdDialog: ng.material.IDialogService,
-            public $state: ng.ui.IStateService,
-            public animationService: AnimationService,
-            public frameService: FrameService
-        ){
-            super($mdDialog);
+            appCommon: AppCommon, 
+            private animationService: AnimationService){
+            super(appCommon);
         }
 
         create() {
@@ -29,7 +21,7 @@ module GrafikaApp {
             anim.isPublic = this.isPublic;
             this.animationService.create(anim).then((res) => {
                 var anim = res.data;
-                this.$state.go('editor', { _id: anim._id });
+                this.appCommon.$state.go('drawing', { _id: anim._id });
                 this.close();
             })
         }

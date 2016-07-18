@@ -1,17 +1,10 @@
 module GrafikaApp {
-    export class ResourceService {
-		public static $inject = [
-			'appCommon',
-            'authService',
-            'apiService'
-		];
-
-        constructor (
-            private appCommon: AppCommon,
+    export class ResourceService extends BaseService{
+        public static $inject = ['appCommon', 'authService', 'apiService'];
+        constructor (appCommon: AppCommon,
             private authService: AuthService,
-            private apiService: ApiService
-        ){
-            // nothing
+            private apiService: ApiService) {
+			super(appCommon);
         }        
         
 		list(anim: Grafika.IAnimation): ng.IHttpPromise<any> {

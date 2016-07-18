@@ -8,22 +8,12 @@ module GrafikaApp {
         done: boolean = false;
         closable: boolean;
 
-        public static $inject = [
-            '$mdDialog',
-            'appCommon',
-            'authService',
-            'hash',
-            'email'
-        ];
-
-        constructor (
-            public $mdDialog: ng.material.IDialogService,
-            private appCommon: AppCommon,
-            private authService: AuthService,
-            private hash: string,
-            private email: string
-        ){
-            super($mdDialog);
+        public static $inject = ['appCommon', 'authService', 'hash', 'email'];
+        constructor (appCommon: AppCommon, 
+            private authService: AuthService, 
+            private hash: string, 
+            private email: string){
+            super(appCommon);
             this.title = 'Set Password';
             this.subtitle = 'Hi ' + email + ', please set your password';
         }

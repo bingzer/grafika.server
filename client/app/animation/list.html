@@ -1,9 +1,20 @@
+<script type="text/ng-template" id="/templates/anim-menu.html">
+	<div class="popup-menu">
+		<div class="popup-menu-item" ng-click="vm.delete()">Delete</div>
+	</div>
+</script>
 <div layout="row" layout-wrap>
 	<div class="animation-card" ng-repeat="anim in vm.animations" >
+		<!-- Animation card -->
 		<md-whiteframe class="md-whiteframe-1dp" layout="column">
             <a href ui-sref="detail({_id: anim._id})">
 			    <img class="card-image" ng-src="{{anim.thumbnailUrl}}" alt="thumbnail">
             </a>
+			<span class="options">
+				<a href ng-click="vm.showOptions($event, _id)">
+					<md-icon><i class="material-icons">more_vert</i></md-icon>
+				</a>
+			</span>
 			<div class="md-display">{{anim.name}}</div>
 			<div class="md-caption">{{anim.description}}</div>
 		</md-whiteframe>

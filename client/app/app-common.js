@@ -2,7 +2,7 @@ var GrafikaApp;
 (function (GrafikaApp) {
     'use-strict';
     var AppCommon = (function () {
-        function AppCommon($q, $log, $interval, $timeout, $location, $window, $cookieStore, $mdToast, $mdDialog, appConfig) {
+        function AppCommon($q, $log, $interval, $timeout, $location, $window, $cookieStore, $mdToast, $mdDialog, $state, $stateParams, $mdPanel, $mdMedia, appConfig) {
             this.$q = $q;
             this.$log = $log;
             this.$interval = $interval;
@@ -12,6 +12,10 @@ var GrafikaApp;
             this.$cookieStore = $cookieStore;
             this.$mdToast = $mdToast;
             this.$mdDialog = $mdDialog;
+            this.$state = $state;
+            this.$stateParams = $stateParams;
+            this.$mdPanel = $mdPanel;
+            this.$mdMedia = $mdMedia;
             this.appConfig = appConfig;
         }
         AppCommon.prototype.elem = function (selector) {
@@ -152,6 +156,10 @@ var GrafikaApp;
             '$cookieStore',
             '$mdToast',
             '$mdDialog',
+            '$state',
+            '$stateParams',
+            '$mdPanel',
+            '$mdMedia',
             'appConfig'
         ];
         return AppCommon;

@@ -1,5 +1,7 @@
 module GrafikaApp {
-    export class ContentController {
-        
+    export class ContentController extends BaseController {
+        constructor(appCommon: AppCommon) {
+            super(appCommon);
+        }
     }
 }

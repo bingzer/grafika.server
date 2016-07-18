@@ -14,9 +14,9 @@
         "**/typings/globals": true,
         "**/*.tmp.txt": true,
         "**/*.log": true,
-        "server/*/*.js": true,
-        "server/*/*.js.map": true,
-        "client/*/*.js": true,
+        "server/**/*.js": true,
+        "server/**/*.js.map": true,
+        "client/**/*.js": true,
         "**/*.js.map": true
     },
     "search.exclude": {

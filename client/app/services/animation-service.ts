@@ -1,19 +1,14 @@
 module GrafikaApp {
-    export class AnimationService {
-		public static $inject = [
-			'appCommon',
-            'authService',
-            'apiService',
-			'resourceService'
-		];
-
+    export class AnimationService extends BaseService {
+		
+        public static $inject = ['appCommon', 'authService', 'apiService', 'resourceService'];
         constructor (
-            public appCommon: AppCommon,
-            public authService: AuthService,
-            public apiService: ApiService,
-			public resourceService: ResourceService
-        ){
-            // nothing
+			appCommon: AppCommon,
+            private authService: AuthService,
+            private apiService: ApiService,
+			private resourceService: ResourceService
+		){
+			super(appCommon);
         }
         
 		create(anim: Grafika.IAnimation): ng.IHttpPromise<any> {
@@ -34,7 +29,7 @@ module GrafikaApp {
 				return this.appCommon.$q.when(res);
 			});
 		}
-		del(_id): ng.IHttpPromise<any> {
+		delete(_id): ng.IHttpPromise<any> {
 			return this.apiService.delete('animations/' + _id);
 		}
 		update(anim: Grafika.IAnimation): ng.IHttpPromise<Grafika.IAnimation> {

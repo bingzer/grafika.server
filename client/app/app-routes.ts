@@ -41,10 +41,10 @@ module GrafikaApp {
 					controller: 'AnimationDetailController',
 					controllerAs: 'vm'
 				})
-				.state('editor', {
-					url: '/animations/:_id/edit',
-					templateUrl: 'app/animation/editor.html',
-					controller: 'AnimationEditorController',
+				.state('drawing', {
+					url: '/animations/:_id/drawing',
+					templateUrl: 'app/animation/drawing.html',
+					controller: 'AnimationDrawingController',
 					controllerAs: 'vm'
 				});
 			$urlRouterProvider.otherwise('/');
