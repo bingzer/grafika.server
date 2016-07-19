@@ -16,6 +16,7 @@ exports.AnimationSchema = new mongoose.Schema({
     isPublic: { type: Boolean, default: false },
     author: String,
     userId: { type: String, required: true },
+    totalFrame: { type: Number, default: 0 },
     frames: { type: [], select: false }
 });
 var Animation = restful.model('animations', exports.AnimationSchema);

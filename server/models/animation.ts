@@ -25,6 +25,7 @@ export const AnimationSchema = new mongoose.Schema({
     author       : String,
     userId       : { type: String, required: true },
 
+    totalFrame   : { type: Number, default: 0 },
     frames       : { type: [], select: false }
 });
 
