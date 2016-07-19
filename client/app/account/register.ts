@@ -6,18 +6,9 @@ module GrafikaApp {
         busy: boolean = false;
         done: boolean = false;
 
-        public static $inject = [
-            '$mdDialog',
-            'appCommon',
-            'authService'
-        ];
-
-        constructor (
-            $mdDialog: ng.material.IDialogService,
-            private appCommon: AppCommon,
-            private authService: AuthService
-        ){
-            super($mdDialog);
+        public static $inject = ['appCommon', 'authService'];
+        constructor (appCommon: AppCommon, private authService: AuthService){
+            super(appCommon);
         }
         
         register(){

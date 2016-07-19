@@ -21,7 +21,7 @@
  * Supported browser: IE9 > up, chrome, edge
  */
 var Grafika = function (){	
-	var GRAFIKA_VERSION = '0.9.0';
+	var GRAFIKA_VERSION = '0.10.1';
 	
     // ---------------------------------------------------------- Constants -------------------------------------//
     var MODE_NONE = 'none', MODE_PAINT = 'paint', MODE_MOVE = 'move', MODE_SELECT = 'select', MODE_DELETE = 'delete';		
@@ -91,7 +91,7 @@ var Grafika = function (){
 	}	
 	this.setAnimation = function(anim){
 		animation = new Grafika.Animation(this, anim);
-		log('Animation (' + animation._id + ')' +
+		log('Animation (' + animation.localId + ')' +
 			' name: ' + animation.name +
 			', timer: ' + animation.timer + 
 			', size: ' + animation.width + ' x ' + animation.height +
@@ -104,7 +104,7 @@ var Grafika = function (){
 	this.saveAnimation = function(){
 	    animation.totalFrame = animation.frames.length;
 		animation.modified = false;
-		animation.modifiedDate = new Date().getTime();
+		animation.dateModified = new Date();
 		animation.client = {
 			navigator: navigator
 		};
@@ -587,7 +587,6 @@ Grafika.Animation = function (grafika, anim) {
 			anim = { };			
 		}
 		else {
-			if (!anim._id) throw new Error('Animation _id is required');
 			if (!anim.name) throw new Error('Animation name is required');
 			if (!anim.width || !anim.height) throw new Error('Animation width + height is required');
 			if (typeof anim.frames === 'undefined' || anim.frames.length == 0) {
@@ -597,8 +596,9 @@ Grafika.Animation = function (grafika, anim) {
 		return anim;
 	}
 	
-	this._id = anim._id || this.randomUid();
-	this.name = anim.name || this._id;
+	this._id = anim._id; // maybe undefined if new
+	this.localId = anim.localId || this.randomUid(); // always something
+	this.name = anim.name || this.localId;
 	this.width = anim.width || window.innerWidth;
 	this.height = anim.height || window.innerHeight;
 	this.currentFrame = anim.currentFrame || 0;
@@ -606,7 +606,7 @@ Grafika.Animation = function (grafika, anim) {
 	this.modified = anim.modified || false;
 	this.totalFrame = anim.totalFrame || 0;
 	this.views = anim.views || 0;
-	this.dateCreated = anim.dateCreated || new Date().getTime();
+	this.dateCreated = anim.dateCreated || new Date();
 	this.dateModified = anim.dateModified || this.dateCreated;
 	this.frames = this.setFrames(anim.frames);
 }

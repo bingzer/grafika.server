@@ -1,9 +1,15 @@
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
 var GrafikaApp;
 (function (GrafikaApp) {
-    var AuthService = (function () {
-        function AuthService($rootScope, appCommon, apiService, jwtHelper) {
+    var AuthService = (function (_super) {
+        __extends(AuthService, _super);
+        function AuthService(appCommon, $rootScope, apiService, jwtHelper) {
+            _super.call(this, appCommon);
             this.$rootScope = $rootScope;
-            this.appCommon = appCommon;
             this.apiService = apiService;
             this.jwtHelper = jwtHelper;
         }
@@ -35,7 +41,10 @@ var GrafikaApp;
             return this.apiService.post('accounts/logout').finally(function () {
                 _this.clearToken();
                 _this.clearSession();
-                return _this.authenticate(true).then(_this.appCommon.navigateHome);
+                return _this.authenticate(true).then(function () {
+                    _this.appCommon.navigateHome();
+                    return _this.appCommon.$q.when(true);
+                });
             });
         };
         AuthService.prototype.clearToken = function () {
@@ -90,8 +99,7 @@ var GrafikaApp;
             }
             if (this.user)
                 return this.user;
-            var token = this.jwtHelper.decodeToken(this.appCommon.$window.sessionStorage.getItem('token'));
-            var payload = token._doc;
+            var payload = this.jwtHelper.decodeToken(this.appCommon.$window.sessionStorage.getItem('token'));
             var user = new GrafikaApp.User();
             user._id = payload._id;
             user.firstName = payload.given_name || payload.firstName;
@@ -101,14 +109,9 @@ var GrafikaApp;
             user.roles = payload.roles;
             return user;
         };
-        AuthService.$inject = [
-            '$rootScope',
-            'appCommon',
-            'apiService',
-            'jwtHelper'
-        ];
+        AuthService.$inject = ['appCommon', '$rootScope', 'apiService', 'jwtHelper'];
         return AuthService;
-    }());
+    }(GrafikaApp.BaseService));
     GrafikaApp.AuthService = AuthService;
 })(GrafikaApp || (GrafikaApp = {}));
 //# sourceMappingURL=auth-service.js.map

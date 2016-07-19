@@ -7,9 +7,8 @@ var GrafikaApp;
 (function (GrafikaApp) {
     var RegisterController = (function (_super) {
         __extends(RegisterController, _super);
-        function RegisterController($mdDialog, appCommon, authService) {
-            _super.call(this, $mdDialog);
-            this.appCommon = appCommon;
+        function RegisterController(appCommon, authService) {
+            _super.call(this, appCommon);
             this.authService = authService;
             this.message = 'After signing up, you will receive email to activate your account.';
             this.name = '';
@@ -38,11 +37,7 @@ var GrafikaApp;
             this.message = this.appCommon.formatErrorMessage(err);
             this.busy = false;
         };
-        RegisterController.$inject = [
-            '$mdDialog',
-            'appCommon',
-            'authService'
-        ];
+        RegisterController.$inject = ['appCommon', 'authService'];
         return RegisterController;
     }(GrafikaApp.DialogController));
     GrafikaApp.RegisterController = RegisterController;

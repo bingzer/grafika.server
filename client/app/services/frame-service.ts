@@ -1,23 +1,16 @@
 module GrafikaApp {
-    export class FrameService {
-        public static $inject = [
-            'appCommon',
-            'authService',
-            'apiService'
-        ];
-
-        constructor (
-            public appCommon: AppCommon,
-            public authService: AuthService,
-            public apiService: ApiService
-        ){
-            // nothing
+    export class FrameService extends BaseService{
+        public static $inject = ['appCommon', 'authService', 'apiService'];
+        constructor (appCommon: AppCommon,
+            private authService: AuthService,
+            private apiService: ApiService){
+            super(appCommon);
         }
 
-		get(animation: Grafika.IAnimation): ng.IPromise<any> {
-			return this.apiService.get('animations/' + animation._id + '/frames');
+		get(animation: Grafika.IAnimation): ng.IHttpPromise<[Grafika.IFrame]> {
+			return this.apiService.get<[Grafika.IFrame]>('animations/' + animation._id + '/frames');
 		}
-		update(animation: Grafika.IAnimation, data?: any) {
+		update(animation: Grafika.IAnimation, data: [Grafika.IFrame]): ng.IHttpPromise<Grafika.IFrame> {
 			return this.apiService.post('animations/' + animation._id + '/frames', data);
 		}
     }

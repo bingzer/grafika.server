@@ -1,22 +1,11 @@
 module GrafikaApp {
-    export class MainController {
-        public static $inject = [
-            '$window',
-            '$rootScope',
-            '$mdDialog',
-            'appCommon',
-            'authService',
-            'animationService'
-        ];
+    export class MainController extends AuthController {
+        constructor(appCommon: AppCommon, authService: AuthService, 
+            private animationService: AnimationService,
+            private $rootScope: ng.IRootScopeService
+        ){
+            super(appCommon, authService);
 
-        constructor(
-            private $window: ng.IWindowService,
-            private $rootScope: ng.IRootScopeService,
-            private $mdDialog: ng.material.IDialogService,
-            private appCommon: AppCommon,
-            private authService: AuthService,
-            private animationService: AnimationService
-        ){            
             var query = appCommon.$location.search();
             if (query && query.action){
                 if ((query.action == 'verify' || query.action == 'reset-pwd') && query.hash && query.user){
@@ -34,15 +23,7 @@ module GrafikaApp {
                     this.cleanUrlQueries();
                 }
             }
-        }        
-
-        isAuthorized(roles: string | [string]): boolean {
-            return this.authService.isAuthorized(roles);
-        }
-
-        getUser(): User {
-            return this.authService.getUser();
-        }
+        }    
 
         confirmLogout(): void {
             this.appCommon.confirm('Are you sure you want to log out?')
@@ -54,7 +35,7 @@ module GrafikaApp {
                 .then(() => {
                     return this.appCommon.hideLoadingModal()
                 })
-                .then(function (){
+                .then(() => {
                     return this.appCommon.toast('Successfully logged out');
                 });
         }
@@ -62,7 +43,7 @@ module GrafikaApp {
         initGrafika() {
             if (this.isAuthorized('user')) return;
             
-            var grafikaIntro = this.$window['grafikaIntro'];
+            var grafikaIntro = this.appCommon.$window['grafikaIntro'];
             if (!grafikaIntro){
                 grafikaIntro = new Grafika();
             }

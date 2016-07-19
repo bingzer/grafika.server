@@ -5,6 +5,8 @@ export interface IAnimation extends Grafika.IAnimation, mongoose.Document {
 }
 
 export const AnimationSchema = new mongoose.Schema({
+    localId      : { type: String },
+
     name         : { type: String, required: true },
     description  : String,
 
@@ -12,8 +14,8 @@ export const AnimationSchema = new mongoose.Schema({
     width        : { type: Number, required: true },
     height       : { type: Number, required: true },
 
-    dateCreated  : { type: Date, default: Date.now, required: true },
-    dateModified : { type: Date, default: Date.now, required: true },
+    dateCreated  : { type: Number, required: true },
+    dateModified : { type: Number, required: true },
 
     views        : Number,
     rating       : Number,
@@ -23,6 +25,7 @@ export const AnimationSchema = new mongoose.Schema({
     author       : String,
     userId       : { type: String, required: true },
 
+    totalFrame   : { type: Number, default: 0 },
     frames       : { type: [], select: false }
 });
 
@@ -30,9 +33,13 @@ var Animation = <restful.IModel<IAnimation>> restful.model('animations', Animati
 Animation.methods(['get', 'put', 'post', 'delete']);
 Animation.before('post', (req, res, next) => {
     // check for date time
-    if (!req.body.dateCreated) req.body.dateCreated = Date.now();
-    if (!req.body.dateModified) req.body.dateModified = Date.now();
+    var now = Date.now();
+    if (!req.body.dateCreated) req.body.dateCreated = now;
+    if (!req.body.dateModified) req.body.dateModified = now;
     if (!req.body.userId) req.body.userId = req.user._id;
+    req.body.totalFrame = req.body.frames ? req.body.frames.length : 0;
+
+    delete req.body._id;
     
     next();
 });
@@ -48,6 +55,7 @@ Animation.route('frames', {
         else if (req.method == 'POST') {
             Animation.findOne({_id: req.params.id}, (err, result) => {
                 result.frames = req.body;
+                result.totalFrame = result.frames.length;
                 result.save();
                 res.sendStatus(201);
             });

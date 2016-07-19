@@ -1,20 +1,11 @@
 module GrafikaApp {
-    export class LoginController {
+    export class LoginController extends AuthController {
         username: string;
         password: string;
 
-        public static $inject = [
-            '$mdDialog',
-            'appCommon',
-            'authService'
-        ];
-
-        constructor (
-            private $mdDialog: ng.material.IDialogService,
-            private appCommon: AppCommon,
-            private authService: AuthService
-        ){
-
+        public static $inject = ['appCommon', 'authService'];
+        constructor (appCommon: AppCommon, authService: AuthService){
+            super(appCommon, authService);
         }
 
         register() {

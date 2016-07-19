@@ -11,7 +11,13 @@ module.exports = function (grunt) {
 
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
-        clean: ["client/assets/js/*"],
+        clean: [
+            "client/*.js",
+            "client/*.js.map",
+            "server/*.js",
+            "server/*.js.map",
+            "client/assets/js/*"
+        ],
         bower: {
             install: {
                 options: {

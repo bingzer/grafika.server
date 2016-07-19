@@ -41,8 +41,9 @@ function register(req, res, next) {
 exports.register = register;
 ;
 function authenticate(req, res, next) {
-    if (req.isAuthenticated())
+    if (req.isAuthenticated()) {
         res.send({ token: signToken(req.user) });
+    }
     else
         res.sendStatus(200);
 }
@@ -92,7 +93,7 @@ exports.resetPassword = resetPassword;
 function signToken(user) {
     if (!user)
         return null;
-    return jwt.sign(user, SECRET, {
+    return jwt.sign(user_1.sanitize(user), SECRET, {
         expiresIn: '24hr'
     });
 }

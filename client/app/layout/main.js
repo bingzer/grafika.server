@@ -1,13 +1,16 @@
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
 var GrafikaApp;
 (function (GrafikaApp) {
-    var MainController = (function () {
-        function MainController($window, $rootScope, $mdDialog, appCommon, authService, animationService) {
-            this.$window = $window;
-            this.$rootScope = $rootScope;
-            this.$mdDialog = $mdDialog;
-            this.appCommon = appCommon;
-            this.authService = authService;
+    var MainController = (function (_super) {
+        __extends(MainController, _super);
+        function MainController(appCommon, authService, animationService, $rootScope) {
+            _super.call(this, appCommon, authService);
             this.animationService = animationService;
+            this.$rootScope = $rootScope;
             var query = appCommon.$location.search();
             if (query && query.action) {
                 if ((query.action == 'verify' || query.action == 'reset-pwd') && query.hash && query.user) {
@@ -26,12 +29,6 @@ var GrafikaApp;
                 }
             }
         }
-        MainController.prototype.isAuthorized = function (roles) {
-            return this.authService.isAuthorized(roles);
-        };
-        MainController.prototype.getUser = function () {
-            return this.authService.getUser();
-        };
         MainController.prototype.confirmLogout = function () {
             var _this = this;
             this.appCommon.confirm('Are you sure you want to log out?')
@@ -44,13 +41,13 @@ var GrafikaApp;
                 return _this.appCommon.hideLoadingModal();
             })
                 .then(function () {
-                return this.appCommon.toast('Successfully logged out');
+                return _this.appCommon.toast('Successfully logged out');
             });
         };
         MainController.prototype.initGrafika = function () {
             if (this.isAuthorized('user'))
                 return;
-            var grafikaIntro = this.$window['grafikaIntro'];
+            var grafikaIntro = this.appCommon.$window['grafikaIntro'];
             if (!grafikaIntro) {
                 grafikaIntro = new Grafika();
             }
@@ -69,16 +66,8 @@ var GrafikaApp;
                 delete loc.search(key, null);
             });
         };
-        MainController.$inject = [
-            '$window',
-            '$rootScope',
-            '$mdDialog',
-            'appCommon',
-            'authService',
-            'animationService'
-        ];
         return MainController;
-    }());
+    }(GrafikaApp.AuthController));
     GrafikaApp.MainController = MainController;
 })(GrafikaApp || (GrafikaApp = {}));
 //# sourceMappingURL=main.js.map

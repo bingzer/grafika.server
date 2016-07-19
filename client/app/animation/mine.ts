@@ -1,35 +1,25 @@
 module GrafikaApp {
-    export class MyAnimationsController {
-        animations: Animation[];
+    export class MyAnimationsController extends AnimationListController {
 
-        public static $inject = [
-            '$rootScope',
-            '$mdDialog',
-            'appCommon',
-            'animationService',
-            'authService'
-        ];
+        public static $inject = ['appCommon', 'animationService', 'authService' ];
         constructor(
-            private $rootScope: ng.IRootScopeService,
-            private $mdDialog: ng.material.IDialogService,
-            private appCommon: AppCommon,
-            private animationService: AnimationService,
-            private authService: AuthService
+            appCommon: AppCommon,
+            animationService: AnimationService,
+            authService: AuthService
         ){
-            this.list();
+            super(appCommon, animationService, authService);
         }
 
         list() {
-            var paging = this.animationService.createPaging();
-            paging.userId = this.authService.getUser()._id;
+            var paging = new Paging({ isPublic: false, userId: this.authService.getUser()._id });
             this.animationService.list(paging).then((res) => {
                 this.animations = res.data;
             });
         }
         
         create(ev: MouseEvent){
-    		var useFullScreen = false;//($mdMedia('sm') || $mdMedia('xs'));
-            this.$mdDialog.show({
+    		var useFullScreen = (this.appCommon.$mdMedia('sm') || this.appCommon.$mdMedia('xs'));
+            this.appCommon.$mdDialog.show({
                 controller: 'AnimationCreateController',
                 controllerAs: 'vm',
                 parent: angular.element(document.body),

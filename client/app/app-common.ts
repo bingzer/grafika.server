@@ -12,6 +12,10 @@ module GrafikaApp {
             '$cookieStore',
             '$mdToast',
             '$mdDialog',
+            '$state',
+            '$stateParams',
+            '$mdPanel',
+            '$mdMedia',
             'appConfig'
         ]
 
@@ -25,12 +29,19 @@ module GrafikaApp {
             public $cookieStore: ng.cookies.ICookiesService,
             public $mdToast: ng.material.IToastService,
             public $mdDialog: ng.material.IDialogService,
+            public $state: ng.ui.IStateService,
+            public $stateParams: ng.ui.IStateParamsService,
+            public $mdPanel: ng.material.IPanelService,
+            public $mdMedia: ng.material.IMedia,
             public appConfig: AppConfig
         )
         {
             // nothing
         }
         
+        elem(selector: string): JQuery {
+            return angular.element(selector);
+        }
         alert(msg: string, title?: string, okText?: string) : ng.IPromise<any> {
             var alert = this.$mdDialog.alert()
                 .parent(angular.element(document.body))

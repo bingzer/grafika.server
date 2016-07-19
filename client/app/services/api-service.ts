@@ -1,19 +1,12 @@
 
 module GrafikaApp {
-    export class ApiService {
-		public static $inject = [
-			'$http',
-			'appCommon'
-		];
-
-        constructor (
-            private $http: ng.IHttpService,
-            private appCommon: AppCommon 
-        ){
-            // nothing
+    export class ApiService extends BaseService{
+        public static $inject = ['appCommon', '$http'];
+        constructor (appCommon: AppCommon, public $http: ng.IHttpService){
+            super(appCommon);
         }
 
-        get(path: string): ng.IHttpPromise<any> {
+        get<TData>(path: string): ng.IHttpPromise<TData> {
             return this.$http.get(this.url(path))
                 .error((data, status, headers, config) => {
                     return this.log(data, status, headers, config)
@@ -27,7 +20,7 @@ module GrafikaApp {
                 });
         }
 
-        put(path: string, data?: any): ng.IHttpPromise<any> {
+        put<TData>(path: string, data?: any | TData): ng.IHttpPromise<TData> {
             return this.$http.put(this.url(path), data)
                 .error((data, status, headers, config) => {
                     return this.log(data, status, headers, config)

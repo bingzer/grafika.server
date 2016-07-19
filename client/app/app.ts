@@ -24,12 +24,15 @@ module GrafikaApp {
     app.service('authService', AuthService);
     app.service('animationService', AnimationService);
     app.service('frameService', FrameService);
+    app.service('resourceService', ResourceService);
 
     app.controller('MainController', MainController);
     app.controller('AnimationCreateController', AnimationCreateController);
     app.controller('AnimationDetailController', AnimationDetailController);
-    app.controller('AnimationEditorController', AnimationEditorController);
+    app.controller('AnimationEditController', AnimationEditController);
+    app.controller('AnimationDrawingController', AnimationDrawingController);
     app.controller('AnimationListController', AnimationListController);
+    app.controller('AnimationPlaybackController', AnimationPlaybackController);
     app.controller('MyAnimationsController', MyAnimationsController);
     app.controller('ForgetController', ForgetController);
     app.controller('LoginController', LoginController);

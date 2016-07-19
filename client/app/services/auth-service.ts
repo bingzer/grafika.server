@@ -1,21 +1,15 @@
 module GrafikaApp {
-    export class AuthService {
-
+    export class AuthService extends BaseService {
         private user: User;
         
-        public static $inject = [
-            '$rootScope',
-            'appCommon',
-            'apiService',
-            'jwtHelper'
-        ];
+        public static $inject = ['appCommon', '$rootScope', 'apiService', 'jwtHelper'];
         constructor (
-            public $rootScope: ng.IRootScopeService,
-            public appCommon: AppCommon,
-            public apiService: ApiService,
-            public jwtHelper: ng.jwt.IJwtHelper
+            appCommon: AppCommon,
+            private $rootScope: ng.IRootScopeService,
+            private apiService: ApiService,
+            private jwtHelper: ng.jwt.IJwtHelper
         ){
-            // nothing
+            super(appCommon);
         }
 
         register(user: any): ng.IPromise<any> {
@@ -47,7 +41,10 @@ module GrafikaApp {
             return this.apiService.post('accounts/logout').finally(() => {
                 this.clearToken();
                 this.clearSession();
-                return this.authenticate(true).then(this.appCommon.navigateHome);
+                return this.authenticate(true).then(() => {
+                    this.appCommon.navigateHome()
+                    return this.appCommon.$q.when(true); 
+                });
             });
         }
 
@@ -112,8 +109,7 @@ module GrafikaApp {
             }
             if (this.user) return this.user;
             
-            var token: any = this.jwtHelper.decodeToken(this.appCommon.$window.sessionStorage.getItem('token'));
-            var payload = token._doc;
+            var payload: any = this.jwtHelper.decodeToken(this.appCommon.$window.sessionStorage.getItem('token'));
             var user = new User();
             user._id = payload._id;
             user.firstName = payload.given_name || payload.firstName;

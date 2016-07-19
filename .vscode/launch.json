@@ -26,6 +26,9 @@
                 // "server_mailer_username": "", (PRESET)
                 // "server_mailer_password": "", (PRESET)
                 "server_mailer_from": "grafika@bingzer.com"
+                // "auth_aws_bucket": "", (PRESET),
+                // "auth_aws_id": "", (PRESET),
+                // "auth_aws_secret": "", (PRESET)
             },
             "externalConsole": false,
             "sourceMaps": true,

@@ -7,9 +7,8 @@ passport.serializeUser(function (user, done) {
     done(null, user._id);
 });
 passport.deserializeUser(function (id, done) {
-    var exclude = { 'local.password': 0, 'activation': 0 };
-    user_1.User.findById(id, exclude, function (err, user) {
-        done(err, user);
+    user_1.User.findById(id, function (err, user) {
+        done(err, user.sanitize());
     });
 });
 function initialize() {

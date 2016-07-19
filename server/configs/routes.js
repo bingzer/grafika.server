@@ -3,6 +3,7 @@ var expressJwt = require('express-jwt');
 var mongoose = require('mongoose');
 var winston = require('winston');
 var accountController = require('../controllers/accounts');
+var resourcesController = require('../controllers/resources');
 var config = require('../configs/config');
 var animation_1 = require('../models/animation');
 var user_1 = require('../models/user');
@@ -21,6 +22,12 @@ function useSession(req, res, next) {
         res.send(401);
 }
 ;
+function extractUser(req, res, next) {
+    if (!req.isAuthenticated())
+        expressJwt({ secret: SECRET, credentialsRequired: false, getToken: findToken })(req, res, next);
+    else
+        next();
+}
 function useJwt(req, res, next) {
     return expressJwt({ secret: SECRET, getToken: findToken })(req, res, next);
 }
@@ -32,8 +39,8 @@ function useSessionOrJwt(req, res, next) {
         next();
 }
 function useAnimAccess(req, res, next) {
-    var animId = new mongoose.Types.ObjectId(req.params._id);
-    var userId = (req.user && req.user) ? new mongoose.Types.ObjectId(req.user._id) : undefined;
+    var animId = new mongoose.Types.ObjectId(req.params._id || req.params.animationId);
+    var userId = (req.user && req.user._id) ? new mongoose.Types.ObjectId(req.user._id) : undefined;
     var queryAdmin = null;
     var query = null;
     var isAdmin = isAdministrator(req);
@@ -106,11 +113,13 @@ function initialize(app) {
     app.post('/api/accounts/register', accountController.register);
     app.get('/api/animations');
     app.post('/api/animations', useSessionOrJwt);
-    app.get('/api/animations/:_id', useAnimAccess);
+    app.get('/api/animations/:_id', extractUser, useAnimAccess);
     app.put('/api/animations/:_id', useSessionOrJwt, useAnimAccess);
     app.delete('/api/animations/', useSessionOrJwt, useAnimAccess);
-    app.get('/api/animations/:_id/frames', useAnimAccess);
+    app.get('/api/animations/:_id/frames', extractUser, useAnimAccess);
     app.post('/api/animations/:_id/frames', useSessionOrJwt, useAnimAccess);
+    app.get('/api/animations/:animationId/thumbnail', resourcesController.getThumbnail);
+    app.post('/api/animations/:animationId/thumbnail', useSessionOrJwt, useAnimAccess, resourcesController.createThumbnailSignedUrl);
     user_1.User.register(app, '/api/users');
     animation_1.Animation.register(app, '/api/animations');
     app.use(handleErrors);

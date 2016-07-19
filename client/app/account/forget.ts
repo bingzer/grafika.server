@@ -1,17 +1,8 @@
 module GrafikaApp {
-    export class ForgetController {
-        public static $inject = [
-            '$mdDialog',
-            'appCommon',
-            'authService'
-        ];
-
-        constructor (
-            $mdDialog: ng.material.IDialogService,
-            appCommon: AppCommon,
-            authService: AuthService
-        ){
-
+    export class ForgetController extends DialogController {
+        public static $inject = ['appCommon'];
+        constructor (appCommon: AppCommon) {
+            super(appCommon);
         }
     }
 }

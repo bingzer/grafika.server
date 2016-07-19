@@ -1,0 +1,44 @@
+<!-------------------------- Start playback -------------------------->
+<div id="playback" class="playback" ng-controller="AnimationPlaybackController as vm">
+    <!-- Canvas -->
+    <md-card id="canvas-container">
+        <canvas id="canvas" ></canvas>
+    </md-card>
+    <!-- Header -->
+    <div class="playback-header" layout="row">
+        <div layout-margin></div>
+        <div layout="row" layout="center center">
+            <span class="md-subtitle text-center-vertical" ng-bind="vm.animationName"></span>
+        </div>
+        <span flex></span>
+        <div layout="row" layout="center end">
+            <md-button class="md-mini md-icon-button" ng-click="vm.close()">
+                <md-icon md-font-library="material-icons">close</md-icon>
+            </md-button>
+        </div>
+    </div>
+    <!-- Footer -->
+    <div class="playback-footer" layout="row">
+        <div layout-margin></div>
+        <div flex layout="row" layout="center center">
+            <md-button class="md-mini md-icon-button" ng-click="vm.previousFrame()" ng-disabled="vm.currentFrame <= 0">
+                <md-icon md-font-library="material-icons">skip_previous</md-icon>
+                <md-tooltip>Previous frame</md-tooltip>
+            </md-button>
+            <md-button class="md-mini md-icon-button" ng-click="vm.toggle()">
+                <md-icon md-font-library="material-icons" aria-label="{{vm.isPlaying ? 'Stop' : 'Play'}}" ng-bind="vm.isPlaying ? 'pause' : 'play_arrow'"></md-icon>
+                <md-tooltip>{{vm.isPlaying ? 'Stop' : 'Play'}}</md-tooltip>
+            </md-button>
+            <md-button class="md-mini md-icon-button" ng-click="vm.nextFrame()" ng-disabled="vm.currentFrame >= vm.totalFrame -1">
+                <md-icon md-font-library="material-icons">skip_next</md-icon>
+                <md-tooltip>Next frame</md-tooltip>
+            </md-button>
+            <div layout-margin></div>
+            <md-slider flex min="0" max="{{vm.totalFrame - 1}}" ng-model="vm.currentFrame" aria-label="Animation tracker"></md-slider>
+        </div>
+        <div layout-margin></div>
+        <span class="md-subtitle text-center-vertical" style="margin-top: 13px;" ng-bind="vm.totalFrame + ' frames'"></span>
+        <div layout-margin></div>
+    </div>
+</div>
+<!-------------------------- End playback -------------------------->

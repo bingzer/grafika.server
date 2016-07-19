@@ -1,79 +1,48 @@
 module GrafikaApp {
-    export class AnimationService {
-		public static $inject = [
-			'appCommon',
-            'authService',
-            'apiService'
-		];
-
+    export class AnimationService extends BaseService {
+		
+        public static $inject = ['appCommon', 'authService', 'apiService', 'resourceService'];
         constructor (
-            public appCommon: AppCommon,
-            public authService: AuthService,
-            public apiService: ApiService
-        ){
-            // nothing
+			appCommon: AppCommon,
+            private authService: AuthService,
+            private apiService: ApiService,
+			private resourceService: ResourceService
+		){
+			super(appCommon);
         }
         
-		create(anim: Grafika.IAnimation) {
+		create(anim: Grafika.IAnimation): ng.IHttpPromise<any> {
 			return this.apiService.post('animations', anim);
 		}
-		list(paging?: any) {
-			if (!paging) paging = this.createPaging();
-			var query = this.createPagingQuery(paging);
-			return this.apiService.get('animations' + query).then((res) => {
-				return this.injectThumbnailUrl(res)
+		list(paging?: Paging): ng.IHttpPromise<[Grafika.IAnimation]> {
+			if (!paging) paging = new Paging();
+			return this.apiService.get<[Grafika.IAnimation]>('animations' + paging.toQueryString()).then((res) => {
+				res.data.forEach(anim => {
+					anim.thumbnailUrl = this.resourceService.getThumbnailUrl(anim);
+				});
+				return this.appCommon.$q.when(res);
 			});
 		}
-		get(_id) {
-			return this.apiService.get('animations/' + _id).then((res) => {
-				return this.injectThumbnailUrl(res)
+		get(_id): ng.IHttpPromise<Grafika.IAnimation> {
+			return this.apiService.get<Grafika.IAnimation>('animations/' + _id).then((res) => {
+				res.data.thumbnailUrl = this.resourceService.getThumbnailUrl(res.data);
+				return this.appCommon.$q.when(res);
 			});
 		}
-		del(_id) {
+		delete(_id): ng.IHttpPromise<any> {
 			return this.apiService.delete('animations/' + _id);
 		}
-		update(anim: Grafika.IAnimation) {
-			return this.apiService.put('animations/' + anim._id, anim).then((res) => {
-				return this.injectThumbnailUrl(res)
+		update(anim: Grafika.IAnimation): ng.IHttpPromise<Grafika.IAnimation> {
+			return this.apiService.put<Grafika.IAnimation>('animations/' + anim._id, anim).then((res) => {
+				res.data.thumbnailUrl = this.resourceService.getThumbnailUrl(res.data);
+				return this.appCommon.$q.when(res);
 			});
 		}
-		incrementViewCount(anim: Grafika.IAnimation) {
+		incrementViewCount(anim: Grafika.IAnimation): ng.IHttpPromise<any> {
 			return this.apiService.post('animations/' + anim._id + '/view');
 		}
-		getDownloadLink(anim: Grafika.IAnimation){
+		getDownloadLink(anim: Grafika.IAnimation): string {
 			return this.appCommon.getBaseUrl() + 'animations/' + anim._id + '/download?token=' + this.authService.getAccessToken();
-		}
-        
-		injectThumbnailUrl(res: any){
-			return this.appCommon.$q.when(res);
-			// if (res && res.data){
-			// 	// inject thumbnail to anim
-			// }
-			// return () => this.appCommon.$q.when(res);
-		}
-		
-		createPaging(isPublic?: any): any{
-			return {   
-				isPublic: isPublic || true,
-				page: 0, 
-				count: this.appCommon.appConfig.fetchSize
-			};
-		}
-		
-		private createPagingQuery(paging){			
-			var query = '?';
-			if (paging){
-				if (paging.userId) query+= '&userId=' + paging.userId;
-				else query += '&isPublic=true';
-
-				if (paging.category) query += '&category=' + paging.category;
-				if (paging.sort) query += '&sort=' + paging.sort;
-				if (paging.count) query += '&limit=' + paging.count;
-				if (paging.page) query += '&skip=' + paging.page;
-				if (paging.query) query += "&query=" + paging.query;
-				if (paging.type) query += "&type=" + paging.type;
-			}
-			return query;
 		}
     }
 }

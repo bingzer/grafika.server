@@ -7,10 +7,8 @@ var GrafikaApp;
 (function (GrafikaApp) {
     var ResetController = (function (_super) {
         __extends(ResetController, _super);
-        function ResetController($mdDialog, appCommon, authService, hash, email) {
-            _super.call(this, $mdDialog);
-            this.$mdDialog = $mdDialog;
-            this.appCommon = appCommon;
+        function ResetController(appCommon, authService, hash, email) {
+            _super.call(this, appCommon);
             this.authService = authService;
             this.hash = hash;
             this.email = email;
@@ -38,13 +36,7 @@ var GrafikaApp;
                 _this.done = true;
             });
         };
-        ResetController.$inject = [
-            '$mdDialog',
-            'appCommon',
-            'authService',
-            'hash',
-            'email'
-        ];
+        ResetController.$inject = ['appCommon', 'authService', 'hash', 'email'];
         return ResetController;
     }(GrafikaApp.DialogController));
     GrafikaApp.ResetController = ResetController;

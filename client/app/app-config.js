@@ -7,8 +7,8 @@ var GrafikaApp;
             this.baseUrl = '';
             this.defaultBaseUrl = 'https://grafika.herokuapp.com/';
             this.apiBaseUrl = '/api/';
-            this.resourceBaseUrl = 'https://s3.amazonaws.com/grafika/resources/';
-            this.userBaseUrl = 'https://s3.amazonaws.com/grafika/users/';
+            this.animationBaseUrl = 'https://s3.amazonaws.com/bingzer/grafika/animations/';
+            this.userBaseUrl = 'https://s3.amazonaws.com/bingzer/grafika/users/';
             this.fetchSize = 25;
         }
         return AppConfig;

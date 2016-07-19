@@ -7,12 +7,9 @@ var GrafikaApp;
 (function (GrafikaApp) {
     var AnimationCreateController = (function (_super) {
         __extends(AnimationCreateController, _super);
-        function AnimationCreateController($mdDialog, $state, animationService, frameService) {
-            _super.call(this, $mdDialog);
-            this.$mdDialog = $mdDialog;
-            this.$state = $state;
+        function AnimationCreateController(appCommon, animationService) {
+            _super.call(this, appCommon);
             this.animationService = animationService;
-            this.frameService = frameService;
             this.width = 800;
             this.height = 400;
         }
@@ -25,16 +22,11 @@ var GrafikaApp;
             anim.isPublic = this.isPublic;
             this.animationService.create(anim).then(function (res) {
                 var anim = res.data;
-                _this.$state.go('editor', { _id: anim._id });
+                _this.appCommon.$state.go('drawing', { _id: anim._id });
                 _this.close();
             });
         };
-        AnimationCreateController.$inject = [
-            '$mdDialog',
-            '$state',
-            'animationService',
-            'frameService'
-        ];
+        AnimationCreateController.$inject = ['appCommon', 'animationService'];
         return AnimationCreateController;
     }(GrafikaApp.DialogController));
     GrafikaApp.AnimationCreateController = AnimationCreateController;

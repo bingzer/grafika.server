@@ -1,6 +1,7 @@
 module GrafikaApp {
     export class Animation implements Grafika.IAnimation {
         _id: string;
+        localId: string;
 
         name: string;
         description: string;
@@ -20,6 +21,9 @@ module GrafikaApp {
         author: string;
         userId: string;
 
+        totalFrame: number;
         frames: [Grafika.IFrame];
+
+        thumbnailUrl: string;
     }
 }

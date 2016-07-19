@@ -63,8 +63,23 @@ exports.UserSchema.methods.validActivationTimestamp = function () {
         return true;
     return false;
 };
+exports.UserSchema.methods.sanitize = function () {
+    return sanitize(this);
+};
 var User = restful.model('users', exports.UserSchema);
 exports.User = User;
+function sanitize(user) {
+    var lean = user;
+    if (user.toObject) {
+        user = user.toObject();
+    }
+    delete user.local;
+    delete user.facebook;
+    delete user.google;
+    delete user.activation;
+    return user;
+}
+exports.sanitize = sanitize;
 function checkAvailability(user) {
     var deferred = $q.defer();
     User.findOne({ email: { $ne: user.email } }, function (err, user) {

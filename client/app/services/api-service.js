@@ -1,9 +1,15 @@
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
 var GrafikaApp;
 (function (GrafikaApp) {
-    var ApiService = (function () {
-        function ApiService($http, appCommon) {
+    var ApiService = (function (_super) {
+        __extends(ApiService, _super);
+        function ApiService(appCommon, $http) {
+            _super.call(this, appCommon);
             this.$http = $http;
-            this.appCommon = appCommon;
         }
         ApiService.prototype.get = function (path) {
             var _this = this;
@@ -47,12 +53,9 @@ var GrafikaApp;
             deferred.resolve();
             return deferred.promise;
         };
-        ApiService.$inject = [
-            '$http',
-            'appCommon'
-        ];
+        ApiService.$inject = ['appCommon', '$http'];
         return ApiService;
-    }());
+    }(GrafikaApp.BaseService));
     GrafikaApp.ApiService = ApiService;
 })(GrafikaApp || (GrafikaApp = {}));
 //# sourceMappingURL=api-service.js.map

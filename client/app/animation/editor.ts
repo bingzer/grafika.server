@@ -7,21 +7,25 @@ module GrafikaApp {
             '$stateParams',
             'appCommon',
             'animationService',
-            'frameService'
+            'frameService',
+            'resourceService'
         ];
         constructor(
             private $rootScope: ng.IRootScopeService,
             private $stateParams: ng.ui.IStateParamsService,
             private appCommon: AppCommon,
             private animationService: AnimationService,
-            private frameService: FrameService
+            private frameService: FrameService,
+            private resourceService: ResourceService
         ){
             this.load();
         }
 
         load() {
             this.animationService.get(this.$stateParams['_id']).then((res) => {
-                this.grafika.initialize('#canvas', { drawingMode: 'paint' }, res.data);
+                var anim = res.data;
+                this.appCommon.elem('#canvas-container').css('width', anim.width).css('height', anim.height);
+                this.grafika.initialize('#canvas', { drawingMode: 'paint' }, anim);
                 this.frameService.get(this.grafika.getAnimation()).then((res) => {
                     this.grafika.setFrames(res.data);
                 })
@@ -30,9 +34,15 @@ module GrafikaApp {
 
 		save() {
 			this.grafika.save();
-			this.animationService.update(this.grafika.getAnimation()).then((res) => {
-                this.appCommon.toast('Saved!');
-            })
+
+            var animation = this.grafika.getAnimation();
+			this.animationService.update(animation).then((res) => {
+                return this.resourceService.saveThumbnail(animation);
+            }).then((res) => {
+                return this.resourceService.upload(res.data, this.grafika.exts.getCanvasBlob());
+            }).then((res) => {
+                this.appCommon.toast('Successfully saved!');
+            });
 		}
     }
 }

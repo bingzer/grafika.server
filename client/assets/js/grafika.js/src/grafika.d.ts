@@ -29,7 +29,44 @@ declare namespace Grafika {
         currentGraphic(): Grafika.Graphics.IGraphic;
 
         setOptions(options: Grafika.IOption);
+        setCallback(callback: ICallback);
 
+        exts: IExtension;
+    }
+    
+    /**
+     * The animation
+     */
+    interface IAnimation extends IDrawable {
+        _id: any | string;
+        localId: string;
+
+        name: string;
+        description: string;
+
+        timer: number;
+        width: number;
+        height: number;
+
+        dateCreated: number;
+        dateModified: number;
+
+        views: number;
+        rating: number;
+        category: string;
+
+        isPublic: boolean;
+        author: string;
+        userId: string;
+
+        thumbnailUrl: string;
+
+        totalFrame: number;
+        frames: [any | Grafika.IFrame];
+    }
+
+    interface ICallback {
+        on: (eventName: string, obj: any) => void;
     }
 
     interface IOption {
@@ -39,7 +76,7 @@ declare namespace Grafika {
         graphic?: string;
         graphicFill?: boolean;
         useCarbonCopy?: boolean;
-        useNavigationtext?: boolean;
+        useNavigationText?: boolean;
         drawingMode?: string;
         debugMode?: boolean;
     }
@@ -55,30 +92,6 @@ declare namespace Grafika {
         //randomUid(): string;
     }
 
-    interface IAnimation extends IDrawable {
-        _id: any | string;
-
-        name: string;
-        description: string;
-
-        timer: number;
-        width: number;
-        height: number;
-
-        dateCreated: Date;
-        dateModified: Date;
-
-        views: number;
-        rating: number;
-        category: string;
-
-        isPublic: boolean;
-        author: string;
-        userId: string;
-
-        frames: [any | Grafika.IFrame];
-    }
-
     interface IFrame extends IDrawable {
         id: string;
         index: number;
@@ -91,6 +104,18 @@ declare namespace Grafika {
         id: string;
         index: number;
         graphics: [Grafika.Graphics.IGraphic];
+    }
+
+    interface IExtension {
+        copyFrameToNext(): void;
+        downloadAnimation(): void;
+        downloadFrameAsImage(): void;
+        getCanvasBlob(): Blob;
+    }
+
+    interface ICanvasData {
+        mime: string;
+        base64: string;
     }
 }
 
@@ -117,6 +142,13 @@ declare namespace Grafika.Graphics {
         move(context: any | CanvasRenderingContext2D, x: number, y: number, lastX: number, lastY: number);
         invoke(context: any | CanvasRenderingContext2D, eventType: string, eventX: number, eventY: number);
     }
+}
+
+declare namespace Grafika.Extensions {
+    /*
+
+
+    */
 }
 
 declare module 'Grafika' {
