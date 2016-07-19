@@ -36,6 +36,8 @@ Animation.before('post', (req, res, next) => {
     if (!req.body.dateCreated) req.body.dateCreated = now;
     if (!req.body.dateModified) req.body.dateModified = now;
     if (!req.body.userId) req.body.userId = req.user._id;
+    req.body.totalFrame = req.body.frames ? req.body.frames.length : 0;
+
     delete req.body._id;
     
     next();
@@ -52,6 +54,7 @@ Animation.route('frames', {
         else if (req.method == 'POST') {
             Animation.findOne({_id: req.params.id}, (err, result) => {
                 result.frames = req.body;
+                result.totalFrame = result.frames.length;
                 result.save();
                 res.sendStatus(201);
             });
