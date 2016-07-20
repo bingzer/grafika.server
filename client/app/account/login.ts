@@ -9,11 +9,7 @@ module GrafikaApp {
         }
 
         register() {
-            this.appCommon.$mdDialog.show({
-                controller: 'RegisterController',
-                controllerAs: 'vm',
-                templateUrl: 'app/account/register.html'
-            });
+            return this.appCommon.showDialog('RegisterController', 'app/account/register.html');
         }
 
         login(provider: string) {

@@ -6,13 +6,14 @@ module GrafikaApp {
         isPlaying: boolean = false;
         animationName: string = 'loading...';
         
-        public static $inject = ['appCommon', 'authService', 'animationService', 'frameService', 'resourceService'];
+        public static $inject = ['appCommon', 'authService', 'animationService', 'frameService', 'resourceService', '$scope'];
         constructor(
             appCommon: AppCommon, 
             authService: AuthService,
-            protected animationService: AnimationService,
-            protected frameService: FrameService,
-            protected resourceService: ResourceService
+            animationService: AnimationService,
+            frameService: FrameService,
+            resourceService: ResourceService,
+            private $scope: ng.IScope
         ){
             super(appCommon, authService, animationService, frameService, resourceService);
         }
@@ -27,10 +28,12 @@ module GrafikaApp {
             this.grafika.setCallback({ on: (ev: string, obj: any) => {
                 switch (ev) {
                     case 'frameChanged':
-                        controller.currentFrame = obj;
+                        controller.currentFrame = parseInt(obj);
+                        controller.$scope.$applyAsync('vm.currentFrame');
                         break;
                     case 'playing':
                         controller.isPlaying = obj;
+                        controller.$scope.$applyAsync('vm.isPlaying');
                         break;
                 } 
             }});

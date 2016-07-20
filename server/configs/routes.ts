@@ -5,6 +5,7 @@ import * as winston from 'winston';
 
 import * as accountController from '../controllers/accounts';
 import * as resourcesController from '../controllers/resources';
+import * as userController from '../controllers/users';
 import * as config from '../configs/config';
 import { Animation } from '../models/animation';
 import { User } from '../models/user';
@@ -150,6 +151,10 @@ export function initialize(app) {
     app.delete('/api/animations/', useSessionOrJwt, useAnimAccess); // delete
     app.get('/api/animations/:_id/frames', extractUser, useAnimAccess); // get frames
     app.post('/api/animations/:_id/frames', useSessionOrJwt, useAnimAccess);
+
+    // ---------------- Users -----------------------------//
+    app.get('/api/users/:_id', useSessionOrJwt, userController.get);
+    app.put('/api/users/:_id', useSessionOrJwt, userController.update);
 
     // ---------------- Thumbnail -----------------------------//
     app.get('/api/animations/:animationId/thumbnail', /* extractUser, useAnimAccess, */ resourcesController.getThumbnail);

@@ -1,5 +1,6 @@
 module GrafikaApp {
     export class MainController extends AuthController {
+        public static $inject = ['appCommon', 'authService', 'animationService', '$rootScope'];
         constructor(appCommon: AppCommon, authService: AuthService, 
             private animationService: AnimationService,
             private $rootScope: ng.IRootScopeService
@@ -55,6 +56,10 @@ module GrafikaApp {
             this.$rootScope.$on('$stateChangeStart', (e) => {
                 grafikaIntro.pause();
             });
+        }
+
+        getAppVersion() {
+            return this.appCommon.appConfig.appVersion;
         }
         
         private cleanUrlQueries(){

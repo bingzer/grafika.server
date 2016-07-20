@@ -6,7 +6,8 @@ var GrafikaApp;
         'ngCookies',
         'ngMessages',
         'ngSanitize',
-        'angular-jwt'
+        'angular-jwt',
+        'angularSpectrumColorpicker'
     ]);
     app.constant('appConfig', new GrafikaApp.AppConfig());
     app.service('appCommon', GrafikaApp.AppCommon);

@@ -21,14 +21,7 @@ module GrafikaApp {
         }
 
         editData(ev: MouseEvent) {
-            this.appCommon.$mdDialog.show({
-                controller: 'AnimationEditController',
-                controllerAs: 'vm',
-                parent: angular.element(document.body),
-                templateUrl: '/app/animation/edit.html',
-                clickOutsideToClose: true,
-                targetEvent: ev
-            }).then(() => this.load());
+            this.appCommon.showDialog('AnimationEditController', '/app/animation/edit.html', ev).then(() => this.load());
         }
 
         delete(): ng.IPromise<any> {

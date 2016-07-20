@@ -4,6 +4,7 @@ var mongoose = require('mongoose');
 var winston = require('winston');
 var accountController = require('../controllers/accounts');
 var resourcesController = require('../controllers/resources');
+var userController = require('../controllers/users');
 var config = require('../configs/config');
 var animation_1 = require('../models/animation');
 var user_1 = require('../models/user');
@@ -118,6 +119,8 @@ function initialize(app) {
     app.delete('/api/animations/', useSessionOrJwt, useAnimAccess);
     app.get('/api/animations/:_id/frames', extractUser, useAnimAccess);
     app.post('/api/animations/:_id/frames', useSessionOrJwt, useAnimAccess);
+    app.get('/api/users/:_id', useSessionOrJwt, userController.get);
+    app.put('/api/users/:_id', useSessionOrJwt, userController.update);
     app.get('/api/animations/:animationId/thumbnail', resourcesController.getThumbnail);
     app.post('/api/animations/:animationId/thumbnail', useSessionOrJwt, useAnimAccess, resourcesController.createThumbnailSignedUrl);
     user_1.User.register(app, '/api/users');

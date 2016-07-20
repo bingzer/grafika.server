@@ -125,6 +125,7 @@ UserSchema.methods.sanitize = function(): IUser {
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 var User = <restful.IModel<IUser>> restful.model('users', UserSchema);
+User.methods(['get', 'put']);
 
 export function sanitize(user: IUser | any) : any | IUser {
     var lean = user;

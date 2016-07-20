@@ -7,11 +7,9 @@ var GrafikaApp;
 (function (GrafikaApp) {
     var AnimationPlaybackController = (function (_super) {
         __extends(AnimationPlaybackController, _super);
-        function AnimationPlaybackController(appCommon, authService, animationService, frameService, resourceService) {
+        function AnimationPlaybackController(appCommon, authService, animationService, frameService, resourceService, $scope) {
             _super.call(this, appCommon, authService, animationService, frameService, resourceService);
-            this.animationService = animationService;
-            this.frameService = frameService;
-            this.resourceService = resourceService;
+            this.$scope = $scope;
             this.totalFrame = 0;
             this.currentFrame = 0;
             this.isPlaying = false;
@@ -28,10 +26,12 @@ var GrafikaApp;
             this.grafika.setCallback({ on: function (ev, obj) {
                     switch (ev) {
                         case 'frameChanged':
-                            controller.currentFrame = obj;
+                            controller.currentFrame = parseInt(obj);
+                            controller.$scope.$applyAsync('vm.currentFrame');
                             break;
                         case 'playing':
                             controller.isPlaying = obj;
+                            controller.$scope.$applyAsync('vm.isPlaying');
                             break;
                     }
                 } });
@@ -53,7 +53,7 @@ var GrafikaApp;
         AnimationPlaybackController.prototype.nextFrame = function () {
             this.grafika.nextFrame();
         };
-        AnimationPlaybackController.$inject = ['appCommon', 'authService', 'animationService', 'frameService', 'resourceService'];
+        AnimationPlaybackController.$inject = ['appCommon', 'authService', 'animationService', 'frameService', 'resourceService', '$scope'];
         return AnimationPlaybackController;
     }(GrafikaApp.BaseAnimationController));
     GrafikaApp.AnimationPlaybackController = AnimationPlaybackController;

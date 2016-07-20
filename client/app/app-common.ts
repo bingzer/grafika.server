@@ -71,8 +71,21 @@ module GrafikaApp {
                     .position(position)
                     .hideDelay(delay)
             );
-        };
-        
+        }
+        showDialog(controller: string, templateUrl: string, event?: MouseEvent, controllerAs?: string) : ng.IPromise<any> {
+            if (!controllerAs)
+                controllerAs = 'vm';
+    		var useFullScreen = (this.$mdMedia('sm') || this.$mdMedia('xs'));
+            return this.$mdDialog.show({
+                fullscreen: useFullScreen,
+                controller: controller,
+                controllerAs: controllerAs,
+                parent: angular.element(document.body),
+                templateUrl: templateUrl,
+                clickOutsideToClose: true,
+                targetEvent: event
+            });
+        }    
         refreshPage(){
             this.$location.path(this.$location.path());
         }

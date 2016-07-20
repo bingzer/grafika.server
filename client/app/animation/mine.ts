@@ -18,16 +18,8 @@ module GrafikaApp {
         }
         
         create(ev: MouseEvent){
-    		var useFullScreen = (this.appCommon.$mdMedia('sm') || this.appCommon.$mdMedia('xs'));
-            this.appCommon.$mdDialog.show({
-                controller: 'AnimationCreateController',
-                controllerAs: 'vm',
-                parent: angular.element(document.body),
-                templateUrl: '/app/animation/create.html',
-                clickOutsideToClose: true,
-                targetEvent: ev
-            }).then((answer) => {
-                this.appCommon.toast('Animation is created');
+            return this.appCommon.showDialog('AnimationCreateController', '/app/animation/create.html', ev).then((answer) => {
+                return this.appCommon.toast('Animation is created');
             });
 		} 
     }

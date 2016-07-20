@@ -59,6 +59,9 @@ var GrafikaApp;
                 grafikaIntro.pause();
             });
         };
+        MainController.prototype.getAppVersion = function () {
+            return this.appCommon.appConfig.appVersion;
+        };
         MainController.prototype.cleanUrlQueries = function () {
             var keys = this.appCommon.$location.search();
             var loc = this.appCommon.$location;
@@ -66,6 +69,7 @@ var GrafikaApp;
                 delete loc.search(key, null);
             });
         };
+        MainController.$inject = ['appCommon', 'authService', 'animationService', '$rootScope'];
         return MainController;
     }(GrafikaApp.AuthController));
     GrafikaApp.MainController = MainController;

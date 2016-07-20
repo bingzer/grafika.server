@@ -6,7 +6,8 @@ module GrafikaApp {
         'ngMessages',
         'ngSanitize',
 
-        'angular-jwt'
+        'angular-jwt',
+        'angularSpectrumColorpicker'
     ]);
 
     app.constant('appConfig', new AppConfig());

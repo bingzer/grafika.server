@@ -68,6 +68,7 @@ exports.UserSchema.methods.sanitize = function () {
 };
 var User = restful.model('users', exports.UserSchema);
 exports.User = User;
+User.methods(['get', 'put']);
 function sanitize(user) {
     var lean = user;
     if (user.toObject) {

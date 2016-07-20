@@ -52,7 +52,20 @@ var GrafikaApp;
                 .position(position)
                 .hideDelay(delay));
         };
-        ;
+        AppCommon.prototype.showDialog = function (controller, templateUrl, event, controllerAs) {
+            if (!controllerAs)
+                controllerAs = 'vm';
+            var useFullScreen = (this.$mdMedia('sm') || this.$mdMedia('xs'));
+            return this.$mdDialog.show({
+                fullscreen: useFullScreen,
+                controller: controller,
+                controllerAs: controllerAs,
+                parent: angular.element(document.body),
+                templateUrl: templateUrl,
+                clickOutsideToClose: true,
+                targetEvent: event
+            });
+        };
         AppCommon.prototype.refreshPage = function () {
             this.$location.path(this.$location.path());
         };

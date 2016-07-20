@@ -22,7 +22,11 @@ var GrafikaApp;
                 _this.grafika.setFrames(res.data);
             });
         };
-        AnimationDrawingController.prototype.save = function () {
+        AnimationDrawingController.prototype.showProperties = function (ev) {
+            var _this = this;
+            return this.appCommon.showDialog('AnimationEditController', '/app/animation/edit.html', ev).then(function () { return _this.load(); });
+        };
+        AnimationDrawingController.prototype.save = function (exit) {
             var _this = this;
             this.grafika.save();
             var animation = this.grafika.getAnimation();
@@ -31,8 +35,17 @@ var GrafikaApp;
             }).then(function (res) {
                 return _this.resourceService.upload(res.data, _this.grafika.exts.getCanvasBlob());
             }).then(function (res) {
+                if (exit)
+                    _this.exit();
                 _this.appCommon.toast('Successfully saved!');
             });
+        };
+        AnimationDrawingController.prototype.confirmExit = function () {
+            var _this = this;
+            this.appCommon.confirm('Close?').then(function () { return _this.exit(); });
+        };
+        AnimationDrawingController.prototype.exit = function () {
+            this.appCommon.$state.go('my-animations');
         };
         AnimationDrawingController.$inject = ['appCommon', 'authService', 'animationService', 'frameService', 'resourceService'];
         return AnimationDrawingController;
