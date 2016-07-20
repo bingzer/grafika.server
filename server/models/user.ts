@@ -5,10 +5,6 @@ import $q         = require('q');
 var bcrypt        = require('bcrypt-nodejs');
 var crypto        = require('crypto-js');
 
-function randomUsername(){
-    return 'user-' + (("000000" + (Math.random()*Math.pow(36,6) << 0).toString(36)).slice(-6));
-}
-
 export interface IUser extends mongoose.Document, Grafika.IUser {
     prefs: IPreference;
     activation: IActivation;
@@ -63,8 +59,8 @@ export const UserSchema = new mongoose.Schema({
     lastName            : String,
     username            : { type: String, lowercase: true, trim: true, required: true, default: randomUsername() },
     email               : { type: String, lowercase: true, trim: true, required: true },
-    dateCreated         : { type: Date, default: new Date() },
-    dateModified        : { type: Date, default: new Date() },
+    dateCreated         : { type: Number, required: true },
+    dateModified        : { type: Number, required: true },
     active              : { type: Boolean, default: false },
     roles               : { type: [String], default: ['user'] },
     local               : {
@@ -139,9 +135,13 @@ export function sanitize(user: IUser | any) : any | IUser {
     return user;
 }
 
-export function checkAvailability(user : IUser) : $q.IPromise<{}> {
+export function checkAvailability(user : IUser | any) : $q.IPromise<{}> {
     var deferred = $q.defer();
-    User.findOne({ email: { $ne: user.email }}, function (err, user){
+    var query = {
+        username: user.username,
+        email: { $ne: user.email }
+    };
+    User.findOne(query, (err, user) => {
         if (err || user) deferred.reject('failed');
         else deferred.resolve();
     });
@@ -161,8 +161,8 @@ export function ensureAdminExists() : void {
 			admin.firstName        = 'grafika';
 			admin.lastName         = 'admin';
 			admin.email            = 'grafika@bingzer.com';
-			admin.dateCreated      = new Date();
-			admin.dateModified     = new Date();
+			admin.dateCreated      = Date.now();
+			admin.dateModified     = Date.now();
 			admin.active           = true;
 			admin.local.registered = true;
 			admin.local.password   = admin.generateHash('password');
@@ -171,5 +171,9 @@ export function ensureAdminExists() : void {
 		}
 	});
 };
+
+export function randomUsername(){
+    return 'user-' + (("000000" + (Math.random()*Math.pow(36,6) << 0).toString(36)).slice(-6));
+}
 
 export { User };

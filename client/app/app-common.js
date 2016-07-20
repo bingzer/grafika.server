@@ -42,6 +42,10 @@ var GrafikaApp;
                 confirm.title(title);
             return this.$mdDialog.show(confirm);
         };
+        AppCommon.prototype.toastError = function (error, position, delay) {
+            return this.toast(this.formatErrorMessage(error), position, delay);
+        };
+        ;
         AppCommon.prototype.toast = function (msg, position, delay) {
             if (!position)
                 position = 'bottom right';

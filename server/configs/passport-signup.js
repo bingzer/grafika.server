@@ -33,6 +33,7 @@ var SignupStrategy = (function (_super) {
                         user.local.password = user.generateHash(password);
                         user.activation.hash = null;
                         user.activation.timestamp = null;
+                        user.dateModified = Date.now();
                         user.save();
                         return done(null, user);
                     }
@@ -52,6 +53,9 @@ var SignupStrategy = (function (_super) {
                     newUser.firstName = userInfo.firstName;
                     newUser.lastName = userInfo.lastName;
                     newUser.email = userInfo.email;
+                    newUser.username = user_1.randomUsername();
+                    newUser.dateCreated = Date.now();
+                    newUser.dateModified = Date.now();
                     newUser.local.registered = true;
                     newUser.activation.hash = newUser.generateActivationHash();
                     newUser.activation.timestamp = new Date();

@@ -24,6 +24,9 @@ module GrafikaApp {
                 .then(() => {
                     return this.appCommon.hideLoadingModal();
                 })
+                .catch((res) => {
+                    return this.appCommon.toastError(res);
+                })
                 .finally(() => {
                     this.reset();
                 })

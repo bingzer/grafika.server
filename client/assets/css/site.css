@@ -17,6 +17,19 @@ html, body {
 	color: gray;
 }
 
+/* ---------- FAB ----------- */
+.md-fab {
+	position: absolute; 
+	right: 16; 
+	bottom: 64;
+}
+@media (max-width: 599px) {
+	.md-fab { 
+		bottom: 156;
+	}	
+}
+
+
 /* ---------- Dialog ------------ */
 md-dialog {
 	min-width: 450px;

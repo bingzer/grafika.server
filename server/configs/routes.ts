@@ -139,9 +139,10 @@ export function initialize(app) {
     app.post('/api/accounts', accountController.login)
     app.post('/api/accounts/logout', accountController.logout);
     app.post('/api/accounts/authenticate', accountController.authenticate);
-    app.post('/api/accounts/pwd', useSession, accountController.changePassword);
-    app.post('/api/accounts/pwd/reset', accountController.resetPassword);
     app.post('/api/accounts/register', accountController.register);
+    app.post('/api/accounts/pwd/reset', accountController.resetPassword);
+    app.post('/api/accounts/pwd', useSessionOrJwt, accountController.changePassword);
+    app.post('/api/accounts/username-check', useSessionOrJwt, accountController.checkUsernameAvailability)
     
     // ---------------- Animation -----------------------------//
     app.get('/api/animations');  // List => use nothing

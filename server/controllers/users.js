@@ -29,13 +29,15 @@ function update(req, res, next) {
         if (req.body.prefs.drawingIsPublic)
             user.prefs.drawingIsPublic = req.body.prefs.drawingIsPublic;
     }
-    user_1.User.findOneAndUpdate({ _id: userId }, user, function (err, user) {
-        if (!user)
-            err = 404;
-        if (err)
-            return next(err);
-        res.send(200);
-    });
+    user_1.checkAvailability(user).then(function () {
+        user_1.User.findOneAndUpdate({ _id: userId }, user, function (err, user) {
+            if (!user)
+                err = 404;
+            if (err)
+                return next(err);
+            res.send(200);
+        });
+    }, function (error) { return next(error); });
 }
 exports.update = update;
 //# sourceMappingURL=users.js.map

@@ -61,6 +61,9 @@ module GrafikaApp {
             if (title) confirm.title(title);
             return this.$mdDialog.show(confirm);
         }
+        toastError(error: any, position?: string, delay?: number): ng.IPromise<any>{
+            return this.toast(this.formatErrorMessage(error), position, delay);
+        };
         toast(msg: string, position?: string, delay?: number): ng.IPromise<any>{
             if (!position) position = 'bottom right';
             if (!delay) delay = 3000;

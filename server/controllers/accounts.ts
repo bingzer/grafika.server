@@ -3,7 +3,7 @@ import * as crypto from "crypto"
 import * as express from "express";
 import * as passport from "passport";
 
-import { IUser, User, userQuery, sanitize } from '../models/user';
+import { IUser, User, userQuery, sanitize, checkAvailability } from '../models/user';
 import * as mailer from '../libs/mailer';
 import * as config from '../configs/config';
 var jwt            = require('jsonwebtoken');
@@ -60,6 +60,11 @@ export function changePassword(req: any, res: any, next: express.NextFunction){
         }
     });
 };
+
+export function checkUsernameAvailability(req: any, res: any, next: express.NextFunction){
+    checkAvailability(req.body)
+        .then(() => res.sendStatus(200), () => next("Username is taken"));
+}
 
 export function resetPassword(req: express.Request, res: express.Response, next: express.NextFunction){
     var userInfo = req.body;

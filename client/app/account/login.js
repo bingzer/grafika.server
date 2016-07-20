@@ -28,6 +28,9 @@ var GrafikaApp;
                 .then(function () {
                 return _this.appCommon.hideLoadingModal();
             })
+                .catch(function (res) {
+                return _this.appCommon.toastError(res);
+            })
                 .finally(function () {
                 _this.reset();
             });

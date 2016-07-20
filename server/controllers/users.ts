@@ -1,5 +1,5 @@
 import * as express from "express";
-import { IUser, User, sanitize } from "../models/user";
+import { IUser, User, sanitize, checkAvailability } from "../models/user";
 
 export function get(req: express.Request, res: express.Response, next: express.NextFunction) {
     var userId = req.params._id;
@@ -25,12 +25,13 @@ export function update(req: express.Request, res: express.Response, next: expres
         if (req.body.prefs.drawingTimer) user.prefs.drawingTimer = req.body.prefs.drawingTimer;
         if (req.body.prefs.drawingIsPublic) user.prefs.drawingIsPublic = req.body.prefs.drawingIsPublic;
     }
-    // todo: username
+    
+    checkAvailability(user).then(() => {
+        User.findOneAndUpdate({ _id: userId}, user, (err, user) => {
+            if (!user) err = 404;
+            if (err) return next(err);
 
-    User.findOneAndUpdate({ _id: userId}, user, (err, user) => {
-        if (!user) err = 404;
-        if (err) return next(err);
-
-        res.send(200);
-    });
+            res.send(200);
+        });
+    }, (error) => next(error));
 }

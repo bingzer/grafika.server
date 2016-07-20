@@ -52,6 +52,7 @@ module GrafikaApp {
             grafikaIntro.demo.initialize('alphabet');
             grafikaIntro.getAnimation().timer = 500;
             grafikaIntro.play();
+            grafikaIntro
             
             this.$rootScope.$on('$stateChangeStart', (e) => {
                 grafikaIntro.pause();
@@ -60,6 +61,10 @@ module GrafikaApp {
 
         getAppVersion() {
             return this.appCommon.appConfig.appVersion;
+        }
+
+        navigate(path: string) {
+            this.appCommon.navigate(path);
         }
         
         private cleanUrlQueries(){

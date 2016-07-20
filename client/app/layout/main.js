@@ -55,12 +55,16 @@ var GrafikaApp;
             grafikaIntro.demo.initialize('alphabet');
             grafikaIntro.getAnimation().timer = 500;
             grafikaIntro.play();
+            grafikaIntro;
             this.$rootScope.$on('$stateChangeStart', function (e) {
                 grafikaIntro.pause();
             });
         };
         MainController.prototype.getAppVersion = function () {
             return this.appCommon.appConfig.appVersion;
+        };
+        MainController.prototype.navigate = function (path) {
+            this.appCommon.navigate(path);
         };
         MainController.prototype.cleanUrlQueries = function () {
             var keys = this.appCommon.$location.search();

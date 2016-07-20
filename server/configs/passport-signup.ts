@@ -1,7 +1,7 @@
 import * as passport from 'passport';
 import { VerifyFunction, Strategy, IStrategyOptions } from 'passport-local';
 
-import { IUser, User } from '../models/user';
+import { IUser, User, randomUsername } from '../models/user';
 import * as mailer from '../libs/mailer';
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -35,12 +35,14 @@ export class SignupStrategy extends Strategy {
                         user.local.password = user.generateHash(password);
                         user.activation.hash = null;
                         user.activation.timestamp = null;
+                        user.dateModified = Date.now();
                         user.save();
                         return done(null, user);
                     }
                     else return done('Email is taken');
                 }
                 else {
+                    // creating the user for the first time
                     if (!userInfo.name) {
                         return done("Name is required");
                     }
@@ -57,6 +59,9 @@ export class SignupStrategy extends Strategy {
                     newUser.firstName            = userInfo.firstName;
                     newUser.lastName             = userInfo.lastName;
                     newUser.email                = userInfo.email;
+                    newUser.username             = randomUsername();
+                    newUser.dateCreated          = Date.now();
+                    newUser.dateModified         = Date.now();
                     newUser.local.registered     = true;
                     newUser.activation.hash      = newUser.generateActivationHash();
                     newUser.activation.timestamp = new Date();

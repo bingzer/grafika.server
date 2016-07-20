@@ -23,10 +23,10 @@ module GrafikaApp {
 					controller: 'LoginController',
 					controllerAs: 'vm'
 				})
-				.state('verify', {
-					url: '/account/verify',
-					templateUrl: 'app/account/verify.html',
-					controller: 'VerifyController',
+				.state('profile', {
+					url: '/profile',
+					templateUrl: 'app/account/profile.html',
+					controller: 'ProfileController',
 					controllerAs: 'vm'
 				})
 				.state('my-animations', {
