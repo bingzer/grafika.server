@@ -3,7 +3,7 @@ var mongoose = require('mongoose');
 var restful = require('../libs/restful');
 exports.UserAnimationSchema = new mongoose.Schema({
     _id: { type: String, required: true },
-    animations: { type: [String] },
+    animationIds: { type: [String] },
     dateModified: Number,
     dateCreated: Number
 });
@@ -17,7 +17,6 @@ function createOrUpdateUserAnimation(userId, animationId, callback) {
         }
         else {
             if (!err) {
-                userAnimation.animations.push(animationId);
                 userAnimation.dateModified = Date.now();
                 userAnimation.save();
             }
@@ -29,12 +28,12 @@ exports.createOrUpdateUserAnimation = createOrUpdateUserAnimation;
 function deleteUserAnimation(userId, animationId, callback) {
     UserAnimation.findById(userId, function (err, userAnimation) {
         var i = 0;
-        for (; i < userAnimation.animations.length; i++) {
-            if (userAnimation.animations[i] == animationId) {
+        for (; i < userAnimation.animationIds.length; i++) {
+            if (userAnimation.animationIds[i] == animationId) {
                 break;
             }
         }
-        userAnimation.animations.splice(i, 1);
+        userAnimation.animationIds.splice(i, 1);
         userAnimation.dateModified = Date.now();
         userAnimation.save();
         callback(err);

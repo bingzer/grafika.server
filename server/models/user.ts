@@ -5,6 +5,8 @@ import $q         = require('q');
 var bcrypt        = require('bcrypt-nodejs');
 var crypto        = require('crypto-js');
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 export interface IUser extends mongoose.Document, Grafika.IUser {
     prefs: IPreference;
     activation: IActivation;
@@ -124,6 +126,8 @@ UserSchema.methods.sanitize = function(): IUser {
 
 var User = <restful.IModel<IUser>> restful.model('users', UserSchema);
 User.methods(['get', 'put']);
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 export function sanitize(user: IUser | any) : any | IUser {
     var lean = user;

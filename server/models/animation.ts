@@ -2,6 +2,8 @@ import * as mongoose from 'mongoose';
 import restful = require('../libs/restful');
 import { UserAnimation, createOrUpdateUserAnimation, deleteUserAnimation } from './user-animation';
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 export interface IAnimation extends Grafika.IAnimation, mongoose.Document {
 }
 
@@ -30,6 +32,8 @@ export const AnimationSchema = new mongoose.Schema({
     frames       : { type: [], select: false }
 });
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 AnimationSchema.post('save', (animation: IAnimation, next) => {
     createOrUpdateUserAnimation(animation.userId, animation._id, (err, any) => {
         next(err);
@@ -40,6 +44,8 @@ AnimationSchema.post('remove', (animation: IAnimation, next) => {
         next(err);
     });
 })
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 var Animation = <restful.IModel<IAnimation>> restful.model('animations', AnimationSchema);
 Animation.methods(['get', 'put', 'post', 'delete']);
@@ -82,5 +88,7 @@ Animation.route('resources', {
         next();
     }
 });
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 export { Animation };
