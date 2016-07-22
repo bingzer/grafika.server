@@ -15,7 +15,7 @@
   ],
   "dependencies": {
     "q": "latest",
-    "grafika.js": "0.10.3",
+    "grafika.js": "0.10.4",
     "angular-spectrum-colorpicker": "latest"
   }
 }

@@ -21,7 +21,7 @@
  * Supported browser: IE9 > up, chrome, edge
  */
 var Grafika = function (){	
-	var GRAFIKA_VERSION = '0.10.1';
+	var GRAFIKA_VERSION = '0.10.4';
 	
     // ---------------------------------------------------------- Constants -------------------------------------//
     var MODE_NONE = 'none', MODE_PAINT = 'paint', MODE_MOVE = 'move', MODE_SELECT = 'select', MODE_DELETE = 'delete';		
@@ -104,7 +104,7 @@ var Grafika = function (){
 	this.saveAnimation = function(){
 	    animation.totalFrame = animation.frames.length;
 		animation.modified = false;
-		animation.dateModified = new Date();
+		animation.dateModified = Date.now();
 		animation.client = {
 			navigator: navigator
 		};
@@ -606,7 +606,7 @@ Grafika.Animation = function (grafika, anim) {
 	this.modified = anim.modified || false;
 	this.totalFrame = anim.totalFrame || 0;
 	this.views = anim.views || 0;
-	this.dateCreated = anim.dateCreated || new Date();
+	this.dateCreated = anim.dateCreated || Date.now();
 	this.dateModified = anim.dateModified || this.dateCreated;
 	this.frames = this.setFrames(anim.frames);
 }

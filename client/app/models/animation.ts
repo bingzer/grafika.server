@@ -10,8 +10,8 @@ module GrafikaApp {
         width: number;
         height: number;
 
-        dateCreated: Date;
-        dateModified: Date;
+        dateCreated: number;
+        dateModified: number;
 
         views: number;
         rating: number;
