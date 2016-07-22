@@ -100,31 +100,20 @@ exports.put = function (req, res, next) {
     }
 };
 exports.delete = function (req, res, next) {
-    if (this.shouldUseAtomicUpdate) {
-        req.quer.findOneAndRemove({}, this.delete_options, function (err, obj) {
-            if (err) {
-                exports.respond(res, 500, err);
-            }
-            exports.respondOrErr(res, 404, !obj && exports.objectNotFound(), 204, {});
+    req.quer.findOne({ "_id": req.params.id }, function (err, docToRemove) {
+        if (err) {
+            exports.respond(res, 500, err);
+        }
+        var objNotFound = !docToRemove && exports.objectNotFound();
+        if (objNotFound) {
+            exports.respond(res, 404, objNotFound);
+            return next();
+        }
+        docToRemove.remove(function (err, obj) {
+            exports.respondOrErr(res, 400, err, 204, {});
             next();
         });
-    }
-    else {
-        req.quer.findOne({ "_id": req.params.id }, function (err, docToRemove) {
-            if (err) {
-                exports.respond(res, 500, err);
-            }
-            var objNotFound = !docToRemove && exports.objectNotFound();
-            if (objNotFound) {
-                exports.respond(res, 404, objNotFound);
-                return next();
-            }
-            docToRemove.remove(function (err, obj) {
-                exports.respondOrErr(res, 400, err, 204, {});
-                next();
-            });
-        });
-    }
+    });
 };
 exports.objectNotFound = function () {
     return {

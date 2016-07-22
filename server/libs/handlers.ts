@@ -116,15 +116,15 @@ exports.put = function(req, res, next) {
 
 exports.delete = function(req, res, next) {
   // Delete in 1 atomic operation on the database if not specified otherwise
-  if (this.shouldUseAtomicUpdate) {
-    req.quer.findOneAndRemove({}, this.delete_options, function(err, obj) {
-      if (err) {
-        exports.respond(res, 500, err);
-      }
-      exports.respondOrErr(res, 404, !obj && exports.objectNotFound(), 204, {});
-      next();
-    });
-  } else {
+  // if (this.shouldUseAtomicUpdate) {
+  //   req.quer.findOneAndRemove({}, this.delete_options, function(err, obj) {
+  //     if (err) {
+  //       exports.respond(res, 500, err);
+  //     }
+  //     exports.respondOrErr(res, 404, !obj && exports.objectNotFound(), 204, {});
+  //     next();
+  //   });
+  // } else {
     // Preform the remove in two steps allowing mongoose to fire its schema update hook
     req.quer.findOne({"_id": req.params.id}, function(err, docToRemove) {
       if (err) {
@@ -141,7 +141,7 @@ exports.delete = function(req, res, next) {
         next();
       });
     });
-  }
+  //}
 };
 
 // I'm going to leave these here because it might be nice to have standardized

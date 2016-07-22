@@ -38,7 +38,8 @@ exports.UserSchema = new mongoose.Schema({
         drawingAuthor: String,
         drawingTimer: { type: Number, default: 1000 },
         playbackLoop: { type: Boolean, default: false }
-    }
+    },
+    animations: { type: [String], required: true }
 });
 exports.UserSchema.methods.generateHash = function (password) {
     return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);

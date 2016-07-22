@@ -12,6 +12,7 @@ export interface IUser extends mongoose.Document, Grafika.IUser {
     local: ILocal;
     facebook: IFacebook;
     google: IGoogle;
+    animations: [String]
 
     generateHash(password: string): string;
     generateActivationHash(): string;
@@ -88,7 +89,8 @@ export const UserSchema = new mongoose.Schema({
         drawingAuthor   : String,
         drawingTimer    : { type: Number, default: 1000 },
         playbackLoop    : { type: Boolean, default: false }
-    }
+    },
+    animations          : { type: [String], required: true }
 });
 
 // methods ======================
