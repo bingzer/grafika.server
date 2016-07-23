@@ -1,4 +1,4 @@
-import { UserAnimation, IUserAnimation, ILocalUserAnimation } from '../models/user-animation';
+import { Sync, ISync, IServerSync, ILocalSync } from '../models/sync';
 import { Animation, IAnimation } from '../models/animation';
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -26,20 +26,13 @@ export enum SyncAction {
 }
 
 export class SyncEvent {
-    /**
-     * The animation
-     */
-    animationId: string;
-
-    /**
-     * Local id
-     */
-    localId: string,
-
-    /**
-     * The event
-     */
-    action: SyncAction;
+    constructor(
+        public action: SyncAction, 
+        public animationId: string, 
+        public localId?: string)
+    {
+        // nothing
+    }
 }
 
 export class SyncResult {
@@ -53,14 +46,14 @@ export class SyncResult {
 
 export class Synchronizer {
 
-    private localUserAnim: ILocalUserAnimation;
+    private localSync: ILocalSync;
     private localAnimations: Grafika.IAnimation[];
-    private remoteUserAnim: IUserAnimation;
-    private remoteAnimations: Grafika.IAnimation[];
+    private serverSync: IServerSync;
+    private serverAnimations: Grafika.IAnimation[];
     private syncResult: SyncResult = new SyncResult();
 
-    constructor(localUserAnim: ILocalUserAnimation){
-        this.localUserAnim = localUserAnim;
+    constructor(localUserAnim: ILocalSync){
+        this.localSync = localUserAnim;
         this.localAnimations = localUserAnim.animations;
     }
 
@@ -68,14 +61,14 @@ export class Synchronizer {
      * Synchronize
      */
     sync(callback: (err: any, result: SyncResult) => void) {
-        UserAnimation.findById(this.localUserAnim._id, (err, remoteUserAnim) => {
+        Sync.findById(this.localSync._id, (err, remoteUserAnim) => {
             if (err) return callback(err, this.syncResult);
 
-            this.remoteUserAnim = remoteUserAnim;
-            Animation.find({ _id: { $in: remoteUserAnim.animationIds }}, (err, remoteAnimations) => {
+            this.serverSync = remoteUserAnim;
+            Animation.find({ _id: { $in: this.serverSync.animationIds }}, (err, remoteAnimations) => {
                 if (err) return callback(err, this.syncResult);
 
-                this.remoteAnimations = remoteAnimations;
+                this.serverAnimations = remoteAnimations;
                 this.checkDateModified();
                 this.checkDeleted();
 
@@ -85,13 +78,9 @@ export class Synchronizer {
     }
 
     private checkDateModified() {
-        for(let i = 0; i < this.remoteAnimations.length; i++) {
-            let event = new SyncEvent();
-            let remote = this.remoteAnimations[i];
-            
-            event.animationId = remote._id;
-            event.action = SyncAction.Ok;
-            event.localId = remote.localId;
+        for(let i = 0; i < this.serverAnimations.length; i++) {
+            let remote = this.serverAnimations[i];
+            let event = new SyncEvent(SyncAction.Ok, remote._id, remote.localId);
 
             let localExists = false;
             for (let j = 0; j < this.localAnimations.length; j++) {
@@ -117,14 +106,11 @@ export class Synchronizer {
     } // end sync()
 
     private checkDeleted() {
-        if (this.remoteUserAnim.dateModified > this.localUserAnim.dateModified) {
+        if (this.serverSync.dateModified > this.localSync.dateModified) {
             // check remote
-            for (let i = 0; i < this.remoteUserAnim.animationIds.length; i++) {
-                let remoteAnim = this.remoteUserAnim.animationIds[i];
-                let event = new SyncEvent();
-                event.animationId = remoteAnim;
-                event.action = SyncAction.Ok;
-                //event.localId = 'remote.localId';
+            for (let i = 0; i < this.serverSync.animationIds.length; i++) {
+                let remoteAnim = this.serverSync.animationIds[i];
+                let event = new SyncEvent(SyncAction.Ok, remoteAnim);
 
                 let foundLocal = false;
                 for (let j = 0; j < this.localAnimations.length; j++) {
@@ -144,18 +130,15 @@ export class Synchronizer {
                     this.syncResult.events.push(event);
             }
         }
-        else if (this.remoteUserAnim.dateModified < this.localUserAnim.dateModified) {
+        else if (this.serverSync.dateModified < this.localSync.dateModified) {
             // check local
             for (let i = 0; i < this.localAnimations.length; i++) {
                 let localAnim = this.localAnimations[i];
-                let event = new SyncEvent();
-                event.animationId = localAnim._id;
-                event.action = SyncAction.Ok;
-                event.localId = localAnim.localId;
+                let event = new SyncEvent(SyncAction.Ok, localAnim._id, localAnim.localId);
 
                 let foundRemote = false;
-                for (let j = 0; j < this.remoteUserAnim.animationIds.length; j++) {
-                    let remoteAnim = this.remoteUserAnim.animationIds[j];
+                for (let j = 0; j < this.serverSync.animationIds.length; j++) {
+                    let remoteAnim = this.serverSync.animationIds[j];
                     if (localAnim._id === remoteAnim) {
                         foundRemote = true;
                         break;

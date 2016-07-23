@@ -1,15 +1,17 @@
 import * as express from "express";
-import { IUserAnimation, UserAnimation, ILocalUserAnimation } from "../models/user-animation";
+import { IServerSync, Sync, ILocalSync } from "../models/sync";
 import { Synchronizer } from "../libs/synchronizer";
 
 export function sync(req: any, res: express.Response, next: express.NextFunction) {
     let userId = req.user._id;
-    let localUserAnim: ILocalUserAnimation = req.body.userAnimation;
-    if (!localUserAnim) return next(400);
+    let localSync: ILocalSync = req.body;
+    if (!localSync) return next(400);
+    
+    localSync._id = userId;  // force it
+    if (!localSync.animationIds || !localSync.dateModified)
+        return next(400);
 
-    localUserAnim._id = userId;  // force it
-
-    var synchronizer = new Synchronizer(localUserAnim);
+    var synchronizer = new Synchronizer(localSync);
     synchronizer.sync((err, syncResult) => {
         if (err) return next(err);
         

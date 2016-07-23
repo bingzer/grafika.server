@@ -7,40 +7,47 @@
 </head>
 <body style="font-family: Arial, sans-serif;">
 <td bgcolor="#ffffff" style="padding: 40px 30px 40px 30px;">
-  <table border="0" cellpadding="0" cellspacing="0" width="100%">
-    <tr>
-      <td colspan="3">
-        <img src="https://s3.amazonaws.com/bingzer/grafika/logo-dark.png" alt="Grafika logo"/>
-      </td>
+  <table cellpadding="0" cellspacing="0" width="100%" style="border-collapse: collapse; border: 1px solid #008080">
+    <tr style="background-color: #008080">
+      <th colspan="3" height="64" style="padding: 8px">
+        <img src="https://s3.amazonaws.com/bingzer/grafika/logo.png" alt="Grafika logo"/>
+      </th>
     </tr>
     <tr>
       <td colspan="3">
-        <div style="margin: 16px">
+        <div style="margin: 16px; margin-bottom: 56px">
           <p>
-            Hi {{email.user}}, thank you for verifying your email account.<br/>
+            Hi {{email.user}}, <br/><br/>
+            thank you for verifying your email account.<br/>
             Next step is to create your password so that you can start using the app!<br/>
           </p>
           <p>
-            Click the link below to navigate to the StickDraw's web site to create your password:<br/>
+            Click the link below to navigate to the Grafika's web site to create your password:<br/>
             <a href="{{email.link}}">Verify my account</a>
           </p>
           <p>
-            <br/><br/><br/>
+            <br/><br/>
             Thanks,<br/><br/><br/>
-            StickDraw Team
+            Grafika Team
           </p>
         </div>
       </td>
     </tr>
-    <tr style="margin-top: 48px">
+    <tr style="background-color: #008080; margin-top: 48px">
       <td>
-        <div style="margin: 16px; font-size: small; font-weight: 300"><a href="{{email.privacyUrl}}">Privacy</a></div>
+        <div style="margin: 16px; font-size: small; font-weight: 300">
+            <a style="color: #ffffff;" href="{{email.privacyUrl}}">Privacy</a>
+        </div>
       </td>
       <td>
-        <div style="margin: 16px; font-size: small; font-weight: 300"><a href="{{email.homeUrl}}">StickDraw</a></div>
+        <div style="color: #ffffff; margin: 16px; font-size: small; font-weight: 300; text-align: center">
+            <a style="color: #ffffff;" href="{{email.homeUrl}}">Grafika</a>
+        </div>
       </td>
       <td>
-        <div style="margin: 16px; font-size: small; font-weight: 300">StickDraw Team</div>
+        <div style="color: #ffffff; margin: 16px; font-size: small; font-weight: 300; text-align: right;">
+            <a style="color: #ffffff; text-align: right" href="mailto:grafika@bingzer.com">Grafika Team</a>
+        </div>
       </td>
     </tr>
   </table>

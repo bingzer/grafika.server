@@ -2,11 +2,13 @@
 var synchronizer_1 = require("../libs/synchronizer");
 function sync(req, res, next) {
     var userId = req.user._id;
-    var localUserAnim = req.body.userAnimation;
-    if (!localUserAnim)
+    var localSync = req.body;
+    if (!localSync)
         return next(400);
-    localUserAnim._id = userId;
-    var synchronizer = new synchronizer_1.Synchronizer(localUserAnim);
+    localSync._id = userId;
+    if (!localSync.animationIds || !localSync.dateModified)
+        return next(400);
+    var synchronizer = new synchronizer_1.Synchronizer(localSync);
     synchronizer.sync(function (err, syncResult) {
         if (err)
             return next(err);

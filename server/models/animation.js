@@ -1,7 +1,7 @@
 "use strict";
 var mongoose = require('mongoose');
 var restful = require('../libs/restful');
-var user_animation_1 = require('./user-animation');
+var sync_1 = require('./sync');
 exports.AnimationSchema = new mongoose.Schema({
     localId: { type: String },
     name: { type: String, required: true },
@@ -21,12 +21,12 @@ exports.AnimationSchema = new mongoose.Schema({
     frames: { type: [], select: false }
 });
 exports.AnimationSchema.post('save', function (animation, next) {
-    user_animation_1.createOrUpdateUserAnimation(animation.userId, animation._id, function (err, any) {
+    sync_1.createOrUpdateSync(animation.userId, animation._id, function (err, any) {
         next(err);
     });
 });
 exports.AnimationSchema.post('remove', function (animation, next) {
-    user_animation_1.deleteUserAnimation(animation.userId, animation._id, function (err) {
+    sync_1.deleteSync(animation.userId, animation._id, function (err) {
         next(err);
     });
 });

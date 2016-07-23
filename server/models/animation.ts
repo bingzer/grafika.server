@@ -1,6 +1,6 @@
 import * as mongoose from 'mongoose';
 import restful = require('../libs/restful');
-import { UserAnimation, createOrUpdateUserAnimation, deleteUserAnimation } from './user-animation';
+import { ISync, createOrUpdateSync, deleteSync } from './sync';
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -35,12 +35,12 @@ export const AnimationSchema = new mongoose.Schema({
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 AnimationSchema.post('save', (animation: IAnimation, next) => {
-    createOrUpdateUserAnimation(animation.userId, animation._id, (err, any) => {
+    createOrUpdateSync(animation.userId, animation._id, (err, any) => {
         next(err);
     });
 });
 AnimationSchema.post('remove', (animation: IAnimation, next) => {
-    deleteUserAnimation(animation.userId, animation._id, (err) => {
+    deleteSync(animation.userId, animation._id, (err) => {
         next(err);
     });
 })
