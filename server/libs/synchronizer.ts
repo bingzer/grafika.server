@@ -29,7 +29,7 @@ export class SyncEvent {
     constructor(
         public action: SyncAction, 
         public animationId: string, 
-        public localId?: string)
+        public localId: string)
     {
         // nothing
     }
@@ -37,9 +37,23 @@ export class SyncEvent {
 
 export class SyncResult {
     /**
+     * Client id
+     */
+    clientId: string,
+
+    /**
+     * Sync date
+     */
+    syncDate: number = Date.now();
+
+    /**
      * Collections of events need to be done
      */
     events: SyncEvent[] = [];
+
+    constructor(clientId: string) {
+        this.clientId = clientId;
+    }
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -50,21 +64,23 @@ export class Synchronizer {
     private localAnimations: Grafika.IAnimation[];
     private serverSync: IServerSync;
     private serverAnimations: Grafika.IAnimation[];
-    private syncResult: SyncResult = new SyncResult();
+    private syncResult: SyncResult;
 
-    constructor(localUserAnim: ILocalSync){
-        this.localSync = localUserAnim;
-        this.localAnimations = localUserAnim.animations;
+    constructor(localSync: ILocalSync){
+        this.localSync = localSync;
+        this.localAnimations = localSync.animations;
+        this.syncResult = new SyncResult(localSync.clientId);
     }
 
     /**
      * Synchronize
      */
     sync(callback: (err: any, result: SyncResult) => void) {
-        Sync.findById(this.localSync._id, (err, remoteUserAnim) => {
+        Sync.findById(this.localSync._id, (err, serverSync) => {
             if (err) return callback(err, this.syncResult);
+            if (!serverSync) return callback(err, this.syncResult);
 
-            this.serverSync = remoteUserAnim;
+            this.serverSync = serverSync;
             Animation.find({ _id: { $in: this.serverSync.animationIds }}, (err, remoteAnimations) => {
                 if (err) return callback(err, this.syncResult);
 
@@ -108,15 +124,14 @@ export class Synchronizer {
     private checkDeleted() {
         if (this.serverSync.dateModified > this.localSync.dateModified) {
             // check remote
-            for (let i = 0; i < this.serverSync.animationIds.length; i++) {
-                let remoteAnim = this.serverSync.animationIds[i];
-                let event = new SyncEvent(SyncAction.Ok, remoteAnim);
+            for (let i = 0; i < this.serverAnimations.length; i++) {
+                let remoteAnim = this.serverAnimations[i];
+                let event = new SyncEvent(SyncAction.Ok, remoteAnim._id, remoteAnim.localId);
 
                 let foundLocal = false;
                 for (let j = 0; j < this.localAnimations.length; j++) {
                     let localAnim = this.localAnimations[j];
                     if (remoteAnim === localAnim._id) {
-                        event.localId = localAnim.localId;
                         foundLocal = true;
                         break;
                     }
@@ -127,7 +142,7 @@ export class Synchronizer {
                 }
 
                 if (event.action != SyncAction.Ok)
-                    this.syncResult.events.push(event);
+                    this.addSyncEvent(event);
             }
         }
         else if (this.serverSync.dateModified < this.localSync.dateModified) {
@@ -150,9 +165,18 @@ export class Synchronizer {
                 }
 
                 if (event.action != SyncAction.Ok)
-                    this.syncResult.events.push(event);
+                    this.addSyncEvent(event);
             }
         }
 
     }// end checkDeleted
+
+    private addSyncEvent(event: SyncEvent) {
+        for (let i = 0; i < this.syncResult.events.length; i++) {
+            if (this.syncResult.events[i].animationId == event.animationId)
+                return;
+        }
+
+        this.syncResult.events.push(event);
+    }
 }

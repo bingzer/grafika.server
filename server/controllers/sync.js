@@ -6,7 +6,7 @@ function sync(req, res, next) {
     if (!localSync)
         return next(400);
     localSync._id = userId;
-    if (!localSync.animationIds || !localSync.dateModified)
+    if (!localSync.animations || !localSync.dateModified || !localSync.clientId)
         return next(400);
     var synchronizer = new synchronizer_1.Synchronizer(localSync);
     synchronizer.sync(function (err, syncResult) {

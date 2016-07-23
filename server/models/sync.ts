@@ -15,7 +15,8 @@ export interface IServerSync extends ISync {
 }
 
 export interface ILocalSync extends ISync {
-    animations: Grafika.IAnimation[]
+    clientId           : string,
+    animations         : Grafika.IAnimation[]
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////

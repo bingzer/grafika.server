@@ -61,6 +61,10 @@ Animation.before('post', (req, res, next) => {
     
     next();
 });
+Animation.before('put', (req, res, next) => {
+    req.body.totalFrame = req.body.frames ? req.body.frames.length : 0;
+    next();
+});
 // -- Frames
 Animation.route('frames', {
     detail: true,

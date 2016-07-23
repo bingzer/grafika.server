@@ -45,6 +45,10 @@ Animation.before('post', function (req, res, next) {
     delete req.body._id;
     next();
 });
+Animation.before('put', function (req, res, next) {
+    req.body.totalFrame = req.body.frames ? req.body.frames.length : 0;
+    next();
+});
 Animation.route('frames', {
     detail: true,
     handler: function (req, res, next) {

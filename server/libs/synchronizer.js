@@ -18,24 +18,28 @@ var SyncEvent = (function () {
 }());
 exports.SyncEvent = SyncEvent;
 var SyncResult = (function () {
-    function SyncResult() {
+    function SyncResult(clientId) {
+        this.syncDate = Date.now();
         this.events = [];
+        this.clientId = clientId;
     }
     return SyncResult;
 }());
 exports.SyncResult = SyncResult;
 var Synchronizer = (function () {
-    function Synchronizer(localUserAnim) {
-        this.syncResult = new SyncResult();
-        this.localSync = localUserAnim;
-        this.localAnimations = localUserAnim.animations;
+    function Synchronizer(localSync) {
+        this.localSync = localSync;
+        this.localAnimations = localSync.animations;
+        this.syncResult = new SyncResult(localSync.clientId);
     }
     Synchronizer.prototype.sync = function (callback) {
         var _this = this;
-        sync_1.Sync.findById(this.localSync._id, function (err, remoteUserAnim) {
+        sync_1.Sync.findById(this.localSync._id, function (err, serverSync) {
             if (err)
                 return callback(err, _this.syncResult);
-            _this.serverSync = remoteUserAnim;
+            if (!serverSync)
+                return callback(err, _this.syncResult);
+            _this.serverSync = serverSync;
             animation_1.Animation.find({ _id: { $in: _this.serverSync.animationIds } }, function (err, remoteAnimations) {
                 if (err)
                     return callback(err, _this.syncResult);
@@ -71,14 +75,13 @@ var Synchronizer = (function () {
     };
     Synchronizer.prototype.checkDeleted = function () {
         if (this.serverSync.dateModified > this.localSync.dateModified) {
-            for (var i = 0; i < this.serverSync.animationIds.length; i++) {
-                var remoteAnim = this.serverSync.animationIds[i];
-                var event_2 = new SyncEvent(SyncAction.Ok, remoteAnim);
+            for (var i = 0; i < this.serverAnimations.length; i++) {
+                var remoteAnim = this.serverAnimations[i];
+                var event_2 = new SyncEvent(SyncAction.Ok, remoteAnim._id, remoteAnim.localId);
                 var foundLocal = false;
                 for (var j = 0; j < this.localAnimations.length; j++) {
                     var localAnim = this.localAnimations[j];
                     if (remoteAnim === localAnim._id) {
-                        event_2.localId = localAnim.localId;
                         foundLocal = true;
                         break;
                     }
@@ -87,7 +90,7 @@ var Synchronizer = (function () {
                     event_2.action = SyncAction.ClientPull;
                 }
                 if (event_2.action != SyncAction.Ok)
-                    this.syncResult.events.push(event_2);
+                    this.addSyncEvent(event_2);
             }
         }
         else if (this.serverSync.dateModified < this.localSync.dateModified) {
@@ -106,9 +109,16 @@ var Synchronizer = (function () {
                     event_3.action = SyncAction.ClientPush;
                 }
                 if (event_3.action != SyncAction.Ok)
-                    this.syncResult.events.push(event_3);
+                    this.addSyncEvent(event_3);
             }
         }
+    };
+    Synchronizer.prototype.addSyncEvent = function (event) {
+        for (var i = 0; i < this.syncResult.events.length; i++) {
+            if (this.syncResult.events[i].animationId == event.animationId)
+                return;
+        }
+        this.syncResult.events.push(event);
     };
     return Synchronizer;
 }());
