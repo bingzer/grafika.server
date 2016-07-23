@@ -39,7 +39,7 @@ export class SyncResult {
     /**
      * Client id
      */
-    clientId: string,
+    clientId: string;
 
     /**
      * Sync date
