@@ -1,5 +1,8 @@
 import * as mongoose from 'mongoose';
 import restful = require('../libs/restful');
+import { ISync, createOrUpdateSync, deleteSync } from './sync';
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 export interface IAnimation extends Grafika.IAnimation, mongoose.Document {
 }
@@ -29,6 +32,21 @@ export const AnimationSchema = new mongoose.Schema({
     frames       : { type: [], select: false }
 });
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+AnimationSchema.post('save', (animation: IAnimation, next) => {
+    createOrUpdateSync(animation.userId, animation._id, (err, any) => {
+        next(err);
+    });
+});
+AnimationSchema.post('remove', (animation: IAnimation, next) => {
+    deleteSync(animation.userId, animation._id, (err) => {
+        next(err);
+    });
+})
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 var Animation = <restful.IModel<IAnimation>> restful.model('animations', AnimationSchema);
 Animation.methods(['get', 'put', 'post', 'delete']);
 Animation.before('post', (req, res, next) => {
@@ -41,6 +59,10 @@ Animation.before('post', (req, res, next) => {
 
     delete req.body._id;
     
+    next();
+});
+Animation.before('put', (req, res, next) => {
+    req.body.totalFrame = req.body.frames ? req.body.frames.length : 0;
     next();
 });
 // -- Frames
@@ -70,5 +92,7 @@ Animation.route('resources', {
         next();
     }
 });
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 export { Animation };

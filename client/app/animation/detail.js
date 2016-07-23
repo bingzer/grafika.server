@@ -20,14 +20,7 @@ var GrafikaApp;
         };
         AnimationDetailController.prototype.editData = function (ev) {
             var _this = this;
-            this.appCommon.$mdDialog.show({
-                controller: 'AnimationEditController',
-                controllerAs: 'vm',
-                parent: angular.element(document.body),
-                templateUrl: '/app/animation/edit.html',
-                clickOutsideToClose: true,
-                targetEvent: ev
-            }).then(function () { return _this.load(); });
+            this.appCommon.showDialog('AnimationEditController', '/app/animation/edit.html', ev).then(function () { return _this.load(); });
         };
         AnimationDetailController.prototype.delete = function () {
             var _this = this;

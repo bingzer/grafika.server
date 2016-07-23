@@ -43,7 +43,7 @@ var methods = ['get', 'post', 'put', 'delete'], endpoints = ['get', 'post', 'put
         remove_options: {},
         templateRoot: '',
         shouldIncludeSchema: true,
-        shouldUseAtomicUpdate: true
+        shouldUseAtomicUpdate: false
     };
 };
 function model() {

@@ -1,12 +1,17 @@
 declare namespace Grafika {    
     interface IUser {
+        _id: string | any;
         email: string;
         username: string;
         firstName: string;
         lastName: string;
-        dateCreated: Date;
-        dateModified: Date;
+        dateCreated: number;
+        dateModified: number;
         active: boolean;
         roles: string[];
+    }
+
+    interface IUserPreference {
+        
     }
 }

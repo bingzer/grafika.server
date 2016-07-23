@@ -31,7 +31,9 @@ declare namespace Grafika {
         setOptions(options: Grafika.IOption);
         setCallback(callback: ICallback);
 
+        // ---------------------- //
         exts: IExtension;
+        demo: any;
     }
     
     /**
@@ -77,6 +79,7 @@ declare namespace Grafika {
         graphicFill?: boolean;
         useCarbonCopy?: boolean;
         useNavigationText?: boolean;
+        loop?: boolean;
         drawingMode?: string;
         debugMode?: boolean;
     }

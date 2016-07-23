@@ -7,6 +7,28 @@ html, body {
 .transparent {
 	background: transparent !important;
 }
+.text-center-vertical{
+	top: 0;
+	bottom: 0;
+	margin-top: auto;
+	margin-bottom: auto;
+}
+.text-muted {
+	color: gray;
+}
+
+/* ---------- FAB ----------- */
+.md-fab {
+	position: absolute; 
+	right: 16; 
+	bottom: 64;
+}
+@media (max-width: 599px) {
+	.md-fab { 
+		bottom: 156;
+	}	
+}
+
 
 /* ---------- Dialog ------------ */
 md-dialog {
@@ -129,7 +151,7 @@ md-dialog {
 	left: 0;
 	width: 100%;
 	color: #ffffff;
-	min-height: 24px;
+	height: 48px;
 }
 .playback-footer {
 	background-color: rgba(0,0,0,0.3);
@@ -138,7 +160,7 @@ md-dialog {
 	left: 0;
 	width: 100%;
 	color: #ffffff;
-	min-height: 24px;
+	height: 48px;
 }
 /** Popup menu */
 /*.md-panel-outer-wrapper {

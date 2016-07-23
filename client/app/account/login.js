@@ -11,11 +11,7 @@ var GrafikaApp;
             _super.call(this, appCommon, authService);
         }
         LoginController.prototype.register = function () {
-            this.appCommon.$mdDialog.show({
-                controller: 'RegisterController',
-                controllerAs: 'vm',
-                templateUrl: 'app/account/register.html'
-            });
+            return this.appCommon.showDialog('RegisterController', 'app/account/register.html');
         };
         LoginController.prototype.login = function (provider) {
             var _this = this;
@@ -31,6 +27,9 @@ var GrafikaApp;
             })
                 .then(function () {
                 return _this.appCommon.hideLoadingModal();
+            })
+                .catch(function (res) {
+                return _this.appCommon.toastError(res);
             })
                 .finally(function () {
                 _this.reset();

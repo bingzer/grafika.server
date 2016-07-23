@@ -5,8 +5,8 @@ module GrafikaApp {
         username: string;
         firstName: string;
         lastName: string;
-        dateCreated: Date;
-        dateModified: Date;
+        dateCreated: number;
+        dateModified: number;
         active: boolean;
         roles: string[];
 

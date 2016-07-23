@@ -47,7 +47,7 @@ module GrafikaApp {
     /**
      * Dialog controller
      */
-    export class DialogController extends BaseController {
+    export abstract class DialogController extends BaseController {
         constructor(appCommon: AppCommon){
             super(appCommon)
         }

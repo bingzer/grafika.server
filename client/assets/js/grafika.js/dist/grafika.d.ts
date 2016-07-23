@@ -31,7 +31,9 @@ declare namespace Grafika {
         setOptions(options: Grafika.IOption);
         setCallback(callback: ICallback);
 
+        // ---------------------- //
         exts: IExtension;
+        demo: any;
     }
     
     /**
@@ -48,8 +50,8 @@ declare namespace Grafika {
         width: number;
         height: number;
 
-        dateCreated: Date;
-        dateModified: Date;
+        dateCreated: number;
+        dateModified: number;
 
         views: number;
         rating: number;
@@ -77,6 +79,7 @@ declare namespace Grafika {
         graphicFill?: boolean;
         useCarbonCopy?: boolean;
         useNavigationText?: boolean;
+        loop?: boolean;
         drawingMode?: string;
         debugMode?: boolean;
     }

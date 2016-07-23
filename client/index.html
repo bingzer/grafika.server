@@ -5,47 +5,21 @@
 <base href="/">
 <!-- Angular Material style sheet -->
 
-<link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons"/>
-<link rel="stylesheet" href="//fonts.googleapis.com/css?family=RobotoDraft:300,400,500,700,400italic"/>
-<link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/angular_material/1.1.0-rc2/angular-material.min.css"/>
-<link type="text/css" href="/assets/css/site.css" rel="stylesheet"/>
+<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/icon?family=Material+Icons"/>
+<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=RobotoDraft:300,400,500,700,400italic"/>
+<link rel="stylesheet" type="text/css" href="//ajax.googleapis.com/ajax/libs/angular_material/1.1.0-rc2/angular-material.min.css"/>
+<link rel="stylesheet" type="text/css" href="/assets/js/spectrum/spectrum.css"/>
+<link rel="stylesheet" type="text/css" href="/assets/css/site.css"/>
 </head>
 <body ng-controller="MainController as vm">
 	
 	<md-content layout="column" layout-fill>	
 		<!-- Header -->
 		<ng-include src="'/app/layout/header.html'"></ng-include>
-		
 		<!-- Main content -->
 		<div ui-view id="content" class="content"></div>
-
 		<!-- Footer -->
-		<footer id="footer" class="footer" layout="row">
-			<div layout="column" flex>
-				<md-divider></md-divider>
-				<div class="footer-content" layout="row" layout-sm="column" layout-margin>
-					<span ng-bind="'© 2015'"></span>
-					<span hide-sm vertical-divider-space></span>
-					
-					<span><a href="/">Grafika</a></span>
-					<span hide-sm vertical-divider-space></span>	
-					<span><a href="/about">About</a></span>
-					<span hide-sm vertical-divider-space></span>	
-					<span><a href="/about/feedback">Feedback</a></span>
-					<span hide-sm vertical-divider-space></span>
-					
-					<span flex></span>
-					
-					<span><a href="/help">Help</a></span>
-					<span hide-sm vertical-divider-space></span>	
-					<span><a href="/eula">Terms</a></span>
-					<span hide-sm vertical-divider-space></span>	
-					<span><a href="/privacy-policy">Privacy</a></span>
-					<span hide-sm vertical-divider-space></span>	
-					<span ng-bind="'v' + vm.getAppVersion()"></span>
-				</div>
-			</div>
-		</footer>
+		<ng-include src="'/app/layout/footer.html'"></ng-include>
 	</md-content>
 
 <script type="text/javascript"  src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
@@ -60,12 +34,15 @@
 <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angular_material/1.1.0-rc.5/angular-material.min.js"></script>
 
 <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.3.1/angular-ui-router.js"></script>
-<script type="text/javascript" src="https://cdn.rawgit.com/auth0/angular-jwt/master/dist/angular-jwt.js"></script>
+<script type="text/javascript" src="//cdn.rawgit.com/auth0/angular-jwt/master/dist/angular-jwt.js"></script>
+
+<script type="text/javascript" src="/assets/js/spectrum/spectrum.js"></script>
+<script type="text/javascript" src="/assets/js/angular-spectrum-colorpicker/angular-spectrum-colorpicker.min.js"></script>
 
 <!--<script type="text/javascript" src="/assets/js/grafika.js/dist/grafika-core.min.js"></script>-->
 <script type="text/javascript" src="/assets/js/grafika.js/src/grafika.js"></script>
 <script type="text/javascript" src="/assets/js/grafika.js/src/grafika.extensions.js"></script>
-<!--<script type="text/javascript" src="/assets/js/grafika.js/src/grafika.demo.min.js"></script>-->
+<script type="text/javascript" src="/assets/js/grafika.js/dist/grafika.demo.min.js"></script>
 
 <script type="text/javascript" src="/app/app-routes.js"></script>
 <script type="text/javascript" src="/app/app-themes.js"></script>
@@ -79,6 +56,7 @@
 <script type="text/javascript" src="/app/services/animation-service.js"></script>
 <script type="text/javascript" src="/app/services/frame-service.js"></script>
 <script type="text/javascript" src="/app/services/resource-service.js"></script>
+<script type="text/javascript" src="/app/services/user-service.js"></script>
 
 <script type="text/javascript" src="/app/filters/keyboard.js"></script>
 
@@ -93,16 +71,18 @@
 <script type="text/javascript" src="/app/animation/mine.js"></script>
 <script type="text/javascript" src="/app/animation/playback.js"></script>
 
-<script type="text/javascript" src="app/account/login.js"></script>
-<script type="text/javascript" src="app/account/register.js"></script>
-<script type="text/javascript" src="app/account/forget.js"></script>
-<script type="text/javascript" src="app/account/reset.js"></script>
+<script type="text/javascript" src="/app/account/login.js"></script>
+<script type="text/javascript" src="/app/account/register.js"></script>
+<script type="text/javascript" src="/app/account/forget.js"></script>
+<script type="text/javascript" src="/app/account/reset.js"></script>
+<script type="text/javascript" src="/app/account/profile.js"></script>
+<script type="text/javascript" src="/app/account/password.js"></script>
 
-<script type="text/javascript" src="app/content/content.js"></script>
+<script type="text/javascript" src="/app/content/content.js"></script>
 
-<script type="text/javascript" src="app/models/user.js"></script>
-<script type="text/javascript" src="app/models/animation.js"></script>
-<script type="text/javascript" src="app/models/paging.js"></script>
+<script type="text/javascript" src="/app/models/user.js"></script>
+<script type="text/javascript" src="/app/models/animation.js"></script>
+<script type="text/javascript" src="/app/models/paging.js"></script>
 
 <script type="text/javascript" src="/app/app.js"></script>
 

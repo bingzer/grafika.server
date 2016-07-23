@@ -21,7 +21,7 @@
  * Supported browser: IE9 > up, chrome, edge
  */
 var Grafika = function (){	
-	var GRAFIKA_VERSION = '0.10.1';
+	var GRAFIKA_VERSION = '0.10.4';
 	
     // ---------------------------------------------------------- Constants -------------------------------------//
     var MODE_NONE = 'none', MODE_PAINT = 'paint', MODE_MOVE = 'move', MODE_SELECT = 'select', MODE_DELETE = 'delete';		

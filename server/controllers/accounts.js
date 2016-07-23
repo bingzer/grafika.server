@@ -63,6 +63,11 @@ function changePassword(req, res, next) {
 }
 exports.changePassword = changePassword;
 ;
+function checkUsernameAvailability(req, res, next) {
+    user_1.checkAvailability(req.body)
+        .then(function () { return res.sendStatus(200); }, function () { return next("Username is taken"); });
+}
+exports.checkUsernameAvailability = checkUsernameAvailability;
 function resetPassword(req, res, next) {
     var userInfo = req.body;
     user_1.User.findOne(user_1.userQuery(userInfo.email), function (err, user) {

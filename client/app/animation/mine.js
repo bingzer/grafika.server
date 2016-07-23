@@ -19,16 +19,8 @@ var GrafikaApp;
         };
         MyAnimationsController.prototype.create = function (ev) {
             var _this = this;
-            var useFullScreen = (this.appCommon.$mdMedia('sm') || this.appCommon.$mdMedia('xs'));
-            this.appCommon.$mdDialog.show({
-                controller: 'AnimationCreateController',
-                controllerAs: 'vm',
-                parent: angular.element(document.body),
-                templateUrl: '/app/animation/create.html',
-                clickOutsideToClose: true,
-                targetEvent: ev
-            }).then(function (answer) {
-                _this.appCommon.toast('Animation is created');
+            return this.appCommon.showDialog('AnimationCreateController', '/app/animation/create.html', ev).then(function (answer) {
+                return _this.appCommon.toast('Animation is created');
             });
         };
         MyAnimationsController.$inject = ['appCommon', 'animationService', 'authService'];

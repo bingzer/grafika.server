@@ -1,6 +1,7 @@
 "use strict";
 var mongoose = require('mongoose');
 var restful = require('../libs/restful');
+var sync_1 = require('./sync');
 exports.AnimationSchema = new mongoose.Schema({
     localId: { type: String },
     name: { type: String, required: true },
@@ -19,6 +20,16 @@ exports.AnimationSchema = new mongoose.Schema({
     totalFrame: { type: Number, default: 0 },
     frames: { type: [], select: false }
 });
+exports.AnimationSchema.post('save', function (animation, next) {
+    sync_1.createOrUpdateSync(animation.userId, animation._id, function (err, any) {
+        next(err);
+    });
+});
+exports.AnimationSchema.post('remove', function (animation, next) {
+    sync_1.deleteSync(animation.userId, animation._id, function (err) {
+        next(err);
+    });
+});
 var Animation = restful.model('animations', exports.AnimationSchema);
 exports.Animation = Animation;
 Animation.methods(['get', 'put', 'post', 'delete']);
@@ -32,6 +43,10 @@ Animation.before('post', function (req, res, next) {
         req.body.userId = req.user._id;
     req.body.totalFrame = req.body.frames ? req.body.frames.length : 0;
     delete req.body._id;
+    next();
+});
+Animation.before('put', function (req, res, next) {
+    req.body.totalFrame = req.body.frames ? req.body.frames.length : 0;
     next();
 });
 Animation.route('frames', {

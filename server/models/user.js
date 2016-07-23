@@ -4,16 +4,13 @@ var restful = require('../libs/restful');
 var $q = require('q');
 var bcrypt = require('bcrypt-nodejs');
 var crypto = require('crypto-js');
-function randomUsername() {
-    return 'user-' + (("000000" + (Math.random() * Math.pow(36, 6) << 0).toString(36)).slice(-6));
-}
 exports.UserSchema = new mongoose.Schema({
     firstName: String,
     lastName: String,
     username: { type: String, lowercase: true, trim: true, required: true, default: randomUsername() },
     email: { type: String, lowercase: true, trim: true, required: true },
-    dateCreated: { type: Date, default: new Date() },
-    dateModified: { type: Date, default: new Date() },
+    dateCreated: { type: Number, required: true },
+    dateModified: { type: Number, required: true },
     active: { type: Boolean, default: false },
     roles: { type: [String], default: ['user'] },
     local: {
@@ -68,6 +65,7 @@ exports.UserSchema.methods.sanitize = function () {
 };
 var User = restful.model('users', exports.UserSchema);
 exports.User = User;
+User.methods(['get', 'put']);
 function sanitize(user) {
     var lean = user;
     if (user.toObject) {
@@ -82,7 +80,11 @@ function sanitize(user) {
 exports.sanitize = sanitize;
 function checkAvailability(user) {
     var deferred = $q.defer();
-    User.findOne({ email: { $ne: user.email } }, function (err, user) {
+    var query = {
+        username: user.username,
+        email: { $ne: user.email }
+    };
+    User.findOne(query, function (err, user) {
         if (err || user)
             deferred.reject('failed');
         else
@@ -103,8 +105,8 @@ function ensureAdminExists() {
             admin.firstName = 'grafika';
             admin.lastName = 'admin';
             admin.email = 'grafika@bingzer.com';
-            admin.dateCreated = new Date();
-            admin.dateModified = new Date();
+            admin.dateCreated = Date.now();
+            admin.dateModified = Date.now();
             admin.active = true;
             admin.local.registered = true;
             admin.local.password = admin.generateHash('password');
@@ -115,4 +117,8 @@ function ensureAdminExists() {
 }
 exports.ensureAdminExists = ensureAdminExists;
 ;
+function randomUsername() {
+    return 'user-' + (("000000" + (Math.random() * Math.pow(36, 6) << 0).toString(36)).slice(-6));
+}
+exports.randomUsername = randomUsername;
 //# sourceMappingURL=user.js.map

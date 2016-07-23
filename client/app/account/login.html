@@ -30,7 +30,7 @@
 		</md-input-container>
 		<div layout-wrap layout="row" layout-align="end center">
 			<md-button class="md-raised" ng-click="vm.register()">Register</md-button>
-			<md-button ng-show="!vm.isRegistering" class="md-raised md-primary" ng-click="vm.login()">Login</md-button>
+			<md-button ng-show="!vm.isRegistering" class="md-raised md-primary" ng-click="vm.login()" ng-disabled="!vm.username || !vm.password">Login</md-button>
 		</div>
 	</div>
 </form>

@@ -3,8 +3,11 @@ import * as expressJwt from 'express-jwt';
 import * as mongoose from 'mongoose';
 import * as winston from 'winston';
 
-import * as accountController from '../controllers/accounts';
+import * as accountController   from '../controllers/accounts';
 import * as resourcesController from '../controllers/resources';
+import * as userController      from '../controllers/users';
+import * as syncController      from '../controllers/sync';
+
 import * as config from '../configs/config';
 import { Animation } from '../models/animation';
 import { User } from '../models/user';
@@ -138,9 +141,10 @@ export function initialize(app) {
     app.post('/api/accounts', accountController.login)
     app.post('/api/accounts/logout', accountController.logout);
     app.post('/api/accounts/authenticate', accountController.authenticate);
-    app.post('/api/accounts/pwd', useSession, accountController.changePassword);
-    app.post('/api/accounts/pwd/reset', accountController.resetPassword);
     app.post('/api/accounts/register', accountController.register);
+    app.post('/api/accounts/pwd/reset', accountController.resetPassword);
+    app.post('/api/accounts/pwd', useSessionOrJwt, accountController.changePassword);
+    app.post('/api/accounts/username-check', useSessionOrJwt, accountController.checkUsernameAvailability)
     
     // ---------------- Animation -----------------------------//
     app.get('/api/animations');  // List => use nothing
@@ -150,6 +154,12 @@ export function initialize(app) {
     app.delete('/api/animations/', useSessionOrJwt, useAnimAccess); // delete
     app.get('/api/animations/:_id/frames', extractUser, useAnimAccess); // get frames
     app.post('/api/animations/:_id/frames', useSessionOrJwt, useAnimAccess);
+    // --------------- Sync Stuffs -------------------------//
+    app.post('/api/animations/sync', useSessionOrJwt, syncController.sync);
+
+    // ---------------- Users -----------------------------//
+    app.get('/api/users/:_id', useSessionOrJwt, userController.get);
+    app.put('/api/users/:_id', useSessionOrJwt, userController.update);
 
     // ---------------- Thumbnail -----------------------------//
     app.get('/api/animations/:animationId/thumbnail', /* extractUser, useAnimAccess, */ resourcesController.getThumbnail);

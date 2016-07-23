@@ -2,7 +2,13 @@
     <div ng-include="'/app/animation/playback.html'"></div>
 
     <div layout="column" layout-margin>
-        <p class="md-title">{{vm.animation.name}}</p>
+        <div class="md-title" flex>
+            <span>{{vm.animation.name}}</span>
+            <span flex></span>
+            <span>
+                <a ui-sref="">{{vm.animation.author}}</a>
+            </span>
+        </div>
         <div>
             <md-button ng-show="vm.canEdit" class="md-raised" ng-click="vm.edit()">Edit</md-button>
             <md-button ng-show="vm.canEdit" class="md-raised" ng-click="vm.editData()">Edit Data</md-button>

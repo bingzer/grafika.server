@@ -21,7 +21,11 @@ module GrafikaApp {
             })
         }
 
-		save() {
+        showProperties(ev: MouseEvent) {
+            return this.appCommon.showDialog('AnimationEditController', '/app/animation/edit.html', ev).then(() => this.load());
+        }
+
+		save(exit: boolean) {
 			this.grafika.save();
 
             var animation = this.grafika.getAnimation();
@@ -30,8 +34,17 @@ module GrafikaApp {
             }).then((res) => {
                 return this.resourceService.upload(res.data, this.grafika.exts.getCanvasBlob());
             }).then((res) => {
+                if (exit) this.exit();
                 this.appCommon.toast('Successfully saved!');
             });
 		}
+
+        confirmExit() {
+            this.appCommon.confirm('Close?').then(() => this.exit());
+        }
+
+        exit() {
+            this.appCommon.$state.go('my-animations');
+        }
     }
 }
