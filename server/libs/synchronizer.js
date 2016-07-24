@@ -44,8 +44,11 @@ var Synchronizer = (function () {
                 if (err)
                     return callback(err, _this.syncResult);
                 _this.serverAnimations = remoteAnimations;
-                _this.checkDateModified();
                 _this.checkDeleted();
+                _this.checkDateModified();
+                _this.syncResult.syncDate = Date.now();
+                _this.serverSync.dateModified = _this.syncResult.syncDate;
+                _this.serverSync.save();
                 callback(err, _this.syncResult);
             });
         });
@@ -70,7 +73,7 @@ var Synchronizer = (function () {
                 event_1.action = SyncAction.ClientPull;
             }
             if (event_1.action != SyncAction.Ok)
-                this.syncResult.events.push(event_1);
+                this.addSyncEvent(event_1);
         }
     };
     Synchronizer.prototype.checkDeleted = function () {

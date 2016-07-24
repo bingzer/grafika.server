@@ -85,8 +85,12 @@ export class Synchronizer {
                 if (err) return callback(err, this.syncResult);
 
                 this.serverAnimations = remoteAnimations;
-                this.checkDateModified();
                 this.checkDeleted();
+                this.checkDateModified();
+
+                this.syncResult.syncDate = Date.now();
+                this.serverSync.dateModified = this.syncResult.syncDate;
+                this.serverSync.save();
 
                 callback(err, this.syncResult);
             });
@@ -117,7 +121,7 @@ export class Synchronizer {
             }
 
             if (event.action != SyncAction.Ok)
-                this.syncResult.events.push(event);
+                this.addSyncEvent(event);
         }
     } // end sync()
 
