@@ -131,7 +131,7 @@ export class Synchronizer {
                 let foundLocal = false;
                 for (let j = 0; j < this.localAnimations.length; j++) {
                     let localAnim = this.localAnimations[j];
-                    if (remoteAnim === localAnim._id) {
+                    if (remoteAnim._id == localAnim._id) {
                         foundLocal = true;
                         break;
                     }
@@ -152,9 +152,9 @@ export class Synchronizer {
                 let event = new SyncEvent(SyncAction.Ok, localAnim._id, localAnim.localId);
 
                 let foundRemote = false;
-                for (let j = 0; j < this.serverSync.animationIds.length; j++) {
-                    let remoteAnim = this.serverSync.animationIds[j];
-                    if (localAnim._id === remoteAnim) {
+                for (let j = 0; j < this.serverAnimations.length; j++) {
+                    let remoteAnim = this.serverAnimations[j];
+                    if (localAnim._id == remoteAnim._id) {
                         foundRemote = true;
                         break;
                     }

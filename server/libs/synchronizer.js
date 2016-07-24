@@ -81,7 +81,7 @@ var Synchronizer = (function () {
                 var foundLocal = false;
                 for (var j = 0; j < this.localAnimations.length; j++) {
                     var localAnim = this.localAnimations[j];
-                    if (remoteAnim === localAnim._id) {
+                    if (remoteAnim._id == localAnim._id) {
                         foundLocal = true;
                         break;
                     }
@@ -98,9 +98,9 @@ var Synchronizer = (function () {
                 var localAnim = this.localAnimations[i];
                 var event_3 = new SyncEvent(SyncAction.Ok, localAnim._id, localAnim.localId);
                 var foundRemote = false;
-                for (var j = 0; j < this.serverSync.animationIds.length; j++) {
-                    var remoteAnim = this.serverSync.animationIds[j];
-                    if (localAnim._id === remoteAnim) {
+                for (var j = 0; j < this.serverAnimations.length; j++) {
+                    var remoteAnim = this.serverAnimations[j];
+                    if (localAnim._id == remoteAnim._id) {
                         foundRemote = true;
                         break;
                     }
