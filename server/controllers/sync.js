@@ -9,10 +9,13 @@ function sync(req, res, next) {
     if (!localSync.animations || !localSync.dateModified || !localSync.clientId)
         return next(400);
     var synchronizer = new synchronizer_1.Synchronizer(localSync);
-    synchronizer.sync(function (err, syncResult) {
-        if (err)
-            return next(err);
+    synchronizer
+        .sync()
+        .then(function (syncResult) {
         res.send(syncResult);
+    })
+        .catch(function (err) {
+        next(err);
     });
 }
 exports.sync = sync;

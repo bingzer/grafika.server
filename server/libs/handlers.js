@@ -1,3 +1,4 @@
+"use strict";
 var _ = require('underscore');
 exports.last = function (req, res, next) {
     if (res.locals.bundle) {

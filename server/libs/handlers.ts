@@ -1,4 +1,4 @@
-var _ = require('underscore');
+import * as _ from 'underscore';
 
 /*
  * The last handler to be called in the chain of middleware
