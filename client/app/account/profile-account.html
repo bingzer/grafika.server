@@ -1,0 +1,37 @@
+<md-content class="md-padding">
+    <div class="md-block">
+        <div>
+            <img ng-src="{{vm.user.prefs.avatar}}"/>
+        </div>
+        <md-input-container md-no-float class="md-block">
+            <label>Email Address</label>
+            <input ng-model="vm.user.email" placeholder="Email Address" disabled="disabled">
+        </md-input-container>
+        <md-input-container md-no-float class="md-block">
+            <md-button class="md-raised" ng-click="vm.showPasswordDialog($event)">Set password</md-button>
+        </md-input-container>
+    </div>
+    <div class="md-block">
+        <div>
+            <md-input-container md-no-float class="md-icon-right">
+                <label>Username</label>
+                <input ng-model="vm.user.username" placeholder="Username">
+            </md-input-container>
+            <md-input-container>
+                <md-button class="md-raised" ng-click="vm.checkUsernameAvailability()">
+                    Check Availability
+                </md-button>
+            </md-input-container>
+        </div>
+        <div>
+            <md-input-container flex="45">
+                <label>First Name</label>
+                <input ng-model="vm.user.firstName" placeholder="First name">
+            </md-input-container>
+            <md-input-container flex="45">
+                <label>Last Name</label>
+                <input ng-model="vm.user.lastName" placeholder="Last name">
+            </md-input-container>
+        </div>
+    </div>
+</md-content>

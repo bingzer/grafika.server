@@ -104,9 +104,9 @@ function isAdministrator(req: any) {
 
 function handleErrors(err, req: express.Request, res: express.Response, next: express.NextFunction) {
     if (err) {
-		var status = 500;
-		var msg    = undefined;
-		var stack  = err.stack;
+		let status = 500;
+		let msg    = undefined;
+		let stack  = err.stack;
 		delete err.stack;
 		
 		if (typeof err == 'number')

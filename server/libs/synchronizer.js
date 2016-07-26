@@ -6,6 +6,7 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 var sync_1 = require('../models/sync');
 var animation_1 = require('../models/animation');
+var user_1 = require('../models/user');
 var _ = require('underscore');
 var q = require('q');
 var winston = require('winston');
@@ -133,6 +134,8 @@ var SyncProcess = (function () {
         sync_1.Sync.findById(this.localSync._id, function (err, serverSync) {
             if (err)
                 defer.reject(err);
+            if (!serverSync)
+                defer.reject('No server sync');
             else {
                 var ids = _.map(serverSync.animationIds, function (animationId) { return new mongoose.Types.ObjectId(animationId); });
                 animation_1.Animation.find({ _id: { $in: ids } }).lean(true).exec(function (err, serverAnimations) {
@@ -155,8 +158,29 @@ var Preparation = (function (_super) {
         _super.call(this, "Preparation", syncResult, localSync);
     }
     Preparation.prototype.doSync = function (defer, localSync, serverSync) {
+        var _this = this;
         this.log("Preparation");
-        defer.resolve(this.syncResult);
+        return this.checkUser(localSync._id)
+            .then(function () {
+            defer.resolve(_this.syncResult);
+        })
+            .catch(function (err) {
+            defer.reject(err);
+        });
+    };
+    Preparation.prototype.checkUser = function (userId) {
+        this.log("Check user");
+        var defer = q.defer();
+        user_1.User.findOne({ _id: userId, active: true }, function (err, user) {
+            if (err)
+                defer.reject(err);
+            else if (!user)
+                defer.reject('User not found');
+            else {
+                defer.resolve();
+            }
+        });
+        return defer.promise;
     };
     return Preparation;
 }(SyncProcess));

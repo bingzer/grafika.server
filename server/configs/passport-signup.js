@@ -56,6 +56,7 @@ var SignupStrategy = (function (_super) {
                     newUser.username = user_1.randomUsername();
                     newUser.dateCreated = Date.now();
                     newUser.dateModified = Date.now();
+                    newUser.prefs.drawingAuthor = newUser.username;
                     newUser.local.registered = true;
                     newUser.activation.hash = newUser.generateActivationHash();
                     newUser.activation.timestamp = new Date();

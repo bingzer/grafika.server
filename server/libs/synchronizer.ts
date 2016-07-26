@@ -1,5 +1,6 @@
 import { Sync, ISync, IServerSync, ILocalSync } from '../models/sync';
 import { Animation, IAnimation } from '../models/animation';
+import { User } from '../models/user';
 import * as _ from 'underscore';
 import * as q from 'q';
 import * as winston from 'winston';
@@ -181,6 +182,7 @@ abstract class SyncProcess implements ISyncProcess {
 
         Sync.findById(this.localSync._id, (err, serverSync: IServerSync) => {
             if (err) defer.reject(err);
+            if (!serverSync) defer.reject('No server sync');
             else {
                 let ids = _.map(serverSync.animationIds, (animationId) => new mongoose.Types.ObjectId(animationId));
                 Animation.find({ _id: { $in: ids }}).lean(true).exec((err, serverAnimations) => {
@@ -205,7 +207,28 @@ class Preparation extends SyncProcess {
     
     doSync(defer: q.Deferred<SyncResult>, localSync: ILocalSync, serverSync: IServerSync) {
         this.log("Preparation");
-        defer.resolve(this.syncResult);
+
+        return this.checkUser(localSync._id)
+            .then(() => {
+                defer.resolve(this.syncResult);
+            })
+            .catch((err) => {
+                defer.reject(err);
+            });
+    }
+
+    private checkUser(userId: string): q.Promise<any> {
+        this.log("Check user");
+        let defer = q.defer();
+        // make sure user exists
+        User.findOne({ _id: userId, active: true }, (err, user) => {
+            if (err) defer.reject(err);
+            else if (!user) defer.reject('User not found');
+            else {
+                defer.resolve();
+            }
+        });
+        return defer.promise;
     }
 }
 

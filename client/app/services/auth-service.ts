@@ -110,13 +110,7 @@ module GrafikaApp {
             if (this.user) return this.user;
             
             var payload: any = this.jwtHelper.decodeToken(this.appCommon.$window.sessionStorage.getItem('token'));
-            var user = new User();
-            user._id = payload._id;
-            user.firstName = payload.given_name || payload.firstName;
-            user.lastName = payload.family_name || payload.lastName;
-            user.username = payload.username;
-            user.email = payload.email;
-            user.roles = payload.roles;
+            var user = new User(payload);
             return user;
         }
 
