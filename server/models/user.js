@@ -32,10 +32,10 @@ exports.UserSchema = new mongoose.Schema({
         timestamp: Date
     },
     prefs: {
-        avatar: String,
-        backdrop: String,
+        avatar: { type: String, default: '/assets/img/ic_user.png' },
+        backdrop: { type: String, default: '/assets/img/ic_backdrop.png' },
         drawingIsPublic: { type: Boolean, default: false },
-        drawingAuthor: String,
+        drawingAuthor: { type: String },
         drawingTimer: { type: Number, default: 1000 },
         playbackLoop: { type: Boolean, default: false }
     }
@@ -65,7 +65,6 @@ exports.UserSchema.methods.sanitize = function () {
 };
 var User = restful.model('users', exports.UserSchema);
 exports.User = User;
-User.methods(['get', 'put']);
 function sanitize(user) {
     var lean = user;
     if (user.toObject) {

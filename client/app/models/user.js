@@ -1,7 +1,19 @@
 var GrafikaApp;
 (function (GrafikaApp) {
     var User = (function () {
-        function User() {
+        function User(payload) {
+            if (!payload)
+                return;
+            this._id = payload._id;
+            this.email = payload.email;
+            this.username = payload.username;
+            this.firstName = payload.given_name || payload.firstName;
+            this.lastName = payload.family_name || payload.lastName;
+            this.dateCreated = payload.dateCreated;
+            this.dateModified = payload.dateModified;
+            this.active = payload.active;
+            this.roles = payload.roles;
+            this.prefs = payload.prefs;
         }
         User.prototype.getDisplayName = function () {
             if (this.firstName && this.lastName)

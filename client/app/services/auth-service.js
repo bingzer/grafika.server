@@ -100,13 +100,7 @@ var GrafikaApp;
             if (this.user)
                 return this.user;
             var payload = this.jwtHelper.decodeToken(this.appCommon.$window.sessionStorage.getItem('token'));
-            var user = new GrafikaApp.User();
-            user._id = payload._id;
-            user.firstName = payload.given_name || payload.firstName;
-            user.lastName = payload.family_name || payload.lastName;
-            user.username = payload.username;
-            user.email = payload.email;
-            user.roles = payload.roles;
+            var user = new GrafikaApp.User(payload);
             return user;
         };
         AuthService.$inject = ['appCommon', '$rootScope', 'apiService', 'jwtHelper'];

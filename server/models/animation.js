@@ -41,6 +41,8 @@ Animation.before('post', function (req, res, next) {
         req.body.dateModified = now;
     if (!req.body.userId)
         req.body.userId = req.user._id;
+    if (!req.body.author)
+        req.body.author = req.user.prefs.drawingAuthor;
     req.body.totalFrame = req.body.frames ? req.body.frames.length : 0;
     delete req.body._id;
     next();

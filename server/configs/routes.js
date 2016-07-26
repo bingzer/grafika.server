@@ -83,25 +83,25 @@ function isAdministrator(req) {
 }
 function handleErrors(err, req, res, next) {
     if (err) {
-        var status = 500;
+        var status_1 = 500;
         var msg = undefined;
         var stack = err.stack;
         delete err.stack;
         if (typeof err == 'number')
-            status = err;
+            status_1 = err;
         else if (typeof err == 'string') {
-            status = 400;
+            status_1 = 400;
             msg = err;
         }
         else if (err.status) {
-            status = err.status;
+            status_1 = err.status;
             msg = err.msg || err.message;
         }
         else {
             msg = 'This is our fault, will be checking on this';
         }
-        res.status(status).send(msg);
-        winston.error('HTTP Error. Status Code=' + status + (msg ? '  msg=' + msg : ''), stack);
+        res.status(status_1).send(msg);
+        winston.error('HTTP Error. Status Code=' + status_1 + (msg ? '  msg=' + msg : ''), stack);
     }
     else
         next();

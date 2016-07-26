@@ -20,7 +20,7 @@ var GrafikaApp;
                         templateUrl: 'app/account/reset.html',
                         parent: angular.element(document.body),
                         locals: { hash: query.hash, email: query.user }
-                    }).then(appCommon.navigateHome);
+                    }).then(function () { return appCommon.navigate("/login"); });
                     this.cleanUrlQueries();
                 }
                 else {

@@ -1,5 +1,5 @@
+import * as _ from 'underscore';
 var mongoose = require('mongoose'),
-    _ = require('underscore'),
     Model = mongoose.Model,
     handlers = require('./handlers');
 
@@ -224,7 +224,7 @@ Model.registerRoutes = function(app, prefix, path, routeObj) {
     if (isEndpoint(routeObj, key)) {
       var route = routeObj[key];
       var routehandlers = _.isArray(route.handler) ? route.handler : [route.handler];
-      routehandlers = _.map(routehandlers, function(handler) { return handler.bind(self); });
+      routehandlers = _.map(routehandlers, function(handler: any) { return handler.bind(self); });
       var detailGet = !route.detail && !path && key === 'get',
           handlerlist = route.before.concat(
             [preprocess.bind(self)],

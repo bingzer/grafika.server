@@ -32,5 +32,6 @@
 /// <reference path="globals/resource/index.d.ts" />
 /// <reference path="globals/serve-static/index.d.ts" />
 /// <reference path="globals/suppress-errors/index.d.ts" />
+/// <reference path="globals/underscore/index.d.ts" />
 /// <reference path="globals/user/index.d.ts" />
 /// <reference path="globals/winston/index.d.ts" />

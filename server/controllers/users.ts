@@ -19,6 +19,7 @@ export function update(req: express.Request, res: express.Response, next: expres
      
     if (req.body.lastName) user.lastName = req.body.lastName;
     if (req.body.firstName) user.firstName = req.body.firstName;
+    if (req.body.username) user.username = req.body.username;
     if (req.body.prefs) {
         user.prefs = {};
         if (req.body.prefs.playbackLoop) user.prefs.playbackLoop = req.body.prefs.playbackLoop;
@@ -31,7 +32,7 @@ export function update(req: express.Request, res: express.Response, next: expres
             if (!user) err = 404;
             if (err) return next(err);
 
-            res.send(200);
+            res.sendStatus(200);
         });
     }, (error) => next(error));
 }

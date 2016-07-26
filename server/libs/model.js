@@ -1,4 +1,6 @@
-var mongoose = require('mongoose'), _ = require('underscore'), Model = mongoose.Model, handlers = require('./handlers');
+"use strict";
+var _ = require('underscore');
+var mongoose = require('mongoose'), Model = mongoose.Model, handlers = require('./handlers');
 exports = module.exports = model;
 var methods = ['get', 'post', 'put', 'delete'], endpoints = ['get', 'post', 'put', 'delete', 'getDetail'], defaultroutes = ['schema'], lookup = {
     'get': 'index',

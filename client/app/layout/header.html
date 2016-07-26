@@ -10,12 +10,12 @@
         <div ng-if="vm.isAuthorized('user')" layout="row">
             <md-button ui-sref="my-animations">My Animations</md-button>
             <md-menu layout="column">
-                <img class="avatar link text-center-vertical" ng-src="{{vm.getUser().avatar}}" ng-click="$mdOpenMenu($event)">
+                <img class="avatar link text-center-vertical" ng-src="{{vm.getUser().prefs.avatar}}" ng-click="$mdOpenMenu($event)">
                 <md-menu-content width="4">
                     <md-menu-item>
                         <md-button aria-label="Profile" ng-click="vm.navigate('/profile')">
                             <md-icon>
-                                <img class="avatar avatar-sm link text-center-vertical" ng-src="{{vm.getUser().avatar}}" ng-click="$mdOpenMenu($event)">
+                                <img class="avatar avatar-sm link text-center-vertical" ng-src="{{vm.getUser().prefs.avatar}}" ng-click="$mdOpenMenu($event)">
                             </md-icon>
                             <span ng-bind="vm.getUser().getDisplayName()"></span>
                         </md-button>

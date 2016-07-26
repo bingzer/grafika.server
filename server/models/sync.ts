@@ -11,7 +11,7 @@ export interface ISync extends mongoose.Document {
 }
 
 export interface IServerSync extends ISync {
-
+    animations         : Grafika.IAnimation[]
 }
 
 export interface ILocalSync extends ISync {

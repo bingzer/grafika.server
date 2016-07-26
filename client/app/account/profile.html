@@ -1,39 +1,14 @@
 <form name="profileForm" layout-margin>
-    <div flex-gt-xs="35" flex-xs>
-        <div>
-            <md-input-container md-no-float class="md-icon-right">
-                <label>Username</label>
-                <input ng-model="vm.user.username" placeholder="Username">
-            </md-input-container>
-            <md-input-container>
-                <md-button class="md-raised" ng-click="vm.checkUsernameAvailability()">
-                    Check Availability
-                </md-button>
-            </md-input-container>
-        </div>
-        <div>
-            <md-input-container flex="45">
-                <label>First Name</label>
-                <input ng-model="vm.user.firstName" placeholder="First name">
-            </md-input-container>
-            <md-input-container flex="45">
-                <label>Last Name</label>
-                <input ng-model="vm.user.lastName" placeholder="Last name">
-            </md-input-container>
-        </div>
-    </div>
-    <div flex-gt-xs="35" flex-xs>
-        <div>
-            <img ng-src="vm.user.avatar"/>
-        </div>
-        <md-input-container md-no-float class="md-block">
-            <label>Email Address</label>
-            <input ng-model="vm.user.email" placeholder="Email Address" disabled="disabled">
-        </md-input-container>
-        <md-input-container md-no-float class="md-block">
-            <md-button class="md-raised" ng-click="vm.showPasswordDialog($event)">Set password</md-button>
-        </md-input-container>
-    </div>
+    <md-content>
+        <md-tabs md-dynamic-height md-border-bottom>
+            <md-tab label="Account">
+                <ng-include src="'/app/account/profile-account.html'"></ng-include>
+            </md-tab>
+            <md-tab label="Preferences">
+                <ng-include src="'/app/account/profile-prefs.html'"></ng-include>
+            </md-tab>
+        </md-tabs>
+    </md-content>
     
     <md-button ng-show="profileForm.$dirty && !profileForm.$pristine" class="md-fab" aria-label="Play" ng-click="vm.save()">
         <i class="material-icons">save</i>

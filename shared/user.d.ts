@@ -9,9 +9,16 @@ declare namespace Grafika {
         dateModified: number;
         active: boolean;
         roles: string[];
+
+        prefs: IUserPreference;
     }
 
     interface IUserPreference {
-        
+        avatar: string;
+        backdrop: string;
+        drawingIsPublic: boolean,
+        drawingAuthor: string;
+        drawingTimer: number;
+        playbackLoop: boolean;   
     }
 }

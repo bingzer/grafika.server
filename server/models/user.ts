@@ -8,7 +8,6 @@ var crypto        = require('crypto-js');
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 export interface IUser extends mongoose.Document, Grafika.IUser {
-    prefs: IPreference;
     activation: IActivation;
 
     local: ILocal;
@@ -26,15 +25,6 @@ export interface IUser extends mongoose.Document, Grafika.IUser {
 export interface IActivation {
     hash: string;
     timestamp: Date;
-}
-
-export interface IPreference {
-    avatar: string;
-    backdrop: string;
-    drawingIsPublic: boolean,
-    drawingAuthor: string;
-    drawingTimer: number;
-    playbackLoop: boolean;   
 }
 
 export interface IAccount {
@@ -84,10 +74,10 @@ export const UserSchema = new mongoose.Schema({
         timestamp       : Date
     },
     prefs               : {
-        avatar          : String,
-        backdrop        : String,
+        avatar          : { type: String, default: '/assets/img/ic_user.png' },
+        backdrop        : { type: String, default: '/assets/img/ic_backdrop.png' },
         drawingIsPublic : { type: Boolean, default: false },
-        drawingAuthor   : String,
+        drawingAuthor   : { type: String },
         drawingTimer    : { type: Number, default: 1000 },
         playbackLoop    : { type: Boolean, default: false }
     }
@@ -123,7 +113,6 @@ UserSchema.methods.sanitize = function(): IUser {
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 var User = <restful.IModel<IUser>> restful.model('users', UserSchema);
-User.methods(['get', 'put']);
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

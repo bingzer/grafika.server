@@ -20,6 +20,8 @@ function update(req, res, next) {
         user.lastName = req.body.lastName;
     if (req.body.firstName)
         user.firstName = req.body.firstName;
+    if (req.body.username)
+        user.username = req.body.username;
     if (req.body.prefs) {
         user.prefs = {};
         if (req.body.prefs.playbackLoop)
@@ -35,7 +37,7 @@ function update(req, res, next) {
                 err = 404;
             if (err)
                 return next(err);
-            res.send(200);
+            res.sendStatus(200);
         });
     }, function (error) { return next(error); });
 }

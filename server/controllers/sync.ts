@@ -12,9 +12,12 @@ export function sync(req: any, res: express.Response, next: express.NextFunction
         return next(400);
 
     var synchronizer = new Synchronizer(localSync);
-    synchronizer.sync((err, syncResult) => {
-        if (err) return next(err);
-        
-        res.send(syncResult);
-    });
+    synchronizer
+        .sync()
+        .then((syncResult) => {
+            res.send(syncResult);
+        })
+        .catch((err) => {
+            next(err);
+        });
 }
