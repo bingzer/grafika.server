@@ -1,0 +1,12 @@
+<div>
+    <div style="background-image: url('{{vm.user.prefs.backdrop}}'); background-size: cover; height: 150px;">
+        <div>
+            <img ng-src="{{vm.user.prefs.avatar}}"/>
+        </div>
+        <div>
+            <div ng-bind="vm.user.getDisplayName()"></div>
+        </div>
+    </div>
+    
+    <ng-include src="'app/animation/list.html'"></ng-include>
+</div>

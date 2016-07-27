@@ -102,7 +102,7 @@ function isAdministrator(req: any) {
     return req.user && req.user.roles && req.user.roles.indexOf('administrator') > -1;
 }
 
-function handleErrors(err, req: express.Request, res: express.Response, next: express.NextFunction) {
+function handleErrors(err: any, req: express.Request, res: express.Response, next: express.NextFunction) {
     if (err) {
 		let status = 500;
 		let msg    = undefined;
@@ -165,7 +165,7 @@ export function initialize(app) {
     app.get('/api/animations/:animationId/thumbnail', /* extractUser, useAnimAccess, */ resourcesController.getThumbnail);
     app.post('/api/animations/:animationId/thumbnail', useSessionOrJwt, useAnimAccess, resourcesController.createThumbnailSignedUrl);
     
-    // --------------- Restful Registeration -------------------------//
+    // --------------- Restful Registration -------------------------//
     User.register(app, '/api/users');
     Animation.register(app, '/api/animations');
 

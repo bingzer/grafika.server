@@ -3,10 +3,11 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks("grunt-contrib-clean");
     grunt.loadNpmTasks("grunt-bower-task");
     grunt.loadNpmTasks("grunt-contrib-uglify");
+	grunt.loadNpmTasks('grunt-string-replace');
     grunt.loadNpmTasks("grunt-contrib-copy");
     grunt.loadNpmTasks('grunt-typings');
     grunt.loadNpmTasks('grunt-mocha-cli');
-    grunt.registerTask("default", ["clean", "bower:install", "typings", "ts"]);
+    grunt.registerTask("default", ["clean", "string-replace:clientVersion", "bower:install", "typings", "ts"]);
     grunt.option('force', true);
 
     grunt.initConfig({
@@ -46,6 +47,24 @@ module.exports = function (grunt) {
                 }
             },
             all: ['server-test/**/*.js']
-        }
+        },        
+		// update version from package.json
+        // appVersion: string = '0.9.0'
+		'string-replace': {
+			clientVersion: {
+				files: { 'client/app/app-config.ts': 'client/app/app-config.ts' },
+				options: {
+					replacements: [
+						{
+							pattern: /appVersion: string = [^;]+/g,
+							replacement: 'appVersion: string = \'' + grunt.file.readJSON('package.json').version + '\''
+						}
+					]
+				}
+			},
+            serverVersion: {
+
+            }
+		}
     });
 }

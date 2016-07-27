@@ -11,11 +11,11 @@ export function get(req: express.Request, res: express.Response, next: express.N
     });
 }
 
-export function update(req: express.Request, res: express.Response, next: express.NextFunction) {
+export function update(req: any, res: express.Response, next: express.NextFunction) {
     if (!req.body || !req.params._id) return next();
 
     var userId = req.params._id;
-    var user: any = { dateModified: Date.now() };
+    var user: any = { email: req.user.email, dateModified: Date.now() };
      
     if (req.body.lastName) user.lastName = req.body.lastName;
     if (req.body.firstName) user.firstName = req.body.firstName;

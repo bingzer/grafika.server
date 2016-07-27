@@ -2,10 +2,11 @@ module GrafikaApp {
     export class AnimationDetailController extends BaseAnimationController {
         canEdit: boolean = false;
 
-        public static $inject = ['appCommon', 'authService', 'animationService', 'frameService', 'resourceService'];
+        public static $inject = ['appCommon', 'authService', 'uxService', 'animationService', 'frameService', 'resourceService'];
         constructor(
-            appCommon: AppCommon, 
+            appCommon: AppCommon,
             authService: AuthService, 
+            private uxService: UxService,
             animationService: AnimationService, 
             frameService: FrameService, 
             resourceService: ResourceService){
@@ -13,9 +14,11 @@ module GrafikaApp {
         }
         
         onLoaded(animation: Grafika.IAnimation){
+            this.uxService.pageTitle = this.animation.name;
             if (this.authService.isAuthorized('user'))
                 this.canEdit = this.authService.getUser()._id === this.animation.userId;
         }
+
         edit() {
             this.appCommon.$state.go("drawing", {_id: this.animation._id});
         }

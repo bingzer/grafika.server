@@ -17,6 +17,22 @@ html, body {
 	color: gray;
 }
 
+/* ---------- Header ----------- */
+md-toolbar.navbar .nav-link.nav-link-logo {
+	height: 100%;
+	border-bottom: 4px solid transparent;
+	padding: 4px;
+}
+md-toolbar.navbar .nav-link.nav-link-text {
+	height: 100%;
+	border-bottom: 4px solid transparent;
+	border-radius: 0;
+	padding-top: 16px;
+}
+md-toolbar.navbar .nav-link.active {
+	border-bottom: 4px solid #ffffff;
+}
+
 /* ---------- FAB ----------- */
 .md-fab {
 	position: absolute; 
