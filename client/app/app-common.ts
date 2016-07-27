@@ -33,7 +33,8 @@ module GrafikaApp {
             public $stateParams: ng.ui.IStateParamsService,
             public $mdPanel: ng.material.IPanelService,
             public $mdMedia: ng.material.IMedia,
-            public appConfig: AppConfig
+            public appConfig: AppConfig,
+            public uxService: UxService
         )
         {
             // nothing
@@ -89,6 +90,7 @@ module GrafikaApp {
                 targetEvent: event
             });
         }    
+
         refreshPage(){
             this.$location.path(this.$location.path());
         }

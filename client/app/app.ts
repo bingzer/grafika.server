@@ -21,6 +21,9 @@ module GrafikaApp {
 
     app.filter('keyboardShortcut', KeyboardFilter);
 
+    app.directive('activeLink', ActiveLinkDirective.factory());
+
+    app.service('uxService', UxService);
     app.service('apiService', ApiService);
     app.service('authService', AuthService);
     app.service('animationService', AnimationService);
@@ -28,6 +31,7 @@ module GrafikaApp {
     app.service('resourceService', ResourceService);
     app.service('userService', UserService);
 
+    app.controller('AppController', AppController);
     app.controller('MainController', MainController);
     app.controller('ForgetController', ForgetController);
     app.controller('LoginController', LoginController);
@@ -42,4 +46,5 @@ module GrafikaApp {
     app.controller('AnimationListController', AnimationListController);
     app.controller('AnimationPlaybackController', AnimationPlaybackController);
     app.controller('MyAnimationsController', MyAnimationsController);
+    app.controller('UserController', UserController);
 }

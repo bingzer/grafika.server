@@ -1,6 +1,6 @@
 module GrafikaApp {
     export class Paging {
-        isPublic: boolean = true;
+        isPublic: boolean;
         skip: number = 0;
         limit: number = 25;
 
@@ -25,8 +25,11 @@ module GrafikaApp {
         toQueryString(): string {
             var query: string = '?';
             if (this.userId) query+= '&userId=' + this.userId;
-            else query += '&isPublic=true';
 
+            if (typeof this.isPublic != 'undefined') {
+                if (this.isPublic) query += '&isPublic=true';
+                else query += '&isPublic=false';
+            }
             if (this.category) query += '&category=' + this.category;
             if (this.sort) query += '&sort=' + this.sort;
             if (this.limit) query += '&limit=' + this.limit;

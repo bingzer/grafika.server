@@ -1,7 +1,7 @@
 var GrafikaApp;
 (function (GrafikaApp) {
     var Routes = (function () {
-        function Routes($stateProvider, $urlRouterProvider, $locationProvder) {
+        function Routes($stateProvider, $urlRouterProvider, $locationProvder, $controller) {
             $stateProvider
                 .state('home', {
                 url: '/',
@@ -11,19 +11,28 @@ var GrafikaApp;
                 url: '/login',
                 templateUrl: 'app/account/login.html',
                 controller: 'LoginController',
-                controllerAs: 'vm'
+                controllerAs: 'vm',
+                data: {
+                    pageTitle: 'Login'
+                }
             })
                 .state('profile', {
                 url: '/profile',
                 templateUrl: 'app/account/profile.html',
                 controller: 'ProfileController',
-                controllerAs: 'vm'
+                controllerAs: 'vm',
+                data: {
+                    pageTitle: 'Profile'
+                }
             })
                 .state('my-animations', {
                 url: '/animations/mine',
                 templateUrl: 'app/animation/mine.html',
                 controller: 'MyAnimationsController',
-                controllerAs: 'vm'
+                controllerAs: 'vm',
+                data: {
+                    pageTitle: 'My Animation'
+                }
             })
                 .state('detail', {
                 url: '/animations/:_id',
@@ -35,6 +44,12 @@ var GrafikaApp;
                 url: '/animations/:_id/drawing',
                 templateUrl: 'app/animation/drawing.html',
                 controller: 'AnimationDrawingController',
+                controllerAs: 'vm'
+            })
+                .state('user', {
+                url: '/users/:_id',
+                templateUrl: 'app/users/user.html',
+                controller: 'UserController',
                 controllerAs: 'vm'
             });
             $urlRouterProvider.otherwise('/');

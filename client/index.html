@@ -1,5 +1,6 @@
-<html ng-app="app" ng-cloak>
+<html ng-app="app" ng-controller="AppController as app" ng-cloak>
 <head>
+<title ng-bind="app.uxService.pageTitle"></title>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <base href="/">
@@ -50,7 +51,15 @@
 <script type="text/javascript" src="/app/app-common.js"></script>
 <script type="text/javascript" src="/app/app-http.js"></script>
 <script type="text/javascript" src="/app/app-base.js"></script>
+<script type="text/javascript" src="/app/app-controller.js"></script>
 
+<script type="text/javascript" src="/app/models/user.js"></script>
+<script type="text/javascript" src="/app/models/animation.js"></script>
+<script type="text/javascript" src="/app/models/paging.js"></script>
+
+<script type="text/javascript" src="/app/directives/active-link.js"></script>
+
+<script type="text/javascript" src="/app/services/ux-service.js"></script>
 <script type="text/javascript" src="/app/services/api-service.js"></script>
 <script type="text/javascript" src="/app/services/auth-service.js"></script>
 <script type="text/javascript" src="/app/services/animation-service.js"></script>
@@ -62,6 +71,13 @@
 
 <script type="text/javascript" src="/app/layout/main.js"></script>
 
+<script type="text/javascript" src="/app/account/login.js"></script>
+<script type="text/javascript" src="/app/account/register.js"></script>
+<script type="text/javascript" src="/app/account/forget.js"></script>
+<script type="text/javascript" src="/app/account/reset.js"></script>
+<script type="text/javascript" src="/app/account/profile.js"></script>
+<script type="text/javascript" src="/app/account/password.js"></script>
+
 <script type="text/javascript" src="/app/animation/base.js"></script>
 <script type="text/javascript" src="/app/animation/list.js"></script>
 <script type="text/javascript" src="/app/animation/detail.js"></script>
@@ -71,18 +87,9 @@
 <script type="text/javascript" src="/app/animation/mine.js"></script>
 <script type="text/javascript" src="/app/animation/playback.js"></script>
 
-<script type="text/javascript" src="/app/account/login.js"></script>
-<script type="text/javascript" src="/app/account/register.js"></script>
-<script type="text/javascript" src="/app/account/forget.js"></script>
-<script type="text/javascript" src="/app/account/reset.js"></script>
-<script type="text/javascript" src="/app/account/profile.js"></script>
-<script type="text/javascript" src="/app/account/password.js"></script>
+<script type="text/javascript" src="/app/users/user.js"></script>
 
 <script type="text/javascript" src="/app/content/content.js"></script>
-
-<script type="text/javascript" src="/app/models/user.js"></script>
-<script type="text/javascript" src="/app/models/animation.js"></script>
-<script type="text/javascript" src="/app/models/paging.js"></script>
 
 <script type="text/javascript" src="/app/app.js"></script>
 

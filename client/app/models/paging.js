@@ -2,7 +2,6 @@ var GrafikaApp;
 (function (GrafikaApp) {
     var Paging = (function () {
         function Paging(paging) {
-            this.isPublic = true;
             this.skip = 0;
             this.limit = 25;
             this.sort = 'views';
@@ -21,8 +20,12 @@ var GrafikaApp;
             var query = '?';
             if (this.userId)
                 query += '&userId=' + this.userId;
-            else
-                query += '&isPublic=true';
+            if (typeof this.isPublic != 'undefined') {
+                if (this.isPublic)
+                    query += '&isPublic=true';
+                else
+                    query += '&isPublic=false';
+            }
             if (this.category)
                 query += '&category=' + this.category;
             if (this.sort)

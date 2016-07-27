@@ -14,7 +14,8 @@ module GrafikaApp {
         }
 
         list() {
-            this.animationService.list().then((res) => {
+            var paging = new Paging({ isPublic: true });
+            this.animationService.list(paging).then((res) => {
                 this.animations = res.data;
             })
         }

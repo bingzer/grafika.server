@@ -15,7 +15,8 @@ var GrafikaApp;
         }
         AnimationListController.prototype.list = function () {
             var _this = this;
-            this.animationService.list().then(function (res) {
+            var paging = new GrafikaApp.Paging({ isPublic: true });
+            this.animationService.list(paging).then(function (res) {
                 _this.animations = res.data;
             });
         };

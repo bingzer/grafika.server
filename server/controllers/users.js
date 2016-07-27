@@ -15,7 +15,7 @@ function update(req, res, next) {
     if (!req.body || !req.params._id)
         return next();
     var userId = req.params._id;
-    var user = { dateModified: Date.now() };
+    var user = { email: req.user.email, dateModified: Date.now() };
     if (req.body.lastName)
         user.lastName = req.body.lastName;
     if (req.body.firstName)

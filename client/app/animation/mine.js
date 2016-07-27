@@ -12,7 +12,7 @@ var GrafikaApp;
         }
         MyAnimationsController.prototype.list = function () {
             var _this = this;
-            var paging = new GrafikaApp.Paging({ isPublic: false, userId: this.authService.getUser()._id });
+            var paging = new GrafikaApp.Paging({ userId: this.authService.getUser()._id });
             this.animationService.list(paging).then(function (res) {
                 _this.animations = res.data;
             });

@@ -7,11 +7,13 @@ var GrafikaApp;
 (function (GrafikaApp) {
     var AnimationDetailController = (function (_super) {
         __extends(AnimationDetailController, _super);
-        function AnimationDetailController(appCommon, authService, animationService, frameService, resourceService) {
+        function AnimationDetailController(appCommon, authService, uxService, animationService, frameService, resourceService) {
             _super.call(this, appCommon, authService, animationService, frameService, resourceService);
+            this.uxService = uxService;
             this.canEdit = false;
         }
         AnimationDetailController.prototype.onLoaded = function (animation) {
+            this.uxService.pageTitle = this.animation.name;
             if (this.authService.isAuthorized('user'))
                 this.canEdit = this.authService.getUser()._id === this.animation.userId;
         };
@@ -31,7 +33,7 @@ var GrafikaApp;
                 });
             });
         };
-        AnimationDetailController.$inject = ['appCommon', 'authService', 'animationService', 'frameService', 'resourceService'];
+        AnimationDetailController.$inject = ['appCommon', 'authService', 'uxService', 'animationService', 'frameService', 'resourceService'];
         return AnimationDetailController;
     }(GrafikaApp.BaseAnimationController));
     GrafikaApp.AnimationDetailController = AnimationDetailController;

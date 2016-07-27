@@ -7,8 +7,9 @@ var GrafikaApp;
 (function (GrafikaApp) {
     var AnimationDrawingController = (function (_super) {
         __extends(AnimationDrawingController, _super);
-        function AnimationDrawingController(appCommon, authService, animationService, frameService, resourceService) {
+        function AnimationDrawingController(appCommon, authService, uxService, animationService, frameService, resourceService) {
             _super.call(this, appCommon, authService, animationService, frameService, resourceService);
+            this.uxService = uxService;
             this.animationService = animationService;
             this.frameService = frameService;
             this.resourceService = resourceService;
@@ -16,6 +17,7 @@ var GrafikaApp;
         }
         AnimationDrawingController.prototype.onLoaded = function (animation) {
             var _this = this;
+            this.uxService.pageTitle = 'Edit ' + this.animation.name;
             this.appCommon.elem('#canvas-container').css('width', this.animation.width).css('height', this.animation.height);
             this.grafika.initialize('#canvas', { drawingMode: 'paint' }, this.animation);
             this.frameService.get(this.grafika.getAnimation()).then(function (res) {
@@ -47,7 +49,7 @@ var GrafikaApp;
         AnimationDrawingController.prototype.exit = function () {
             this.appCommon.$state.go('my-animations');
         };
-        AnimationDrawingController.$inject = ['appCommon', 'authService', 'animationService', 'frameService', 'resourceService'];
+        AnimationDrawingController.$inject = ['appCommon', 'authService', 'uxService', 'animationService', 'frameService', 'resourceService'];
         return AnimationDrawingController;
     }(GrafikaApp.BaseAnimationController));
     GrafikaApp.AnimationDrawingController = AnimationDrawingController;

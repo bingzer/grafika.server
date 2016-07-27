@@ -2,7 +2,7 @@ var GrafikaApp;
 (function (GrafikaApp) {
     'use-strict';
     var AppCommon = (function () {
-        function AppCommon($q, $log, $interval, $timeout, $location, $window, $cookieStore, $mdToast, $mdDialog, $state, $stateParams, $mdPanel, $mdMedia, appConfig) {
+        function AppCommon($q, $log, $interval, $timeout, $location, $window, $cookieStore, $mdToast, $mdDialog, $state, $stateParams, $mdPanel, $mdMedia, appConfig, uxService) {
             this.$q = $q;
             this.$log = $log;
             this.$interval = $interval;
@@ -17,6 +17,7 @@ var GrafikaApp;
             this.$mdPanel = $mdPanel;
             this.$mdMedia = $mdMedia;
             this.appConfig = appConfig;
+            this.uxService = uxService;
         }
         AppCommon.prototype.elem = function (selector) {
             return angular.element(selector);

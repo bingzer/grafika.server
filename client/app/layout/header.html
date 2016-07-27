@@ -1,15 +1,13 @@
 <md-toolbar class="navbar">
     <div class="md-toolbar-tools">
-        <a ui-sref="home" style="padding: 2px">
-            <img id="logo" src="/assets/img/logo.png" height="75%"/>
+        <a class="nav-link nav-link-logo" active-link="active" ui-sref="home">
+            <img id="logo" src="/assets/img/logo.png" height="100%"/>
         </a>
         <span flex></span>
-        <div ng-if="!vm.isAuthorized('user')" layout="row">
-            <md-button ui-sref="login">Login</md-button>
-        </div>
-        <div ng-if="vm.isAuthorized('user')" layout="row">
-            <md-button ui-sref="my-animations">My Animations</md-button>
-            <md-menu layout="column">
+        <div layout="row" ng-cloak>
+            <md-button ng-if="!vm.isAuthorized('user')" class="nav-link nav-link-text" ui-sref="login" active-link="active">Login</md-button>
+            <md-button ng-if="vm.isAuthorized('user')" class="nav-link nav-link-text" ui-sref="my-animations" active-link="active">My Animations</md-button>
+            <md-menu ng-if="vm.isAuthorized('user')" layout="column">
                 <img class="avatar link text-center-vertical" ng-src="{{vm.getUser().prefs.avatar}}" ng-click="$mdOpenMenu($event)">
                 <md-menu-content width="4">
                     <md-menu-item>

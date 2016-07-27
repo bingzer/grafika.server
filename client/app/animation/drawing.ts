@@ -2,10 +2,11 @@ module GrafikaApp {
     export class AnimationDrawingController extends BaseAnimationController {
         grafika: Grafika.IGrafika = new Grafika();
         
-        public static $inject = ['appCommon', 'authService', 'animationService', 'frameService', 'resourceService'];
+        public static $inject = ['appCommon', 'authService', 'uxService', 'animationService', 'frameService', 'resourceService'];
         constructor(
             appCommon: AppCommon, 
             authService: AuthService,
+            private uxService: UxService,
             protected animationService: AnimationService,
             protected frameService: FrameService,
             protected resourceService: ResourceService
@@ -14,6 +15,7 @@ module GrafikaApp {
         }
 
         onLoaded(animation: Grafika.IAnimation) {
+            this.uxService.pageTitle = 'Edit ' + this.animation.name;
             this.appCommon.elem('#canvas-container').css('width', this.animation.width).css('height', this.animation.height);
             this.grafika.initialize('#canvas', { drawingMode: 'paint' }, this.animation);
             this.frameService.get(this.grafika.getAnimation()).then((res) => {
