@@ -94,6 +94,13 @@ export function resetPassword(req: express.Request, res: express.Response, next:
     });
 };
 
+export function googleLogin(req: express.Request, res: express.Response, next: express.NextFunction){
+    passport.authenticate('google', { scope: config.setting.$auth.$googleScopes } )(req, res, next);  
+};
+export function googleCallback(req: express.Request, res: express.Response, next: express.NextFunction){
+    passport.authenticate('google')(req, res, next);
+};
+
 ////////////////////////////////////////////////////////////////////////////////////////////////
     
 /** Sign token with user credentials in it */

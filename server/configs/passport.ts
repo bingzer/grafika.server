@@ -3,6 +3,7 @@ import * as passport from 'passport';
 import { IUser, User } from '../models/user';
 import { SignupStrategy } from './passport-signup';
 import { SigninStrategy } from './passport-signin';
+import { GoogleOAuthStrategy } from './passport-google';
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -20,4 +21,5 @@ export function initialize(){
     // -- strategies
     passport.use('local-signup', new SignupStrategy());
     passport.use('local-login', new SigninStrategy());
+    passport.use('google', new GoogleOAuthStrategy());
 }

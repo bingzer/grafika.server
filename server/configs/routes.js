@@ -107,6 +107,8 @@ function handleErrors(err, req, res, next) {
         next();
 }
 function initialize(app) {
+    app.get('/api/accounts/google', accountController.googleLogin);
+    app.get('/api/accounts/google/callback', accountController.googleCallback, redirectHome);
     app.post('/api/accounts', accountController.login);
     app.post('/api/accounts/logout', accountController.logout);
     app.post('/api/accounts/authenticate', accountController.authenticate);

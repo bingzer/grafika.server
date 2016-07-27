@@ -95,6 +95,16 @@ function resetPassword(req, res, next) {
 }
 exports.resetPassword = resetPassword;
 ;
+function googleLogin(req, res, next) {
+    passport.authenticate('google', { scope: config.setting.$auth.$googleScopes })(req, res, next);
+}
+exports.googleLogin = googleLogin;
+;
+function googleCallback(req, res, next) {
+    passport.authenticate('google')(req, res, next);
+}
+exports.googleCallback = googleCallback;
+;
 function signToken(user) {
     if (!user)
         return null;
