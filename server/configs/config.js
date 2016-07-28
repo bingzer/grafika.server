@@ -1,6 +1,7 @@
 "use strict";
-var ensure = require('../libs/ensure');
 var winston = require('winston');
+var q = require('q');
+var ensure = require('../libs/ensure');
 var pkg = require('../../package.json');
 var env = process.env;
 var Setting = (function () {
@@ -11,19 +12,28 @@ var Setting = (function () {
         this.client = new Client();
         this.auth = new Auth();
     }
+    Setting.prototype.initialize = function (app) {
+        var _this = this;
+        var defer = q.defer();
+        setTimeout(function () {
+            try {
+                _this.validate();
+                winston.info('Settings [OK]');
+                defer.resolve();
+            }
+            catch (e) {
+                winston.error('Settings [FAILED]');
+                defer.reject(e);
+            }
+        }, 100);
+        return defer.promise;
+    };
     Setting.prototype.validate = function () {
-        try {
-            ensure.notNullOrEmpty(this.name);
-            ensure.notNullOrEmpty(this.version);
-            this.server.validate();
-            this.client.validate();
-            this.auth.validate();
-            winston.info('Settings [OK]');
-        }
-        catch (e) {
-            winston.error('Settings [FAILED]');
-            winston.error(e);
-        }
+        ensure.notNullOrEmpty(this.name);
+        ensure.notNullOrEmpty(this.version);
+        this.server.validate();
+        this.client.validate();
+        this.auth.validate();
     };
     Object.defineProperty(Setting.prototype, "$name", {
         get: function () {
@@ -188,6 +198,8 @@ var Auth = (function () {
         this.facebookSecret = env.auth_fb_secret;
         this.facebookCallbackUrl = env.server_url + 'api/accounts/facebook/callback';
         this.facebookScopes = ['email'];
+        this.disqusId = env.auth_disqus_id;
+        this.disqusSecret = env.auth_disqus_secret;
     }
     Auth.prototype.validate = function () {
         ensure.notNullOrEmpty(this.awsBucket, "auth_aws_bucket");
@@ -197,6 +209,8 @@ var Auth = (function () {
         ensure.notNullOrEmpty(this.googleSecret, "env.auth_google_secret");
         ensure.notNullOrEmpty(this.facebookId, "env.auth_fb_id");
         ensure.notNullOrEmpty(this.facebookSecret, "env.auth_fb_secret");
+        ensure.notNullOrEmpty(this.disqusId, "env.auth_disqus_id");
+        ensure.notNullOrEmpty(this.disqusSecret, "env.auth_disqus_secret");
     };
     Object.defineProperty(Auth.prototype, "$awsUrl", {
         get: function () {
@@ -278,6 +292,20 @@ var Auth = (function () {
     Object.defineProperty(Auth.prototype, "$facebookScopes", {
         get: function () {
             return this.facebookScopes;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Auth.prototype, "$disqusId", {
+        get: function () {
+            return this.disqusId;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Auth.prototype, "$disqusSecret", {
+        get: function () {
+            return this.disqusSecret;
         },
         enumerable: true,
         configurable: true

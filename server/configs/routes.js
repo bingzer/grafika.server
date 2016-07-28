@@ -2,6 +2,7 @@
 var expressJwt = require('express-jwt');
 var mongoose = require('mongoose');
 var winston = require('winston');
+var q = require('q');
 var accountController = require('../controllers/accounts');
 var resourcesController = require('../controllers/resources');
 var userController = require('../controllers/users');
@@ -107,33 +108,39 @@ function handleErrors(err, req, res, next) {
         next();
 }
 function initialize(app) {
-    app.get('/api/accounts/google', accountController.googleLogin);
-    app.get('/api/accounts/google/callback', accountController.googleCallback, accountController.providerLogin);
-    app.get('/api/accounts/facebook', accountController.facebookLogin);
-    app.get('/api/accounts/facebook/callback', accountController.facebookCallback, accountController.providerLogin);
-    app.post('/api/accounts', accountController.login);
-    app.post('/api/accounts/logout', accountController.logout);
-    app.post('/api/accounts/authenticate', accountController.authenticate);
-    app.post('/api/accounts/register', accountController.register);
-    app.post('/api/accounts/pwd/reset', accountController.resetPassword);
-    app.post('/api/accounts/pwd', useSessionOrJwt, accountController.changePassword);
-    app.post('/api/accounts/username-check', useSessionOrJwt, accountController.checkUsernameAvailability);
-    app.get('/api/animations');
-    app.post('/api/animations', useSessionOrJwt);
-    app.get('/api/animations/:_id', extractUser, useAnimAccess);
-    app.put('/api/animations/:_id', useSessionOrJwt, useAnimAccess);
-    app.delete('/api/animations/', useSessionOrJwt, useAnimAccess);
-    app.get('/api/animations/:_id/frames', extractUser, useAnimAccess);
-    app.post('/api/animations/:_id/frames', useSessionOrJwt, useAnimAccess);
-    app.post('/api/animations/sync', useSessionOrJwt, syncController.sync);
-    app.get('/api/users/:_id', useSessionOrJwt, userController.get);
-    app.put('/api/users/:_id', useSessionOrJwt, userController.update);
-    app.get('/api/animations/:animationId/thumbnail', resourcesController.getThumbnail);
-    app.post('/api/animations/:animationId/thumbnail', useSessionOrJwt, useAnimAccess, resourcesController.createThumbnailSignedUrl);
-    user_1.User.register(app, '/api/users');
-    animation_1.Animation.register(app, '/api/animations');
-    app.use(handleErrors);
-    winston.info('Routes [OK]');
+    var defer = q.defer();
+    setTimeout(function () {
+        app.get('/api/accounts/google', accountController.googleLogin);
+        app.get('/api/accounts/google/callback', accountController.googleCallback, accountController.providerLogin);
+        app.get('/api/accounts/facebook', accountController.facebookLogin);
+        app.get('/api/accounts/facebook/callback', accountController.facebookCallback, accountController.providerLogin);
+        app.get('/api/accounts/disqus', useSessionOrJwt, accountController.disqusToken);
+        app.post('/api/accounts', accountController.login);
+        app.post('/api/accounts/logout', accountController.logout);
+        app.post('/api/accounts/authenticate', accountController.authenticate);
+        app.post('/api/accounts/register', accountController.register);
+        app.post('/api/accounts/pwd/reset', accountController.resetPassword);
+        app.post('/api/accounts/pwd', useSessionOrJwt, accountController.changePassword);
+        app.post('/api/accounts/username-check', useSessionOrJwt, accountController.checkUsernameAvailability);
+        app.get('/api/animations');
+        app.post('/api/animations', useSessionOrJwt);
+        app.get('/api/animations/:_id', extractUser, useAnimAccess);
+        app.put('/api/animations/:_id', useSessionOrJwt, useAnimAccess);
+        app.delete('/api/animations/', useSessionOrJwt, useAnimAccess);
+        app.get('/api/animations/:_id/frames', extractUser, useAnimAccess);
+        app.post('/api/animations/:_id/frames', useSessionOrJwt, useAnimAccess);
+        app.post('/api/animations/sync', useSessionOrJwt, syncController.sync);
+        app.get('/api/users/:_id', useSessionOrJwt, userController.get);
+        app.put('/api/users/:_id', useSessionOrJwt, userController.update);
+        app.get('/api/animations/:animationId/thumbnail', resourcesController.getThumbnail);
+        app.post('/api/animations/:animationId/thumbnail', useSessionOrJwt, useAnimAccess, resourcesController.createThumbnailSignedUrl);
+        user_1.User.register(app, '/api/users');
+        animation_1.Animation.register(app, '/api/animations');
+        app.use(handleErrors);
+        winston.info('Routes [OK]');
+        defer.resolve();
+    }, 100);
+    return defer.promise;
 }
 exports.initialize = initialize;
 //# sourceMappingURL=routes.js.map

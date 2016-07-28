@@ -1,5 +1,7 @@
 "use strict";
 var passport = require('passport');
+var winston = require('winston');
+var q = require('q');
 var user_1 = require('../models/user');
 var passport_signup_1 = require('./passport-signup');
 var passport_signin_1 = require('./passport-signin');
@@ -13,11 +15,17 @@ passport.deserializeUser(function (id, done) {
         done(err, user.sanitize());
     });
 });
-function initialize() {
-    passport.use('local-signup', new passport_signup_1.SignupStrategy());
-    passport.use('local-login', new passport_signin_1.SigninStrategy());
-    passport.use('google', new passport_google_1.GoogleOAuthStrategy());
-    passport.use('facebook', new passport_facebook_1.FacebookOAuthStrategy());
+function initialize(app) {
+    var defer = q.defer();
+    setTimeout(function () {
+        passport.use('local-signup', new passport_signup_1.SignupStrategy());
+        passport.use('local-login', new passport_signin_1.SigninStrategy());
+        passport.use('google', new passport_google_1.GoogleOAuthStrategy());
+        passport.use('facebook', new passport_facebook_1.FacebookOAuthStrategy());
+        winston.info('Passport [OK]');
+        defer.resolve();
+    }, 100);
+    return defer.promise;
 }
 exports.initialize = initialize;
 //# sourceMappingURL=passport.js.map

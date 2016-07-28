@@ -1,5 +1,5 @@
 /* global Buffer */
-import * as crypto from "crypto"
+import * as crypto from "crypto-js"
 import * as express from "express";
 import * as passport from "passport";
 
@@ -94,6 +94,11 @@ export function resetPassword(req: express.Request, res: express.Response, next:
     });
 };
 
+export function disqusToken(req: express.Request | any, res: express.Response, next: express.NextFunction){
+    if (req.isAuthenticated()) res.status(200).send(disqusSignon(req.user));
+    else next(401);
+}
+
 export function googleLogin(req: express.Request, res: express.Response, next: express.NextFunction){
     passport.authenticate('google', { scope: config.setting.$auth.$googleScopes } )(req, res, next);  
 };
@@ -128,3 +133,35 @@ function signToken(user: any | IUser){
         expiresIn: '24hr' // expires in 24 hours
     });
 };
+
+function disqusSignon(user: Grafika.IUser) {
+    var disqusData = {
+        id: user.email,
+        username: user.username,
+        email: user.email,
+        avatar: user.prefs.avatar
+    };
+
+    var disqusStr = JSON.stringify(disqusData);
+    var timestamp = Math.round(+new Date() / 1000);
+
+    /*
+     * Note that `Buffer` is part of node.js
+     * For pure Javascript or client-side methods of
+     * converting to base64, refer to this link:
+     * http://stackoverflow.com/questions/246801/how-can-you-encode-a-string-to-base64-in-javascript
+     */
+    var message = new Buffer(disqusStr).toString('base64');
+
+    /* 
+     * CryptoJS is required for hashing (included in dir)
+     * https://code.google.com/p/crypto-js/
+     */
+    var result = crypto.HmacSHA1(message + " " + timestamp, config.setting.$auth.$disqusSecret);
+    var hexsig = crypto.enc.Hex.stringify(result);
+
+    return {
+      public: config.setting.$auth.$disqusId,
+      token: message + " " + hexsig + " " + timestamp
+    };
+}

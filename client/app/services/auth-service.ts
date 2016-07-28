@@ -33,7 +33,7 @@ module GrafikaApp {
             return this.appCommon.$q.when(true);
         }
         
-        getAccessToken(): string{
+        getAccessToken(): string {
             return this.appCommon.$window.sessionStorage.getItem('token');
         }
 
