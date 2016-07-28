@@ -170,35 +170,50 @@ class Client implements IConfig {
  * Auth configuration
  */
 class Auth implements IConfig {
-	// private googleId : string;
-	// private googleSecret: string;
-	// private googleScopes: [string];
-	// private googleCallbackUrl: string;
-
-	// private facebookId: string;
-	// private facebookSecret: string;
-	// private facebookCallbackUrl: string;
-	// private facebookScopes: [string];
-	// private enableProof: boolean;
-
-	// private disqusSecret: string;
-	// private disqusPublic: string;
-
 	private awsUrl: string = 'https://s3.amazonaws.com/';
 	private awsBucket: string;
 	private awsId: string;
 	private awsSecret: string;
 
+	private googleId : string;
+	private googleSecret: string;
+	private googleScopes: [string];
+	private googleCallbackUrl: string;
+
+	private facebookId: string;
+	private facebookSecret: string;
+	private facebookCallbackUrl: string;
+	private facebookScopes: [string];
+
+	// private disqusSecret: string;
+	// private disqusPublic: string;
+
 	constructor() {
 		this.awsBucket = env.auth_aws_bucket;
 		this.awsId = env.auth_aws_id;
 		this.awsSecret = env.auth_aws_secret;
+
+		this.googleId = env.auth_google_id;
+		this.googleSecret = env.auth_google_secret;
+		this.googleCallbackUrl = env.server_url + 'api/accounts/google/callback';
+		this.googleScopes = ['email'];
+
+		this.facebookId = env.auth_fb_id;
+		this.facebookSecret = env.auth_fb_secret;
+		this.facebookCallbackUrl = env.server_url + 'api/accounts/facebook/callback';
+		this.facebookScopes = ['email'];
 	}
 
     public validate() : void {
 		ensure.notNullOrEmpty(this.awsBucket, "auth_aws_bucket");
 		ensure.notNullOrEmpty(this.awsId, "auth_aws_id");
 		ensure.notNullOrEmpty(this.awsSecret, "auth_aws_secret");
+
+		ensure.notNullOrEmpty(this.googleId, "env.auth_google_id");
+		ensure.notNullOrEmpty(this.googleSecret, "env.auth_google_secret");
+
+		ensure.notNullOrEmpty(this.facebookId, "env.auth_fb_id");
+		ensure.notNullOrEmpty(this.facebookSecret, "env.auth_fb_secret");
     }
 
 	public get $awsUrl(): string  {
@@ -216,6 +231,39 @@ class Auth implements IConfig {
 	public get $awsSecret(): string {
 		return this.awsSecret;
 	}
+
+	public get $googleId(): string {
+		return this.googleId;
+	}
+
+	public get $googleSecret(): string {
+		return this.googleSecret;
+	}
+
+	public get $googleScopes(): [string] {
+		return this.googleScopes;
+	}
+
+	public get $googleCallbackUrl(): string {
+		return this.googleCallbackUrl;
+	}
+
+	public get $facebookId(): string {
+		return this.facebookId;
+	}
+
+	public get $facebookSecret(): string {
+		return this.facebookSecret;
+	}
+
+	public get $facebookCallbackUrl(): string {
+		return this.facebookCallbackUrl;
+	}
+
+	public get $facebookScopes(): [string] {
+		return this.facebookScopes;
+	}
+	
 	
 }
 

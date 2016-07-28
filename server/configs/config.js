@@ -180,11 +180,23 @@ var Auth = (function () {
         this.awsBucket = env.auth_aws_bucket;
         this.awsId = env.auth_aws_id;
         this.awsSecret = env.auth_aws_secret;
+        this.googleId = env.auth_google_id;
+        this.googleSecret = env.auth_google_secret;
+        this.googleCallbackUrl = env.server_url + 'api/accounts/google/callback';
+        this.googleScopes = ['email'];
+        this.facebookId = env.auth_fb_id;
+        this.facebookSecret = env.auth_fb_secret;
+        this.facebookCallbackUrl = env.server_url + 'api/accounts/facebook/callback';
+        this.facebookScopes = ['email'];
     }
     Auth.prototype.validate = function () {
         ensure.notNullOrEmpty(this.awsBucket, "auth_aws_bucket");
         ensure.notNullOrEmpty(this.awsId, "auth_aws_id");
         ensure.notNullOrEmpty(this.awsSecret, "auth_aws_secret");
+        ensure.notNullOrEmpty(this.googleId, "env.auth_google_id");
+        ensure.notNullOrEmpty(this.googleSecret, "env.auth_google_secret");
+        ensure.notNullOrEmpty(this.facebookId, "env.auth_fb_id");
+        ensure.notNullOrEmpty(this.facebookSecret, "env.auth_fb_secret");
     };
     Object.defineProperty(Auth.prototype, "$awsUrl", {
         get: function () {
@@ -210,6 +222,62 @@ var Auth = (function () {
     Object.defineProperty(Auth.prototype, "$awsSecret", {
         get: function () {
             return this.awsSecret;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Auth.prototype, "$googleId", {
+        get: function () {
+            return this.googleId;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Auth.prototype, "$googleSecret", {
+        get: function () {
+            return this.googleSecret;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Auth.prototype, "$googleScopes", {
+        get: function () {
+            return this.googleScopes;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Auth.prototype, "$googleCallbackUrl", {
+        get: function () {
+            return this.googleCallbackUrl;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Auth.prototype, "$facebookId", {
+        get: function () {
+            return this.facebookId;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Auth.prototype, "$facebookSecret", {
+        get: function () {
+            return this.facebookSecret;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Auth.prototype, "$facebookCallbackUrl", {
+        get: function () {
+            return this.facebookCallbackUrl;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Auth.prototype, "$facebookScopes", {
+        get: function () {
+            return this.facebookScopes;
         },
         enumerable: true,
         configurable: true

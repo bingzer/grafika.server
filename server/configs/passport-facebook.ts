@@ -1,16 +1,18 @@
 import * as passport from 'passport';
-import { VerifyFunction, OAuth2Strategy, IOAuth2StrategyOption } from 'passport-google-oauth'
+import { Strategy, IStrategyOption } from 'passport-facebook'
 
 import { IUser, User, randomUsername } from '../models/user';
 import * as config from './config';
 
-class Options implements IOAuth2StrategyOption {
-    clientID: string = config.setting.$auth.$googleId;
-    clientSecret: string = config.setting.$auth.$googleSecret;
-    callbackURL: string = config.setting.$auth.$googleCallbackUrl;
+class Options implements IStrategyOption {
+    clientID: string = config.setting.$auth.$facebookId;
+    clientSecret: string = config.setting.$auth.$facebookSecret;
+    callbackURL: string = config.setting.$auth.$facebookCallbackUrl;
+    enableProof: boolean = true;
+    profileFields: string[] = ['id', 'emails', 'name', 'photos'] 
 }
 
-export class GoogleOAuthStrategy extends OAuth2Strategy {
+export class FacebookOAuthStrategy extends Strategy {
     constructor() {
         super(new Options(), (accessToken, refreshToken, profile, done) => {
             User.findOne({ email: profile.emails[0].value }, (err, user) => {
@@ -28,9 +30,9 @@ export class GoogleOAuthStrategy extends OAuth2Strategy {
                     user.roles.push('user');
                 }
                 // exists and update
-                user.google.id             = profile.id;
-                user.google.displayName    = profile.displayName;
-                user.google.token          = accessToken;
+                user.facebook.id           = profile.id;
+                user.facebook.displayName  = profile.displayName;
+                user.facebook.token        = accessToken;
                 user.prefs.avatar          = profile.photos && profile.photos.length > 0 ? profile.photos[0].value : null;
                 user.prefs.drawingAuthor   = user.username;
                 // save the user

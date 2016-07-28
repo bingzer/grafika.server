@@ -95,6 +95,38 @@ function resetPassword(req, res, next) {
 }
 exports.resetPassword = resetPassword;
 ;
+function googleLogin(req, res, next) {
+    passport.authenticate('google', { scope: config.setting.$auth.$googleScopes })(req, res, next);
+}
+exports.googleLogin = googleLogin;
+;
+function googleCallback(req, res, next) {
+    passport.authenticate('google')(req, res, next);
+}
+exports.googleCallback = googleCallback;
+;
+function facebookLogin(req, res, next) {
+    passport.authenticate('facebook', { scope: config.setting.$auth.$facebookScopes })(req, res, next);
+}
+exports.facebookLogin = facebookLogin;
+;
+function facebookCallback(req, res, next) {
+    passport.authenticate('facebook')(req, res, next);
+}
+exports.facebookCallback = facebookCallback;
+;
+function providerLogin(req, res, next) {
+    if (req.isAuthenticated) {
+        req.login(req.user, function (err) {
+            if (err)
+                return next(err);
+            res.redirect('/?action=authenticate');
+        });
+    }
+    else
+        next(401);
+}
+exports.providerLogin = providerLogin;
 function signToken(user) {
     if (!user)
         return null;

@@ -94,6 +94,30 @@ export function resetPassword(req: express.Request, res: express.Response, next:
     });
 };
 
+export function googleLogin(req: express.Request, res: express.Response, next: express.NextFunction){
+    passport.authenticate('google', { scope: config.setting.$auth.$googleScopes } )(req, res, next);  
+};
+export function googleCallback(req: express.Request, res: express.Response, next: express.NextFunction){
+    passport.authenticate('google')(req, res, next);
+};
+
+export function facebookLogin(req: express.Request, res: express.Response, next: express.NextFunction){
+    passport.authenticate('facebook', { scope: config.setting.$auth.$facebookScopes } )(req, res, next);  
+};
+export function facebookCallback(req: express.Request, res: express.Response, next: express.NextFunction){
+    passport.authenticate('facebook')(req, res, next);
+};
+
+export function providerLogin(req: express.Request | any, res: express.Response, next: express.NextFunction) {
+    if (req.isAuthenticated) {
+        req.login(req.user, (err) => {
+            if (err) return next(err);
+            res.redirect('/?action=authenticate');
+        });
+    }
+    else next(401);
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////////
     
 /** Sign token with user credentials in it */
