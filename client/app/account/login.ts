@@ -29,7 +29,7 @@ module GrafikaApp {
                 })
                 .finally(() => {
                     this.reset();
-                })
+                });
         }
 
         reset() {

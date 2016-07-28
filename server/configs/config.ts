@@ -180,11 +180,10 @@ class Auth implements IConfig {
 	private googleScopes: [string];
 	private googleCallbackUrl: string;
 
-	// private facebookId: string;
-	// private facebookSecret: string;
-	// private facebookCallbackUrl: string;
-	// private facebookScopes: [string];
-	// private enableProof: boolean;
+	private facebookId: string;
+	private facebookSecret: string;
+	private facebookCallbackUrl: string;
+	private facebookScopes: [string];
 
 	// private disqusSecret: string;
 	// private disqusPublic: string;
@@ -196,8 +195,13 @@ class Auth implements IConfig {
 
 		this.googleId = env.auth_google_id;
 		this.googleSecret = env.auth_google_secret;
-		this.googleScopes = ['email'];
 		this.googleCallbackUrl = env.server_url + 'api/accounts/google/callback';
+		this.googleScopes = ['email'];
+
+		this.facebookId = env.auth_fb_id;
+		this.facebookSecret = env.auth_fb_secret;
+		this.facebookCallbackUrl = env.server_url + 'api/accounts/facebook/callback';
+		this.facebookScopes = ['email'];
 	}
 
     public validate() : void {
@@ -207,6 +211,9 @@ class Auth implements IConfig {
 
 		ensure.notNullOrEmpty(this.googleId, "env.auth_google_id");
 		ensure.notNullOrEmpty(this.googleSecret, "env.auth_google_secret");
+
+		ensure.notNullOrEmpty(this.facebookId, "env.auth_fb_id");
+		ensure.notNullOrEmpty(this.facebookSecret, "env.auth_fb_secret");
     }
 
 	public get $awsUrl(): string  {
@@ -239,6 +246,22 @@ class Auth implements IConfig {
 
 	public get $googleCallbackUrl(): string {
 		return this.googleCallbackUrl;
+	}
+
+	public get $facebookId(): string {
+		return this.facebookId;
+	}
+
+	public get $facebookSecret(): string {
+		return this.facebookSecret;
+	}
+
+	public get $facebookCallbackUrl(): string {
+		return this.facebookCallbackUrl;
+	}
+
+	public get $facebookScopes(): [string] {
+		return this.facebookScopes;
 	}
 	
 	

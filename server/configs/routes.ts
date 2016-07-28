@@ -133,9 +133,9 @@ function handleErrors(err: any, req: express.Request, res: express.Response, nex
 
 export function initialize(app) {    
     app.get('/api/accounts/google', accountController.googleLogin);
-    app.get('/api/accounts/google/callback', accountController.googleCallback, redirectHome);
-    // app.get('/api/accounts/facebook', accountController.facebookLogin);
-    // app.get('/api/accounts/facebook/callback', accountController.facebookCallback, redirectHome);
+    app.get('/api/accounts/google/callback', accountController.googleCallback, accountController.providerLogin);
+    app.get('/api/accounts/facebook', accountController.facebookLogin);
+    app.get('/api/accounts/facebook/callback', accountController.facebookCallback, accountController.providerLogin);
     // app.get('/api/accounts/disqus', useSessionOrJwt, accountController.disqusToken);
     
     app.post('/api/accounts', accountController.login)

@@ -19,6 +19,10 @@ module GrafikaApp {
                     }).then(() => appCommon.navigate("/login") );
                     this.cleanUrlQueries();
                 }
+                else if(query.action == 'authenticate') {
+                    this.authService.authenticate().then(() => this.appCommon.navigateHome());
+                    this.cleanUrlQueries();
+                }
                 else {
                     appCommon.alert('Unknown action or link has expired');
                     this.cleanUrlQueries();
@@ -73,6 +77,8 @@ module GrafikaApp {
             Object.keys(keys).forEach((key) => {
                delete loc.search(key, null); 
             });
+
+            this.appCommon.$location.hash(null);
         }
     }
 }

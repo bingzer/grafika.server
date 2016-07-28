@@ -8,6 +8,7 @@ var GrafikaApp;
     var MainController = (function (_super) {
         __extends(MainController, _super);
         function MainController(appCommon, authService, animationService, $rootScope) {
+            var _this = this;
             _super.call(this, appCommon, authService);
             this.animationService = animationService;
             this.$rootScope = $rootScope;
@@ -21,6 +22,10 @@ var GrafikaApp;
                         parent: angular.element(document.body),
                         locals: { hash: query.hash, email: query.user }
                     }).then(function () { return appCommon.navigate("/login"); });
+                    this.cleanUrlQueries();
+                }
+                else if (query.action == 'authenticate') {
+                    this.authService.authenticate().then(function () { return _this.appCommon.navigateHome(); });
                     this.cleanUrlQueries();
                 }
                 else {
@@ -72,6 +77,7 @@ var GrafikaApp;
             Object.keys(keys).forEach(function (key) {
                 delete loc.search(key, null);
             });
+            this.appCommon.$location.hash(null);
         };
         MainController.$inject = ['appCommon', 'authService', 'animationService', '$rootScope'];
         return MainController;

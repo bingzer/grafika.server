@@ -4,20 +4,22 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-var passport_google_oauth_1 = require('passport-google-oauth');
+var passport_facebook_1 = require('passport-facebook');
 var user_1 = require('../models/user');
 var config = require('./config');
 var Options = (function () {
     function Options() {
-        this.clientID = config.setting.$auth.$googleId;
-        this.clientSecret = config.setting.$auth.$googleSecret;
-        this.callbackURL = config.setting.$auth.$googleCallbackUrl;
+        this.clientID = config.setting.$auth.$facebookId;
+        this.clientSecret = config.setting.$auth.$facebookSecret;
+        this.callbackURL = config.setting.$auth.$facebookCallbackUrl;
+        this.enableProof = true;
+        this.profileFields = ['id', 'emails', 'name', 'photos'];
     }
     return Options;
 }());
-var GoogleOAuthStrategy = (function (_super) {
-    __extends(GoogleOAuthStrategy, _super);
-    function GoogleOAuthStrategy() {
+var FacebookOAuthStrategy = (function (_super) {
+    __extends(FacebookOAuthStrategy, _super);
+    function FacebookOAuthStrategy() {
         _super.call(this, new Options(), function (accessToken, refreshToken, profile, done) {
             user_1.User.findOne({ email: profile.emails[0].value }, function (err, user) {
                 if (err)
@@ -33,9 +35,9 @@ var GoogleOAuthStrategy = (function (_super) {
                     user.active = true;
                     user.roles.push('user');
                 }
-                user.google.id = profile.id;
-                user.google.displayName = profile.displayName;
-                user.google.token = accessToken;
+                user.facebook.id = profile.id;
+                user.facebook.displayName = profile.displayName;
+                user.facebook.token = accessToken;
                 user.prefs.avatar = profile.photos && profile.photos.length > 0 ? profile.photos[0].value : null;
                 user.prefs.drawingAuthor = user.username;
                 user.save(function (err) {
@@ -46,7 +48,7 @@ var GoogleOAuthStrategy = (function (_super) {
             });
         });
     }
-    return GoogleOAuthStrategy;
-}(passport_google_oauth_1.OAuth2Strategy));
-exports.GoogleOAuthStrategy = GoogleOAuthStrategy;
-//# sourceMappingURL=passport-google.js.map
+    return FacebookOAuthStrategy;
+}(passport_facebook_1.Strategy));
+exports.FacebookOAuthStrategy = FacebookOAuthStrategy;
+//# sourceMappingURL=passport-facebook.js.map
