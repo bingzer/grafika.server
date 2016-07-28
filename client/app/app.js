@@ -7,7 +7,8 @@ var GrafikaApp;
         'ngMessages',
         'ngSanitize',
         'angular-jwt',
-        'angularSpectrumColorpicker'
+        'angularSpectrumColorpicker',
+        'angularUtils.directives.dirDisqus'
     ]);
     app.constant('appConfig', new GrafikaApp.AppConfig());
     app.service('appCommon', GrafikaApp.AppCommon);

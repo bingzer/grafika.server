@@ -1,4 +1,5 @@
 "use strict";
+var crypto = require("crypto-js");
 var passport = require("passport");
 var user_1 = require('../models/user');
 var mailer = require('../libs/mailer');
@@ -95,6 +96,13 @@ function resetPassword(req, res, next) {
 }
 exports.resetPassword = resetPassword;
 ;
+function disqusToken(req, res, next) {
+    if (req.isAuthenticated())
+        res.status(200).send(disqusSignon(req.user));
+    else
+        next(401);
+}
+exports.disqusToken = disqusToken;
 function googleLogin(req, res, next) {
     passport.authenticate('google', { scope: config.setting.$auth.$googleScopes })(req, res, next);
 }
@@ -135,4 +143,21 @@ function signToken(user) {
     });
 }
 ;
+function disqusSignon(user) {
+    var disqusData = {
+        id: user.email,
+        username: user.username,
+        email: user.email,
+        avatar: user.avatar,
+    };
+    var disqusStr = JSON.stringify(disqusData);
+    var timestamp = Math.round(+new Date() / 1000);
+    var message = new Buffer(disqusStr).toString('base64');
+    var result = crypto.HmacSHA1(message + " " + timestamp, config.setting.$auth.$disqusSecret);
+    var hexsig = crypto.enc.Hex.stringify(result);
+    return {
+        public: config.setting.$auth.$disqusId,
+        token: message + " " + hexsig + " " + timestamp
+    };
+}
 //# sourceMappingURL=accounts.js.map

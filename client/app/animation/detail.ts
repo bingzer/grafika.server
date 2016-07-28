@@ -1,6 +1,8 @@
 module GrafikaApp {
     export class AnimationDetailController extends BaseAnimationController {
+        disqusReady: boolean = false;
         canEdit: boolean = false;
+        disqusConfig: DisqusConfig;
 
         public static $inject = ['appCommon', 'authService', 'uxService', 'animationService', 'frameService', 'resourceService'];
         constructor(
@@ -14,6 +16,14 @@ module GrafikaApp {
         }
         
         onLoaded(animation: Grafika.IAnimation){
+            this.authService.getDisqusToken().then((res) => {
+                this.disqusConfig = new DisqusConfig(this.appCommon, animation._id);
+                this.disqusConfig.disqus_title = animation.name;
+                this.disqusConfig.disqus_category_id = 'Animation';
+                this.disqusConfig.disqus_remote_auth_s3 = res.data.token;
+                this.disqusReady = true;
+            });
+
             this.uxService.pageTitle = this.animation.name;
             if (this.authService.isAuthorized('user'))
                 this.canEdit = this.authService.getUser()._id === this.animation.userId;

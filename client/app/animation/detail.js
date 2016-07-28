@@ -10,9 +10,18 @@ var GrafikaApp;
         function AnimationDetailController(appCommon, authService, uxService, animationService, frameService, resourceService) {
             _super.call(this, appCommon, authService, animationService, frameService, resourceService);
             this.uxService = uxService;
+            this.disqusReady = false;
             this.canEdit = false;
         }
         AnimationDetailController.prototype.onLoaded = function (animation) {
+            var _this = this;
+            this.authService.getDisqusToken().then(function (res) {
+                _this.disqusConfig = new GrafikaApp.DisqusConfig(_this.appCommon, animation._id);
+                _this.disqusConfig.disqus_title = animation.name;
+                _this.disqusConfig.disqus_category_id = 'Animation';
+                _this.disqusConfig.disqus_remote_auth_s3 = res.data.token;
+                _this.disqusReady = true;
+            });
             this.uxService.pageTitle = this.animation.name;
             if (this.authService.isAuthorized('user'))
                 this.canEdit = this.authService.getUser()._id === this.animation.userId;

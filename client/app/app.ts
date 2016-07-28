@@ -7,7 +7,8 @@ module GrafikaApp {
         'ngSanitize',
 
         'angular-jwt',
-        'angularSpectrumColorpicker'
+        'angularSpectrumColorpicker',
+        'angularUtils.directives.dirDisqus'
     ]);
 
     app.constant('appConfig', new AppConfig());
@@ -17,7 +18,7 @@ module GrafikaApp {
 
     app.config(Routes);
     app.config(HttpInterceptor);
-    app.config(Theme);
+    app.config(Theme);    
 
     app.filter('keyboardShortcut', KeyboardFilter);
 

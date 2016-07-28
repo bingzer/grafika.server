@@ -1,5 +1,8 @@
-import ensure = require('../libs/ensure');
 import * as winston from 'winston';
+import * as q from 'q';
+
+import ensure = require('../libs/ensure');
+
 let pkg = require('../../package.json');
 let env = process.env;
 
@@ -23,21 +26,32 @@ class Setting implements IConfig {
 		this.auth = new Auth();
 	}
 
-    public validate() : void {
-		try {
-			ensure.notNullOrEmpty(this.name);
-			ensure.notNullOrEmpty(this.version);
+	initialize(app): q.Promise<any> {
+		let defer = q.defer();
 
-			this.server.validate();
-			this.client.validate();
-			this.auth.validate();
+		setTimeout(() => {
+			try {
+				this.validate();
 
-			winston.info('Settings [OK]');
-		}
-		catch (e) {
-			winston.error('Settings [FAILED]');
-			winston.error(e);
-		}
+				winston.info('Settings [OK]');
+				defer.resolve();
+			}
+			catch (e) {
+				winston.error('Settings [FAILED]');
+				defer.reject(e);
+			}
+		}, 100);
+
+		return defer.promise;
+	}
+
+    validate() : void {
+		ensure.notNullOrEmpty(this.name);
+		ensure.notNullOrEmpty(this.version);
+
+		this.server.validate();
+		this.client.validate();
+		this.auth.validate();
     }
 
 	public get $name(): string {
@@ -185,8 +199,8 @@ class Auth implements IConfig {
 	private facebookCallbackUrl: string;
 	private facebookScopes: [string];
 
-	// private disqusSecret: string;
-	// private disqusPublic: string;
+	private disqusId: string;
+	private disqusSecret: string;
 
 	constructor() {
 		this.awsBucket = env.auth_aws_bucket;
@@ -202,6 +216,9 @@ class Auth implements IConfig {
 		this.facebookSecret = env.auth_fb_secret;
 		this.facebookCallbackUrl = env.server_url + 'api/accounts/facebook/callback';
 		this.facebookScopes = ['email'];
+
+		this.disqusId = env.auth_disqus_id;
+		this.disqusSecret = env.auth_disqus_secret;
 	}
 
     public validate() : void {
@@ -214,6 +231,9 @@ class Auth implements IConfig {
 
 		ensure.notNullOrEmpty(this.facebookId, "env.auth_fb_id");
 		ensure.notNullOrEmpty(this.facebookSecret, "env.auth_fb_secret");
+
+		ensure.notNullOrEmpty(this.disqusId, "env.auth_disqus_id");
+		ensure.notNullOrEmpty(this.disqusSecret, "env.auth_disqus_secret");
     }
 
 	public get $awsUrl(): string  {
@@ -263,7 +283,14 @@ class Auth implements IConfig {
 	public get $facebookScopes(): [string] {
 		return this.facebookScopes;
 	}
-	
+
+	public get $disqusId(): string {
+		return this.disqusId;
+	}
+
+	public get $disqusSecret(): string {
+		return this.disqusSecret;
+	}
 	
 }
 
