@@ -10,7 +10,6 @@ module GrafikaApp {
 
         constructor(appCommon: AppCommon, uniqueId: string) {
             this.disqus_identifier = uniqueId;
-            this.disqus_url = 'http://grafika.herokuapp.com/' + appCommon.$location.url();
             this.disqus_api_key = 'reBkv3Z517WqqbOMhaPOWx710h0JqXRf9X71HMsDTkEfmdvoRYGfxZSJXlQrgzgj';
             this.disqus_shortname = 'grafika-app';
             this.disqus_title = 'grafika';

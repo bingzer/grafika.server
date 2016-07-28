@@ -148,7 +148,7 @@ function disqusSignon(user) {
         id: user.email,
         username: user.username,
         email: user.email,
-        avatar: user.avatar,
+        avatar: user.prefs.avatar
     };
     var disqusStr = JSON.stringify(disqusData);
     var timestamp = Math.round(+new Date() / 1000);

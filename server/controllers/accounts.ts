@@ -134,12 +134,12 @@ function signToken(user: any | IUser){
     });
 };
 
-function disqusSignon(user) {
+function disqusSignon(user: Grafika.IUser) {
     var disqusData = {
-      id: user.email,
-      username: user.username,
-      email: user.email,
-      avatar: user.avatar,
+        id: user.email,
+        username: user.username,
+        email: user.email,
+        avatar: user.prefs.avatar
     };
 
     var disqusStr = JSON.stringify(disqusData);
