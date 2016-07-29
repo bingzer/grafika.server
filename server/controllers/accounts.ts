@@ -39,13 +39,12 @@ export function register(req: express.Request, res: express.Response, next: expr
 };
 
 export function authenticate(req: any, res: any, next: express.NextFunction){
-    if (req.isAuthenticated()) {
+    if (req.isAuthenticated())
         res.send({token: signToken(req.user)});
-    }
     else res.sendStatus(200);
-    // else {
-    //     res.status(200).send({token: signToken( accountHelper.createPublicUser() )});
-    // }
+};
+export function authenticateGoogle(req: express.Request, res: express.Response, next: express.NextFunction){
+    passport.authenticate('google-android')(req, res, next);  
 };
 
 export function changePassword(req: any, res: any, next: express.NextFunction){

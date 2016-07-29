@@ -144,6 +144,7 @@ export function initialize(app): q.Promise<any> {
         app.post('/api/accounts', accountController.login)
         app.post('/api/accounts/logout', accountController.logout);
         app.post('/api/accounts/authenticate', accountController.authenticate);
+        app.post('/api/accounts/authenticate/google', accountController.authenticateGoogle, accountController.authenticate);
         app.post('/api/accounts/register', accountController.register);
         app.post('/api/accounts/pwd/reset', accountController.resetPassword);
         app.post('/api/accounts/pwd', useSessionOrJwt, accountController.changePassword);

@@ -7,6 +7,7 @@ var passport_signup_1 = require('./passport-signup');
 var passport_signin_1 = require('./passport-signin');
 var passport_google_1 = require('./passport-google');
 var passport_facebook_1 = require('./passport-facebook');
+var GoogleTokenStrategy = require('passport-google-id-token');
 passport.serializeUser(function (user, done) {
     done(null, user._id);
 });
@@ -22,6 +23,7 @@ function initialize(app) {
         passport.use('local-login', new passport_signin_1.SigninStrategy());
         passport.use('google', new passport_google_1.GoogleOAuthStrategy());
         passport.use('facebook', new passport_facebook_1.FacebookOAuthStrategy());
+        passport.use('google-android', new passport_google_1.GoogleTokenIdOAuthStrategy());
         winston.info('Passport [OK]');
         defer.resolve();
     }, 100);
