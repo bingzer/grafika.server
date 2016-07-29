@@ -1,5 +1,5 @@
 <form name="profileForm" layout-margin>
-    <md-content>
+    <div>
         <md-tabs md-dynamic-height md-border-bottom>
             <md-tab label="Account">
                 <ng-include src="'/app/account/profile-account.html'"></ng-include>
@@ -8,7 +8,7 @@
                 <ng-include src="'/app/account/profile-prefs.html'"></ng-include>
             </md-tab>
         </md-tabs>
-    </md-content>
+    </div>
     
     <md-button ng-show="profileForm.$dirty && !profileForm.$pristine" class="md-fab" aria-label="Play" ng-click="vm.save()">
         <i class="material-icons">save</i>

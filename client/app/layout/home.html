@@ -1,16 +1,16 @@
 <style ng-if="!vm.isAuthorized('user')">
-	body md-toolbar.navbar {
-		background: transparent;
-	}
-	body md-toolbar.navbar .nav-link-logo {
+	nav.navbar .nav-link-logo {
 		display: none
 	}
 </style>
-<div class="intro" layout-fill ng-if="!vm.isAuthorized('user')" ng-init="vm.initGrafika()">
-	<canvas layout-fill id="intro-canvas"></canvas>
-	<div layout-fill layout="row" layout-align="center center" class="canvas-overlay">
-		<img src="/assets/img/logo.png" />
+<div class="home">
+	<div class="intro" ng-if="!vm.isAuthorized('user')" ng-init="vm.initGrafika()">
+		<div class="canvas-container">
+			<canvas layout-fill id="intro-canvas"></canvas>
+		</div>
+		<div layout-fill class="canvas-overlay"></div>
+		<img id="logo" src="/assets/img/logo.png" />
 	</div>
-</div>
 
-<div ng-include="'app/animation/list.html'" ng-controller="AnimationListController as vm"></div>
+	<div ng-include="'app/animation/list.html'" ng-controller="AnimationListController as vm"></div>
+</div>

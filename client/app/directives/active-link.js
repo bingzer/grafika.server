@@ -14,10 +14,10 @@ var GrafikaApp;
                     while (newPath.length > 0 && newPath.substring(0, 1) == '/')
                         newPath = newPath.substring(1);
                     if (path == newPath) {
-                        element.addClass(clazz);
+                        element.parent().addClass(clazz);
                     }
                     else {
-                        element.removeClass(clazz);
+                        element.parent().removeClass(clazz);
                     }
                 });
             };
