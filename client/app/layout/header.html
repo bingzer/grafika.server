@@ -17,10 +17,10 @@
         <div class="collapse navbar-collapse">
             <ul class="nav navbar-nav navbar-right">
                 <li class="nav-link" ng-if="!vm.isAuthorized('user')">
-                    <a ui-sref="login" active-link="active">Login</a>
+                    <a href="#" ui-sref="login" active-link="active">Login</a>
                 </li>
                 <li class="nav-link" ng-if="vm.isAuthorized('user')">
-                    <a ui-sref="my-animations" active-link="active">My Animations</a>
+                    <a href="#" ui-sref="my-animations" active-link="active">My Animations</a>
                 </li>
                 <li class="nav-link dropdown" ng-if="vm.isAuthorized('user')">
                     <a href="#" class="dropdown-toggle" active-link="active" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
@@ -29,24 +29,24 @@
                     </a>
                     <ul class="dropdown-menu">
                         <li>
-                            <a ng-click="vm.navigate('/profile')">
-                                <md-icon md-font-family="material icons">profile</md-icon>Profile
+                            <a href="#" ng-click="vm.navigate('/profile')">
+                                <md-icon md-font-family="material icons">profile</md-icon>&nbsp;Profile
                             </a>
                         </li>
                         <li>
-                            <a ng-click="vm.navigate('/settings')">
-                                <md-icon md-font-family="material icons">settings</md-icon>Settings
+                            <a href="#" ng-click="vm.navigate('/settings')">
+                                <md-icon md-font-family="material icons">settings</md-icon>&nbsp;Settings
                             </a>
                         </li>
                         <li ng-if="vm.isAuthorized('administrator')">
-                            <a ng-click="vm.navigate('/admin')">
-                                <md-icon md-font-family="material icons">assignment_ind</md-icon>Administrator
+                            <a href="#" ng-click="vm.navigate('/admin')">
+                                <md-icon md-font-family="material icons">assignment_ind</md-icon>&nbsp;Administrator
                             </a>
                         </li>
                         <li role="separator" class="divider"></li>
                         <li>
-                            <a ng-click="vm.confirmLogout()">
-                                <md-icon md-font-family="material icons">lock</md-icon>Log out
+                            <a href="#" ng-click="vm.confirmLogout()">
+                                <md-icon md-font-family="material icons">lock</md-icon>&nbsp;Log out
                             </a>
                         </li>
                     </ul>

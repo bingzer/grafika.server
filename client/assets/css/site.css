@@ -6,11 +6,13 @@ body {
 	height: auto !important;
 	position: inherit !important;
 	padding-bottom: 48px;
+	background-color: #fafafa;
+	overflow-x: hidden;
 }
 /* -- Footer -- */
 .footer {
 	font-size: smaller;
-	background-color: #FAFAFA;
+	background-color: #ffffff;
 	height: 48px;
 	position: absolute;
 	bottom: 1;
@@ -114,7 +116,6 @@ md-dialog {
 
 /* ---------- Card ------------ */
 .animation-card {
-	position: relative;
 	margin: 16px;
 	width: 256px;
 }
@@ -127,7 +128,6 @@ md-dialog {
 	height: 110px;
 }
 .animation-card span.options {
-	position: absolute;
 	right: 2px;
 	top: 2px;
 }

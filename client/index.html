@@ -1,4 +1,4 @@
-<html ng-app="app" ng-controller="AppController as app">
+<html ng-app="app" ng-controller="AppController as app" ng-cloak>
 <head>
 <title ng-bind="app.uxService.pageTitle"></title>
 <meta charset="utf-8">
@@ -19,29 +19,7 @@
 	<!-- Main content -->
 	<div id="content" class="page-wrap" ui-view></div>
 	<!-- Footer -->
-	<footer id="footer" class="footer">
-		<div layout="column" flex>
-			<md-divider></md-divider>
-			<div class="footer-content" layout="row" layout-xs="column" layout-margin>
-				<span ng-bind="'© 2015 Grafika'"></span>
-				<span hide-xs vertical-divider-space></span>	
-				<span><a href="/about">About</a></span>
-				<span hide-xs vertical-divider-space></span>	
-				<span hide-xs><a href="/about/feedback">Feedback</a></span>
-				<span hide-xs vertical-divider-space></span>
-				
-				<span hide-xs flex></span>
-				
-				<span><a href="/help">Help</a></span>
-				<span hide-xs vertical-divider-space></span>	
-				<span hide-xs><a href="/eula">Terms</a></span>
-				<span hide-xs vertical-divider-space></span>	
-				<span hide-xs><a href="/privacy-policy">Privacy</a></span>
-				<span hide-xs vertical-divider-space></span>	
-				<span ng-bind="'v' + vm.getAppVersion()"></span>
-			</div>
-		</div>
-	</footer>
+	<ng-include src="'/app/layout/footer.html'"></ng-include>
 
 <script type="text/javascript"  src="//ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 <script type="text/javascript"  src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>

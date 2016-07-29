@@ -10,12 +10,14 @@
             <a href ui-sref="detail({_id: anim._id})">
 			    <img class="card-image" ng-src="{{anim.thumbnailUrl}}" alt="thumbnail">
             </a>
-			<span class="options">
-				<a href ng-click="vm.showOptions($event, _id)">
-					<md-icon><i class="material-icons">more_vert</i></md-icon>
-				</a>
-			</span>
-			<div class="md-display">{{anim.name}}</div>
+			<div layout="row">
+				<div class="md-display" flex>{{anim.name}}</div>
+				<span class="options">
+					<a href ng-click="vm.showOptions($event, _id)">
+						<md-icon><i class="material-icons">more_vert</i></md-icon>
+					</a>
+				</span>
+			</div>
 			<div class="md-caption text-muted">{{anim.description}}</div>
 		</md-whiteframe>
 	</div>
