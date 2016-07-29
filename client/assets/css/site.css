@@ -1,6 +1,20 @@
-html, body {
-	padding: 0;
-	margin: 0;
+html {
+  position: relative;
+  min-height: 100%;
+}
+body {
+	height: auto !important;
+	position: inherit !important;
+	padding-bottom: 48px;
+}
+/* -- Footer -- */
+.footer {
+	font-size: smaller;
+	background-color: #FAFAFA;
+	height: 48px;
+	position: absolute;
+	bottom: 1;
+	width: 100%;
 }
 
 /* ---------- Common ------------ */
@@ -18,19 +32,30 @@ html, body {
 }
 
 /* ---------- Header ----------- */
-md-toolbar.navbar .nav-link.nav-link-logo {
-	height: 100%;
-	border-bottom: 4px solid transparent;
-	padding: 4px;
+nav.navbar {
+	margin-bottom: 0;    
+	background-color: rgb(0,128,128);
+    border: 0;
+    border-radius: 0;
+	opacity: 0.9;
 }
-md-toolbar.navbar .nav-link.nav-link-text {
-	height: 100%;
-	border-bottom: 4px solid transparent;
-	border-radius: 0;
-	padding-top: 16px;
+
+nav.navbar .navbar-nav li.nav-link.dropdown,
+nav.navbar .navbar-nav li.nav-link.active.dropdown {
+	border-bottom: 0;	
 }
-md-toolbar.navbar .nav-link.active {
-	border-bottom: 4px solid #ffffff;
+nav.navbar .navbar-nav li.nav-link {
+	border-bottom: 4px solid transparent;	
+}
+nav.navbar .navbar-nav li.nav-link.active {
+	border-bottom: 4px solid #ffffff;	
+}
+nav.navbar .navbar-nav li.nav-link > a,
+nav.navbar .navbar-nav li.open.nav-link > a,
+nav.navbar .navbar-nav li.active.nav-link > a {
+	color: #ffffff;
+	text-decoration: none;
+	background: none;
 }
 
 /* ---------- FAB ----------- */
@@ -53,32 +78,21 @@ md-dialog {
 
 /* ---------- Intro ------------ */
 .intro {
-	height: 100vh;
+	height: 350px;
+	min-height: 250px;
 	width: 100%;
-	margin-top: -64px;
+	position: relative;
 }
-.intro > canvas,
 .intro > .canvas-overlay {
 	position: absolute;
-	width: 100%;
-	height: 100%;
+	top: 0;
+	background: rgba(0,128,128, 0.9);
 }
-.intro > .canvas-overlay {
-	background: rgb(0,128,128);
-	opacity: 0.9;
-}
-.intro > .canvas-overlay > img {
-	margin-top: -60px;
-}
-@media (max-width: 959px) and (min-width: 0) and (orientation: landscape) {
-	.intro { 
-		margin-top: -49px; 
-	}
-}
-@media (max-width: 959px) and (min-width: 0) and (orientation: portrait) {
-	.intro {
-		margin-top: -57px;
-	}
+.intro #logo {
+	position: absolute;
+	top: 35%;
+	left: 50%;
+	margin-left: -72px;
 }
 /** User avatar **/
 .avatar {
@@ -117,32 +131,7 @@ md-dialog {
 	right: 2px;
 	top: 2px;
 }
-/* -- Main content */
 
-.content {
-  flex: 1 0 auto; /* 2 */
-  padding: var(--space) var(--space) 0;
-  width: 100%;
-}
-
-/* -- Footer -- */
-.footer {
-	flex: none;
-	font-size: smaller;
-	color: gray;
-	width: 100%;
-	min-height: 48px;
-}
-.footer * {
-	color: gray;
-}
-.footer .footer-content {
-	margin-top: 8px;
-	margin-bottom: 8px;
-}
-.footer .footer-content span {
-	margin-left: 4px;
-}
 
 /** Grafika canvas */
 #canvas {

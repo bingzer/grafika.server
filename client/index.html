@@ -1,4 +1,4 @@
-<html ng-app="app" ng-controller="AppController as app" ng-cloak>
+<html ng-app="app" ng-controller="AppController as app">
 <head>
 <title ng-bind="app.uxService.pageTitle"></title>
 <meta charset="utf-8">
@@ -6,6 +6,7 @@
 <base href="/">
 <!-- Angular Material style sheet -->
 
+<link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
 <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/icon?family=Material+Icons"/>
 <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=RobotoDraft:300,400,500,700,400italic"/>
 <link rel="stylesheet" type="text/css" href="//ajax.googleapis.com/ajax/libs/angular_material/1.1.0-rc2/angular-material.min.css"/>
@@ -13,17 +14,37 @@
 <link rel="stylesheet" type="text/css" href="/assets/css/site.css"/>
 </head>
 <body ng-controller="MainController as vm">
-	
-	<md-content layout="column" layout-fill>	
-		<!-- Header -->
-		<ng-include src="'/app/layout/header.html'"></ng-include>
-		<!-- Main content -->
-		<div ui-view id="content" class="content"></div>
-		<!-- Footer -->
-		<ng-include src="'/app/layout/footer.html'"></ng-include>
-	</md-content>
+	<!-- Header -->
+	<ng-include src="'/app/layout/header.html'"></ng-include>
+	<!-- Main content -->
+	<div id="content" class="page-wrap" ui-view></div>
+	<!-- Footer -->
+	<footer id="footer" class="footer">
+		<div layout="column" flex>
+			<md-divider></md-divider>
+			<div class="footer-content" layout="row" layout-xs="column" layout-margin>
+				<span ng-bind="'© 2015 Grafika'"></span>
+				<span hide-xs vertical-divider-space></span>	
+				<span><a href="/about">About</a></span>
+				<span hide-xs vertical-divider-space></span>	
+				<span hide-xs><a href="/about/feedback">Feedback</a></span>
+				<span hide-xs vertical-divider-space></span>
+				
+				<span hide-xs flex></span>
+				
+				<span><a href="/help">Help</a></span>
+				<span hide-xs vertical-divider-space></span>	
+				<span hide-xs><a href="/eula">Terms</a></span>
+				<span hide-xs vertical-divider-space></span>	
+				<span hide-xs><a href="/privacy-policy">Privacy</a></span>
+				<span hide-xs vertical-divider-space></span>	
+				<span ng-bind="'v' + vm.getAppVersion()"></span>
+			</div>
+		</div>
+	</footer>
 
-<script type="text/javascript"  src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+<script type="text/javascript"  src="//ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script type="text/javascript"  src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <!-- Angular Material requires Angular.js Libraries -->
 <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular.js"></script>
 <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-animate.min.js"></script>
@@ -41,9 +62,9 @@
 <script type="text/javascript" src="/assets/js/angular-spectrum-colorpicker/angular-spectrum-colorpicker.min.js"></script>
 <script type="text/javascript" src="/assets/js/angularUtils-disqus/dirDisqus.js"></script>
 
-<!--<script type="text/javascript" src="/assets/js/grafika.js/dist/grafika-core.min.js"></script>-->
-<script type="text/javascript" src="/assets/js/grafika.js/src/grafika.js"></script>
-<script type="text/javascript" src="/assets/js/grafika.js/src/grafika.extensions.js"></script>
+<script type="text/javascript" src="/assets/js/grafika.js/dist/grafika-core.min.js"></script>
+<!--<script type="text/javascript" src="/assets/js/grafika.js/src/grafika.js"></script>
+<script type="text/javascript" src="/assets/js/grafika.js/src/grafika.extensions.js"></script>-->
 <script type="text/javascript" src="/assets/js/grafika.js/dist/grafika.demo.min.js"></script>
 
 <script type="text/javascript" src="/app/app-routes.js"></script>
