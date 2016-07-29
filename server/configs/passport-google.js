@@ -7,6 +7,7 @@ var __extends = (this && this.__extends) || function (d, b) {
 var passport_google_oauth_1 = require('passport-google-oauth');
 var user_1 = require('../models/user');
 var config = require('./config');
+var GoogleTokenStrategy = require('passport-google-id-token');
 var Options = (function () {
     function Options() {
         this.clientID = config.setting.$auth.$googleId;
@@ -49,4 +50,25 @@ var GoogleOAuthStrategy = (function (_super) {
     return GoogleOAuthStrategy;
 }(passport_google_oauth_1.OAuth2Strategy));
 exports.GoogleOAuthStrategy = GoogleOAuthStrategy;
+var TokenIdOptions = (function () {
+    function TokenIdOptions() {
+        this.clientID = config.setting.$auth.$googleId;
+    }
+    return TokenIdOptions;
+}());
+var GoogleTokenIdOAuthStrategy = (function () {
+    function GoogleTokenIdOAuthStrategy() {
+        return new GoogleTokenStrategy(new TokenIdOptions(), function (parsedToken, googleId, done) {
+            var email = parsedToken.payload.email;
+            user_1.User.findOne({ email: email }, function (err, user) {
+                done(null, user);
+            });
+        });
+    }
+    GoogleTokenIdOAuthStrategy.prototype.authenticate = function (req, options) {
+        throw new Error('GoogleTokenIdOAuthStrategy.authenticate() not implemented');
+    };
+    return GoogleTokenIdOAuthStrategy;
+}());
+exports.GoogleTokenIdOAuthStrategy = GoogleTokenIdOAuthStrategy;
 //# sourceMappingURL=passport-google.js.map

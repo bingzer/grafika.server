@@ -4,6 +4,8 @@ import { VerifyFunction, OAuth2Strategy, IOAuth2StrategyOption } from 'passport-
 import { IUser, User, randomUsername } from '../models/user';
 import * as config from './config';
 
+let GoogleTokenStrategy = require('passport-google-id-token');
+
 class Options implements IOAuth2StrategyOption {
     clientID: string = config.setting.$auth.$googleId;
     clientSecret: string = config.setting.$auth.$googleSecret;
@@ -41,4 +43,26 @@ export class GoogleOAuthStrategy extends OAuth2Strategy {
             });
         });
     }
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+class TokenIdOptions {
+    clientID = config.setting.$auth.$googleId;
+}
+
+export class GoogleTokenIdOAuthStrategy implements passport.Strategy{
+    constructor() {
+        return new GoogleTokenStrategy(new TokenIdOptions(), (parsedToken, googleId, done) => {
+            var email = parsedToken.payload.email;
+            User.findOne({ email: email }, (err, user) => {
+                done(null, user);
+            });
+        });
+    }
+    
+    authenticate(req: any, options?: Object): void {
+        throw new Error('GoogleTokenIdOAuthStrategy.authenticate() not implemented');
+    }
+    
 }

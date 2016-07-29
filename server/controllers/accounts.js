@@ -42,13 +42,17 @@ function register(req, res, next) {
 exports.register = register;
 ;
 function authenticate(req, res, next) {
-    if (req.isAuthenticated()) {
+    if (req.isAuthenticated())
         res.send({ token: signToken(req.user) });
-    }
     else
         res.sendStatus(200);
 }
 exports.authenticate = authenticate;
+;
+function authenticateGoogle(req, res, next) {
+    passport.authenticate('google-android')(req, res, next);
+}
+exports.authenticateGoogle = authenticateGoogle;
 ;
 function changePassword(req, res, next) {
     user_1.User.findById(req.user._id, function (err, user) {

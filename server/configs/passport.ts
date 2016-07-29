@@ -5,8 +5,10 @@ import * as q from 'q';
 import { IUser, User } from '../models/user';
 import { SignupStrategy } from './passport-signup';
 import { SigninStrategy } from './passport-signin';
-import { GoogleOAuthStrategy } from './passport-google';
+import { GoogleOAuthStrategy, GoogleTokenIdOAuthStrategy } from './passport-google';
 import { FacebookOAuthStrategy } from './passport-facebook';
+
+var GoogleTokenStrategy = require('passport-google-id-token');
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -29,6 +31,7 @@ export function initialize(app){
         passport.use('local-login', new SigninStrategy());
         passport.use('google', new GoogleOAuthStrategy());
         passport.use('facebook', new FacebookOAuthStrategy());
+        passport.use('google-android', new GoogleTokenIdOAuthStrategy());
 
         winston.info('Passport [OK]');
         defer.resolve();
