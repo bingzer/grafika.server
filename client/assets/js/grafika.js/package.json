@@ -1,6 +1,6 @@
 {
   "name": "grafika-js",
-  "version": "0.10.4",
+  "version": "0.10.5",
   "devDependencies": {
     "bower": "^1.7.9",
     "grunt": "^0.4.5",
