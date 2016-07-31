@@ -21,7 +21,7 @@
  * Supported browser: IE9 > up, chrome, edge
  */
 var Grafika = function (){	
-	var GRAFIKA_VERSION = '0.10.4';
+	var GRAFIKA_VERSION = '0.10.5';
 	
     // ---------------------------------------------------------- Constants -------------------------------------//
     var MODE_NONE = 'none', MODE_PAINT = 'paint', MODE_MOVE = 'move', MODE_SELECT = 'select', MODE_DELETE = 'delete';		
@@ -118,6 +118,7 @@ var Grafika = function (){
         log('Animation started. Timer: ' + animation.timer + 'ms', animation);
         animator = window.setInterval(animate, animation.timer);
 		
+		callback.on('frameCount', animation.frames.length);
         callback.on('playing', true);
         this.navigateToFrame(0, true);
 
@@ -238,6 +239,7 @@ var Grafika = function (){
         if (opts.backgroundColor) {
             options.backgroundColor = opts.backgroundColor;
             frame.backgroundColor = options.backgroundColor;
+			frame.modified = true;
             this.refresh();
         }
         if (opts.foregroundColor) {
