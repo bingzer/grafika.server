@@ -20,14 +20,14 @@
                     <a href="#" ui-sref="my-animations" active-link="active">My Animations</a>
                 </li>
                 <li class="nav-link dropdown" ng-if="vm.isAuthorized('user')">
-                    <a href="#" class="dropdown-toggle" active-link="active" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                        <img class="avatar avatar-sm link text-center-vertical" ng-src="{{vm.getUser().prefs.avatar}}" ng-click="$mdOpenMenu($event)">
+                    <a href="#" class="dropdown-toggle" active-link="active" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" style="padding: 10px;">
+                        <img class="avatar link text-center-vertical" ng-src="{{vm.getUser().prefs.avatar}}" ng-click="$mdOpenMenu($event)">
                         {{vm.getUser().getDisplayName()}} <span class="caret"></span>
                     </a>
                     <ul class="dropdown-menu">
                         <li>
                             <a href="#" ng-click="vm.navigate('/profile')">
-                                <md-icon md-font-family="material icons">profile</md-icon>&nbsp;Profile
+                                <md-icon md-font-family="material icons">person</md-icon>&nbsp;Profile
                             </a>
                         </li>
                         <li>
