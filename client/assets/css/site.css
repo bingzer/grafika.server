@@ -1,14 +1,12 @@
 html {
-  position: relative;
-  min-height: 100%;
-  padding: 0;
+	height: 100%;
+	min-height: 100%;
+	padding: 0;
 }
 body {
 	height: auto !important;
-	position: inherit !important;
 	padding: 0 0 48px 0;
 	background-color: #fafafa;
-	overflow-x: hidden;
 }
 /* -- Footer -- */
 .footer {
