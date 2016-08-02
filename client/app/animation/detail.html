@@ -1,21 +1,48 @@
-<div layout="column" ng-cloak>
+<div class="detail" layout="column" ng-cloak>
     <div ng-include="'/app/animation/playback.html'"></div>
+    
+    <md-divider></md-divider>
 
     <div layout="column" layout-margin>
-        <div class="md-title" flex>
-            <span>{{vm.animation.name}}</span>
-            <span flex></span>
-            <span>
-                <a ui-sref="user({_id: vm.animation.userId})">{{vm.animation.author}}</a>
-            </span>
+        <div layout="row">
+            <!-- Left -->
+            <div layout="column">
+                <div class="md-title">{{vm.animation.name}}</div>
+                <div class="md-caption text-muted" layout="column">
+                    <div>
+                        <span>{{vm.animation.viewCount}}</span>
+                        <span>{{vm.animation.ratings}}</span>
+                    </div>
+                    <div>
+                        <span>{{vm.animation.width + 'x' + vm.animation.height}}</span>
+                        <span>({{vm.animation.totalFrame}} frames)</span>
+                    </div>
+                </div>
+                <p class="md-caption text-muted">Created: {{vm.animation.dateCreated | date}} | Modified: {{vm.animation.dateModified | date}}</p>
+            </div>
+            <div flex></div>
+            <!-- Right -->
+            <div class="text-align-end" layout="column">
+                <div class="text-muted">
+                    <a class="md-subtitle link" ui-sref="user({_id: vm.animation.userId})">
+                        <img src="assets/img/ic_user.png" class="avatar avatar-sm"/>
+                        {{vm.animation.author}}
+                    </a>
+                </div>
+                <div layout="row" ng-if="vm.canEdit" style="margin-top: 4px">
+                    <div class="btn-group" role="group" aria-label="...">
+                        <button type="button" class="btn btn-default" ng-click="vm.edit()">Edit</button>
+                        <button type="button" class="btn btn-default" ng-click="vm.editData()">Edit Data</button>
+                        <button type="button" class="btn btn-default" ng-click="vm.delete()">Delete</button>
+                    </div>
+                </div>
+            </div>
         </div>
         <div>
-            <md-button ng-show="vm.canEdit" class="md-raised" ng-click="vm.edit()">Edit</md-button>
-            <md-button ng-show="vm.canEdit" class="md-raised" ng-click="vm.editData()">Edit Data</md-button>
-            <md-button ng-show="vm.canEdit" class="md-raised" ng-click="vm.delete()">Delete</md-button>
+            <p class="md-caption" ng-show="vm.animation.description != undefined && vm.animation.description.length > 0">{{vm.animation.description}}</p>
+            <p class="md-caption" ng-show="vm.animation.description == undefined && vm.animation.description.length == 0">{{vm.animation.description}}</p>
         </div>
-        <p class="md-caption">{{vm.animation.description}}</p>
     </div>
     
-    <dir-disqus config="vm.disqusConfig" ng-if="vm.disqusReady"></dir-disqus>
+    <dir-disqus config="vm.disqusConfig" ng-if="vm.disqusReady" layout-margin></dir-disqus>
 </div>

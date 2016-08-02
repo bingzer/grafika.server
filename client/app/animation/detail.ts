@@ -17,16 +17,22 @@ module GrafikaApp {
         
         onLoaded(animation: Grafika.IAnimation){
             this.uxService.pageTitle = this.animation.name;
+            this.disqusConfig = new DisqusConfig(this.appCommon, animation._id);
+            this.disqusConfig.disqus_title = animation.name;
+            this.disqusConfig.disqus_url = this.appCommon.$location.absUrl();
+
             if (this.authService.isAuthorized('user')){
                 this.canEdit = this.authService.getUser()._id === this.animation.userId;
                 this.authService.getDisqusToken().then((res) => {
-                    this.disqusConfig = new DisqusConfig(this.appCommon, animation._id);
-                    this.disqusConfig.disqus_title = animation.name;
-                    this.disqusConfig.disqus_url = this.appCommon.$location.absUrl();
-                    //this.disqusConfig.disqus_category_id = 'Animation';
-                    this.disqusConfig.disqus_remote_auth_s3 = res.data.token;
-                    this.disqusReady = true;
+                    if (this.authService.isAuthenticated()){
+                        //this.disqusConfig.disqus_category_id = 'Animation';
+                        this.disqusConfig.disqus_remote_auth_s3 = res.data.token;
+                        this.disqusReady = true;
+                    }
                 });
+            }
+            else {
+                this.disqusReady = true;
             }
         }
 

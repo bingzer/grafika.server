@@ -16,15 +16,20 @@ var GrafikaApp;
         AnimationDetailController.prototype.onLoaded = function (animation) {
             var _this = this;
             this.uxService.pageTitle = this.animation.name;
+            this.disqusConfig = new GrafikaApp.DisqusConfig(this.appCommon, animation._id);
+            this.disqusConfig.disqus_title = animation.name;
+            this.disqusConfig.disqus_url = this.appCommon.$location.absUrl();
             if (this.authService.isAuthorized('user')) {
                 this.canEdit = this.authService.getUser()._id === this.animation.userId;
                 this.authService.getDisqusToken().then(function (res) {
-                    _this.disqusConfig = new GrafikaApp.DisqusConfig(_this.appCommon, animation._id);
-                    _this.disqusConfig.disqus_title = animation.name;
-                    _this.disqusConfig.disqus_url = _this.appCommon.$location.absUrl();
-                    _this.disqusConfig.disqus_remote_auth_s3 = res.data.token;
-                    _this.disqusReady = true;
+                    if (_this.authService.isAuthenticated()) {
+                        _this.disqusConfig.disqus_remote_auth_s3 = res.data.token;
+                        _this.disqusReady = true;
+                    }
                 });
+            }
+            else {
+                this.disqusReady = true;
             }
         };
         AnimationDetailController.prototype.edit = function () {

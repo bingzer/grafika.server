@@ -5,7 +5,7 @@
         <canvas id="canvas" ></canvas>
     </md-card>
     <!-- Header -->
-    <div class="playback-header" layout="row">
+    <div class="playback-header hidden" layout="row">
         <div layout-margin></div>
         <div layout="row" layout="center center">
             <span class="md-subtitle text-center-vertical" ng-bind="vm.animationName"></span>
@@ -28,7 +28,7 @@
             <md-slider style="margin: auto 16px" flex min="0" max="{{vm.totalFrame - 1}}" ng-model="vm.currentFrame" aria-label="Animation tracker"></md-slider>
         </div>
         <div layout-margin></div>
-        <span class="md-subtitle text-center-vertical" style="margin-top: 13px;" ng-bind="vm.totalFrame + ' frames'"></span>
+        <span class="md-subtitle text-muted text-center-vertical" style="margin-top: 13px;" ng-bind="vm.totalFrame + ' frames'"></span>
         <div layout-margin></div>
     </div>
 </div>

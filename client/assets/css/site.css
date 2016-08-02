@@ -1,25 +1,35 @@
 html {
   position: relative;
   min-height: 100%;
+  padding: 0;
 }
 body {
 	height: auto !important;
 	position: inherit !important;
-	padding-bottom: 48px;
+	padding: 0 0 48px 0;
 	background-color: #fafafa;
 	overflow-x: hidden;
 }
 /* -- Footer -- */
 .footer {
 	font-size: smaller;
+	color: gray;
 	background-color: #ffffff;
 	height: 48px;
 	position: absolute;
 	bottom: 1;
 	width: 100%;
 }
+@media (max-width: 599px){
+	.footer {
+		height: 156px;
+	}
+}
 
 /* ---------- Common ------------ */
+.hidden {
+	display: none !important;
+}
 .transparent {
 	background: transparent !important;
 }
@@ -29,19 +39,35 @@ body {
 	margin-top: auto;
 	margin-bottom: auto;
 }
+.text-align-end {
+	text-align: end;
+}
 .text-muted {
 	color: gray;
+}
+.link {
+	text-decoration: none !important;
+}
+[layout-margin-sm] {
+	margin: 4px;
+}
+[layout-padding-sm]{
+	padding: 4px;
 }
 
 /* ---------- Header ----------- */
 nav.navbar {
 	margin-bottom: 0;    
-	background-color: rgb(0,128,128);
+	background-color: rgba(0,128,128, 0.9);
     border: 0;
     border-radius: 0;
-	opacity: 0.9;
 }
-
+nav.navbar .navbar-toggle{
+	border-color: transparent;
+}
+nav.navbar .navbar-collapse {
+	border: none;
+}
 nav.navbar .navbar-nav li.nav-link.dropdown,
 nav.navbar .navbar-nav li.nav-link.active.dropdown {
 	border-bottom: 0;	
@@ -88,7 +114,7 @@ md-dialog {
 .intro > .canvas-overlay {
 	position: absolute;
 	top: 0;
-	background: rgba(0,128,128, 0.9);
+	background: rgba(128,128,128, 0.4);
 }
 .intro #logo {
 	position: absolute;
@@ -144,14 +170,19 @@ md-dialog {
 }
 /** playback */
 .playback {
-	position: relative
+	margin-top: 4px;
+	margin-bottom: 4px;
+}
+.playback #canvas-container {
+	margin-top: 4px;
+	margin-bottom: 4px;
 }
 .playback md-icon {
-	color: #ffffff;
+	/*color: #ffffff;*/
 }
 .playback-header {
 	background-color: rgba(0,0,0,0.3);
-	position: absolute;
+	/*position: absolute;*/
 	top: 0;
 	left: 0;
 	width: 100%;
@@ -159,12 +190,11 @@ md-dialog {
 	height: 48px;
 }
 .playback-footer {
-	background-color: rgba(0,0,0,0.3);
-	position: absolute;
-	bottom: 0;
-	left: 0;
+	/*background-color: rgba(0,0,0,0.3);*/
+	/*position: absolute;*/
+	/*bottom: 0;
+	left: 0;*/
 	width: 100%;
-	color: #ffffff;
 	height: 48px;
 }
 /** Popup menu */
@@ -194,3 +224,7 @@ md-dialog {
 	transition: background 0.15s linear;
 	width: auto;
 }*/
+
+/** --------------- Page --------------- */
+.detail {
+}
