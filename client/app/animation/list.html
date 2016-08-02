@@ -18,7 +18,9 @@
 					</a>
 				</span>
 			</div>
-			<div class="md-caption text-muted">{{anim.description}}</div>
+			<div class="md-caption text-muted">
+				<a class="md-subtitle link" ui-sref="user({_id: anim.userId})" ng-bind="anim.author || 'anonymous'"></a>
+			</div>
 		</md-whiteframe>
 	</div>
 </div>

@@ -131,7 +131,7 @@ function initialize(app) {
         app.get('/api/animations/:_id/frames', extractUser, useAnimAccess);
         app.post('/api/animations/:_id/frames', useSessionOrJwt, useAnimAccess);
         app.post('/api/animations/sync', useSessionOrJwt, syncController.sync);
-        app.get('/api/users/:_id', useSessionOrJwt, userController.get);
+        app.get('/api/users/:_id', userController.get);
         app.put('/api/users/:_id', useSessionOrJwt, userController.update);
         app.get('/api/animations/:animationId/thumbnail', resourcesController.getThumbnail);
         app.post('/api/animations/:animationId/thumbnail', useSessionOrJwt, useAnimAccess, resourcesController.createThumbnailSignedUrl);

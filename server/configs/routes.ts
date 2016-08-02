@@ -162,7 +162,7 @@ export function initialize(app): q.Promise<any> {
         app.post('/api/animations/sync', useSessionOrJwt, syncController.sync);
 
         // ---------------- Users -----------------------------//
-        app.get('/api/users/:_id', useSessionOrJwt, userController.get);
+        app.get('/api/users/:_id', userController.get);
         app.put('/api/users/:_id', useSessionOrJwt, userController.update);
 
         // ---------------- Thumbnail -----------------------------//
