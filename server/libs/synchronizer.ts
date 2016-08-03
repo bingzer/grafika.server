@@ -136,9 +136,9 @@ export class Synchronizer implements ISyncProcess {
         let finalizationProcess: Finalization = new Finalization(this.syncResult, this.localSync);
 
         return preparationProcess.sync()
+            .then((SyncResult) => deletionProcess.sync())
             .then((SyncResult) => additionProcess.sync())
             .then((syncResult) => modificationProcess.sync())
-            .then((SyncResult) => deletionProcess.sync())
             .then((SyncResult) => finalizationProcess.sync())
             .finally(() => {
                 winston.info('Sync: ' + this.syncResult.display());
@@ -352,12 +352,12 @@ class Deletion extends SyncProcess {
         let deleteServerIds = [];
         for (let i = 0; i < this.syncResult.events.length; i++) {
             if (this.syncResult.events[i].action == SyncAction.ServerDelete){
-                deleteServerIds.push(this.syncResult.events[i].animationId);
+                deleteServerIds.push(this.syncResult.events[i].animationId.toString());
             }
         }
 
         if (deleteServerIds.length > 0){
-            Animation.remove({ $in: deleteServerIds }, (err) => {
+            Animation.remove({ _id: { $in: deleteServerIds } }, (err) => {
                 if (!err) defer.reject(err);
                 else defer.resolve(this.syncResult);
             });

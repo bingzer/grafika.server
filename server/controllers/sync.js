@@ -1,6 +1,7 @@
 "use strict";
 var sync_1 = require("../models/sync");
 var synchronizer_1 = require("../libs/synchronizer");
+var _ = require('underscore');
 function sync(req, res, next) {
     var userId = req.user._id;
     var localSync = req.body;
@@ -37,6 +38,7 @@ function syncUpdate(req, res, next) {
             if (result.clientId)
                 result.dateModified = localSync.dateModified;
             result.clientId = undefined;
+            result.animationIds = _.map(localSync.animations, function (anim) { return anim._id; });
             result.save(function (err) {
                 if (err)
                     next(err);

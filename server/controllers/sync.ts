@@ -1,6 +1,7 @@
 import * as express from "express";
 import { IServerSync, Sync, ILocalSync } from "../models/sync";
 import { Synchronizer } from "../libs/synchronizer";
+import * as _ from 'underscore';
 
 /**
  * Clients call this POST with LocalSync to get the result.
@@ -50,6 +51,7 @@ export function syncUpdate(req: any | express.Request, res: express.Response, ne
             if (result.clientId) 
                 result.dateModified = localSync.dateModified;
             result.clientId = undefined;
+            result.animationIds = _.map(localSync.animations, (anim: Grafika.IAnimation) => anim._id);
             result.save((err) => {
                 if (err) next(err);
                 else if (!match) next('No matching clientId found'); 

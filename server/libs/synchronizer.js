@@ -98,9 +98,9 @@ var Synchronizer = (function () {
         var modificationProcess = new Modification(this.syncResult, this.localSync);
         var finalizationProcess = new Finalization(this.syncResult, this.localSync);
         return preparationProcess.sync()
+            .then(function (SyncResult) { return deletionProcess.sync(); })
             .then(function (SyncResult) { return additionProcess.sync(); })
             .then(function (syncResult) { return modificationProcess.sync(); })
-            .then(function (SyncResult) { return deletionProcess.sync(); })
             .then(function (SyncResult) { return finalizationProcess.sync(); })
             .finally(function () {
             winston.info('Sync: ' + _this.syncResult.display());
@@ -270,11 +270,11 @@ var Deletion = (function (_super) {
         var deleteServerIds = [];
         for (var i = 0; i < this.syncResult.events.length; i++) {
             if (this.syncResult.events[i].action == SyncAction.ServerDelete) {
-                deleteServerIds.push(this.syncResult.events[i].animationId);
+                deleteServerIds.push(this.syncResult.events[i].animationId.toString());
             }
         }
         if (deleteServerIds.length > 0) {
-            animation_1.Animation.remove({ $in: deleteServerIds }, function (err) {
+            animation_1.Animation.remove({ _id: { $in: deleteServerIds } }, function (err) {
                 if (!err)
                     defer.reject(err);
                 else
