@@ -182,19 +182,34 @@ abstract class SyncProcess implements ISyncProcess {
 
         Sync.findById(this.localSync._id, (err, serverSync: IServerSync) => {
             if (err) defer.reject(err);
-            if (!serverSync) defer.reject('No server sync');
-            else {
-                let ids = _.map(serverSync.animationIds, (animationId) => new mongoose.Types.ObjectId(animationId));
-                Animation.find({ _id: { $in: ids }}).lean(true).exec((err, serverAnimations) => {
+            if (!serverSync) {
+                let sync = new Sync();
+                sync._id = this.localSync._id;
+                sync.dateCreated = Date.now();
+                sync.dateModified = this.localSync.dateModified - 100;
+                sync.animationIds = [];
+                sync.save((err, res) => {
                     if (err) defer.reject(err);
-                    else {
-                        serverSync.animations = serverAnimations;
-                        this.doSync(defer, this.localSync, serverSync);
-                    }
+                    else if (!res) defer.reject('Unable to create Sync entity');
+                    else this.executeSync(defer, <IServerSync> res);
                 });
+            }
+            else {
+                this.executeSync(defer, serverSync);
             }
         });
         return defer.promise;
+    }
+
+    private executeSync(defer: q.Deferred<SyncResult>, serverSync: IServerSync){
+        let ids = _.map(serverSync.animationIds, (animationId) => new mongoose.Types.ObjectId(animationId));
+        Animation.find({ _id: { $in: ids }}).lean(true).exec((err, serverAnimations) => {
+            if (err) defer.reject(err);
+            else {
+                serverSync.animations = serverAnimations;
+                this.doSync(defer, this.localSync, serverSync);
+            }
+        });
     }
 }
 
@@ -208,20 +223,18 @@ class Preparation extends SyncProcess {
     doSync(defer: q.Deferred<SyncResult>, localSync: ILocalSync, serverSync: IServerSync) {
         this.log("Preparation");
 
-        return this.checkUser(localSync._id)
-            .then(() => {
-                defer.resolve(this.syncResult);
-            })
+        return this.checkUser()
+            .then(() => defer.resolve(this.syncResult))
             .catch((err) => {
                 defer.reject(err);
             });
     }
 
-    private checkUser(userId: string): q.Promise<any> {
+    private checkUser(): q.Promise<any> {
         this.log("Check user");
         let defer = q.defer();
         // make sure user exists
-        User.findOne({ _id: userId, active: true }, (err, user) => {
+        User.findOne({ _id: this.localSync._id, active: true }, (err, user) => {
             if (err) defer.reject(err);
             else if (!user) defer.reject('User not found');
             else {

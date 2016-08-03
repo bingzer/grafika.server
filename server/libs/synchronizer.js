@@ -134,21 +134,38 @@ var SyncProcess = (function () {
         sync_1.Sync.findById(this.localSync._id, function (err, serverSync) {
             if (err)
                 defer.reject(err);
-            if (!serverSync)
-                defer.reject('No server sync');
-            else {
-                var ids = _.map(serverSync.animationIds, function (animationId) { return new mongoose.Types.ObjectId(animationId); });
-                animation_1.Animation.find({ _id: { $in: ids } }).lean(true).exec(function (err, serverAnimations) {
+            if (!serverSync) {
+                var sync = new sync_1.Sync();
+                sync._id = _this.localSync._id;
+                sync.dateCreated = Date.now();
+                sync.dateModified = _this.localSync.dateModified - 100;
+                sync.animationIds = [];
+                sync.save(function (err, res) {
                     if (err)
                         defer.reject(err);
-                    else {
-                        serverSync.animations = serverAnimations;
-                        _this.doSync(defer, _this.localSync, serverSync);
-                    }
+                    else if (!res)
+                        defer.reject('Unable to create Sync entity');
+                    else
+                        _this.executeSync(defer, res);
                 });
+            }
+            else {
+                _this.executeSync(defer, serverSync);
             }
         });
         return defer.promise;
+    };
+    SyncProcess.prototype.executeSync = function (defer, serverSync) {
+        var _this = this;
+        var ids = _.map(serverSync.animationIds, function (animationId) { return new mongoose.Types.ObjectId(animationId); });
+        animation_1.Animation.find({ _id: { $in: ids } }).lean(true).exec(function (err, serverAnimations) {
+            if (err)
+                defer.reject(err);
+            else {
+                serverSync.animations = serverAnimations;
+                _this.doSync(defer, _this.localSync, serverSync);
+            }
+        });
     };
     return SyncProcess;
 }());
@@ -160,18 +177,16 @@ var Preparation = (function (_super) {
     Preparation.prototype.doSync = function (defer, localSync, serverSync) {
         var _this = this;
         this.log("Preparation");
-        return this.checkUser(localSync._id)
-            .then(function () {
-            defer.resolve(_this.syncResult);
-        })
+        return this.checkUser()
+            .then(function () { return defer.resolve(_this.syncResult); })
             .catch(function (err) {
             defer.reject(err);
         });
     };
-    Preparation.prototype.checkUser = function (userId) {
+    Preparation.prototype.checkUser = function () {
         this.log("Check user");
         var defer = q.defer();
-        user_1.User.findOne({ _id: userId, active: true }, function (err, user) {
+        user_1.User.findOne({ _id: this.localSync._id, active: true }, function (err, user) {
             if (err)
                 defer.reject(err);
             else if (!user)

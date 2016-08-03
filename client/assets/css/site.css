@@ -175,9 +175,6 @@ md-dialog {
 	margin-top: 4px;
 	margin-bottom: 4px;
 }
-.playback md-icon {
-	/*color: #ffffff;*/
-}
 .playback-header {
 	background-color: rgba(0,0,0,0.3);
 	/*position: absolute;*/
@@ -224,5 +221,3 @@ md-dialog {
 }*/
 
 /** --------------- Page --------------- */
-.detail {
-}
