@@ -61,7 +61,7 @@ var SyncResult = (function () {
     }
     SyncResult.prototype.addSyncEvent = function (event) {
         for (var i = 0; i < this.events.length; i++) {
-            if (this.events[i].animationId == event.animationId)
+            if (this.events[i].animationId == event.animationId || this.events[i].localId == event.localId)
                 return;
         }
         this.events.push(event);
@@ -98,9 +98,9 @@ var Synchronizer = (function () {
         var modificationProcess = new Modification(this.syncResult, this.localSync);
         var finalizationProcess = new Finalization(this.syncResult, this.localSync);
         return preparationProcess.sync()
-            .then(function (SyncResult) { return deletionProcess.sync(); })
             .then(function (SyncResult) { return additionProcess.sync(); })
             .then(function (syncResult) { return modificationProcess.sync(); })
+            .then(function (SyncResult) { return deletionProcess.sync(); })
             .then(function (SyncResult) { return finalizationProcess.sync(); })
             .finally(function () {
             winston.info('Sync: ' + _this.syncResult.display());
@@ -241,7 +241,6 @@ var Deletion = (function (_super) {
         _super.call(this, "Deletion", syncResult, localSync);
     }
     Deletion.prototype.doSync = function (defer, localSync, serverSync) {
-        var _this = this;
         this.log("Deletion check");
         if (serverSync.dateModified > this.localSync.dateModified) {
             this.log("Server is more current");
@@ -250,7 +249,7 @@ var Deletion = (function (_super) {
                 var deleteLocal = deleteLocals[i];
                 this.syncResult.addSyncEvent(new SyncEvent(SyncAction.ClientDelete, deleteLocal._id, deleteLocal.localId));
             }
-            defer.resolve(this.syncResult);
+            this.doServerDeletion(defer);
         }
         else if (this.localSync.dateModified > serverSync.dateModified) {
             this.log("Client is more current");
@@ -259,30 +258,31 @@ var Deletion = (function (_super) {
                 var deleteRemote = deleteRemotes[i];
                 this.syncResult.addSyncEvent(new SyncEvent(SyncAction.ServerDelete, deleteRemote._id, deleteRemote.localId));
             }
-            if (deleteRemotes.length > 0) {
-                var deleteRemoteIds_1 = _.map(deleteRemotes, function (anim) { return anim._id; });
-                animation_1.Animation.remove({ _id: { $in: deleteRemoteIds_1 } }, function (err) {
-                    if (err)
-                        defer.reject(err);
-                    else {
-                        serverSync.animationIds = _.difference(serverSync.animationIds, deleteRemoteIds_1);
-                        serverSync.save(function (err, res) {
-                            if (err)
-                                defer.reject(err);
-                            else
-                                defer.resolve(_this.syncResult);
-                        });
-                    }
-                });
-            }
-            else {
-                defer.resolve(this.syncResult);
-            }
+            this.doServerDeletion(defer);
         }
         else {
             this.log("Server and Client [UP TO DATE]");
             defer.resolve(this.syncResult);
         }
+    };
+    Deletion.prototype.doServerDeletion = function (defer) {
+        var _this = this;
+        var deleteServerIds = [];
+        for (var i = 0; i < this.syncResult.events.length; i++) {
+            if (this.syncResult.events[i].action == SyncAction.ServerDelete) {
+                deleteServerIds.push(this.syncResult.events[i].animationId);
+            }
+        }
+        if (deleteServerIds.length > 0) {
+            animation_1.Animation.remove({ $in: deleteServerIds }, function (err) {
+                if (!err)
+                    defer.reject(err);
+                else
+                    defer.resolve(_this.syncResult);
+            });
+        }
+        else
+            defer.resolve(this.syncResult);
     };
     return Deletion;
 }(SyncProcess));

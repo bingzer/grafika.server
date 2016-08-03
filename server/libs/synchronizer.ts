@@ -82,7 +82,7 @@ export class SyncResult {
 
     addSyncEvent(event: SyncEvent) {
         for (let i = 0; i < this.events.length; i++) {
-            if (this.events[i].animationId == event.animationId)
+            if (this.events[i].animationId == event.animationId || this.events[i].localId == event.localId)
                 return;
         }
 
@@ -136,10 +136,9 @@ export class Synchronizer implements ISyncProcess {
         let finalizationProcess: Finalization = new Finalization(this.syncResult, this.localSync);
 
         return preparationProcess.sync()
-            // Deletion should come first
-            .then((SyncResult) => deletionProcess.sync())
             .then((SyncResult) => additionProcess.sync())
             .then((syncResult) => modificationProcess.sync())
+            .then((SyncResult) => deletionProcess.sync())
             .then((SyncResult) => finalizationProcess.sync())
             .finally(() => {
                 winston.info('Sync: ' + this.syncResult.display());
@@ -329,8 +328,8 @@ class Deletion extends SyncProcess {
                 let deleteLocal = deleteLocals[i];
                 this.syncResult.addSyncEvent(new SyncEvent(SyncAction.ClientDelete, deleteLocal._id, deleteLocal.localId));
             }
-
-            defer.resolve(this.syncResult);
+            
+            this.doServerDeletion(defer);
         }
         else if (this.localSync.dateModified > serverSync.dateModified) {
             this.log("Client is more current");
@@ -340,28 +339,31 @@ class Deletion extends SyncProcess {
                 let deleteRemote = deleteRemotes[i];
                 this.syncResult.addSyncEvent(new SyncEvent(SyncAction.ServerDelete, deleteRemote._id, deleteRemote.localId));
             }
-
-            if (deleteRemotes.length > 0) {
-                let deleteRemoteIds = _.map(deleteRemotes, (anim) => anim._id);
-                Animation.remove({_id: { $in: deleteRemoteIds }}, (err) => {
-                    if (err) defer.reject(err);
-                    else {
-                        serverSync.animationIds = _.difference(serverSync.animationIds, deleteRemoteIds);
-                        serverSync.save((err, res) => {
-                            if (err) defer.reject(err);
-                            else defer.resolve(this.syncResult);
-                        });
-                    }
-                });
-            }
-            else { 
-                defer.resolve(this.syncResult);
-            }
+            
+            this.doServerDeletion(defer);
         }
         else {
             this.log("Server and Client [UP TO DATE]");
             defer.resolve(this.syncResult);
         }
+    }
+
+    private doServerDeletion(defer: q.Deferred<SyncResult>){
+        let deleteServerIds = [];
+        for (let i = 0; i < this.syncResult.events.length; i++) {
+            if (this.syncResult.events[i].action == SyncAction.ServerDelete){
+                deleteServerIds.push(this.syncResult.events[i].animationId);
+            }
+        }
+
+        if (deleteServerIds.length > 0){
+            Animation.remove({ $in: deleteServerIds }, (err) => {
+                if (!err) defer.reject(err);
+                else defer.resolve(this.syncResult);
+            });
+        }
+        else
+            defer.resolve(this.syncResult);
     }
 }
 
