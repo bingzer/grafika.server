@@ -7,7 +7,8 @@ export interface ISync extends mongoose.Document {
     _id: string | any,
     animationIds: string[],
     dateModified: number,
-    dateCreated: number
+    dateCreated: number,
+    clientId: string,
 }
 
 export interface IServerSync extends ISync {
@@ -22,10 +23,11 @@ export interface ILocalSync extends ISync {
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 export const SyncSchema = new mongoose.Schema({
-    _id               : { type: String, required: true },
-    animationIds      : { type: [String] },
-    dateModified      : Number,
-    dateCreated       : Number
+    _id           : { type: String, required: true },
+    animationIds  : { type: [String] },
+    dateModified  : Number,
+    dateCreated   : Number,
+    clientId      : String
 });
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////

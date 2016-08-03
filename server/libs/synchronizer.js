@@ -98,18 +98,10 @@ var Synchronizer = (function () {
         var modificationProcess = new Modification(this.syncResult, this.localSync);
         var finalizationProcess = new Finalization(this.syncResult, this.localSync);
         return preparationProcess.sync()
-            .then(function (SyncResult) {
-            return additionProcess.sync();
-        })
-            .then(function (SyncResult) {
-            return deletionProcess.sync();
-        })
-            .then(function (syncResult) {
-            return modificationProcess.sync();
-        })
-            .then(function (SyncResult) {
-            return finalizationProcess.sync();
-        })
+            .then(function (SyncResult) { return deletionProcess.sync(); })
+            .then(function (SyncResult) { return additionProcess.sync(); })
+            .then(function (syncResult) { return modificationProcess.sync(); })
+            .then(function (SyncResult) { return finalizationProcess.sync(); })
             .finally(function () {
             winston.info('Sync: ' + _this.syncResult.display());
             winston.info("Sync: Done!!!!!");
@@ -125,9 +117,6 @@ var SyncProcess = (function () {
         this.syncResult = syncResult;
         this.localSync = localSync;
     }
-    SyncProcess.prototype.log = function (msg) {
-        winston.info("Sync: [" + this.name + "] " + msg);
-    };
     SyncProcess.prototype.sync = function () {
         var _this = this;
         var defer = q.defer();
@@ -144,7 +133,7 @@ var SyncProcess = (function () {
                     if (err)
                         defer.reject(err);
                     else if (!res)
-                        defer.reject('Unable to create Sync entity');
+                        defer.reject('Unable to create server sync');
                     else
                         _this.executeSync(defer, res);
                 });
@@ -155,10 +144,13 @@ var SyncProcess = (function () {
         });
         return defer.promise;
     };
+    SyncProcess.prototype.log = function (msg) {
+        winston.info("Sync: [" + this.name + "] " + msg);
+    };
     SyncProcess.prototype.executeSync = function (defer, serverSync) {
         var _this = this;
         var ids = _.map(serverSync.animationIds, function (animationId) { return new mongoose.Types.ObjectId(animationId); });
-        animation_1.Animation.find({ _id: { $in: ids } }).lean(true).exec(function (err, serverAnimations) {
+        animation_1.Animation.find({ _id: { $in: ids } }, { frames: 0 }).lean(true).exec(function (err, serverAnimations) {
             if (err)
                 defer.reject(err);
             else {
@@ -177,16 +169,18 @@ var Preparation = (function (_super) {
     Preparation.prototype.doSync = function (defer, localSync, serverSync) {
         var _this = this;
         this.log("Preparation");
-        return this.checkUser()
-            .then(function () { return defer.resolve(_this.syncResult); })
+        return this.checkUser(localSync._id)
+            .then(function () {
+            defer.resolve(_this.syncResult);
+        })
             .catch(function (err) {
             defer.reject(err);
         });
     };
-    Preparation.prototype.checkUser = function () {
+    Preparation.prototype.checkUser = function (userId) {
         this.log("Check user");
         var defer = q.defer();
-        user_1.User.findOne({ _id: this.localSync._id, active: true }, function (err, user) {
+        user_1.User.findOne({ _id: userId, active: true }, function (err, user) {
             if (err)
                 defer.reject(err);
             else if (!user)
@@ -208,26 +202,34 @@ var Addition = (function (_super) {
         this.log("Addition check");
         if (serverSync.dateModified > this.localSync.dateModified) {
             this.log("Server is more current");
-            var addLocalIds_1 = _.difference(_.map(serverSync.animations, function (anim) { return anim._id.toString(); }), _.map(localSync.animations, function (anim) { return anim._id.toString(); }));
-            var addLocals = _.filter(serverSync.animations, function (anim) { return _.contains(addLocalIds_1, anim._id.toString()); });
+            var addLocals = findDiff(serverSync.animations, localSync.animations);
             for (var i = 0; i < addLocals.length; i++) {
                 var addLocal = addLocals[i];
                 this.syncResult.addSyncEvent(new SyncEvent(SyncAction.ClientPull, addLocal._id, addLocal.localId));
             }
-            defer.resolve(this.syncResult);
-        }
-        else if (this.localSync.dateModified > serverSync.dateModified) {
-            this.log("Client is more current");
-            var addRemoteIds_1 = _.difference(_.map(localSync.animations, function (anim) { return anim.localId.toString(); }), _.map(serverSync.animations, function (anim) { return anim.localId.toString(); }));
-            var addRemotes = _.filter(localSync.animations, function (anim) { return _.contains(addRemoteIds_1, anim.localId.toString()); });
+            var addRemotes = findDiff(localSync.animations, serverSync.animations);
             for (var i = 0; i < addRemotes.length; i++) {
                 var addRemote = addRemotes[i];
                 this.syncResult.addSyncEvent(new SyncEvent(SyncAction.ClientPush, addRemote._id, addRemote.localId));
             }
             defer.resolve(this.syncResult);
         }
+        else if (this.localSync.dateModified > serverSync.dateModified) {
+            this.log("Client is more current");
+            var addRemotes = findDiff(localSync.animations, serverSync.animations);
+            for (var i = 0; i < addRemotes.length; i++) {
+                var addRemote = addRemotes[i];
+                this.syncResult.addSyncEvent(new SyncEvent(SyncAction.ClientPush, addRemote._id, addRemote.localId));
+            }
+            var addLocals = findDiff(serverSync.animations, localSync.animations);
+            for (var i = 0; i < addLocals.length; i++) {
+                var addLocal = addLocals[i];
+                this.syncResult.addSyncEvent(new SyncEvent(SyncAction.ClientPull, addLocal._id, addLocal.localId));
+            }
+            defer.resolve(this.syncResult);
+        }
         else {
-            this.log("Server and Client are up-to-date");
+            this.log("Server and Client [UP TO DATE]");
             defer.resolve(this.syncResult);
         }
     };
@@ -243,8 +245,7 @@ var Deletion = (function (_super) {
         this.log("Deletion check");
         if (serverSync.dateModified > this.localSync.dateModified) {
             this.log("Server is more current");
-            var deleteLocalIds_1 = _.difference(_.map(localSync.animations, function (anim) { return anim._id.toString(); }), _.map(serverSync.animations, function (anim) { return anim._id.toString(); }));
-            var deleteLocals = _.filter(localSync.animations, function (anim) { return _.contains(deleteLocalIds_1, anim._id.toString()); });
+            var deleteLocals = findDiff(localSync.animations, serverSync.animations);
             for (var i = 0; i < deleteLocals.length; i++) {
                 var deleteLocal = deleteLocals[i];
                 this.syncResult.addSyncEvent(new SyncEvent(SyncAction.ClientDelete, deleteLocal._id, deleteLocal.localId));
@@ -253,14 +254,13 @@ var Deletion = (function (_super) {
         }
         else if (this.localSync.dateModified > serverSync.dateModified) {
             this.log("Client is more current");
-            var deleteRemoteLocalIds_1 = _.difference(_.map(serverSync.animations, function (anim) { return anim.localId.toString(); }), _.map(localSync.animations, function (anim) { return anim.localId.toString(); }));
-            var deleteRemotes = _.filter(serverSync.animations, function (anim) { return _.contains(deleteRemoteLocalIds_1, anim.localId.toString()); });
-            var deleteRemoteIds_1 = _.map(deleteRemotes, function (anim) { return anim._id; });
+            var deleteRemotes = findDiff(serverSync.animations, localSync.animations);
             for (var i = 0; i < deleteRemotes.length; i++) {
                 var deleteRemote = deleteRemotes[i];
                 this.syncResult.addSyncEvent(new SyncEvent(SyncAction.ServerDelete, deleteRemote._id, deleteRemote.localId));
             }
-            if (deleteRemoteIds_1.length > 0) {
+            if (deleteRemotes.length > 0) {
+                var deleteRemoteIds_1 = _.map(deleteRemotes, function (anim) { return anim._id; });
                 animation_1.Animation.remove({ _id: { $in: deleteRemoteIds_1 } }, function (err) {
                     if (err)
                         defer.reject(err);
@@ -280,7 +280,7 @@ var Deletion = (function (_super) {
             }
         }
         else {
-            this.log("Server and Client are up-to-date");
+            this.log("Server and Client [UP TO DATE]");
             defer.resolve(this.syncResult);
         }
     };
@@ -321,16 +321,45 @@ var Finalization = (function (_super) {
     Finalization.prototype.doSync = function (defer, localSync, serverSync) {
         var _this = this;
         this.log('Updating ServerSync.dateModified');
-        serverSync.dateModified = this.localSync.dateModified;
+        serverSync.clientId = localSync.clientId;
         serverSync.save(function (err, res) {
             if (err)
                 defer.reject(err);
             else {
                 defer.resolve(_this.syncResult);
-                _this.log('ServerSync.dateModified Updated');
+                _this.log('ServerSync.clientId Updated');
             }
         });
     };
     return Finalization;
 }(SyncProcess));
+function findDiff(srcAnimations, targetAnimations) {
+    var animations = [];
+    for (var i = 0; i < srcAnimations.length; i++) {
+        var found = false;
+        for (var j = 0; j < targetAnimations.length; j++) {
+            if (found = animEquals(srcAnimations[i], targetAnimations[j]))
+                break;
+        }
+        if (!found)
+            addAnimation(srcAnimations[i]);
+    }
+    function addAnimation(anim) {
+        var found = false;
+        for (var i = 0; i < animations.length; i++) {
+            if (animations[i]._id == anim._id || animations[i].localId == anim.localId) {
+                found = true;
+                break;
+            }
+        }
+        if (!found)
+            animations.push(anim);
+    }
+    return animations;
+}
+function animEquals(anim, other) {
+    if (anim == undefined || other == undefined)
+        return false;
+    return (anim._id == other._id || anim.localId == other.localId);
+}
 //# sourceMappingURL=synchronizer.js.map

@@ -5,7 +5,8 @@ exports.SyncSchema = new mongoose.Schema({
     _id: { type: String, required: true },
     animationIds: { type: [String] },
     dateModified: Number,
-    dateCreated: Number
+    dateCreated: Number,
+    clientId: String
 });
 var Sync = restful.model('sync', exports.SyncSchema);
 exports.Sync = Sync;

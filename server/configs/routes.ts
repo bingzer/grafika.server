@@ -160,6 +160,7 @@ export function initialize(app): q.Promise<any> {
         app.post('/api/animations/:_id/frames', useSessionOrJwt, useAnimAccess);
         // --------------- Sync Stuffs -------------------------//
         app.post('/api/animations/sync', useSessionOrJwt, syncController.sync);
+        app.post('/api/animations/sync/update', useSessionOrJwt, syncController.syncUpdate);
 
         // ---------------- Users -----------------------------//
         app.get('/api/users/:_id', userController.get);

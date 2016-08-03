@@ -6,7 +6,7 @@ var config = require('../configs/config');
 function initialize(app) {
     var defer = q.defer();
     winston.debug('Connecting to mongodb');
-    mongoose.connect(config.setting.$server.$databaseUrl, function (err) {
+    var mongooseInstance = mongoose.connect(config.setting.$server.$databaseUrl, function (err) {
         if (err) {
             winston.error('mongodb [FAILED]');
             defer.reject(err);
@@ -16,6 +16,7 @@ function initialize(app) {
             defer.resolve();
         }
     });
+    mongooseInstance.Promise = q.Promise;
     return defer.promise;
 }
 exports.initialize = initialize;

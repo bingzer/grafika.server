@@ -7,8 +7,8 @@ import * as config from '../configs/config';
 export function initialize(app) {
     let defer = q.defer();
 
-    winston.debug('Connecting to mongodb');
-    mongoose.connect(config.setting.$server.$databaseUrl, (err) => {
+    winston.debug('Connecting to mongodb'); 
+    const mongooseInstance = mongoose.connect(config.setting.$server.$databaseUrl, (err) => {
         if (err) {
             winston.error('mongodb [FAILED]');
             defer.reject(err);
@@ -18,6 +18,7 @@ export function initialize(app) {
             defer.resolve();
         }
     });
+    mongooseInstance.Promise = q.Promise;
 
     return defer.promise;
 }
