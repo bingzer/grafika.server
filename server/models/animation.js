@@ -1,7 +1,6 @@
 "use strict";
 var mongoose = require('mongoose');
 var restful = require('../libs/restful');
-var sync_1 = require('./sync');
 exports.AnimationSchema = new mongoose.Schema({
     localId: { type: String },
     name: { type: String, required: true },
@@ -14,21 +13,12 @@ exports.AnimationSchema = new mongoose.Schema({
     views: Number,
     rating: Number,
     category: String,
+    removed: { type: Boolean, required: true, default: false },
     isPublic: { type: Boolean, default: false },
     author: String,
     userId: { type: String, required: true },
     totalFrame: { type: Number, default: 0 },
     frames: { type: [], select: false }
-});
-exports.AnimationSchema.post('save', function (animation, next) {
-    sync_1.createOrUpdateSync(animation.userId, animation._id, function (err, any) {
-        next(err);
-    });
-});
-exports.AnimationSchema.post('remove', function (animation, next) {
-    sync_1.deleteSync(animation.userId, animation._id, function (err) {
-        next(err);
-    });
 });
 var Animation = restful.model('animations', exports.AnimationSchema);
 exports.Animation = Animation;

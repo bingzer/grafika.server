@@ -1,7 +1,6 @@
 import * as express from "express";
-import { IServerSync, Sync, ILocalSync } from "../models/sync";
-import { Synchronizer } from "../libs/synchronizer";
-import * as _ from 'underscore';
+import { IServerSync, ILocalSync } from "../models/sync";
+import { Synchronizer, SyncResult } from "../libs/synchronizer";
 
 /**
  * Clients call this POST with LocalSync to get the result.
@@ -15,8 +14,8 @@ export function sync(req: any, res: express.Response, next: express.NextFunction
     let localSync: ILocalSync = req.body;
     if (!localSync) return next(400);
     
-    localSync._id = userId;  // force it
-    if (!localSync.animations || !localSync.dateModified || !localSync.clientId)
+    localSync.userId = userId;  // force it
+    if (!localSync.animations || !localSync.clientId)
         return next(400);
 
     var synchronizer = new Synchronizer(localSync);
@@ -37,26 +36,12 @@ export function sync(req: any, res: express.Response, next: express.NextFunction
  */
 export function syncUpdate(req: any | express.Request, res: express.Response, next: express.NextFunction) {
     let userId = req.user._id;
-    let localSync: ILocalSync = req.body;
-    if (!localSync) return next(400);
+    let localSync: ILocalSync = req.body.sync;
+    let syncResult: SyncResult = req.body.result;
+    if (!localSync || !syncResult) return next(400);
 
-    localSync._id = userId;  // force it
-    Sync.findOne({_id: localSync._id, $or: [{ clientId: localSync.clientId }, { clientId: null }] }, (err, result) => {
-        if (err) next(result);
-        else if(!result) {
-            next('Unable to find ServerSync. Detail: ' + err);
-        }
-        else {
-            let match = result.clientId === localSync.clientId;
-            if (result.clientId) 
-                result.dateModified = localSync.dateModified;
-            result.clientId = undefined;
-            result.animationIds = _.map(localSync.animations, (anim: Grafika.IAnimation) => anim._id);
-            result.save((err) => {
-                if (err) next(err);
-                else if (!match) next('No matching clientId found'); 
-                else res.sendStatus(201);
-            })
-        }
-    });
+    let synchronizer = new Synchronizer(localSync);
+    synchronizer.sync()
+        .then(() => res.sendStatus(201))
+        .catch((err) => next(err));
 }
