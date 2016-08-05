@@ -2,14 +2,15 @@
 var animation_1 = require('./animation');
 var q = require('q');
 var ServerSync = (function () {
-    function ServerSync() {
+    function ServerSync(userId) {
+        this.userId = userId;
     }
     ServerSync.find = function (userId) {
         var defer = q.defer();
-        var serverSync = new ServerSync();
+        var serverSync = new ServerSync(userId);
         function findAnimations(query) {
             var defer = q.defer();
-            animation_1.Animation.find(query, { frames: 0 }, function (err, results) {
+            animation_1.Animation.find(query, { frames: 0 }).lean().exec(function (err, results) {
                 if (err)
                     defer.reject(err);
                 else if (!results)

@@ -116,10 +116,19 @@ function handleErrors(err: any, req: express.Request, res: express.Response, nex
 			status = 400;
 			msg = err;
 		}
-		else if (err.status){
-			status = err.status;
-			msg    = err.msg || err.message;
-		}
+        else if (err) {
+            if (err.status){
+                status = err.status;
+                msg    = err.msg || err.message;
+            }
+            else if (err.msg || err.message) {
+                status = 400;
+                msg    = err.msg || err.message;
+            }
+            else {
+                status = 400;
+            }
+        }
 		else {
 			msg = 'This is our fault, will be checking on this';
 		}

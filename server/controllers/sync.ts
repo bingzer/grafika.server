@@ -10,23 +10,12 @@ import { Synchronizer, SyncResult } from "../libs/synchronizer";
  * the 'dateModified' field in the server side.
  */
 export function sync(req: any, res: express.Response, next: express.NextFunction) {
-    let userId = req.user._id;
     let localSync: ILocalSync = req.body;
-    if (!localSync) return next(400);
-    
-    localSync.userId = userId;  // force it
-    if (!localSync.animations || !localSync.clientId)
-        return next(400);
 
-    var synchronizer = new Synchronizer(localSync);
-    synchronizer
-        .sync()
-        .then((syncResult) => {
-            res.send(syncResult);
-        })
-        .catch((err) => {
-            next(err);
-        });
+    var synchronizer = new Synchronizer(req.user, localSync);
+    synchronizer.sync()
+        .then((syncResult) => res.send(syncResult))
+        .catch((err) => next(err) );
 }
 
 /**
@@ -35,13 +24,14 @@ export function sync(req: any, res: express.Response, next: express.NextFunction
  * If everything goes well, the server will update the dateModified field
  */
 export function syncUpdate(req: any | express.Request, res: express.Response, next: express.NextFunction) {
-    let userId = req.user._id;
     let localSync: ILocalSync = req.body.sync;
     let syncResult: SyncResult = req.body.result;
-    if (!localSync || !syncResult) return next(400);
+    let synchronizer = new Synchronizer(req.user, localSync);
 
-    let synchronizer = new Synchronizer(localSync);
-    synchronizer.sync()
+    if (!localSync || !syncResult) 
+        return next(new Error("sync and/ result are required"));
+
+    synchronizer.syncUpdate(syncResult)
         .then(() => res.sendStatus(201))
         .catch((err) => next(err));
 }

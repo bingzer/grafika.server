@@ -31,17 +31,20 @@ export interface IServerSync extends ISync {
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 export class ServerSync implements IServerSync {
-    userId       : string;
     animations   : Grafika.IAnimation[];
     tombstones   : Grafika.IAnimation[];
 
+    constructor(public userId: string) {
+        // nothing
+    }
+
     public static find(userId: string) : q.Promise<ServerSync> {
         let defer = q.defer<ServerSync>();
-        let serverSync = new ServerSync();
+        let serverSync = new ServerSync(userId);
 
         function findAnimations(query: any) : q.Promise<Grafika.IAnimation[]> {
             let defer = q.defer<Grafika.IAnimation[]>();
-            Animation.find(query, { frames: 0 }, (err, results) => {
+            Animation.find(query, { frames: 0 }).lean().exec((err, results) => {
                 if (err) defer.reject(err);
                 else if (!results) defer.reject('not found');
                 else {

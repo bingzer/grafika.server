@@ -10,17 +10,18 @@ var winston = require('winston');
 var sync_1 = require('../models/sync');
 var animation_1 = require('../models/animation');
 var Synchronizer = (function () {
-    function Synchronizer(localSync) {
+    function Synchronizer(user, localSync) {
+        this.user = user;
         this.localSync = localSync;
     }
     Synchronizer.prototype.sync = function () {
         var _this = this;
         var result = new SyncResult(this.localSync.clientId);
-        var preparation = new Preparation(result);
-        var addition = new Addition(result);
-        var modification = new Modification(result);
-        var deletion = new Deletion(result);
-        var finalization = new Finalization(result);
+        var preparation = new Preparation(this.user, result);
+        var addition = new Addition(this.user, result);
+        var modification = new Modification(this.user, result);
+        var deletion = new Deletion(this.user, result);
+        var finalization = new Finalization(this.user, result);
         return sync_1.ServerSync.find(this.localSync.userId)
             .then(function (serverSync) {
             return preparation.sync(_this.localSync, serverSync)
@@ -31,34 +32,34 @@ var Synchronizer = (function () {
         });
     };
     Synchronizer.prototype.syncUpdate = function (syncResult) {
+        var _this = this;
         var defer = q.defer();
-        var serverDeleteEvents = _.filter(syncResult.events, function (event) { return event.action === SyncAction.ServerDelete; });
-        var serverDeleteIds = _.map(syncResult.events, function (event) { return event.animationId; });
-        animation_1.Animation.remove({ _id: { $in: serverDeleteIds } }, function (err) {
-            if (err)
-                defer.reject(err);
-            else
-                defer.resolve();
+        var preparation = new Preparation(this.user, syncResult);
+        var finalization = new FinalizationForUpdate(this.user, syncResult);
+        return sync_1.ServerSync.find(this.localSync.userId)
+            .then(function (serverSync) {
+            return preparation.sync(_this.localSync, serverSync)
+                .then(function (result) { return finalization.sync(_this.localSync, serverSync); });
         });
-        return defer.promise;
     };
     return Synchronizer;
 }());
 exports.Synchronizer = Synchronizer;
 var InternalSyncProcess = (function () {
-    function InternalSyncProcess(syncResult) {
+    function InternalSyncProcess(user, syncResult) {
+        this.user = user;
         this.syncResult = syncResult;
     }
     InternalSyncProcess.prototype.sync = function (localSync, serverSync) {
         var _this = this;
         var defer = q.defer();
-        q.delay(500).then(function () {
+        q.delay(100).then(function () {
             try {
                 _this.executeSync(localSync, serverSync);
-                q.resolve(_this.syncResult);
+                defer.resolve(_this.syncResult);
             }
             catch (e) {
-                q.reject(e);
+                defer.reject(e);
             }
         });
         return defer.promise;
@@ -67,18 +68,49 @@ var InternalSyncProcess = (function () {
 }());
 var Preparation = (function (_super) {
     __extends(Preparation, _super);
-    function Preparation(syncResult) {
-        _super.call(this, syncResult);
+    function Preparation(user, syncResult) {
+        _super.call(this, user, syncResult);
     }
     Preparation.prototype.executeSync = function (localSync, serverSync) {
         log("Preparation");
+        this.validateUser(this.user);
+        this.validateLocalSync(localSync);
+        this.validateSyncResult(this.syncResult);
+        log("\tuserId   : " + this.user._id);
+        log("\tclientId : " + localSync.clientId);
+    };
+    Preparation.prototype.validateUser = function (user) {
+        if (!this.user)
+            throw new Error("User is required");
+    };
+    Preparation.prototype.validateLocalSync = function (localSync) {
+        if (!localSync)
+            throw new Error("LocalSync is requred");
+        if (!localSync.userId)
+            throw new Error("LocalSync.userId is requried");
+        if (!localSync.clientId)
+            throw new Error("LocalSync.clientId is requried");
+        if (!localSync.animations && localSync.animations.length > 0)
+            throw new Error("LocalSync.animations is requried");
+        if (!localSync.tombstones && localSync.tombstones.length > 0)
+            throw new Error("LocalSync.tombstones is requried");
+        if (this.user._id !== localSync.userId)
+            throw new Error("LocalSync.userId does not match");
+    };
+    Preparation.prototype.validateSyncResult = function (syncResult) {
+        if (!syncResult)
+            throw new Error("SyncResult is required");
+        if (!syncResult.clientId)
+            throw new Error("SyncResult.clientId is required");
+        if (!syncResult.syncDate)
+            throw new Error("SyncResult.syncDate is required");
     };
     return Preparation;
 }(InternalSyncProcess));
 var Modification = (function (_super) {
     __extends(Modification, _super);
-    function Modification(syncResult) {
-        _super.call(this, syncResult);
+    function Modification(user, syncResult) {
+        _super.call(this, user, syncResult);
     }
     Modification.prototype.executeSync = function (localSync, serverSync) {
         log("Modification");
@@ -86,7 +118,7 @@ var Modification = (function (_super) {
             var localAnim = localSync.animations[i];
             for (var j = 0; j < serverSync.animations.length; j++) {
                 var serverAnim = serverSync.animations[j];
-                if (localAnim._id == serverAnim._id) {
+                if (animEquals(localAnim, serverAnim)) {
                     if (localAnim.dateModified < serverAnim.dateModified)
                         this.syncResult.addAction(SyncAction.ClientOutOfDate, localAnim);
                     if (localAnim.dateModified > serverAnim.dateModified)
@@ -100,26 +132,26 @@ var Modification = (function (_super) {
 }(InternalSyncProcess));
 var Deletion = (function (_super) {
     __extends(Deletion, _super);
-    function Deletion(syncResult) {
-        _super.call(this, syncResult);
+    function Deletion(user, syncResult) {
+        _super.call(this, user, syncResult);
     }
     Deletion.prototype.executeSync = function (localSync, serverSync) {
         log("Deletion");
         for (var i = 0; i < localSync.tombstones.length; i++) {
-            var localAnim = localSync.animations[i];
+            var localAnim = localSync.tombstones[i];
             for (var j = 0; j < serverSync.animations.length; j++) {
                 var serverAnim = serverSync.animations[j];
-                if (localAnim._id == serverAnim._id) {
+                if (animEquals(localAnim, serverAnim)) {
                     this.syncResult.addAction(SyncAction.ServerDelete, serverAnim);
                     break;
                 }
             }
         }
         for (var i = 0; i < serverSync.tombstones.length; i++) {
-            var localAnim = localSync.animations[i];
+            var serverAnim = serverSync.tombstones[i];
             for (var j = 0; j < localSync.animations.length; j++) {
-                var serverAnim = serverSync.animations[j];
-                if (localAnim._id == serverAnim._id) {
+                var localAnim = localSync.animations[j];
+                if (animEquals(localAnim, serverAnim)) {
                     this.syncResult.addAction(SyncAction.ClientDelete, localAnim);
                     break;
                 }
@@ -130,8 +162,8 @@ var Deletion = (function (_super) {
 }(InternalSyncProcess));
 var Addition = (function (_super) {
     __extends(Addition, _super);
-    function Addition(syncResult) {
-        _super.call(this, syncResult);
+    function Addition(user, syncResult) {
+        _super.call(this, user, syncResult);
     }
     Addition.prototype.executeSync = function (localSync, serverSync) {
         log("Addition");
@@ -140,7 +172,14 @@ var Addition = (function (_super) {
             var serverMissing = true;
             for (var j = 0; j < serverSync.animations.length; j++) {
                 var serverAnim = serverSync.animations[j];
-                if (localAnim._id == serverAnim._id) {
+                if (animEquals(localAnim, serverAnim)) {
+                    serverMissing = false;
+                    break;
+                }
+            }
+            for (var j = 0; j < serverSync.tombstones.length; j++) {
+                var serverAnim = serverSync.tombstones[j];
+                if (animEquals(localAnim, serverAnim)) {
                     serverMissing = false;
                     break;
                 }
@@ -154,7 +193,14 @@ var Addition = (function (_super) {
             var clientMissing = true;
             for (var j = 0; j < localSync.animations.length; j++) {
                 var localAnim = localSync.animations[j];
-                if (serverAnim._id == localAnim._id) {
+                if (animEquals(localAnim, serverAnim)) {
+                    clientMissing = false;
+                    break;
+                }
+            }
+            for (var j = 0; j < localSync.tombstones.length; j++) {
+                var localAnim = localSync.tombstones[j];
+                if (animEquals(localAnim, serverAnim)) {
                     clientMissing = false;
                     break;
                 }
@@ -168,14 +214,34 @@ var Addition = (function (_super) {
 }(InternalSyncProcess));
 var Finalization = (function (_super) {
     __extends(Finalization, _super);
-    function Finalization(syncResult) {
-        _super.call(this, syncResult);
+    function Finalization(user, syncResult) {
+        _super.call(this, user, syncResult);
     }
     Finalization.prototype.executeSync = function (localSync, serverSync) {
         log("Finalization");
+        log(this.syncResult.display());
     };
     return Finalization;
 }(InternalSyncProcess));
+var FinalizationForUpdate = (function (_super) {
+    __extends(FinalizationForUpdate, _super);
+    function FinalizationForUpdate(user, syncResult) {
+        _super.call(this, user, syncResult);
+    }
+    FinalizationForUpdate.prototype.sync = function (localSync, serverSync) {
+        var defer = q.defer();
+        var serverDeleteEvents = _.filter(this.syncResult.events, function (event) { return event.action === SyncAction.ServerDelete; });
+        var serverDeleteIds = _.map(this.syncResult.events, function (event) { return event.animationId; });
+        animation_1.Animation.remove({ _id: { $in: serverDeleteIds } }, function (err) {
+            if (err)
+                defer.reject(err);
+            else
+                defer.resolve();
+        });
+        return defer.promise;
+    };
+    return FinalizationForUpdate;
+}(Finalization));
 (function (SyncAction) {
     SyncAction[SyncAction["Ok"] = 0] = "Ok";
     SyncAction[SyncAction["ClientOutOfDate"] = 1] = "ClientOutOfDate";
@@ -187,12 +253,13 @@ var Finalization = (function (_super) {
 })(exports.SyncAction || (exports.SyncAction = {}));
 var SyncAction = exports.SyncAction;
 var SyncEvent = (function () {
-    function SyncEvent(action, animationId) {
+    function SyncEvent(action, animationId, localId) {
         this.action = action;
         this.animationId = animationId;
+        this.localId = localId;
     }
     SyncEvent.prototype.display = function () {
-        var str = 'Action=' + this.action + ' ';
+        var str = '';
         switch (this.action) {
             case SyncAction.Ok:
                 str += "[Ok]";
@@ -212,14 +279,14 @@ var SyncEvent = (function () {
             case SyncAction.ServerOutOfDate:
                 str += "[ServerOutOfDate]";
                 break;
-            case SyncAction.ServerDelete:
-                str += "[ServerDelete]";
+            case SyncAction.ServerMissing:
+                str += "[ServerMissing]";
                 break;
             default:
                 str += "[Unknown]";
                 break;
         }
-        str += ' AnimationId=' + this.animationId;
+        str += ' -> SyncEvent { action:' + this.action + ', localId:' + (this.localId || '[undefined]') + ', _id:' + (this.animationId || '[undefined]') + ' }';
         return str;
     };
     return SyncEvent;
@@ -236,7 +303,7 @@ var SyncResult = (function () {
             if (this.events[i].animationId == animation._id)
                 return;
         }
-        this.events.push(new SyncEvent(action, animation._id));
+        this.events.push(new SyncEvent(action, animation._id, animation.localId));
     };
     SyncResult.prototype.display = function () {
         var str = 'SyncResult:';
@@ -254,6 +321,9 @@ var SyncResult = (function () {
 }());
 exports.SyncResult = SyncResult;
 function log(msg) {
-    winston.info('[Sync]' + msg);
+    winston.info('[Sync] ' + msg);
+}
+function animEquals(anim, other) {
+    return anim._id == other._id || anim.localId == other.localId;
 }
 //# sourceMappingURL=synchronizer.js.map

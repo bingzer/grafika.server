@@ -94,9 +94,18 @@ function handleErrors(err, req, res, next) {
             status_1 = 400;
             msg = err;
         }
-        else if (err.status) {
-            status_1 = err.status;
-            msg = err.msg || err.message;
+        else if (err) {
+            if (err.status) {
+                status_1 = err.status;
+                msg = err.msg || err.message;
+            }
+            else if (err.msg || err.message) {
+                status_1 = 400;
+                msg = err.msg || err.message;
+            }
+            else {
+                status_1 = 400;
+            }
         }
         else {
             msg = 'This is our fault, will be checking on this';

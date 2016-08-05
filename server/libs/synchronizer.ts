@@ -5,23 +5,23 @@ import * as mongoose from 'mongoose';
 
 import { ISync, IServerSync, ServerSync, ILocalSync } from '../models/sync';
 import { Animation, IAnimation } from '../models/animation';
-import { User } from '../models/user';
+import { User, IUser } from '../models/user';
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 export class Synchronizer {
-    constructor(private localSync: ILocalSync) {
+    constructor(private user: IUser, private localSync: ILocalSync) {
         // do nothing
     }
 
     sync() : q.Promise<SyncResult> {
         let result = new SyncResult(this.localSync.clientId);
 
-        let preparation = new Preparation(result);
-        let addition = new Addition(result);
-        let modification = new Modification(result);
-        let deletion = new Deletion(result);
-        let finalization = new Finalization(result);
+        let preparation = new Preparation(this.user, result);
+        let addition = new Addition(this.user, result);
+        let modification = new Modification(this.user, result);
+        let deletion = new Deletion(this.user, result);
+        let finalization = new Finalization(this.user, result);
 
         return ServerSync.find(this.localSync.userId)
             .then((serverSync) => {
@@ -35,17 +35,14 @@ export class Synchronizer {
 
     syncUpdate(syncResult: SyncResult): q.Promise<any> {
         let defer = q.defer();
-
-        // handles all delete
-        let serverDeleteEvents = _.filter(syncResult.events, (event) => event.action === SyncAction.ServerDelete);
-        let serverDeleteIds = _.map(syncResult.events, (event) => event.animationId);
-
-        Animation.remove( { _id: { $in: serverDeleteIds }}, (err) => {
-            if (err) defer.reject(err);
-            else defer.resolve();
-        });
+        let preparation = new Preparation(this.user, syncResult);
+        let finalization = new FinalizationForUpdate(this.user, syncResult);
         
-        return defer.promise;
+        return ServerSync.find(this.localSync.userId)
+            .then((serverSync) => {
+                return preparation.sync(this.localSync, serverSync)
+                    .then((result) => finalization.sync(this.localSync, serverSync));
+            });
     }
 }
 
@@ -56,20 +53,21 @@ interface ISyncProcess {
 }
 
 abstract class InternalSyncProcess implements ISyncProcess {
-    constructor(protected syncResult: SyncResult) {
+
+    constructor(protected user: IUser, protected syncResult: SyncResult) {
         // nothing
     }
 
     sync(localSync: ILocalSync, serverSync: IServerSync): q.Promise<SyncResult> {
         let defer = q.defer<SyncResult>();
         
-        q.delay(500).then(() => {
+        q.delay(100).then(() => {
             try {
                 this.executeSync(localSync, serverSync);
-                q.resolve(this.syncResult);
+                defer.resolve(this.syncResult);
             }
             catch (e) {
-                q.reject(e);
+                defer.reject(e);
             }
         });
 
@@ -82,18 +80,43 @@ abstract class InternalSyncProcess implements ISyncProcess {
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 class Preparation extends InternalSyncProcess {
-    constructor(syncResult: SyncResult) {
-        super(syncResult);
+    constructor(user: IUser, syncResult: SyncResult) {
+        super(user, syncResult);
     }
 
     protected executeSync(localSync: ILocalSync, serverSync: IServerSync){
         log("Preparation");
+        this.validateUser(this.user);
+        this.validateLocalSync(localSync);
+        this.validateSyncResult(this.syncResult);
+
+        log("\tuserId   : " + this.user._id);
+        log("\tclientId : " + localSync.clientId);
+    }    
+
+    private validateUser(user: IUser) {
+        if (!this.user) throw new Error("User is required");
+    }
+
+    private validateLocalSync(localSync: ILocalSync) {
+        if (!localSync) throw new Error("LocalSync is requred");
+        if (!localSync.userId) throw new Error("LocalSync.userId is requried");
+        if (!localSync.clientId) throw new Error("LocalSync.clientId is requried");
+        if (!localSync.animations && localSync.animations.length > 0) throw new Error("LocalSync.animations is requried");
+        if (!localSync.tombstones && localSync.tombstones.length > 0) throw new Error("LocalSync.tombstones is requried");
+        if (this.user._id !== localSync.userId) throw new Error("LocalSync.userId does not match");
+    }
+
+    private validateSyncResult(syncResult: SyncResult) {
+        if (!syncResult) throw new Error("SyncResult is required");
+        if (!syncResult.clientId) throw new Error("SyncResult.clientId is required");
+        if (!syncResult.syncDate) throw new Error("SyncResult.syncDate is required");
     }
 }
 
 class Modification extends InternalSyncProcess {
-    constructor(syncResult: SyncResult) {
-        super(syncResult);
+    constructor(user: IUser, syncResult: SyncResult) {
+        super(user, syncResult);
     }
 
     protected executeSync(localSync: ILocalSync, serverSync: IServerSync){
@@ -104,7 +127,7 @@ class Modification extends InternalSyncProcess {
             for (let j = 0; j < serverSync.animations.length; j++) {
                 let serverAnim = serverSync.animations[j];
 
-                if (localAnim._id == serverAnim._id) {
+                if (animEquals(localAnim, serverAnim)) {
                     if (localAnim.dateModified < serverAnim.dateModified)
                         this.syncResult.addAction(SyncAction.ClientOutOfDate, localAnim);
                     if (localAnim.dateModified > serverAnim.dateModified)
@@ -117,8 +140,8 @@ class Modification extends InternalSyncProcess {
 }
 
 class Deletion extends InternalSyncProcess {    
-    constructor(syncResult: SyncResult) {
-        super(syncResult);
+    constructor(user: IUser, syncResult: SyncResult) {
+        super(user, syncResult);
     }
     
     protected executeSync(localSync: ILocalSync, serverSync: IServerSync){
@@ -126,11 +149,11 @@ class Deletion extends InternalSyncProcess {
 
         // Local deletions
         for (let i = 0; i < localSync.tombstones.length; i++) {
-            let localAnim = localSync.animations[i];
+            let localAnim = localSync.tombstones[i];
             for (let j = 0; j < serverSync.animations.length; j++) {
                 let serverAnim = serverSync.animations[j];
 
-                if (localAnim._id == serverAnim._id) {
+                if (animEquals(localAnim, serverAnim)) {
                     this.syncResult.addAction(SyncAction.ServerDelete, serverAnim);
                     break;
                 }
@@ -139,11 +162,11 @@ class Deletion extends InternalSyncProcess {
 
         // server deletions
         for (let i = 0; i < serverSync.tombstones.length; i++) {
-            let localAnim = localSync.animations[i];
+            let serverAnim = serverSync.tombstones[i];
             for (let j = 0; j < localSync.animations.length; j++) {
-                let serverAnim = serverSync.animations[j];
+                let localAnim = localSync.animations[j];
 
-                if (localAnim._id == serverAnim._id) {
+                if (animEquals(localAnim, serverAnim)) {
                     this.syncResult.addAction(SyncAction.ClientDelete, localAnim);
                     break;
                 }
@@ -153,8 +176,8 @@ class Deletion extends InternalSyncProcess {
 }
 
 class Addition extends InternalSyncProcess {
-    constructor(syncResult: SyncResult) {
-        super(syncResult);
+    constructor(user: IUser, syncResult: SyncResult) {
+        super(user, syncResult);
     }
     
     protected executeSync(localSync: ILocalSync, serverSync: IServerSync){
@@ -168,7 +191,16 @@ class Addition extends InternalSyncProcess {
             for (let j = 0; j < serverSync.animations.length; j++) {
                 let serverAnim = serverSync.animations[j];
                 
-                if (localAnim._id == serverAnim._id) {
+                if (animEquals(localAnim, serverAnim)) {
+                    serverMissing = false;
+                    break;
+                }
+            }// end j
+
+            for (let j = 0; j < serverSync.tombstones.length; j++) {
+                let serverAnim = serverSync.tombstones[j];
+                
+                if (animEquals(localAnim, serverAnim)) {
                     serverMissing = false;
                     break;
                 }
@@ -187,7 +219,16 @@ class Addition extends InternalSyncProcess {
             for (let j = 0; j < localSync.animations.length; j++) {
                 let localAnim = localSync.animations[j];
 
-                if (serverAnim._id == localAnim._id) {
+                if (animEquals(localAnim, serverAnim)) {
+                    clientMissing = false;
+                    break;
+                }
+            }
+
+            for (let j = 0; j < localSync.tombstones.length; j++) {
+                let localAnim = localSync.tombstones[j];
+
+                if (animEquals(localAnim, serverAnim)) {
                     clientMissing = false;
                     break;
                 }
@@ -201,12 +242,35 @@ class Addition extends InternalSyncProcess {
 }
 
 class Finalization extends InternalSyncProcess {
-    constructor(syncResult: SyncResult) {
-        super(syncResult);
+    constructor(user: IUser, syncResult: SyncResult) {
+        super(user, syncResult);
     }
     
     executeSync(localSync: ILocalSync, serverSync: IServerSync){
         log("Finalization");
+
+        log(this.syncResult.display());
+    }
+}
+
+class FinalizationForUpdate extends Finalization {
+
+    constructor(user: IUser, syncResult: SyncResult) {
+        super(user, syncResult);
+    }
+    
+    sync(localSync: ILocalSync, serverSync: IServerSync): q.Promise<SyncResult> {
+        let defer = q.defer<SyncResult>();
+
+        // handles all delete
+        let serverDeleteEvents = _.filter(this.syncResult.events, (event) => event.action === SyncAction.ServerDelete);
+        let serverDeleteIds = _.map(this.syncResult.events, (event) => event.animationId);
+        Animation.remove( { _id: { $in: serverDeleteIds }}, (err) => {
+            if (err) defer.reject(err);
+            else defer.resolve();
+        });
+
+        return defer.promise;
     }
 }
 
@@ -254,13 +318,14 @@ export enum SyncAction {
 export class SyncEvent {
     constructor(
         public action: SyncAction, 
-        public animationId: string)
+        public animationId: string,
+        public localId: string)
     {
         // nothing
     }
 
     display(): string {
-        let str: string = 'Action=' + this.action + ' ';
+        let str: string = '';
         switch (this.action) {
             case SyncAction.Ok: str += "[Ok]"; break;
             case SyncAction.ClientDelete: str += "[ClientDelete]"; break;
@@ -268,11 +333,11 @@ export class SyncEvent {
             case SyncAction.ClientMissing: str += "[ClientMissing]"; break;
             case SyncAction.ServerDelete: str += "[ServerDelete]"; break;
             case SyncAction.ServerOutOfDate: str += "[ServerOutOfDate]"; break;
-            case SyncAction.ServerDelete: str += "[ServerDelete]"; break;
+            case SyncAction.ServerMissing: str += "[ServerMissing]"; break;
             default: str += "[Unknown]"; break;
         }
 
-        str += ' AnimationId=' + this.animationId;
+        str += ' -> SyncEvent { action:' + this.action + ', localId:' + (this.localId || '[undefined]') + ', _id:' + (this.animationId || '[undefined]') + ' }';
         return str;
     }
 }
@@ -305,7 +370,7 @@ export class SyncResult {
                 return;
         }
 
-        this.events.push(new SyncEvent(action, animation._id));
+        this.events.push(new SyncEvent(action, animation._id, animation.localId));
     }
 
     display(): string {
@@ -323,5 +388,9 @@ export class SyncResult {
 }
 
 function log(msg: string | any) {
-    winston.info('[Sync]' + msg);
+    winston.info('[Sync] ' + msg);
+}
+
+function animEquals(anim: Grafika.IAnimation, other: Grafika.IAnimation) {
+    return anim._id == other._id || anim.localId == other.localId;
 }
