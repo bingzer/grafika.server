@@ -8,7 +8,11 @@ export function initialize(app) {
     let defer = q.defer();
 
     winston.debug('Connecting to mongodb'); 
-    const mongooseInstance = mongoose.connect(config.setting.$server.$databaseUrl, (err) => {
+    const connOption = { 
+        server: { socketOptions: { keepAlive: 300000, connectTimeoutMS: 30000 } },
+        replset: { socketOptions: { keepAlive: 300000, connectTimeoutMS : 30000 } } 
+    };
+    const instance = mongoose.connect(config.setting.$server.$databaseUrl, connOption, (err) => {
         if (err) {
             winston.error('mongodb [FAILED]');
             defer.reject(err);
@@ -18,7 +22,10 @@ export function initialize(app) {
             defer.resolve();
         }
     });
-    mongooseInstance.Promise = q.Promise;
+    instance.Promise = q.Promise;
+    instance.connection.on('error', (err) => {
+        winston.error('[Mongoose]', err);
+    });
 
     return defer.promise;
 }
