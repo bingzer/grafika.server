@@ -263,8 +263,8 @@ class FinalizationForUpdate extends Finalization {
         let defer = q.defer<SyncResult>();
 
         // handles all delete
-        let serverDeleteEvents = _.filter(this.syncResult.events, (event) => event.action === SyncAction.ServerDelete);
-        let serverDeleteIds = _.map(this.syncResult.events, (event) => event.animationId);
+        let serverDeleteEvents = _.filter(this.syncResult.events, (event) => event.action == SyncAction.ServerDelete);
+        let serverDeleteIds = _.map(serverDeleteEvents, (event) => event.animationId);
         Animation.remove( { _id: { $in: serverDeleteIds }}, (err) => {
             if (err) defer.reject(err);
             else defer.resolve();

@@ -230,8 +230,8 @@ var FinalizationForUpdate = (function (_super) {
     }
     FinalizationForUpdate.prototype.sync = function (localSync, serverSync) {
         var defer = q.defer();
-        var serverDeleteEvents = _.filter(this.syncResult.events, function (event) { return event.action === SyncAction.ServerDelete; });
-        var serverDeleteIds = _.map(this.syncResult.events, function (event) { return event.animationId; });
+        var serverDeleteEvents = _.filter(this.syncResult.events, function (event) { return event.action == SyncAction.ServerDelete; });
+        var serverDeleteIds = _.map(serverDeleteEvents, function (event) { return event.animationId; });
         animation_1.Animation.remove({ _id: { $in: serverDeleteIds } }, function (err) {
             if (err)
                 defer.reject(err);

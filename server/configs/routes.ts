@@ -139,6 +139,11 @@ function handleErrors(err: any, req: express.Request, res: express.Response, nex
     else next();
 }
 
+function generateAnimationId(req: express.Request, res: express.Response, next: express.NextFunction) {
+    let objectId = new mongoose.Types.ObjectId();
+    res.send(objectId.toHexString());
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 export function initialize(app): q.Promise<any> {
@@ -162,11 +167,13 @@ export function initialize(app): q.Promise<any> {
         // ---------------- Animation -----------------------------//
         app.get('/api/animations');  // List => use nothing
         app.post('/api/animations', useSessionOrJwt); // create
+        app.get('/api/animations/object-id', generateAnimationId);
         app.get('/api/animations/:_id', extractUser, useAnimAccess); // view
         app.put('/api/animations/:_id', useSessionOrJwt, useAnimAccess); // update
         app.delete('/api/animations/', useSessionOrJwt, useAnimAccess); // delete
         app.get('/api/animations/:_id/frames', extractUser, useAnimAccess); // get frames
         app.post('/api/animations/:_id/frames', useSessionOrJwt, useAnimAccess);
+        
         // --------------- Sync Stuffs -------------------------//
         app.post('/api/animations/sync', useSessionOrJwt, syncController.sync);
         app.post('/api/animations/sync/update', useSessionOrJwt, syncController.syncUpdate);

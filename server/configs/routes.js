@@ -116,6 +116,10 @@ function handleErrors(err, req, res, next) {
     else
         next();
 }
+function generateAnimationId(req, res, next) {
+    var objectId = new mongoose.Types.ObjectId();
+    res.send(objectId.toHexString());
+}
 function initialize(app) {
     var defer = q.defer();
     setTimeout(function () {
@@ -134,6 +138,7 @@ function initialize(app) {
         app.post('/api/accounts/username-check', useSessionOrJwt, accountController.checkUsernameAvailability);
         app.get('/api/animations');
         app.post('/api/animations', useSessionOrJwt);
+        app.get('/api/animations/object-id', generateAnimationId);
         app.get('/api/animations/:_id', extractUser, useAnimAccess);
         app.put('/api/animations/:_id', useSessionOrJwt, useAnimAccess);
         app.delete('/api/animations/', useSessionOrJwt, useAnimAccess);
