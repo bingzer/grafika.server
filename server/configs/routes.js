@@ -94,9 +94,18 @@ function handleErrors(err, req, res, next) {
             status_1 = 400;
             msg = err;
         }
-        else if (err.status) {
-            status_1 = err.status;
-            msg = err.msg || err.message;
+        else if (err) {
+            if (err.status) {
+                status_1 = err.status;
+                msg = err.msg || err.message;
+            }
+            else if (err.msg || err.message) {
+                status_1 = 400;
+                msg = err.msg || err.message;
+            }
+            else {
+                status_1 = 400;
+            }
         }
         else {
             msg = 'This is our fault, will be checking on this';
@@ -106,6 +115,10 @@ function handleErrors(err, req, res, next) {
     }
     else
         next();
+}
+function generateAnimationId(req, res, next) {
+    var objectId = new mongoose.Types.ObjectId();
+    res.send(objectId.toHexString());
 }
 function initialize(app) {
     var defer = q.defer();
@@ -125,12 +138,14 @@ function initialize(app) {
         app.post('/api/accounts/username-check', useSessionOrJwt, accountController.checkUsernameAvailability);
         app.get('/api/animations');
         app.post('/api/animations', useSessionOrJwt);
+        app.get('/api/animations/object-id', generateAnimationId);
         app.get('/api/animations/:_id', extractUser, useAnimAccess);
         app.put('/api/animations/:_id', useSessionOrJwt, useAnimAccess);
         app.delete('/api/animations/', useSessionOrJwt, useAnimAccess);
         app.get('/api/animations/:_id/frames', extractUser, useAnimAccess);
         app.post('/api/animations/:_id/frames', useSessionOrJwt, useAnimAccess);
         app.post('/api/animations/sync', useSessionOrJwt, syncController.sync);
+        app.post('/api/animations/sync/update', useSessionOrJwt, syncController.syncUpdate);
         app.get('/api/users/:_id', userController.get);
         app.put('/api/users/:_id', useSessionOrJwt, userController.update);
         app.get('/api/animations/:animationId/thumbnail', resourcesController.getThumbnail);

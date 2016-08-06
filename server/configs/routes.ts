@@ -116,10 +116,19 @@ function handleErrors(err: any, req: express.Request, res: express.Response, nex
 			status = 400;
 			msg = err;
 		}
-		else if (err.status){
-			status = err.status;
-			msg    = err.msg || err.message;
-		}
+        else if (err) {
+            if (err.status){
+                status = err.status;
+                msg    = err.msg || err.message;
+            }
+            else if (err.msg || err.message) {
+                status = 400;
+                msg    = err.msg || err.message;
+            }
+            else {
+                status = 400;
+            }
+        }
 		else {
 			msg = 'This is our fault, will be checking on this';
 		}
@@ -128,6 +137,11 @@ function handleErrors(err: any, req: express.Request, res: express.Response, nex
 		winston.error('HTTP Error. Status Code=' + status + (msg ? '  msg=' + msg : ''), stack);
     }
     else next();
+}
+
+function generateAnimationId(req: express.Request, res: express.Response, next: express.NextFunction) {
+    let objectId = new mongoose.Types.ObjectId();
+    res.send(objectId.toHexString());
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -153,13 +167,16 @@ export function initialize(app): q.Promise<any> {
         // ---------------- Animation -----------------------------//
         app.get('/api/animations');  // List => use nothing
         app.post('/api/animations', useSessionOrJwt); // create
+        app.get('/api/animations/object-id', generateAnimationId);
         app.get('/api/animations/:_id', extractUser, useAnimAccess); // view
         app.put('/api/animations/:_id', useSessionOrJwt, useAnimAccess); // update
         app.delete('/api/animations/', useSessionOrJwt, useAnimAccess); // delete
         app.get('/api/animations/:_id/frames', extractUser, useAnimAccess); // get frames
         app.post('/api/animations/:_id/frames', useSessionOrJwt, useAnimAccess);
+        
         // --------------- Sync Stuffs -------------------------//
         app.post('/api/animations/sync', useSessionOrJwt, syncController.sync);
+        app.post('/api/animations/sync/update', useSessionOrJwt, syncController.syncUpdate);
 
         // ---------------- Users -----------------------------//
         app.get('/api/users/:_id', userController.get);

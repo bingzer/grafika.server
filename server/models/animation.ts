@@ -1,10 +1,10 @@
 import * as mongoose from 'mongoose';
 import restful = require('../libs/restful');
-import { ISync, createOrUpdateSync, deleteSync } from './sync';
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 export interface IAnimation extends Grafika.IAnimation, mongoose.Document {
+    removed      : boolean;
 }
 
 export const AnimationSchema = new mongoose.Schema({
@@ -23,6 +23,7 @@ export const AnimationSchema = new mongoose.Schema({
     views        : Number,
     rating       : Number,
     category     : String,
+    removed      : { type: Boolean, required: true, default: false },
 
     isPublic     : { type: Boolean, default: false },
     author       : String,
@@ -31,19 +32,6 @@ export const AnimationSchema = new mongoose.Schema({
     totalFrame   : { type: Number, default: 0 },
     frames       : { type: [], select: false }
 });
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-AnimationSchema.post('save', (animation: IAnimation, next) => {
-    createOrUpdateSync(animation.userId, animation._id, (err, any) => {
-        next(err);
-    });
-});
-AnimationSchema.post('remove', (animation: IAnimation, next) => {
-    deleteSync(animation.userId, animation._id, (err) => {
-        next(err);
-    });
-})
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
