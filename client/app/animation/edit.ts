@@ -17,6 +17,7 @@ module GrafikaApp {
         }
 
         save() {
+            this.animation.dateModified = Date.now();
             this.animationService.update(this.animation).then((res) => {
                 this.close().then(() => this.appCommon.toast('Saved'));
             })

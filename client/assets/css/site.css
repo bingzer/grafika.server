@@ -187,9 +187,6 @@ md-dialog {
 	margin-top: 4px;
 	margin-bottom: 4px;
 }
-.playback md-icon {
-	/*color: #ffffff;*/
-}
 .playback-header {
 	background-color: rgba(0,0,0,0.3);
 	/*position: absolute;*/
@@ -235,6 +232,31 @@ md-dialog {
 	width: auto;
 }*/
 
-/** --------------- Page --------------- */
-.detail {
+
+/** --------------- Sign-in --------------- */
+button.sign-in-button {
+  height: 32px;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+button.sign-in-button.facebook {
+  background-color: #3C5C95;
+}
+button.sign-in-button.facebook:hover {
+  background-color: #3C5C95 !important;
+}
+button.sign-in-button.google {
+  background-color: #DF4A32;
+}
+button.sign-in-button.google:hover {
+  background-color: #DF4A32 !important;
+}
+button.sign-in-button > img{
+  width: auto;
+  height: 24px;
+  vertical-align: middle;
+  margin-right: 8px;
+}
+button.sign-in-button > span{
+  color: #ffffff;
 }

@@ -29,7 +29,7 @@ var GrafikaApp;
                 return _this.appCommon.hideLoadingModal();
             })
                 .catch(function (res) {
-                return _this.appCommon.toastError(res);
+                _this.appCommon.toastError(res);
             })
                 .finally(function () {
                 _this.reset();

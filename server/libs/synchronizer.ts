@@ -366,7 +366,7 @@ export class SyncResult {
 
     addAction(action: SyncAction, animation: Grafika.IAnimation) {
         for (let i = 0; i < this.events.length; i++) {
-            if (this.events[i].animationId == animation._id)
+            if (this.events[i].animationId == animation._id && this.events[i].localId == animation.localId)
                 return;
         }
 
