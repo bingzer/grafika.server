@@ -300,7 +300,7 @@ var SyncResult = (function () {
     }
     SyncResult.prototype.addAction = function (action, animation) {
         for (var i = 0; i < this.events.length; i++) {
-            if (this.events[i].animationId == animation._id)
+            if (this.events[i].animationId == animation._id && this.events[i].localId == animation.localId)
                 return;
         }
         this.events.push(new SyncEvent(action, animation._id, animation.localId));

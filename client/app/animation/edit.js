@@ -20,6 +20,7 @@ var GrafikaApp;
         };
         AnimationEditController.prototype.save = function () {
             var _this = this;
+            this.animation.dateModified = Date.now();
             this.animationService.update(this.animation).then(function (res) {
                 _this.close().then(function () { return _this.appCommon.toast('Saved'); });
             });
