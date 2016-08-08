@@ -23,6 +23,20 @@ var GrafikaApp;
                 return _this.appCommon.toast('Animation is created');
             });
         };
+        MyAnimationsController.prototype.canDelete = function () {
+            return true;
+        };
+        MyAnimationsController.prototype.confirmDelete = function (anim) {
+            var _this = this;
+            this.appCommon.confirm("Delete?", anim.name).then(function (result) {
+                if (result) {
+                    _this.animationService.delete(anim._id).then(function (result) {
+                        _this.list();
+                        _this.appCommon.toast(anim.name + ' deleted');
+                    });
+                }
+            });
+        };
         MyAnimationsController.$inject = ['appCommon', 'animationService', 'authService'];
         return MyAnimationsController;
     }(GrafikaApp.AnimationListController));

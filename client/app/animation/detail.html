@@ -26,7 +26,7 @@
                 <div class="text-muted">
                     <a class="md-subtitle link" ui-sref="user({_id: vm.animation.userId})">
                         <img src="assets/img/ic_user.png" class="avatar avatar-sm"/>
-                        {{vm.animation.author}}
+                        {{vm.animation.author || 'anonymous'}}
                     </a>
                 </div>
                 <div layout="row" ng-if="vm.canEdit" style="margin-top: 4px">
