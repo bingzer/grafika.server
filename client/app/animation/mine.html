@@ -1,5 +1,15 @@
 <div>
-    <ng-include src="'app/animation/list.html'"></ng-include>
+	<div layout="column">
+		<div>
+			<form name="filterForm" ng-submit="vm.filter()" novalidate class="ng-pristine ng-valid">
+				<md-input-container class="md-block">
+					<label for="input_2">Search</label>
+					<input type="search" ng-model="vm.query" class="ng-pristine ng-valid md-input ng-touched" id="input_2" tabindex="0" aria-invalid="false">
+				</md-input-container>
+			</form>
+		</div>
+        <ng-include src="'app/animation/list.html'" flex></ng-include>
+	</div>
 
     <md-button class="md-fab" aria-label="Play" ng-click="vm.create($event)">
         <i class="material-icons">add</i>

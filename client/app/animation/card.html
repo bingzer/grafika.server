@@ -1,0 +1,33 @@
+<!-- Animation card -->
+<div class="animation-card">
+    <md-whiteframe class="md-whiteframe-1dp" layout="column">
+        <div class="thumbnail-image-container">
+            <a href ui-sref="detail({_id: anim._id})">
+                <img class="card-image" ng-src="{{anim.thumbnailUrl}}" alt="thumbnail">
+            </a>
+            <span class="thumbnail-left-icon" ng-if="!anim.isPublic">
+                <md-icon><i class="material-icons">lock_outline</i></md-icon>
+            </span>
+        </div>
+        <div class="thumbnail-content" layout="row">
+            <div layout="column" flex>
+                <div class="md-display">
+                    <a class="md-subtitle link" ui-sref="user({_id: anim.userId})" ng-bind="anim.name || 'anonymous'"></a>
+                </div>
+                <div class="md-caption text-muted" layout="column">
+                    <div layout="row">
+                    </div>
+                    <a class="md-subtitle link" ui-sref="user({_id: anim.userId})" ng-bind="anim.author || 'anonymous'"></a>
+                </div>
+            </div>
+            <div layout="row">
+                <md-button href class="md-icon-button md-mini" ui-sref="detail({_id: anim._id})" ng-if="vm.canPlay()">
+                    <md-icon><i class="material-icons">play_arrow</i></md-icon>
+                </md-button>
+                <md-button class="md-icon-button md-mini" ng-click="vm.confirmDelete(anim)" ng-if="vm.canDelete()">
+                    <md-icon><i class="material-icons">delete</i></md-icon>
+                </md-button>
+            </div>
+        </div>
+    </md-whiteframe>
+</div>

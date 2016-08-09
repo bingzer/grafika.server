@@ -15,15 +15,18 @@ var GrafikaApp;
         }
         AnimationListController.prototype.list = function () {
             var _this = this;
-            var paging = new GrafikaApp.Paging({ isPublic: true });
+            var paging = new GrafikaApp.Paging({ isPublic: true, query: this.query });
             this.animationService.list(paging).then(function (res) {
                 _this.animations = res.data;
             });
         };
-        AnimationListController.prototype.delete = function () {
-            if (this.selectedAnimationId) {
-                alert(this.selectedAnimationId);
-            }
+        AnimationListController.prototype.canPlay = function () {
+            return true;
+        };
+        AnimationListController.prototype.canDelete = function () {
+            return false;
+        };
+        AnimationListController.prototype.filter = function () {
         };
         AnimationListController.$inject = ['appCommon', 'animationService', 'authService'];
         return AnimationListController;

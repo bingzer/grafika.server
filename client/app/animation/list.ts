@@ -2,6 +2,7 @@ module GrafikaApp {
     export class AnimationListController extends BaseController {
         animations: Animation[];
         selectedAnimationId: string;
+        query: string;
 
         public static $inject = ['appCommon', 'animationService', 'authService' ];
         constructor(
@@ -14,10 +15,10 @@ module GrafikaApp {
         }
 
         list() {
-            var paging = new Paging({ isPublic: true });
+            var paging = new Paging({ isPublic: true, query: this.query });
             this.animationService.list(paging).then((res) => {
                 this.animations = res.data;
-            })
+            });
         }
 
         // showOptions(event: MouseEvent, animationId: string) {
@@ -38,10 +39,22 @@ module GrafikaApp {
         //     });
         // };
 
-        delete() {
-            if (this.selectedAnimationId) {
-                alert(this.selectedAnimationId);
-            }
+        // delete() {
+        //     if (canDeletethis.selectedAnimationId) {
+        //         alert(this.selectedAnimationId);
+        //     }
+        // }
+
+        canPlay() {
+            return true;
+        }
+
+        canDelete() {
+            return false;
+        }
+
+        filter() {
+
         }
     }
 }

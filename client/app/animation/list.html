@@ -4,23 +4,5 @@
 	</div>
 </script>
 <div layout="row" layout-wrap>
-	<div class="animation-card" ng-repeat="anim in vm.animations" >
-		<!-- Animation card -->
-		<md-whiteframe class="md-whiteframe-1dp" layout="column">
-            <a href ui-sref="detail({_id: anim._id})">
-			    <img class="card-image" ng-src="{{anim.thumbnailUrl}}" alt="thumbnail">
-            </a>
-			<div layout="row">
-				<div class="md-display" flex>{{anim.name}}</div>
-				<span class="options">
-					<a href ng-click="vm.showOptions($event, _id)">
-						<md-icon><i class="material-icons">more_vert</i></md-icon>
-					</a>
-				</span>
-			</div>
-			<div class="md-caption text-muted">
-				<a class="md-subtitle link" ui-sref="user({_id: anim.userId})" ng-bind="anim.author || 'anonymous'"></a>
-			</div>
-		</md-whiteframe>
-	</div>
+	<ng-include src="'/app/animation/card.html'" ng-repeat="anim in vm.animations" ></ng-include>
 </div>

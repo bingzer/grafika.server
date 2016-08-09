@@ -17,7 +17,7 @@ var GrafikaApp;
             this.type = paging.type;
         }
         Paging.prototype.toQueryString = function () {
-            var query = '?';
+            var query = '?uid=' + (("0000" + (Math.random() * Math.pow(36, 4) << 0).toString(36)).slice(-4));
             if (this.userId)
                 query += '&userId=' + this.userId;
             if (typeof this.isPublic != 'undefined') {
@@ -34,10 +34,11 @@ var GrafikaApp;
                 query += '&limit=' + this.limit;
             if (this.skip)
                 query += '&skip=' + this.skip;
-            if (this.query)
-                query += "&query=" + this.query;
             if (this.type)
                 query += "&type=" + this.type;
+            if (this.query) {
+                query += "&name__regex=/" + this.query + "/g";
+            }
             return query;
         };
         Paging.prototype.next = function () {

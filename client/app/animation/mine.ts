@@ -22,5 +22,20 @@ module GrafikaApp {
                 return this.appCommon.toast('Animation is created');
             });
 		} 
+
+        canDelete(){
+            return true;
+        }
+
+        confirmDelete(anim: Grafika.IAnimation) {
+            this.appCommon.confirm("Delete?", anim.name).then((result) => {
+                if (result) {
+                    this.animationService.delete(anim._id).then((result) => {
+                        this.list();
+                        this.appCommon.toast(anim.name + ' deleted');
+                    });
+                } 
+            })
+        }
     }
 }
