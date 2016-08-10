@@ -16,10 +16,15 @@ var GrafikaApp;
         }
         BaseAnimationController.prototype.load = function () {
             var _this = this;
-            this.animationService.get(this.appCommon.$stateParams['_id']).then(function (res) {
+            this.animationService.get(this.appCommon.$stateParams['_id'])
+                .then(function (res) {
                 _this.animation = res.data;
                 _this.onLoaded(_this.animation);
-            });
+            })
+                .catch(function (err) { return _this.onError(err); });
+        };
+        BaseAnimationController.prototype.onError = function (error) {
+            this.appCommon.$log.error(this.appCommon.formatErrorMessage(error));
         };
         BaseAnimationController.$inject = ['appCommon', 'authService', 'animationService', 'frameService', 'resourceService'];
         return BaseAnimationController;

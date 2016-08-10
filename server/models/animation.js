@@ -32,7 +32,7 @@ Animation.before('post', function (req, res, next) {
     if (!req.body.userId)
         req.body.userId = req.user._id;
     if (!req.body.author)
-        req.body.author = req.user.prefs.drawingAuthor;
+        req.body.author = req.user.prefs.drawingAuthor || req.user.username;
     req.body.totalFrame = req.body.frames ? req.body.frames.length : 0;
     delete req.body._id;
     next();

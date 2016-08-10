@@ -20,12 +20,14 @@ var GrafikaApp;
                 onClosed: '&'
             };
             this.link = function (scope, elem, attrs, ctr) {
-                elem.bind('click', function () {
+                elem.bind('click', function (evt) {
+                    var useFullScreen = (_this.appCommon.$mdMedia('sm') || _this.appCommon.$mdMedia('xs'));
                     _this.appCommon.$mdDialog.show({
+                        fullscreen: useFullScreen,
                         controller: ImageUploaderController,
                         controllerAs: 'vm',
-                        templateUrl: 'app/directives/image-uploader.html',
                         parent: angular.element(document.body),
+                        templateUrl: 'app/directives/image-uploader.html',
                         locals: { uploadOptions: scope }
                     });
                 });

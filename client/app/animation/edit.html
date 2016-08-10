@@ -1,8 +1,8 @@
 <md-dialog>
-<form>
+<form name="editAnimationForm">
     <md-toolbar>
         <div class="md-toolbar-tools">
-            <h2>New Animation</h2>
+            <h2 ng-bind="vm.animation.name"></h2>
             <span flex></span>
             <md-button class="md-icon-button" ng-click="vm.cancel()">
                 <i class="material-icons">close</i>
@@ -34,8 +34,8 @@
     </md-dialog-content>
     <md-dialog-actions layout="row">
       <span flex></span>
-      <md-button class="md-raised" ng-click="vm.cancel()">Cancel</md-button>
-      <md-button class="md-raised md-primary" ng-click="vm.save()">Save</md-button>
+      <md-button class="md-button" ng-click="vm.cancel()">Cancel</md-button>
+      <md-button type="submit" class="md-button md-accent" ng-click="vm.save()">Save</md-button>
     </md-dialog-actions>
 
 </form>

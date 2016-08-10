@@ -21,7 +21,6 @@ module GrafikaApp {
         onLoaded(animation: Grafika.IAnimation) {
             var controller = this;
             this.animationName = this.animation.name;
-            this.appCommon.elem('#canvas-container').css('width', this.animation.width).css('height', this.animation.height);
             if (!this.grafika)
                 this.grafika = new Grafika();
             this.grafika.initialize('#canvas', { useNavigationText: false, useCarbonCopy: false }, this.animation);

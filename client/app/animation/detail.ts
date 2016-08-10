@@ -36,6 +36,10 @@ module GrafikaApp {
             }
         }
 
+        onError(err: any){
+            this.appCommon.alert("An error has occured").then(() => this.appCommon.navigateHome());
+        }
+
         edit() {
             this.appCommon.$state.go("drawing", {_id: this.animation._id});
         }
