@@ -10,18 +10,14 @@ var GrafikaApp;
         function MyAnimationsController(appCommon, animationService, authService) {
             _super.call(this, appCommon, animationService, authService);
         }
-        MyAnimationsController.prototype.list = function () {
-            var _this = this;
-            var paging = new GrafikaApp.Paging({ userId: this.authService.getUser()._id });
-            this.animationService.list(paging).then(function (res) {
-                _this.animations = res.data;
-            });
-        };
         MyAnimationsController.prototype.create = function (ev) {
             var _this = this;
             return this.appCommon.showDialog('AnimationCreateController', '/app/animation/create.html', ev).then(function (answer) {
                 return _this.appCommon.toast('Animation is created');
             });
+        };
+        MyAnimationsController.prototype.canEdit = function () {
+            return true;
         };
         MyAnimationsController.prototype.canDelete = function () {
             return true;
@@ -36,6 +32,9 @@ var GrafikaApp;
                     });
                 }
             });
+        };
+        MyAnimationsController.prototype.createPaging = function () {
+            return new GrafikaApp.Paging({ userId: this.authService.getUser()._id, limit: this.appCommon.appConfig.fetchSize, skip: 0 });
         };
         MyAnimationsController.$inject = ['appCommon', 'animationService', 'authService'];
         return MyAnimationsController;

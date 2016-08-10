@@ -52,6 +52,7 @@ body {
 }
 .link {
 	text-decoration: none !important;
+	cursor: pointer;
 }
 [layout-margin-sm] {
 	margin: 4px;
@@ -59,8 +60,56 @@ body {
 [layout-padding-sm]{
 	padding: 4px;
 }
+.stick-to-bottom {
+  position: absolute;
+  bottom: 0;
+}
+.stick-to-right {
+  position: absolute;
+  right: 0;
+}
+.img-circle {
+  border-radius: 50%;
+}
+.font-medium {
+  font-size: medium;
+}
 .font-smaller {
 	font-size: smaller;
+}
+.font-small {
+  font-size: small;
+}
+.font-x-small {
+  font-size: x-small;
+}
+.text-center-vertical{
+  top: 0;
+  bottom: 0;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+/*-- Progress Modal --*/
+.progress-modal {
+  visibility: hidden;
+  position: fixed;
+  left: 0px;
+  top: 0px;
+  width:100%;
+  height:100%;
+  text-align:center;
+  z-index: 1000;
+  background-color: black;
+  opacity: 0.5;
+}
+.progress-modal > md-progress-circular {
+  position: absolute;
+  margin-right: auto;
+  margin-left: auto;
+  margin-top: auto;
+  top: 50%;
+  left: 0;
+  right: 0;
 }
 
 /* ---------- Header ----------- */
@@ -101,14 +150,9 @@ nav.navbar .navbar-nav li.active.nav-link > a {
 
 /* ---------- FAB ----------- */
 .md-fab {
-	position: fixed; 
-	right: 16; 
-	bottom: 64;
-}
-@media (max-width: 599px) {
-	.md-fab { 
-		bottom: 32;
-	}	
+	position: fixed !important; 
+	right: 16 !important; 
+	bottom: 32 !important;
 }
 
 
@@ -127,7 +171,7 @@ md-dialog {
 .intro > .canvas-overlay {
 	position: absolute;
 	top: 0;
-	background: rgba(128,128,128, 0.4);
+	background: rgba(0,128,128, 0.9);
 }
 .intro #logo {
 	position: absolute;

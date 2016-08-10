@@ -29,9 +29,14 @@ var GrafikaApp;
             var _this = this;
             this.userService.update(this.user)
                 .then(function () {
+                _this.needsUpdate = false;
                 _this.appCommon.toast('Saved!');
             })
                 .catch(function (err) { return _this.appCommon.toastError(err); });
+        };
+        ProfileController.prototype.uploadAvatar = function ($imageData) {
+            var avatar = { name: $imageData.name, size: $imageData.size, mime: $imageData.mime };
+            return this.appCommon.$q.when(true);
         };
         ProfileController.$inject = ['appCommon', 'authService', 'userService'];
         return ProfileController;

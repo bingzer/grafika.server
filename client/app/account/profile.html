@@ -1,16 +1,77 @@
-<form name="profileForm" layout-margin>
-    <div>
-        <md-tabs md-dynamic-height md-border-bottom>
-            <md-tab label="Account">
-                <ng-include src="'/app/account/profile-account.html'"></ng-include>
-            </md-tab>
-            <md-tab label="Preferences">
-                <ng-include src="'/app/account/profile-prefs.html'"></ng-include>
-            </md-tab>
-        </md-tabs>
-    </div>
-    
-    <md-button ng-show="profileForm.$dirty && !profileForm.$pristine" class="md-fab" aria-label="Play" ng-click="vm.save()">
-        <i class="material-icons">save</i>
-    </md-button>
+<form name="profileForm" class="profile" layout="row" layout-wrap layout-margin novalidate flex>
+	<!-- Profile -->
+	<div class="profile-section" flex="30" flex-md="45" flex-sm="90">
+		<md-toolbar class="panel" layout="column">
+			<div class="md-toolbar-tools">
+				<p>Profile</p>
+			</div>
+			<md-content class="font-medium" layout-padding>
+				<div class="font-medium">
+					<img class="avatar avatar-lg link text-center-vertical" 
+						layout-margin
+						ng-src="{{vm.user.avatar}}" 
+						image-uploader
+						image-uploader-preview-width="250" 
+						image-uploader-preview-height="250" 
+						image-uploader-actual-width="150" 
+						image-uploader-actual-height="150"
+						on-upload="vm.uploadAvatar($imageData)"
+						on-closed="vm.onClose()">
+					<md-input-container flex>
+						<label>First Name</label>
+						<input type="text" ng-model="vm.user.firstName" ng-change="vm.needsUpdate = true" ng-required="true">
+					</md-input-container>
+					<md-input-container flex>
+						<label>Last Name</label>
+						<input type="text" ng-model="vm.user.lastName" ng-change="vm.needsUpdate = true" ng-required="true">
+					</md-input-container>
+				</div>
+			</md-content>
+		</md-toolbar>   
+	</div>
+	<!-- Profile -->
+	<div class="profile-section" flex="30" flex-md="45" flex-sm="90">
+		<md-toolbar class="panel" layout="column">
+			<div class="md-toolbar-tools">
+				<p>Security</p>
+			</div>
+			<md-content class="font-medium" layout-padding>
+				<md-input-container flex>
+					<label>Username</label>
+					<input type="text" ng-model="vm.user.username" ng-change="vm.needsUpdate = true" ng-required="true">
+				</md-input-container>
+				<md-input-container flex>
+					<label>Email</label>
+					<input type="text" ng-model="vm.user.email" ng-disabled="true" ng-required="true">
+				</md-input-container>
+				<md-button type="button" class="md-accent"
+					aria-label="vm.user.payload.local.registered ? 'Change Password' : 'Set password'"
+					ng-bind="vm.user.payload.local.registered ? 'Change Password' : 'Set password'" 
+					ng-click="vm.changePassword()"></md-button>
+				<md-button type="button" class="md-accent"
+					ng-bind="'Check username'" 
+					ng-click="vm.checkUsernameAvailability()"></md-button>
+			</md-content>
+		</md-toolbar>   
+	</div>
+	<!-- Connected Accounts -->
+	<div class="profile-section" flex="30" flex-md="45" flex-sm="90">
+		<md-toolbar class="panel" layout="column">
+			<div class="md-toolbar-tools">
+				<p>Connected Accounts</p>
+			</div>
+			<md-content class="font-medium" layout-padding>
+				<div layout="row">
+					<md-switch ng-model="vm.useGoogleAuth" ng-change="vm.link('google', vm.useGoogleAuth)">Google</md-switch>
+				</div>
+				<div layout="row">
+					<md-switch ng-model="vm.useFbAuth" ng-change="vm.link('facebook', vm.useFbAuth)">Facebook</md-switch>
+				</div>
+			</md-content>
+		</md-toolbar>   
+	</div>
+	
+	<md-button class="md-fab md-primary md-fab-bottom-right position-fixed" type="button" ng-animate ng-show="vm.needsUpdate" ng-disabled="profileForm.$invalid" ng-click="vm.save()">
+		<md-icon md-font-library="material-icons">save</md-icon>
+	</md-button>
 </form>

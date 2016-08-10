@@ -25,6 +25,15 @@ var GrafikaApp;
                     pageTitle: 'Profile'
                 }
             })
+                .state('settings', {
+                url: '/settings',
+                templateUrl: 'app/account/settings.html',
+                controller: 'SettingsController',
+                controllerAs: 'vm',
+                data: {
+                    pageTitle: 'Settings'
+                }
+            })
                 .state('my-animations', {
                 url: '/animations/mine',
                 templateUrl: 'app/animation/mine.html',

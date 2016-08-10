@@ -1,0 +1,39 @@
+<form name="settingsForm" class="settings" layout="row" layout-wrap layout-margin flex novalidate>
+    <!-- Editing -->
+    <div class="settings-section" flex="30" flex-md="45" flex-sm="90">
+        <md-toolbar class="panel" layout="column">
+            <div class="md-toolbar-tools">
+                <p>Editing</p>
+            </div>
+            <md-content class="font-medium" layout-padding layout="column">
+                <md-checkbox ng-model="vm.user.prefs.drawingIsPublic" ng-change="vm.needsUpdate = true">Public animation</md-checkbox>
+                <md-input-container>
+                    <label>Author</label>
+                    <input type="text" ng-model="vm.user.prefs.drawingAuthor" ng-change="vm.needsUpdate = true">
+                </md-input-container>
+                <md-input-container>
+                    <label>Animation timer</label>
+                    <input type="number" min="100" max="60000" ng-model="vm.user.prefs.drawingTimer" ng-change="vm.needsUpdate = true">
+                </md-input-container>
+            </md-content>
+        </md-toolbar>   
+    </div>
+      	
+    <!-- playback -->
+    <div class="settings-section" flex="30" flex-md="45" flex-sm="90">
+        <md-toolbar class="panel" layout="column">
+            <div class="md-toolbar-tools">
+                <p>Playback</p>
+            </div>
+            <md-content class="font-medium" layout-padding>
+                <md-checkbox ng-model="vm.user.prefs.playbackLoop" ng-change="vm.needsUpdate = true">Loop playback</md-checkbox>
+            </md-content>
+        </md-toolbar>    
+    </div>
+    
+    <!-- Save button -->
+	<md-button class="md-fab md-primary md-fab-bottom-right position-fixed" type="button" ng-animate 
+        ng-show="vm.needsUpdate" ng-disabled="settingsForm.$invalid" ng-click="vm.save()">
+		<md-icon md-font-library="material-icons">save</md-icon>
+	</md-button>
+</form>

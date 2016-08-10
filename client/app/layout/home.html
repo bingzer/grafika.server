@@ -4,7 +4,7 @@
 	}
 </style>
 <div class="home">
-	<div class="intro md-whiteframe-z2" ng-if="!vm.isAuthorized('user')" ng-init="vm.initGrafika()">
+	<div class="intro" ng-if="!vm.isAuthorized('user')" ng-init="vm.initGrafika()">
 		<div class="canvas-container">
 			<canvas layout-fill id="intro-canvas"></canvas>
 		</div>
@@ -15,9 +15,10 @@
 	<div layout="row" ng-controller="AnimationListController as vm">
 		<div layout-margin-sm>
 			<form name="filterForm" ng-submit="vm.list()">
-				<md-input-container class="md-block">
+				<md-input-container class="md-icon-float md-icon-left md-block">
+					<md-icon md-font-library="material-icons">search</md-icon>
 					<label>Search</label>
-					<input type="search" ng-model="vm.query">
+					<input type="search" ng-model="vm.paging.query">
 				</md-input-container>
 			</form>
 		</div>
