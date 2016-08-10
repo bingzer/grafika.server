@@ -2,11 +2,13 @@ html {
 	height: 100%;
 	min-height: 100%;
 	padding: 0;
+	font-family: 'Roboto',"Helvetica Neue","sans-serif" !important;
 }
 body {
 	height: auto !important;
 	padding: 0 0 48px 0;
 	background-color: #fafafa;
+	font-family: 'Roboto',"Helvetica Neue","sans-serif" !important;
 }
 @media (max-width: 599px){
 	body {
@@ -59,6 +61,12 @@ body {
 }
 [layout-padding-sm]{
 	padding: 4px;
+}
+[display-block]{
+	display: block;
+}
+[display-inline]{
+	display: inline;
 }
 .stick-to-bottom {
   position: absolute;
@@ -233,11 +241,15 @@ md-dialog {
 /** Grafika canvas */
 #canvas {
 	display: block;
+	width: 100%;
+	max-height: 480px;
 }
 #canvas-container {
 	margin: 0 auto;
 	box-shadow: 0px 1px 2px 1px rgba(0, 0, 0, 0.25); 
 	padding: 0;
+	width: 100%;
+	max-height: 480px;
 }
 /** playback */
 .playback {

@@ -1,6 +1,6 @@
 <form name="profileForm" class="profile" layout="row" layout-wrap layout-margin novalidate flex>
 	<!-- Profile -->
-	<div class="profile-section" flex="30" flex-md="45" flex-sm="90">
+	<div class="profile-section" flex-gt-md="30" flex-gt-xs="90">
 		<md-toolbar class="panel" layout="column">
 			<div class="md-toolbar-tools">
 				<p>Profile</p>
@@ -9,12 +9,12 @@
 				<div class="font-medium">
 					<img class="avatar avatar-lg link text-center-vertical" 
 						layout-margin
-						ng-src="{{vm.user.avatar}}" 
+						ng-src="{{vm.user.prefs.avatar}}" 
 						image-uploader
-						image-uploader-preview-width="250" 
-						image-uploader-preview-height="250" 
-						image-uploader-actual-width="150" 
-						image-uploader-actual-height="150"
+						preview-width="128" 
+						preview-height="128" 
+						actual-width="128" 
+						actual-height="128"
 						on-upload="vm.uploadAvatar($imageData)"
 						on-closed="vm.onClose()">
 					<md-input-container flex>
@@ -30,7 +30,7 @@
 		</md-toolbar>   
 	</div>
 	<!-- Profile -->
-	<div class="profile-section" flex="30" flex-md="45" flex-sm="90">
+	<div class="profile-section" flex-gt-md="30" flex-gt-xs="90">
 		<md-toolbar class="panel" layout="column">
 			<div class="md-toolbar-tools">
 				<p>Security</p>
@@ -55,23 +55,27 @@
 		</md-toolbar>   
 	</div>
 	<!-- Connected Accounts -->
-	<div class="profile-section" flex="30" flex-md="45" flex-sm="90">
+	<div class="profile-section" flex-gt-md="30" flex-gt-xs="90">
 		<md-toolbar class="panel" layout="column">
 			<div class="md-toolbar-tools">
 				<p>Connected Accounts</p>
 			</div>
 			<md-content class="font-medium" layout-padding>
-				<div layout="row">
+				<div layout="row" flex>
 					<md-switch ng-model="vm.useGoogleAuth" ng-change="vm.link('google', vm.useGoogleAuth)">Google</md-switch>
 				</div>
-				<div layout="row">
+				<div layout="row" flex>
 					<md-switch ng-model="vm.useFbAuth" ng-change="vm.link('facebook', vm.useFbAuth)">Facebook</md-switch>
 				</div>
 			</md-content>
 		</md-toolbar>   
 	</div>
 	
-	<md-button class="md-fab md-primary md-fab-bottom-right position-fixed" type="button" ng-animate ng-show="vm.needsUpdate" ng-disabled="profileForm.$invalid" ng-click="vm.save()">
+	<md-button class="md-fab md-primary md-fab-bottom-right position-fixed" 
+		type="button" ng-animate 
+		ng-show="vm.needsUpdate" 
+		ng-disabled="profileForm.$invalid" 
+		ng-click="vm.save()">
 		<md-icon md-font-library="material-icons">save</md-icon>
 	</md-button>
 </form>

@@ -12,7 +12,7 @@
 		<img id="logo" src="/assets/img/logo.png" />
 	</div>
 
-	<div layout="row" ng-controller="AnimationListController as vm">
+	<div display-block layout="column" layout-gt-sm="row" ng-controller="AnimationListController as vm">
 		<div layout-margin-sm>
 			<form name="filterForm" ng-submit="vm.list()">
 				<md-input-container class="md-icon-float md-icon-left md-block">

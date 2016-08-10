@@ -12,11 +12,9 @@
         <div class="thumbnail-content" layout="row">
             <div layout="column" flex>
                 <div class="md-display">
-                    <a class="md-subtitle link" ui-sref="user({_id: anim.userId})" ng-bind="anim.name || 'anonymous'"></a>
+                    <a class="md-body-2 link" ui-sref="detail({_id: anim._id})" ng-bind="anim.name"></a>
                 </div>
                 <div class="md-caption text-muted" layout="column">
-                    <div layout="row">
-                    </div>
                     <a class="md-subtitle link" ui-sref="user({_id: anim.userId})" ng-bind="anim.author || 'anonymous'"></a>
                 </div>
             </div>
