@@ -9,19 +9,16 @@ module GrafikaApp {
         ){
             super(appCommon, animationService, authService);
         }
-
-        list() {
-            var paging = new Paging({ userId: this.authService.getUser()._id });
-            this.animationService.list(paging).then((res) => {
-                this.animations = res.data;
-            });
-        }
         
         create(ev: MouseEvent){
             return this.appCommon.showDialog('AnimationCreateController', '/app/animation/create.html', ev).then((answer) => {
                 return this.appCommon.toast('Animation is created');
             });
 		} 
+
+        canEdit(){
+            return true;
+        }
 
         canDelete(){
             return true;
@@ -36,6 +33,10 @@ module GrafikaApp {
                     });
                 } 
             })
+        }
+
+        protected createPaging() : Paging {
+            return new Paging({ userId: this.authService.getUser()._id, limit: this.appCommon.appConfig.fetchSize, skip: 0});
         }
     }
 }

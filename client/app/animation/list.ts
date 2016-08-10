@@ -1,8 +1,10 @@
 module GrafikaApp {
     export class AnimationListController extends BaseController {
+        paging: Paging;
         animations: Animation[];
         selectedAnimationId: string;
-        query: string;
+        hasMore: boolean = true;
+        busy: boolean = false;
 
         public static $inject = ['appCommon', 'animationService', 'authService' ];
         constructor(
@@ -11,50 +13,33 @@ module GrafikaApp {
             protected authService: AuthService
         ){
             super(appCommon)
+
+            this.paging = this.createPaging();
             this.list();
         }
 
-        list() {
-            var paging = new Paging({ isPublic: true, query: this.query });
-            this.animationService.list(paging).then((res) => {
-                this.animations = res.data;
+        list(append?: boolean) {
+            this.busy = true;
+            this.animationService.list(this.paging).then((res) => {
+                if (!append) this.animations = res.data;
+                else this.animations = this.animations.concat(res.data);
+
+                this.hasMore = res.data.length >= this.paging.limit;
+                this.busy = false;
+                this.paging = this.paging.next();
             });
         }
 
-        // showOptions(event: MouseEvent, animationId: string) {
-        //     this.selectedAnimationId = animationId;
-        //     var target = angular.element(event.currentTarget).parentsUntil('.animation-card');
-        //     var position = this.appCommon.$mdPanel.newPanelPosition()
-        //         .absolute().withOffsetX(target.offset().left + "px").withOffsetY(target.offset().top + "px");
-        //         // .relativeTo(target)
-        //         // .addPanelPosition('align-end', 'below');
-        //     this.appCommon.$mdPanel.open({
-        //         attachTo: angular.element(document.body),
-        //         position: position,
-        //         templateUrl: '/templates/anim-menu.html',
-        //         clickOutsideToClose: true,
-        //         escapeToClose: true,
-        //         focusOnOpen: false,
-        //         zIndex: 2
-        //     });
-        // };
-
-        // delete() {
-        //     if (canDeletethis.selectedAnimationId) {
-        //         alert(this.selectedAnimationId);
-        //     }
-        // }
-
-        canPlay() {
-            return true;
+        canEdit() {
+            return false;
         }
 
         canDelete() {
             return false;
         }
 
-        filter() {
-
+        protected createPaging() : Paging {
+            return new Paging({ isPublic: true, limit: this.appCommon.appConfig.fetchSize, skip: 0});
         }
     }
 }

@@ -3,6 +3,16 @@
 		<div class="popup-menu-item" ng-click="vm.delete()">Delete</div>
 	</div>
 </script>
-<div layout="row" layout-wrap>
-	<ng-include src="'/app/animation/card.html'" ng-repeat="anim in vm.animations" ></ng-include>
+
+<div layout="column">
+	<div layout="row" layout-wrap>
+		<ng-include src="'/app/animation/card.html'" ng-repeat="anim in vm.animations" ></ng-include>
+	</div>
+	
+	<div layout="row" layout-align="center center" layout-margin layout-padding flex>
+		<md-button class="md-button md-icon-button" ng-click="vm.list(true)" ng-disabled="vm.busy" ng-show="vm.hasMore">
+			<md-icon md-font-library="material designs">expand_more</md-icon>
+			<md-tooltip>Load more...</md-tooltip>
+		</md-button>
+	</div>
 </div>

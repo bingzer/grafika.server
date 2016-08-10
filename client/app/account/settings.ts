@@ -1,5 +1,5 @@
 module GrafikaApp {
-    export class ProfileController extends DialogController {
+    export class SettingsController extends DialogController {
         user: Grafika.IUser;
         needsUpdate: boolean;
 
@@ -14,16 +14,6 @@ module GrafikaApp {
             });
         }
 
-        showPasswordDialog(event: MouseEvent) {
-            this.appCommon.showDialog("PasswordController", "app/account/reset.html", event);
-        }
-
-        checkUsernameAvailability() {
-            this.userService.checkAvailability(this.user.email, this.user.username)
-                .then(() => this.appCommon.toast(this.user.username + ' is available'))
-                .catch((err) => this.appCommon.toastError(err));
-        }
-
         save() {
             this.userService.update(this.user)
                 .then(() => {
@@ -32,10 +22,5 @@ module GrafikaApp {
                 })
                 .catch((err) => this.appCommon.toastError(err));
         }
-		
-		uploadAvatar($imageData){
-			var avatar = { name: $imageData.name, size: $imageData.size, mime: $imageData.mime };
-            return this.appCommon.$q.when(true);
-		}
     }
 }

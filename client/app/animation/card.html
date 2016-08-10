@@ -21,8 +21,8 @@
                 </div>
             </div>
             <div layout="row">
-                <md-button href class="md-icon-button md-mini" ui-sref="detail({_id: anim._id})" ng-if="vm.canPlay()">
-                    <md-icon><i class="material-icons">play_arrow</i></md-icon>
+                <md-button href class="md-icon-button md-mini" ui-sref="drawing({_id: anim._id})" ng-if="vm.canEdit()">
+                    <md-icon><i class="material-icons">mode_edit</i></md-icon>
                 </md-button>
                 <md-button class="md-icon-button md-mini" ng-click="vm.confirmDelete(anim)" ng-if="vm.canDelete()">
                     <md-icon><i class="material-icons">delete</i></md-icon>

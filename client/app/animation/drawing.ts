@@ -42,7 +42,9 @@ module GrafikaApp {
 		}
 
         confirmExit() {
-            this.appCommon.confirm('Close?').then(() => this.exit());
+            let anim: any = this.animation;
+            if (anim.modified) this.appCommon.confirm('Close?').then(() => this.exit());
+            else this.exit();
         }
 
         exit() {

@@ -44,7 +44,11 @@ var GrafikaApp;
         };
         AnimationDrawingController.prototype.confirmExit = function () {
             var _this = this;
-            this.appCommon.confirm('Close?').then(function () { return _this.exit(); });
+            var anim = this.animation;
+            if (anim.modified)
+                this.appCommon.confirm('Close?').then(function () { return _this.exit(); });
+            else
+                this.exit();
         };
         AnimationDrawingController.prototype.exit = function () {
             this.appCommon.$state.go('my-animations');
