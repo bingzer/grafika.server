@@ -12,6 +12,7 @@ var GrafikaApp;
             this.adminService = adminService;
             this.serverConfigs = [];
             this.clientConfigs = [];
+            this.fetch();
         }
         AdminController.prototype.fetch = function () {
             var _this = this;
