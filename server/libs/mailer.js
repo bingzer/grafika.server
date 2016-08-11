@@ -48,7 +48,7 @@ exports.sendVerificationEmail = sendVerificationEmail;
 function sendResetEmail(user) {
     var deferred = $q.defer();
     var url = config.setting.$server.$url + '?action=reset-pwd&hash=' + encodeURIComponent(user.activation.hash) + '&user=' + encodeURIComponent(user.email);
-    var opts = { title: 'StickDraw Password Reset', user: user.email, link: url, privacyUrl: config.setting.$server.$url + 'privacy-url', homeUrl: config.setting.$server.$url };
+    var opts = { title: 'Grafika: Password Reset', user: user.email, link: url, privacyUrl: config.setting.$server.$url + 'privacy-url', homeUrl: config.setting.$server.$url };
     var promises = $q.allSettled([
         readTemplate('resetpwd-template.txt', opts),
         readTemplate('resetpwd-template.html', opts)]);

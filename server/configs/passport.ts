@@ -8,7 +8,7 @@ import { SigninStrategy } from './passport-signin';
 import { GoogleOAuthStrategy, GoogleTokenIdOAuthStrategy } from './passport-google';
 import { FacebookOAuthStrategy } from './passport-facebook';
 
-var GoogleTokenStrategy = require('passport-google-id-token');
+let GoogleTokenStrategy = require('passport-google-id-token');
 
 ////////////////////////////////////////////////////////////////////////////////
 

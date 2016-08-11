@@ -1,9 +1,12 @@
 "use strict";
 var mongoose = require('mongoose');
+var config = require('../configs/config');
+var q = require('q');
 var restful = require('../libs/restful');
-var $q = require('q');
 var bcrypt = require('bcrypt-nodejs');
 var crypto = require('crypto-js');
+var jwt = require('jsonwebtoken');
+var SECRET = config.setting.$server.$superSecret;
 exports.UserSchema = new mongoose.Schema({
     firstName: String,
     lastName: String,
@@ -65,6 +68,12 @@ exports.UserSchema.methods.sanitize = function () {
 };
 var User = restful.model('users', exports.UserSchema);
 exports.User = User;
+function generateJwtToken(user) {
+    return jwt.sign(sanitize(user), SECRET, {
+        expiresIn: '24hr'
+    });
+}
+exports.generateJwtToken = generateJwtToken;
 function sanitize(user) {
     var lean = user;
     if (user.toObject) {
@@ -78,7 +87,7 @@ function sanitize(user) {
 }
 exports.sanitize = sanitize;
 function checkAvailability(user) {
-    var deferred = $q.defer();
+    var deferred = q.defer();
     var query = {
         username: user.username,
         email: { $ne: user.email }
@@ -98,21 +107,26 @@ function userQuery(username) {
 }
 exports.userQuery = userQuery;
 function ensureAdminExists() {
+    var defer = q.defer();
     User.findOne(userQuery('admin'), function (err, user) {
+        if (err)
+            return defer.reject(err);
         if (!user) {
-            var admin = new User();
-            admin.firstName = 'grafika';
-            admin.lastName = 'admin';
-            admin.email = 'grafika@bingzer.com';
-            admin.dateCreated = Date.now();
-            admin.dateModified = Date.now();
-            admin.active = true;
-            admin.local.registered = true;
-            admin.local.password = admin.generateHash('password');
-            admin.roles.push('administrator');
-            admin.save();
+            user = new User();
+            user.firstName = 'grafika';
+            user.lastName = 'admin';
+            user.email = 'grafika-admin@bingzer.com';
+            user.dateCreated = Date.now();
+            user.dateModified = Date.now();
+            user.active = true;
+            user.local.registered = true;
+            user.local.password = user.generateHash('password');
+            user.roles.push('administrator');
+            user.save();
         }
+        defer.resolve(user);
     });
+    return defer.promise;
 }
 exports.ensureAdminExists = ensureAdminExists;
 ;

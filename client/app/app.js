@@ -28,6 +28,7 @@ var GrafikaApp;
     app.service('frameService', GrafikaApp.FrameService);
     app.service('resourceService', GrafikaApp.ResourceService);
     app.service('userService', GrafikaApp.UserService);
+    app.service('adminService', GrafikaApp.AdminService);
     app.controller('AppController', GrafikaApp.AppController);
     app.controller('MainController', GrafikaApp.MainController);
     app.controller('ForgetController', GrafikaApp.ForgetController);

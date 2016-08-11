@@ -39,13 +39,13 @@ module GrafikaApp {
         }
 
         log(data, status, headers, config): ng.IHttpPromise<any> {
-            var deferred = this.appCommon.$q.defer();
+            let deferred = this.appCommon.$q.defer();
             if (status == 401 || status == 403 || status == 0) {
-                //authService.clearToken();
+                this.appCommon.hideLoadingModal();
                 this.appCommon.navigate('/');
-            } else {
-                this.appCommon.$log.error(config.method + ': ' + config.url + ' (' + status + ')');
-            }
+            } 
+            this.appCommon.$log.error(config.method + ': ' + config.url + ' (' + status + ')');
+            
             deferred.resolve();
             return deferred.promise;
         }

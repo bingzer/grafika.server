@@ -41,10 +41,8 @@ module GrafikaApp {
             return this.apiService.post('accounts/logout').finally(() => {
                 this.clearToken();
                 this.clearSession();
-                return this.authenticate(true).then(() => {
-                    this.appCommon.navigateHome()
-                    return this.appCommon.$q.when(true); 
-                });
+                this.appCommon.navigateHome()
+                return this.appCommon.$q.when(true);
             });
         }
 
@@ -53,11 +51,11 @@ module GrafikaApp {
         }
         
         clearSession() {
-            this.appCommon.$cookieStore.remove('stdx.session');
+            this.appCommon.$cookieStore.remove('grafika.session');
         }
         
         authenticate(skipLogout?: boolean): ng.IPromise<any>{
-            var deferred = this.appCommon.$q.defer();
+            let deferred = this.appCommon.$q.defer();
             this.apiService.post('accounts/authenticate')
                     .success((res) => { 
                         this.setAccessToken(res.token);
@@ -77,11 +75,11 @@ module GrafikaApp {
         isAuthorized(roles: string | [string]) {
             if (!this.isAuthenticated()) 
                 return false;
-            var explicit = angular.isDefined(roles);
-            var user = this.getUser();
+            let explicit = angular.isDefined(roles);
+            let user = this.getUser();
             if (!explicit){
                 return user.hasRoles('user');
-                // var route = this.appCommon.getCurrentRoute();
+                // let route = this.appCommon.getCurrentRoute();
                 // if (route) 
                 //     roles = route.config.roles; 
             }
@@ -109,8 +107,8 @@ module GrafikaApp {
             }
             if (this.user) return this.user;
             
-            var payload: any = this.jwtHelper.decodeToken(this.appCommon.$window.sessionStorage.getItem('token'));
-            var user = new User(payload);
+            let payload: any = this.jwtHelper.decodeToken(this.appCommon.$window.sessionStorage.getItem('token'));
+            let user = new User(payload);
             return user;
         }
 

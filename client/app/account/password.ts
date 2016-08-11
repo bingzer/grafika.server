@@ -19,7 +19,7 @@ module GrafikaApp {
 
         changePassword() {
             this.busy = true;
-            var pwd = { currPwd: this.currentPassword, newPwd: this.newPassword };
+            let pwd = { currPwd: this.currentPassword, newPwd: this.newPassword };
             this.authService.changePassword(pwd).then((res) => {
                 this.appCommon.toast('Password is sucessfully changed');
                 this.close();

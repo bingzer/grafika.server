@@ -30,7 +30,7 @@ module GrafikaApp {
 		save(exit: boolean) {
 			this.grafika.save();
 
-            var animation = this.grafika.getAnimation();
+            let animation = this.grafika.getAnimation();
 			this.animationService.update(animation).then((res) => {
                 return this.resourceService.saveThumbnail(animation);
             }).then((res) => {

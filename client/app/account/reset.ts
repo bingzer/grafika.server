@@ -20,7 +20,7 @@ module GrafikaApp {
 
         changePassword() {
             this.busy = true;
-            var user = {
+            let user = {
                 hash: this.hash,
                 username: this.email,
                 password: this.newPassword

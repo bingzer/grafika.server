@@ -22,6 +22,7 @@ var GrafikaApp;
                 .then(function () {
                 _this.needsUpdate = false;
                 _this.appCommon.toast('Saved!');
+                return _this.authService.authenticate();
             })
                 .catch(function (err) { return _this.appCommon.toastError(err); });
         };

@@ -2,11 +2,33 @@
 	body .header.navbar {
 		display: none;
 	}
+    body .footer {
+        display: none;
+    }
+    /*
+    body {
+        padding-bottom: 0;
+        margin-bottom: 88px;
+        overflow: hidden;
+    }
+    
+    /** Page **/
+    /*.drawing,
+    .drawing #canvas-container,
+    .drwaing #canvas {
+        width: 100%;
+        height: 100%;
+    }
+
+    .drawing #canvas-container,
+    .drawing #canvas {
+            max-height: inherit !important;
+    }*/
 </style>
 <!-- Toolbar -->
 <ng-include src="'/app/animation/toolbar.html'"></ng-include>
 <!-- Canvas -->
-<div layout-padding flex layout="column" layout-align="center center">
+<div class="drawing" layout-padding flex layout="column" layout-align="center center">
     <md-card id="canvas-container" class="editor">
         <canvas id="canvas">No canvas support</canvas>
     </md-card>

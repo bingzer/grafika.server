@@ -22,7 +22,7 @@ module GrafikaApp {
 		upload(data: Grafika.ISignedUrl, blob: Blob): ng.IHttpPromise<any>{
             if (!data.mime || !data.signedUrl)
                 throw new Error('Expecting data.mime && data.signedUrl');
-			var req = {
+			let req = {
 				method: 'PUT',
 				url: data.signedUrl,
 				cors: true,
@@ -36,7 +36,7 @@ module GrafikaApp {
 			return this.apiService.$http(req);
 		}
 		getResourceUrl(anim: Grafika.IAnimation, resource: Grafika.IResource | string): string {
-			var resourceId = resource;
+			let resourceId = resource;
             if (resource instanceof Grafika.IResource)
                 resourceId = (<Grafika.IResource> resource)._id;
 

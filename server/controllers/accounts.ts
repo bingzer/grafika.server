@@ -3,29 +3,22 @@ import * as crypto from "crypto-js"
 import * as express from "express";
 import * as passport from "passport";
 
-import { IUser, User, userQuery, sanitize, checkAvailability } from '../models/user';
+import { IUser, User, userQuery, sanitize, generateJwtToken, checkAvailability } from '../models/user';
 import * as mailer from '../libs/mailer';
 import * as config from '../configs/config';
-var jwt            = require('jsonwebtoken');
+let jwt            = require('jsonwebtoken');
 
 let SECRET         = config.setting.$server.$superSecret;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 
-export function logout(req : express.Request, res : express.Response) {
-    req.logout();
-    req.session.destroy(() => { 
-        res.redirect('/');
-    });
-};
-
 export function login(req: express.Request, res: express.Response, next: express.NextFunction){
-    passport.authenticate('local-login', (err, user, info) => {
+    passport.authenticate('local-login', (err, user: IUser, info) => {
             if (err) return next(err);
             if (!user) return next(400);
             req.login(user, function (err){
                 if (err) return next(err);
-                return res.send({token: signToken(user)}); 
+                return res.send({ token: generateJwtToken(user) }); 
             });
         })(req, res, next);
 };
@@ -38,10 +31,18 @@ export function register(req: express.Request, res: express.Response, next: expr
     })(req, res, next);  
 };
 
+export function logout(req : express.Request, res : express.Response) {
+    req.logout();
+    req.session.destroy(() => { 
+        res.redirect('/');
+    });
+};
+
 export function authenticate(req: any, res: any, next: express.NextFunction){
-    if (req.isAuthenticated())
-        res.send({token: signToken(req.user)});
-    else res.sendStatus(200);
+    if (req.isAuthenticated()) {
+        res.send({token: generateJwtToken(req.user) });
+    }
+    else res.sendStatus(401);
 };
 export function authenticateGoogle(req: express.Request, res: express.Response, next: express.NextFunction){
     passport.authenticate('google-android')(req, res, next);  
@@ -66,7 +67,7 @@ export function checkUsernameAvailability(req: any, res: any, next: express.Next
 }
 
 export function resetPassword(req: express.Request, res: express.Response, next: express.NextFunction){
-    var userInfo = req.body;
+    let userInfo = req.body;
 
     User.findOne(userQuery(userInfo.email), (err, user) => {
         if (!err && user) {
@@ -80,8 +81,8 @@ export function resetPassword(req: express.Request, res: express.Response, next:
                 user.activation.timestamp = new Date();
                 user.save();
                 mailer.sendResetEmail(user)
-                    .then(function (){ res.sendStatus(200); })
-                    .catch(function (err){
+                    .then(() => res.sendStatus(200))
+                    .catch((err) => {
                         user.activation.hash      = null;
                         user.activation.timestamp = null;
                         user.save();
@@ -123,26 +124,17 @@ export function providerLogin(req: express.Request | any, res: express.Response,
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
-    
-/** Sign token with user credentials in it */
-function signToken(user: any | IUser){
-    if (!user) return null;
-
-    return jwt.sign(sanitize(user), SECRET, {
-        expiresIn: '24hr' // expires in 24 hours
-    });
-};
 
 function disqusSignon(user: Grafika.IUser) {
-    var disqusData = {
+    let disqusData = {
         id: user.email,
         username: user.username,
         email: user.email,
         avatar: user.prefs.avatar
     };
 
-    var disqusStr = JSON.stringify(disqusData);
-    var timestamp = Math.round(+new Date() / 1000);
+    let disqusStr = JSON.stringify(disqusData);
+    let timestamp = Math.round(+new Date() / 1000);
 
     /*
      * Note that `Buffer` is part of node.js
@@ -150,14 +142,14 @@ function disqusSignon(user: Grafika.IUser) {
      * converting to base64, refer to this link:
      * http://stackoverflow.com/questions/246801/how-can-you-encode-a-string-to-base64-in-javascript
      */
-    var message = new Buffer(disqusStr).toString('base64');
+    let message = new Buffer(disqusStr).toString('base64');
 
     /* 
      * CryptoJS is required for hashing (included in dir)
      * https://code.google.com/p/crypto-js/
      */
-    var result = crypto.HmacSHA1(message + " " + timestamp, config.setting.$auth.$disqusSecret);
-    var hexsig = crypto.enc.Hex.stringify(result);
+    let result = crypto.HmacSHA1(message + " " + timestamp, config.setting.$auth.$disqusSecret);
+    let hexsig = crypto.enc.Hex.stringify(result);
 
     return {
       public: config.setting.$auth.$disqusId,

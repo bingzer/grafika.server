@@ -54,7 +54,7 @@ class TokenIdOptions {
 export class GoogleTokenIdOAuthStrategy implements passport.Strategy{
     constructor() {
         return new GoogleTokenStrategy(new TokenIdOptions(), (parsedToken, googleId, done) => {
-            var email = parsedToken.payload.email;
+            let email = parsedToken.payload.email;
             User.findOne({ email: email }, (err, user) => {
                 done(null, user);
             });

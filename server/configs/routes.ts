@@ -8,6 +8,7 @@ import * as accountController   from '../controllers/accounts';
 import * as resourcesController from '../controllers/resources';
 import * as userController      from '../controllers/users';
 import * as syncController      from '../controllers/sync';
+import * as adminController     from '../controllers/admin';
 
 import * as config from '../configs/config';
 import { Animation } from '../models/animation';
@@ -56,11 +57,11 @@ function useSessionOrJwt(req: express.Request, res: express.Response, next: expr
 
 /** Check animation access */
 function useAnimAccess(req: any, res: express.Response, next: express.NextFunction) {
-    var animId = new mongoose.Types.ObjectId(req.params._id || req.params.animationId);
-    var userId = (req.user && req.user._id) ? new mongoose.Types.ObjectId(req.user._id) : undefined;
-    var queryAdmin = null;
-    var query = null;
-    var isAdmin = isAdministrator(req);
+    let animId = new mongoose.Types.ObjectId(req.params._id || req.params.animationId);
+    let userId = (req.user && req.user._id) ? new mongoose.Types.ObjectId(req.user._id) : undefined;
+    let queryAdmin = null;
+    let query = null;
+    let isAdmin = isAdministrator(req);
     if (isAdmin) {
         queryAdmin = { _id: animId };
     }        
@@ -181,6 +182,15 @@ export function initialize(app): q.Promise<any> {
         // ---------------- Users -----------------------------//
         app.get('/api/users/:_id', userController.get);
         app.put('/api/users/:_id', useSessionOrJwt, userController.update);
+        
+        // ------------------ Admin ---------------------//
+        app.get('/api/admin', useSessionOrJwt, useAdminAccess, adminController.get);
+        app.get('/api/admin/users', useSessionOrJwt, useAdminAccess, adminController.listUsers);
+        app.get('/api/admin/animations', useSessionOrJwt, useAdminAccess, adminController.listAnimations);
+        app.post('/api/admin/users/:_id/reverify', useSessionOrJwt, useAdminAccess, adminController.sendVerificationEmail);
+        app.post('/api/admin/users/:_id/reset-pwd', useSessionOrJwt, useAdminAccess, adminController.sendResetEmail);
+        app.post('/api/admin/users/:_id/inactivate', useSessionOrJwt, useAdminAccess, adminController.inactivateUser);
+        app.post('/api/admin/users/:_id/activate', useSessionOrJwt, useAdminAccess, adminController.activateUser);
 
         // ---------------- Thumbnail -----------------------------//
         app.get('/api/animations/:animationId/thumbnail', /* extractUser, useAnimAccess, */ resourcesController.getThumbnail);

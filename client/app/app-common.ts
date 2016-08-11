@@ -44,7 +44,7 @@ module GrafikaApp {
             return angular.element(selector);
         }
         alert(msg: string, title?: string, okText?: string) : ng.IPromise<any> {
-            var alert = this.$mdDialog.alert()
+            let alert = this.$mdDialog.alert()
                 .parent(angular.element(document.body))
                 .htmlContent(msg)
                 .ariaLabel('Dialog')
@@ -53,7 +53,7 @@ module GrafikaApp {
             return this.$mdDialog.show(alert);
         }    
         confirm(msg: string, title?: string, okText?: string, cancelText?: string): ng.IPromise<any>{
-            var confirm = this.$mdDialog.confirm()
+            let confirm = this.$mdDialog.confirm()
                 .parent(angular.element(document.body))
                 .htmlContent(msg)
                 .ariaLabel('Dialog')
@@ -79,7 +79,7 @@ module GrafikaApp {
         showDialog(controller: string, templateUrl: string, event?: MouseEvent, controllerAs?: string) : ng.IPromise<any> {
             if (!controllerAs)
                 controllerAs = 'vm';
-    		var useFullScreen = (this.$mdMedia('sm') || this.$mdMedia('xs'));
+    		let useFullScreen = (this.$mdMedia('sm') || this.$mdMedia('xs'));
             return this.$mdDialog.show({
                 fullscreen: useFullScreen,
                 controller: controller,
@@ -126,9 +126,9 @@ module GrafikaApp {
                     resolve();
                 }
                 else {
-                    var i = this.$window.sessionStorage.length;
+                    let i = this.$window.sessionStorage.length;
                     while (i--){
-                        var key = this.$window.sessionStorage.key(i);
+                        let key = this.$window.sessionStorage.key(i);
                         if (new RegExp(prefix).test(key))
                             this.$window.sessionStorage.removeItem(key);
                     }
@@ -138,7 +138,7 @@ module GrafikaApp {
         };
         getStorageItem(key: string): ng.IPromise<any>{
             return this.$q(function (resolve, reject){
-                var item = this.$window.sessionStorage.getItem(key);
+                let item = this.$window.sessionStorage.getItem(key);
                 if (!item) resolve(null);
                 else return resolve(JSON.parse(item));
             });
@@ -151,7 +151,7 @@ module GrafikaApp {
             return this.$q.when(true);
         }
         hideLoadingModal(): ng.IPromise<any>{
-            var deferred = this.$q.defer();
+            let deferred = this.$q.defer();
             this.$timeout(function (){
                 angular.element('#progress-modal').css('visibility', 'hidden');
                 deferred.resolve();

@@ -1,5 +1,5 @@
 <div>
-<form ng-submit="vm.login()">
+<form name="loginForm" ng-submit="vm.login()" novalidate>
 	<div layout-margin layout-padding layout="column" layout-align="center center">	
 		<md-input-container class="md-block">
 			<label>Email Address</label>
@@ -34,7 +34,7 @@
 		</div>
 		<div layout="column" style="margin-top: 16px">
 			<div class="md-caption">By signing in you agree to our <a href="/eula">license agreement</a></div>
-			<div class="md-caption"><a href ng-click="vm.forgetPassword()">Forgot password?</a></div>
+			<div class="md-caption"><a href ng-click="vm.forgetPassword($event)">Forgot password?</a></div>
 		</div>
 		<div layout="column" layout-align="center center" layout-wrap style="margin-top: 16px">
 			<div class="md-caption">Or use your accounts</div>

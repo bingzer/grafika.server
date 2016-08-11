@@ -7,7 +7,7 @@ module GrafikaApp {
         ){
             super(appCommon, authService);
 
-            var query = appCommon.$location.search();
+            let query = appCommon.$location.search();
             if (query && query.action){
                 if ((query.action == 'verify' || query.action == 'reset-pwd') && query.hash && query.user){
                     appCommon.$mdDialog.show({
@@ -33,22 +33,19 @@ module GrafikaApp {
         confirmLogout(): void {
             this.appCommon.confirm('Are you sure you want to log out?')
                 .then(() => {
-                    return this.appCommon.showLoadingModal(); 
-                }).then(() => {
-                    return this.authService.logout(); 
+                    this.appCommon.showLoadingModal();
+                    return this.authService.logout();
                 })
                 .then(() => {
-                    return this.appCommon.hideLoadingModal()
-                })
-                .then(() => {
-                    return this.appCommon.toast('Successfully logged out');
+                    this.appCommon.toast('Successfully logged out');
+                    this.appCommon.hideLoadingModal();
                 });
         }
 
         initGrafika() {
             if (this.isAuthorized('user')) return;
             
-            var grafikaIntro = this.appCommon.$window['grafikaIntro'];
+            let grafikaIntro = this.appCommon.$window['grafikaIntro'];
             if (!grafikaIntro){
                 grafikaIntro = new Grafika();
             }
@@ -72,8 +69,8 @@ module GrafikaApp {
         }
         
         private cleanUrlQueries(){
-            var keys = this.appCommon.$location.search();
-            var loc = this.appCommon.$location;
+            let keys = this.appCommon.$location.search();
+            let loc = this.appCommon.$location;
             Object.keys(keys).forEach((key) => {
                delete loc.search(key, null); 
             });

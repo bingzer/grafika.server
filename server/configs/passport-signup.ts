@@ -18,7 +18,7 @@ export class SignupStrategy extends Strategy {
             // find a user whose email is the same as the forms email
             // we are checking to see if the user trying to login already exists
             User.findOne({ email: username }, (err, user) => {
-                var userInfo = req.body;
+                let userInfo = req.body;
                 // if there are any errors, return the error
                 if (err) return done(err);
                 // check to see if theres already a user with that email
@@ -46,7 +46,7 @@ export class SignupStrategy extends Strategy {
                     if (!userInfo.name) {
                         return done("Name is required");
                     }
-                    var nameSplit = userInfo.name.split(' ');
+                    let nameSplit = userInfo.name.split(' ');
                     userInfo.firstName = nameSplit[0];
                     if (nameSplit.length > 1)
                         userInfo.lastName = nameSplit[1];
@@ -54,7 +54,7 @@ export class SignupStrategy extends Strategy {
                         
                     // if there is no user with that email
                     // create the user
-                    var newUser = new User();
+                    let newUser = new User();
                     // set the user's local credentials
                     newUser.firstName            = userInfo.firstName;
                     newUser.lastName             = userInfo.lastName;

@@ -1,5 +1,5 @@
 module GrafikaApp {
-    var app = angular.module('app', [
+    const app = angular.module('app', [
         'ui.router',
         'ngMaterial',
         'ngCookies',
@@ -34,6 +34,7 @@ module GrafikaApp {
     app.service('frameService', FrameService);
     app.service('resourceService', ResourceService);
     app.service('userService', UserService);
+    app.service('adminService', AdminService);
 
     app.controller('AppController', AppController);
     app.controller('MainController', MainController);

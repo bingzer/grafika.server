@@ -13,7 +13,7 @@ module GrafikaApp {
         }
 
         login(provider: string) {
-            var loginProvider = provider;
+            let loginProvider = provider;
             this.appCommon.showLoadingModal().then(() =>{
                     return this.authService.login({ username: this.username, password: this.password }, provider);
                 })
@@ -21,15 +21,17 @@ module GrafikaApp {
                     if (!loginProvider) this.appCommon.navigateHome();
                     else this.appCommon.toast('Connecting to ' + loginProvider);
                 })
-                .then(() => {
-                    return this.appCommon.hideLoadingModal();
-                })
                 .catch((res) => {
                     this.appCommon.toastError(res);
                 })
                 .finally(() => {
+                    this.appCommon.hideLoadingModal();
                     this.reset();
                 });
+        }
+
+        forgetPassword(evt: MouseEvent) {
+            this.appCommon.showDialog('ForgetController', 'app/account/forget.html', evt, 'vm');
         }
 
         reset() {

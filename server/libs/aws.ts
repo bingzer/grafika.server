@@ -23,13 +23,13 @@ export class AwsUsers extends AwsHelper {
 	 * Creates signed url
 	 */
 	createSignedUrl(user: IUser, imageType?: string, mime?: string) : $q.IPromise<Grafika.ISignedUrl> {
-		var deferred = $q.defer();
+		let deferred = $q.defer();
 		if (!imageType) imageType = 'avatar';
 		if (!mime) mime = 'image/png';
 		
 		// get signedurl from s3
-		var s3 = new aws.S3({ accessKeyId: config.setting.$auth.$awsId, secretAccessKey: config.setting.$auth.$awsSecret });
-		var s3_params = {
+		let s3 = new aws.S3({ accessKeyId: config.setting.$auth.$awsId, secretAccessKey: config.setting.$auth.$awsSecret });
+		let s3_params = {
 			Bucket: config.setting.$auth.$awsBucket,
 			Key: 'grafika/users/' + user._id + '/' + imageType,
 			Expires: 600,
@@ -48,7 +48,7 @@ export class AwsUsers extends AwsHelper {
 	 * Delete profile image (Avatar) 
 	 * */
 	deleteAvatar(user: IUser, imageType?: string) : $q.IPromise<any>{
-		var deferred = $q.defer();	
+		let deferred = $q.defer();	
 		if (!imageType) imageType = 'avatar';
 		
 		this.create().deleteObject({
@@ -70,10 +70,10 @@ export class AwsResources extends AwsHelper {
 	 * 
 	 * */
 	createSignedUrl(resource: Grafika.IResource): ng.IPromise<Grafika.ISignedUrl>{
-		var deferred = $q.defer();
+		let deferred = $q.defer();
 		
 		// get signedurl from s3
-		var s3_params = {
+		let s3_params = {
 			Bucket: config.setting.$auth.$awsBucket,
 			Key: 'grafika/animations/' + resource.animationId + '/' + resource._id,
 			Expires: 600,
@@ -95,7 +95,7 @@ export class AwsResources extends AwsHelper {
 	
 	/** Delete resource */
 	deleteResource (animId: string, resourceId: string) : $q.IPromise<any> {
-		var deferred = $q.defer();
+		let deferred = $q.defer();
 		this.create().deleteObject({
 				Bucket: config.setting.$auth.$awsBucket,
 				Key: 'grafika/animations/' + animId + '/' + resourceId
@@ -112,15 +112,15 @@ export class AwsAnimation extends AwsHelper {
 	 * Delete animation and all resources under
 	 */
 	deleteAnimation (animId) : $q.IPromise<any> {
-		var deferred = $q.defer();	
+		let deferred = $q.defer();	
 		
-		var params = {
+		let params = {
 			Bucket: config.setting.$auth.$awsBucket,
 			Prefix: 'grafika/animations/' + animId
 		};
 		this.create().listObjects(params, (err, data) => {
 			if (err) return deferred.reject(err);			
-			var params = { 
+			let params = { 
 				Bucket: config.setting.$auth.$awsBucket,
 				Delete: {
 					Objects: []
