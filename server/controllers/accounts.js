@@ -6,14 +6,6 @@ var mailer = require('../libs/mailer');
 var config = require('../configs/config');
 var jwt = require('jsonwebtoken');
 var SECRET = config.setting.$server.$superSecret;
-function logout(req, res) {
-    req.logout();
-    req.session.destroy(function () {
-        res.redirect('/');
-    });
-}
-exports.logout = logout;
-;
 function login(req, res, next) {
     passport.authenticate('local-login', function (err, user, info) {
         if (err)
@@ -23,7 +15,7 @@ function login(req, res, next) {
         req.login(user, function (err) {
             if (err)
                 return next(err);
-            return res.send({ token: signToken(user) });
+            return res.send({ token: user_1.generateJwtToken(user) });
         });
     })(req, res, next);
 }
@@ -41,11 +33,20 @@ function register(req, res, next) {
 }
 exports.register = register;
 ;
+function logout(req, res) {
+    req.logout();
+    req.session.destroy(function () {
+        res.redirect('/');
+    });
+}
+exports.logout = logout;
+;
 function authenticate(req, res, next) {
-    if (req.isAuthenticated())
-        res.send({ token: signToken(req.user) });
+    if (req.isAuthenticated()) {
+        res.send({ token: user_1.generateJwtToken(req.user) });
+    }
     else
-        res.sendStatus(200);
+        res.sendStatus(401);
 }
 exports.authenticate = authenticate;
 ;
@@ -85,7 +86,7 @@ function resetPassword(req, res, next) {
                 user.activation.timestamp = new Date();
                 user.save();
                 mailer.sendResetEmail(user)
-                    .then(function () { res.sendStatus(200); })
+                    .then(function () { return res.sendStatus(200); })
                     .catch(function (err) {
                     user.activation.hash = null;
                     user.activation.timestamp = null;
@@ -139,14 +140,6 @@ function providerLogin(req, res, next) {
         next(401);
 }
 exports.providerLogin = providerLogin;
-function signToken(user) {
-    if (!user)
-        return null;
-    return jwt.sign(user_1.sanitize(user), SECRET, {
-        expiresIn: '24hr'
-    });
-}
-;
 function disqusSignon(user) {
     var disqusData = {
         id: user.email,

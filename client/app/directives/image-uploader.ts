@@ -70,7 +70,7 @@ module GrafikaApp {
                 let img = new Image();
                 img.onload = () => {
                     context.drawImage(img, 0, 0, canvasWidth, canvasHeight);
-                    var data = { name: file.name, size: file.size, mime: file.type, getBlob: getCanvasBlob };
+                    let data = { name: file.name, size: file.size, mime: file.type, getBlob: getCanvasBlob };
                     vm.upload(data);
                 };
                 if (!img.src) {

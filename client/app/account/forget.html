@@ -1,5 +1,5 @@
 <md-dialog>
-<form name="resetPasswordForm" novalidate>
+<form name="forgePasswordForm" ng-submit="vm.sendForgetEmail()" novalidate>
 	<md-toolbar>
 		<div class="md-toolbar-tools">
 			<h2 ng-bind="'Password reset'" flex></h2>
@@ -14,13 +14,13 @@
 				<label>Email</label>
 				<input type="email" ng-model="vm.email" ng-required="true" ng-disabled="vm.busy">
 			</md-input-container>
+			<p class="md-caption" ng-show="vm.message" ng-bind="vm.message"></p>
 		</div>
-		<p class="md-caption" ng-show="vm.message" ng-bind="vm.message"></p>
 	</md-dialog-content>
 	<md-dialog-actions layout="row">
         <span flex></span>
 		<md-button type="button" ng-click="vm.close()" ng-disabled="vm.busy">Close</md-button>
-		<md-button ng-click="vm.resetPassword()" ng-disabled="vm.busy || resetPasswordForm.$invalid" ng-hide="vm.done">Reset Password</md-button>
+		<md-button type="button" ng-click="vm.sendForgetEmail()" ng-disabled="vm.busy || forgePasswordForm.$invalid" ng-hide="vm.done">Reset Password</md-button>
 	</md-dialog-actions>
 </form>
 </md-dialog>

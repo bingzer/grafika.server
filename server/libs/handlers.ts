@@ -19,9 +19,9 @@ exports.last = function(req, res, next) {
 
 exports.schema = function(req, res, next) {
   // We can mount a model to multiple apps, so we need to get the base url from the request url
-  var baseuri = req.url.split('/');
+  let baseuri = req.url.split('/');
   baseuri = baseuri.slice(0, baseuri.length - 1).join('/');
-  var detailuri = baseuri + '/:id';
+  let detailuri = baseuri + '/:id';
   exports.respond(res, 200, {
     resource: this.modelName,
     allowed_methods: Object.keys(this.allowed_methods),
@@ -60,7 +60,7 @@ exports.getPath = function(pathName) {
   return function(req, res, next) {
     req.quer = req.quer.populate(pathName);
     req.quer.exec(function(err, one) {
-      var errStatus = ((err && err.status) ? err.status : 500);
+      let errStatus = ((err && err.status) ? err.status : 500);
       exports.respondOrErr(res, errStatus, err, 200, (one && one.get(pathName)) || {});
       next();
     });
@@ -68,7 +68,7 @@ exports.getPath = function(pathName) {
 };
 
 exports.post = function(req, res, next) {
-  var obj = new this(req.body);
+  let obj = new this(req.body);
   obj.save(function(err) {
     exports.respondOrErr(res, 400, err, 201, obj);
     next();
@@ -99,7 +99,7 @@ exports.put = function(req, res, next) {
       if (err) {
         exports.respond(res, 500, err);
       }
-      var objNotFound = !docToUpdate && exports.objectNotFound();
+      let objNotFound = !docToUpdate && exports.objectNotFound();
       if (objNotFound) {
         exports.respond(res, 404, objNotFound);
         return next();
@@ -130,7 +130,7 @@ exports.delete = function(req, res, next) {
       if (err) {
         exports.respond(res, 500, err);
       }
-      var objNotFound = !docToRemove && exports.objectNotFound();
+      let objNotFound = !docToRemove && exports.objectNotFound();
       if (objNotFound) {
         exports.respond(res, 404, objNotFound);
         return next();
@@ -205,10 +205,10 @@ exports.respond = function(res, statusCode, content) {
 };
 
 function keep(obj, keepers) {
-  var result = {};
-  for (var key in obj) {
+  let result = {};
+  for (let key in obj) {
     result[key] = {};
-    for (var key2 in obj[key]) {
+    for (let key2 in obj[key]) {
       if (keepers.indexOf(key2) > -1) {
         result[key][key2] = obj[key][key2];
       }

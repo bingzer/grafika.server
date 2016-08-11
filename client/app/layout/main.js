@@ -38,15 +38,12 @@ var GrafikaApp;
             var _this = this;
             this.appCommon.confirm('Are you sure you want to log out?')
                 .then(function () {
-                return _this.appCommon.showLoadingModal();
-            }).then(function () {
+                _this.appCommon.showLoadingModal();
                 return _this.authService.logout();
             })
                 .then(function () {
-                return _this.appCommon.hideLoadingModal();
-            })
-                .then(function () {
-                return _this.appCommon.toast('Successfully logged out');
+                _this.appCommon.toast('Successfully logged out');
+                _this.appCommon.hideLoadingModal();
             });
         };
         MainController.prototype.initGrafika = function () {

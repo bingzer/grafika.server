@@ -7,18 +7,18 @@ import * as config from '../configs/config';
 export function initialize(app) {
     let defer = q.defer();
 
-    winston.debug('Connecting to mongodb'); 
+    winston.debug('Connecting to MongoDB'); 
     const connOption = { 
         server: { socketOptions: { keepAlive: 300000, connectTimeoutMS: 30000 } },
         replset: { socketOptions: { keepAlive: 300000, connectTimeoutMS : 30000 } } 
     };
     const instance = mongoose.connect(config.setting.$server.$databaseUrl, connOption, (err) => {
         if (err) {
-            winston.error('mongodb [FAILED]');
+            winston.error('MongoDB [FAILED]');
             defer.reject(err);
         }
         else {
-            winston.info('mongodb [OK]');
+            winston.info('MongoDB [OK]');
             defer.resolve();
         }
     });

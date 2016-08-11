@@ -19,20 +19,19 @@ module GrafikaApp {
         }
 
         onLoaded(animation: Grafika.IAnimation) {
-            var controller = this;
             this.animationName = this.animation.name;
             if (!this.grafika)
                 this.grafika = new Grafika();
-            this.grafika.initialize('#canvas', { useNavigationText: false, useCarbonCopy: false }, this.animation);
+            this.grafika.initialize('#canvas', this.getOptions(), this.animation);
             this.grafika.setCallback({ on: (ev: string, obj: any) => {
                 switch (ev) {
                     case 'frameChanged':
-                        controller.currentFrame = parseInt(obj);
-                        controller.$scope.$applyAsync('vm.currentFrame');
+                        this.currentFrame = parseInt(obj);
+                        this.$scope.$applyAsync('vm.currentFrame');
                         break;
                     case 'playing':
-                        controller.isPlaying = obj;
-                        controller.$scope.$applyAsync('vm.isPlaying');
+                        this.isPlaying = obj;
+                        this.$scope.$applyAsync('vm.isPlaying');
                         break;
                 } 
             }});
@@ -56,6 +55,17 @@ module GrafikaApp {
 
         nextFrame() {
             this.grafika.nextFrame();
+        }
+
+        private getOptions() {
+            let opts: any = { useNavigationText: false, useCarbonCopy: false };
+            
+            let user = this.authService.getUser();
+            if (user) {
+                opts.loop = user.prefs.playbackLoop; 
+            }
+
+            return opts;
         }
     }
 }

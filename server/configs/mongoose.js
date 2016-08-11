@@ -5,18 +5,18 @@ var q = require('q');
 var config = require('../configs/config');
 function initialize(app) {
     var defer = q.defer();
-    winston.debug('Connecting to mongodb');
+    winston.debug('Connecting to MongoDB');
     var connOption = {
         server: { socketOptions: { keepAlive: 300000, connectTimeoutMS: 30000 } },
         replset: { socketOptions: { keepAlive: 300000, connectTimeoutMS: 30000 } }
     };
     var instance = mongoose.connect(config.setting.$server.$databaseUrl, connOption, function (err) {
         if (err) {
-            winston.error('mongodb [FAILED]');
+            winston.error('MongoDB [FAILED]');
             defer.reject(err);
         }
         else {
-            winston.info('mongodb [OK]');
+            winston.info('MongoDB [OK]');
             defer.resolve();
         }
     });

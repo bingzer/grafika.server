@@ -13,6 +13,7 @@ import * as config from './server/configs/config'
 import * as mongooseConfig from './server/configs/mongoose';
 import * as routeConfig from './server/configs/routes';
 import * as passportConfig from './server/configs/passport';
+import * as adminConfig from './server/configs/admin';
 
 const app = express();
 
@@ -26,6 +27,7 @@ export const server = app.listen(process.env.PORT || 3000, () => {
         .then(() => routeConfig.initialize(app))
         .then(() => mongooseConfig.initialize(app))
         .then(() => passportConfig.initialize(app))
+        .then(() => adminConfig.initialize(app))
         .then(() => {
             app.use("/", express.static(__dirname + "/client"));
             app.all('/api/*', (req, res, next) => {
@@ -37,6 +39,7 @@ export const server = app.listen(process.env.PORT || 3000, () => {
         })
         .then(() => {
             winston.info('Server [OK]');
+            winston.info('Server is now ready taking requests');
         })
         .catch((err) => {
             winston.error('Server [FAILED]');

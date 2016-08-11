@@ -23,7 +23,7 @@ module GrafikaApp {
 
         load() {
             this.animationService.get(this.$stateParams['_id']).then((res) => {
-                var anim = res.data;
+                let anim = res.data;
                 this.appCommon.elem('#canvas-container').css('width', anim.width).css('height', anim.height);
                 this.grafika.initialize('#canvas', { drawingMode: 'paint' }, anim);
                 this.frameService.get(this.grafika.getAnimation()).then((res) => {
@@ -35,7 +35,7 @@ module GrafikaApp {
 		save() {
 			this.grafika.save();
 
-            var animation = this.grafika.getAnimation();
+            let animation = this.grafika.getAnimation();
 			this.animationService.update(animation).then((res) => {
                 return this.resourceService.saveThumbnail(animation);
             }).then((res) => {

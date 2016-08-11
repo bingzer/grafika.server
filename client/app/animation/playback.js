@@ -17,20 +17,19 @@ var GrafikaApp;
         }
         AnimationPlaybackController.prototype.onLoaded = function (animation) {
             var _this = this;
-            var controller = this;
             this.animationName = this.animation.name;
             if (!this.grafika)
                 this.grafika = new Grafika();
-            this.grafika.initialize('#canvas', { useNavigationText: false, useCarbonCopy: false }, this.animation);
+            this.grafika.initialize('#canvas', this.getOptions(), this.animation);
             this.grafika.setCallback({ on: function (ev, obj) {
                     switch (ev) {
                         case 'frameChanged':
-                            controller.currentFrame = parseInt(obj);
-                            controller.$scope.$applyAsync('vm.currentFrame');
+                            _this.currentFrame = parseInt(obj);
+                            _this.$scope.$applyAsync('vm.currentFrame');
                             break;
                         case 'playing':
-                            controller.isPlaying = obj;
-                            controller.$scope.$applyAsync('vm.isPlaying');
+                            _this.isPlaying = obj;
+                            _this.$scope.$applyAsync('vm.isPlaying');
                             break;
                     }
                 } });
@@ -51,6 +50,14 @@ var GrafikaApp;
         };
         AnimationPlaybackController.prototype.nextFrame = function () {
             this.grafika.nextFrame();
+        };
+        AnimationPlaybackController.prototype.getOptions = function () {
+            var opts = { useNavigationText: false, useCarbonCopy: false };
+            var user = this.authService.getUser();
+            if (user) {
+                opts.loop = user.prefs.playbackLoop;
+            }
+            return opts;
         };
         AnimationPlaybackController.$inject = ['appCommon', 'authService', 'animationService', 'frameService', 'resourceService', '$scope'];
         return AnimationPlaybackController;

@@ -14,13 +14,13 @@ module GrafikaApp {
         }
 
         create() {
-            var anim = new Animation();
+            let anim = new Animation();
             anim.name = this.name;
             anim.width = this.width;
             anim.height = this.height;
             anim.isPublic = this.isPublic;
             this.animationService.create(anim).then((res) => {
-                var anim = res.data;
+                let anim = res.data;
                 this.appCommon.$state.go('drawing', { _id: anim._id });
                 this.close();
             })

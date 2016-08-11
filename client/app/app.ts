@@ -1,5 +1,5 @@
 module GrafikaApp {
-    var app = angular.module('app', [
+    const app = angular.module('app', [
         'ui.router',
         'ngMaterial',
         'ngCookies',

@@ -7,7 +7,7 @@ import $q      = require('q');
 import config = require('../configs/config');
 import { IUser } from '../models/user';
 
-var mailTransporter = nodemailer.createTransport({
+const mailTransporter = nodemailer.createTransport({
     name: config.setting.$server.$mailService,
 	host: config.setting.$server.$mailSmtp,
     port: config.setting.$server.$mailPort,
@@ -20,18 +20,18 @@ var mailTransporter = nodemailer.createTransport({
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 export function sendVerificationEmail(user: IUser) : $q.Promise<{}> {
-    var deferred = $q.defer();
-    var url = config.setting.$server.$url + '?action=verify&hash=' + encodeURIComponent(user.activation.hash) + '&user=' + encodeURIComponent(user.email);
+    let deferred = $q.defer();
+    let url = config.setting.$server.$url + '?action=verify&hash=' + encodeURIComponent(user.activation.hash) + '&user=' + encodeURIComponent(user.email);
     
-    var opts = { title: 'Please activate your account', user: user.email, link: url, privacyUrl: config.setting.$server.$url + 'privacy-url', homeUrl: config.setting.$server.$url };
-    var promises = $q.allSettled([
+    let opts = { title: 'Please activate your account', user: user.email, link: url, privacyUrl: config.setting.$server.$url + 'privacy-url', homeUrl: config.setting.$server.$url };
+    let promises = $q.allSettled([
         readTemplate('verification-template.txt', opts), 
         readTemplate('verification-template.html', opts) ]);
     promises.then(function (results){
         if (results[0].state === 'rejected' || results[1].state === 'rejected')
             return deferred.reject("fail");
         // setup e-mail data with unicode symbols
-        var mailOptions = {
+        let mailOptions = {
             from: config.setting.$server.$mailFrom, // sender address
             to: user.email, // list of receivers
             subject: opts.title, // Subject line
@@ -55,11 +55,11 @@ export function sendVerificationEmail(user: IUser) : $q.Promise<{}> {
 }
 
 export function sendResetEmail(user : IUser) : $q.Promise<{}> {
-    var deferred = $q.defer();
-    var url = config.setting.$server.$url + '?action=reset-pwd&hash=' + encodeURIComponent(user.activation.hash) + '&user=' + encodeURIComponent(user.email);
+    let deferred = $q.defer();
+    let url = config.setting.$server.$url + '?action=reset-pwd&hash=' + encodeURIComponent(user.activation.hash) + '&user=' + encodeURIComponent(user.email);
     
-    var opts = { title: 'StickDraw Password Reset', user: user.email, link: url, privacyUrl: config.setting.$server.$url + 'privacy-url', homeUrl: config.setting.$server.$url };
-    var promises = $q.allSettled([
+    let opts = { title: 'Grafika: Password Reset', user: user.email, link: url, privacyUrl: config.setting.$server.$url + 'privacy-url', homeUrl: config.setting.$server.$url };
+    let promises = $q.allSettled([
         readTemplate('resetpwd-template.txt', opts), 
         readTemplate('resetpwd-template.html', opts) ]);
     promises.then(function (results){
@@ -67,7 +67,7 @@ export function sendResetEmail(user : IUser) : $q.Promise<{}> {
             return deferred.reject('fail');
             
         // setup e-mail data with unicode symbols
-        var mailOptions = {
+        let mailOptions = {
             from: config.setting.$server.$mailFrom, // sender address
             to: user.email, // list of receivers
             subject: opts.title,
@@ -94,8 +94,8 @@ export function sendResetEmail(user : IUser) : $q.Promise<{}> {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 function readTemplate(templateName, opts) : $q.Promise<{}>{
-    var deferred = $q.defer();
-    var file = path.resolve('server/templates/' + templateName);
+    let deferred = $q.defer();
+    let file = path.resolve('server/templates/' + templateName);
     winston.info('Template file: ' + file);
     fs.readFile(file, 'utf8', function (err, data) {
         if (err) {

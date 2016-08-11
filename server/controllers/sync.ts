@@ -12,7 +12,7 @@ import { Synchronizer, SyncResult } from "../libs/synchronizer";
 export function sync(req: any, res: express.Response, next: express.NextFunction) {
     let localSync: ILocalSync = req.body;
 
-    var synchronizer = new Synchronizer(req.user, localSync);
+    let synchronizer = new Synchronizer(req.user, localSync);
     synchronizer.sync()
         .then((syncResult) => res.send(syncResult))
         .catch((err) => next(err) );

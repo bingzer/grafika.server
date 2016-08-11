@@ -1,9 +1,13 @@
 import * as mongoose from 'mongoose';
+import * as config from '../configs/config';
+import * as q from 'q';
+
 import restful = require('../libs/restful');
 
-import $q         = require('q');
-var bcrypt        = require('bcrypt-nodejs');
-var crypto        = require('crypto-js');
+const bcrypt      = require('bcrypt-nodejs');
+const crypto      = require('crypto-js');
+const jwt         = require('jsonwebtoken');
+const SECRET      = config.setting.$server.$superSecret;
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -101,7 +105,7 @@ UserSchema.methods.validActivationHash = function(activationHash: string) : bool
     return this.activation.hash === activationHash;
 };
 UserSchema.methods.validActivationTimestamp = function(): boolean{
-    var expiredTime = 5 * 60 * 1000;
+    let expiredTime = 5 * 60 * 1000;
     if (this.activation.timestamp && Math.abs(Date.now() - this.activation.timestamp) < expiredTime)
         return true;
     return false;
@@ -112,12 +116,18 @@ UserSchema.methods.sanitize = function(): IUser {
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-var User = <restful.IModel<IUser>> restful.model('users', UserSchema);
+let User = <restful.IModel<IUser>> restful.model('users', UserSchema);
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+export function generateJwtToken(user: IUser | any) : string {
+    return jwt.sign(sanitize(user), SECRET, {
+        expiresIn: '24hr' // expires in 24 hours
+    });
+}
+
 export function sanitize(user: IUser | any) : any | IUser {
-    var lean = user;
+    let lean = user;
     if (user.toObject) {
         user = user.toObject();
     }
@@ -128,9 +138,9 @@ export function sanitize(user: IUser | any) : any | IUser {
     return user;
 }
 
-export function checkAvailability(user : IUser | any) : $q.IPromise<{}> {
-    var deferred = $q.defer();
-    var query = {
+export function checkAvailability(user : IUser | any) : q.IPromise<{}> {
+    let deferred = q.defer();
+    let query = {
         username: user.username,
         email: { $ne: user.email }
     };
@@ -142,27 +152,32 @@ export function checkAvailability(user : IUser | any) : $q.IPromise<{}> {
 }
 
 export function userQuery(username: string) : any {
-    var name = username ? username.toLowerCase() : null;
+    let name = username ? username.toLowerCase() : null;
     return { $or:[{ 'email': name }, { 'username': name }] };
 }
 
-export function ensureAdminExists() : void {
+export function ensureAdminExists() : ng.IPromise<IUser> {
+    let defer = q.defer<IUser>();
+
 	User.findOne(userQuery('admin'), (err, user) => {
-		if (!user) {
-			// TODO: flag this use as an admin
-			var admin = new User();
-			admin.firstName        = 'grafika';
-			admin.lastName         = 'admin';
-			admin.email            = 'grafika@bingzer.com';
-			admin.dateCreated      = Date.now();
-			admin.dateModified     = Date.now();
-			admin.active           = true;
-			admin.local.registered = true;
-			admin.local.password   = admin.generateHash('password');
-            admin.roles.push('administrator');
-			admin.save();
+        if (err) return defer.reject(err);
+        if (!user) {
+			user = new User();
+			user.firstName        = 'grafika';
+			user.lastName         = 'admin';
+			user.email            = 'grafika-admin@bingzer.com';
+			user.dateCreated      = Date.now();
+			user.dateModified     = Date.now();
+			user.active           = true;
+			user.local.registered = true;
+			user.local.password   = user.generateHash('password');
+            user.roles.push('administrator');
+			user.save();
 		}
+        defer.resolve(user);
 	});
+
+    return defer.promise;
 };
 
 export function randomUsername(){

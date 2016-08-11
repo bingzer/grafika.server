@@ -56,11 +56,11 @@ function useSessionOrJwt(req: express.Request, res: express.Response, next: expr
 
 /** Check animation access */
 function useAnimAccess(req: any, res: express.Response, next: express.NextFunction) {
-    var animId = new mongoose.Types.ObjectId(req.params._id || req.params.animationId);
-    var userId = (req.user && req.user._id) ? new mongoose.Types.ObjectId(req.user._id) : undefined;
-    var queryAdmin = null;
-    var query = null;
-    var isAdmin = isAdministrator(req);
+    let animId = new mongoose.Types.ObjectId(req.params._id || req.params.animationId);
+    let userId = (req.user && req.user._id) ? new mongoose.Types.ObjectId(req.user._id) : undefined;
+    let queryAdmin = null;
+    let query = null;
+    let isAdmin = isAdministrator(req);
     if (isAdmin) {
         queryAdmin = { _id: animId };
     }        

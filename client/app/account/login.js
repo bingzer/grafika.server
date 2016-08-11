@@ -25,15 +25,16 @@ var GrafikaApp;
                 else
                     _this.appCommon.toast('Connecting to ' + loginProvider);
             })
-                .then(function () {
-                return _this.appCommon.hideLoadingModal();
-            })
                 .catch(function (res) {
                 _this.appCommon.toastError(res);
             })
                 .finally(function () {
+                _this.appCommon.hideLoadingModal();
                 _this.reset();
             });
+        };
+        LoginController.prototype.forgetPassword = function (evt) {
+            this.appCommon.showDialog('ForgetController', 'app/account/forget.html', evt, 'vm');
         };
         LoginController.prototype.reset = function () {
             this.username = '';

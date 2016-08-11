@@ -14,7 +14,7 @@ module GrafikaApp {
             });
         }
 
-        showPasswordDialog(event: MouseEvent) {
+        changePassword(event: MouseEvent) {
             this.appCommon.showDialog("PasswordController", "app/account/reset.html", event);
         }
 
@@ -29,12 +29,13 @@ module GrafikaApp {
                 .then(() => {
                     this.needsUpdate = false;
                     this.appCommon.toast('Saved!');
+                    return this.authService.authenticate();
                 })
                 .catch((err) => this.appCommon.toastError(err));
         }
 		
 		uploadAvatar($imageData){
-			var avatar = { name: $imageData.name, size: $imageData.size, mime: $imageData.mime };
+			let avatar = { name: $imageData.name, size: $imageData.size, mime: $imageData.mime };
             return this.appCommon.$q.when(true);
 		}
     }

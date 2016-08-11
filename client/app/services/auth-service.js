@@ -41,17 +41,15 @@ var GrafikaApp;
             return this.apiService.post('accounts/logout').finally(function () {
                 _this.clearToken();
                 _this.clearSession();
-                return _this.authenticate(true).then(function () {
-                    _this.appCommon.navigateHome();
-                    return _this.appCommon.$q.when(true);
-                });
+                _this.appCommon.navigateHome();
+                return _this.appCommon.$q.when(true);
             });
         };
         AuthService.prototype.clearToken = function () {
             this.appCommon.$window.sessionStorage.removeItem('token');
         };
         AuthService.prototype.clearSession = function () {
-            this.appCommon.$cookieStore.remove('stdx.session');
+            this.appCommon.$cookieStore.remove('grafika.session');
         };
         AuthService.prototype.authenticate = function (skipLogout) {
             var _this = this;

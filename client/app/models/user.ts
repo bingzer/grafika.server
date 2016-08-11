@@ -32,14 +32,14 @@ module GrafikaApp {
         }
         
         hasRoles(names: string | [string]): boolean {
-            var roles = [];
+            let roles = [];
             if (angular.isString(names))
                 roles.push(names);
             else roles = <[string]> names;
             
-            var anyRole = false;
-            for (var i = 0; i < this.roles.length; i++) {
-                for (var j = 0; j < roles.length; j++) {
+            let anyRole = false;
+            for (let i = 0; i < this.roles.length; i++) {
+                for (let j = 0; j < roles.length; j++) {
                     if (this.roles[i] == roles[j])
                         anyRole = true;
                     if (anyRole) break;

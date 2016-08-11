@@ -49,29 +49,29 @@ var SignupStrategy = (function (_super) {
                     if (nameSplit.length > 1)
                         userInfo.lastName = nameSplit[1];
                     userInfo.email = userInfo.username.toLowerCase();
-                    var newUser = new user_1.User();
-                    newUser.firstName = userInfo.firstName;
-                    newUser.lastName = userInfo.lastName;
-                    newUser.email = userInfo.email;
-                    newUser.username = user_1.randomUsername();
-                    newUser.dateCreated = Date.now();
-                    newUser.dateModified = Date.now();
-                    newUser.prefs.drawingAuthor = newUser.username;
-                    newUser.local.registered = true;
-                    newUser.activation.hash = newUser.generateActivationHash();
-                    newUser.activation.timestamp = new Date();
-                    newUser.save(function (err) {
+                    var newUser_1 = new user_1.User();
+                    newUser_1.firstName = userInfo.firstName;
+                    newUser_1.lastName = userInfo.lastName;
+                    newUser_1.email = userInfo.email;
+                    newUser_1.username = user_1.randomUsername();
+                    newUser_1.dateCreated = Date.now();
+                    newUser_1.dateModified = Date.now();
+                    newUser_1.prefs.drawingAuthor = newUser_1.username;
+                    newUser_1.local.registered = true;
+                    newUser_1.activation.hash = newUser_1.generateActivationHash();
+                    newUser_1.activation.timestamp = new Date();
+                    newUser_1.save(function (err) {
                         if (err)
                             return done(err);
-                        if (newUser.validActivationTimestamp()) {
-                            mailer.sendVerificationEmail(newUser)
+                        if (newUser_1.validActivationTimestamp()) {
+                            mailer.sendVerificationEmail(newUser_1)
                                 .then(function () {
-                                return done(null, newUser);
+                                return done(null, newUser_1);
                             })
                                 .catch(function (err) {
-                                newUser.activation.hash = null;
-                                newUser.activation.timestamp = null;
-                                newUser.save();
+                                newUser_1.activation.hash = null;
+                                newUser_1.activation.timestamp = null;
+                                newUser_1.save();
                                 return done("Unable to send verification email. Please try again");
                             });
                         }

@@ -19,6 +19,7 @@ module GrafikaApp {
                 .then(() => {
                     this.needsUpdate = false;
                     this.appCommon.toast('Saved!');
+                    return this.authService.authenticate();
                 })
                 .catch((err) => this.appCommon.toastError(err));
         }

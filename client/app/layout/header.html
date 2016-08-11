@@ -17,12 +17,19 @@
                     <a href="#" ui-sref="login" active-link="active">Login</a>
                 </li>
                 <li class="nav-link" ng-if="vm.isAuthorized('user')">
-                    <a href="#" ui-sref="my-animations" active-link="active">My Animations</a>
+                    <a href="#" ui-sref="my-animations" active-link="active">
+                        <md-icon md-font-family="material icons">movie</md-icon>&nbsp;My Animations
+                    </a>
+                </li>
+                <li class="nav-link" ng-if="vm.isAuthorized('administrator')">
+                    <a href="#" ui-sref="admin" active-link="active">
+                        <md-icon md-font-family="material icons">assignment_ind</md-icon>&nbsp;Administration
+                    </a>
                 </li>
                 <li class="nav-link dropdown" ng-if="vm.isAuthorized('user')">
                     <a href="#" class="dropdown-toggle" active-link="active" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" style="padding: 10px;">
                         <img class="avatar link text-center-vertical" ng-src="{{vm.getUser().prefs.avatar}}" ng-click="$mdOpenMenu($event)">
-                        {{vm.getUser().getDisplayName()}} <span class="caret"></span>
+                        &nbsp;{{vm.getUser().getDisplayName()}} <span class="caret"></span>
                     </a>
                     <ul class="dropdown-menu" style="min-width: 196px">
                         <li>
@@ -33,11 +40,6 @@
                         <li>
                             <a href="#" ng-click="vm.navigate('/settings')">
                                 <md-icon md-font-family="material icons">settings</md-icon>&nbsp;Settings
-                            </a>
-                        </li>
-                        <li ng-if="vm.isAuthorized('administrator')">
-                            <a href="#" ng-click="vm.navigate('/admin')">
-                                <md-icon md-font-family="material icons">assignment_ind</md-icon>&nbsp;Administrator
                             </a>
                         </li>
                         <li role="separator" class="divider"></li>

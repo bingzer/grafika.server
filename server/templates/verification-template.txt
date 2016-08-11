@@ -1,10 +1,10 @@
 Hi {{email.user}}, thank you for verifying your email account.
 Next step is to create your password so that you can start using the app!
 
-Copy and paste the link below to the your browser's address bar to the StickDraw's web site to create your password:
+Copy and paste the link below to the your browser's address bar to the Grafika's web site to create your password:
 {{email.link}}
 
 
 Thanks,
 
-StickDraw Team
+Grafika Team

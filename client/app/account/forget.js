@@ -7,10 +7,24 @@ var GrafikaApp;
 (function (GrafikaApp) {
     var ForgetController = (function (_super) {
         __extends(ForgetController, _super);
-        function ForgetController(appCommon) {
+        function ForgetController(appCommon, authService) {
             _super.call(this, appCommon);
+            this.authService = authService;
+            this.busy = false;
         }
-        ForgetController.$inject = ['appCommon'];
+        ForgetController.prototype.sendForgetEmail = function () {
+            var _this = this;
+            this.busy = true;
+            this.authService.resetPassword({ email: this.email }).then(function (res) {
+                _this.appCommon.toast('Email sent');
+                _this.close();
+            }).catch(function (res) {
+                _this.message = _this.appCommon.formatErrorMessage(res);
+            }).finally(function () {
+                _this.busy = false;
+            });
+        };
+        ForgetController.$inject = ['appCommon', 'authService'];
         return ForgetController;
     }(GrafikaApp.DialogController));
     GrafikaApp.ForgetController = ForgetController;
