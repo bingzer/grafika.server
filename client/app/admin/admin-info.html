@@ -1,0 +1,25 @@
+<div>
+    <h4 style="margin: 0">Server Configuration</h4>
+    <div layout="column" layout-padding>
+        <div layout="row" style="margin-bottom: 8px">
+            <span class="font-small" flex="20"><strong>Key</strong></span>
+            <span class="font-small" flex><strong>Value</strong></span>
+        </div>
+        <div layout="row" ng-repeat="serverConfig in vm.serverConfigs | filter:vm.query" style="margin: 4px">
+            <span class="font-small" ng-bind="serverConfig.key" flex="20"></span>
+            <span class="font-small" ng-bind="serverConfig.value" flex></span>
+        </div>
+    </div>
+    
+    <h4 style="margin: 0">Client Configuration</h4>
+    <div layout="column" layout-padding>
+        <div layout="row" style="margin-bottom: 8px">
+            <span class="font-small" flex="20"><strong>Key</strong></span>
+            <span class="font-small" flex><strong>Value</strong></span>
+        </div>
+        <div layout="row" ng-repeat="clientConfig in vm.clientConfigs | filter:vm.query" style="margin: 4px">
+            <span class="font-small" ng-bind="clientConfig.key" flex="20"></span>
+            <span class="font-small" ng-bind="clientConfig.value" flex></span>
+        </div>
+    </div>
+</div>
