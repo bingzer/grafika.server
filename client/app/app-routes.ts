@@ -57,7 +57,7 @@ module GrafikaApp {
 				.state('admin', {
 					url: '/admin',
 					templateUrl: 'app/admin/admin.html',
-					controller: 'MyAnimationsController',
+					controller: 'AdminController',
 					controllerAs: 'vm',
 					data: {
 						pageTitle: 'Grafika Administration'

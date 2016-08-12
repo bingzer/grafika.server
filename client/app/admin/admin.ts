@@ -2,18 +2,21 @@ module GrafikaApp {
     export class AdminController extends AuthController {        
         serverConfigs = [];
         clientConfigs = [];
+        configQuery: string = "";
+        userQuery: string = "";
 
-        public static $inject = ['appCommon', 'animationService'];
+        animPaging: Paging = new Paging();
+        animations: Grafika.IAnimation[];
+
+        public static $inject = ['appCommon', 'animationService', 'adminService'];
         constructor(
             appCommon: AppCommon, 
             authService: AuthService,
             private adminService: AdminService){
             super(appCommon, authService);
-
-            this.fetch();
         }
 
-        fetch() {
+        fetchServerInfo() {
             this.serverConfigs = [];
             this.clientConfigs = [];
             this.adminService.getServerInfo().then((result) => {
@@ -22,10 +25,19 @@ module GrafikaApp {
             })
         }
 
+        fetchAnimations() {
+            if (this.animPaging.query) {
+                this.adminService.listAnimations(this.animPaging).then((result) => {
+                    this.animations = result.data;
+                });
+            }
+            else this.animations = [];
+        }
+
         ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 		private pushObject(configs, parentName, obj){
-			Object.keys(obj).forEach(function (key){
+			Object.keys(obj).forEach((key) => {
 				var value = obj[key];
 				if(angular.isArray(value)){
 					configs.push({ key: parentName ? parentName + '.' + key : key, value: JSON.stringify(value, null, ' ') });

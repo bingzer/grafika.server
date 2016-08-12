@@ -45,6 +45,7 @@ module GrafikaApp {
     app.controller('ProfileController', ProfileController);
     app.controller('SettingsController', SettingsController);
     app.controller('PasswordController', PasswordController);
+    app.controller('AdminController', AdminController);
     app.controller('AnimationCreateController', AnimationCreateController);
     app.controller('AnimationDetailController', AnimationDetailController);
     app.controller('AnimationEditController', AnimationEditController);

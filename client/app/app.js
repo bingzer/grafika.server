@@ -38,6 +38,7 @@ var GrafikaApp;
     app.controller('ProfileController', GrafikaApp.ProfileController);
     app.controller('SettingsController', GrafikaApp.SettingsController);
     app.controller('PasswordController', GrafikaApp.PasswordController);
+    app.controller('AdminController', GrafikaApp.AdminController);
     app.controller('AnimationCreateController', GrafikaApp.AnimationCreateController);
     app.controller('AnimationDetailController', GrafikaApp.AnimationDetailController);
     app.controller('AnimationEditController', GrafikaApp.AnimationEditController);

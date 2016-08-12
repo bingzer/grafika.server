@@ -1,1 +1,11 @@
-All animations
+<div layout="column">
+    <div>
+        <form name="animForm" ng-submit="vm.fetchAnimations()">
+            <md-input-container class="md-block">
+                <label>Search animations</label>
+                <input type="search" ng-model="vm.animPaging.query">
+            </md-input-container>
+        </form>
+    </div>
+    <ng-include src="'app/animation/list.html'"></ng-include>
+</div>

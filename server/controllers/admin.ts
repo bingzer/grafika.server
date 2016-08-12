@@ -138,10 +138,10 @@ function getServerInfo(){
 	serverConfig.client.sessionSecret=HIDDEN;
 	serverConfig.server.superSecret=HIDDEN;
 	serverConfig.server.databaseUrl=HIDDEN;
-	serverConfig.server.mailer.password=HIDDEN;
-	serverConfig.auth.google.clientSecret=HIDDEN;
-	serverConfig.auth.facebook.clientSecret=HIDDEN;
-	serverConfig.auth.disqus.apiSecret=HIDDEN;
-	serverConfig.auth.s3.accessKeySecret=HIDDEN;
+	serverConfig.server.mailPassword=HIDDEN;
+	serverConfig.auth.googleSecret=HIDDEN;
+	serverConfig.auth.facebookSecret=HIDDEN;
+	serverConfig.auth.disqusSecret=HIDDEN;
+	serverConfig.auth.awsSecret=HIDDEN;
 	return serverConfig;
 }

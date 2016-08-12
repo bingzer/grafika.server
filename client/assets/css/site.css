@@ -155,6 +155,9 @@ nav.navbar .navbar-nav li.active.nav-link > a {
 	text-decoration: none;
 	background: none;
 }
+nav.navbar .navbar-nav li.nav-link > a > md-icon {
+	color: #ffffff;
+}
 
 /* ---------- FAB ----------- */
 .md-fab {

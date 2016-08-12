@@ -12,9 +12,11 @@ var GrafikaApp;
             this.adminService = adminService;
             this.serverConfigs = [];
             this.clientConfigs = [];
-            this.fetch();
+            this.configQuery = "";
+            this.userQuery = "";
+            this.animPaging = new GrafikaApp.Paging();
         }
-        AdminController.prototype.fetch = function () {
+        AdminController.prototype.fetchServerInfo = function () {
             var _this = this;
             this.serverConfigs = [];
             this.clientConfigs = [];
@@ -23,21 +25,32 @@ var GrafikaApp;
                 _this.pushObject(_this.clientConfigs, null, _this.appCommon.appConfig);
             });
         };
+        AdminController.prototype.fetchAnimations = function () {
+            var _this = this;
+            if (this.animPaging.query) {
+                this.adminService.listAnimations(this.animPaging).then(function (result) {
+                    _this.animations = result.data;
+                });
+            }
+            else
+                this.animations = [];
+        };
         AdminController.prototype.pushObject = function (configs, parentName, obj) {
+            var _this = this;
             Object.keys(obj).forEach(function (key) {
                 var value = obj[key];
                 if (angular.isArray(value)) {
                     configs.push({ key: parentName ? parentName + '.' + key : key, value: JSON.stringify(value, null, ' ') });
                 }
                 else if (angular.isObject(value)) {
-                    this.pushObject(configs, parentName ? parentName + '.' + key : key, value);
+                    _this.pushObject(configs, parentName ? parentName + '.' + key : key, value);
                 }
                 else {
                     configs.push({ key: parentName ? parentName + '.' + key : key, value: value });
                 }
             });
         };
-        AdminController.$inject = ['appCommon', 'animationService'];
+        AdminController.$inject = ['appCommon', 'animationService', 'adminService'];
         return AdminController;
     }(GrafikaApp.AuthController));
     GrafikaApp.AdminController = AdminController;

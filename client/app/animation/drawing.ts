@@ -12,6 +12,7 @@ module GrafikaApp {
             protected resourceService: ResourceService
         ){
             super(appCommon, authService, animationService, frameService, resourceService);
+            this.appCommon.hideLoadingModal();
         }
 
         onLoaded(animation: Grafika.IAnimation) {
