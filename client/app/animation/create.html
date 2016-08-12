@@ -22,8 +22,8 @@
     </md-dialog-content>
     <md-dialog-actions layout="row">
       <span flex></span>
-      <md-button ng-click="vm.cancel()">Cancel</md-button>
-      <md-button class="md-accent" ng-click="vm.create()" ng-disabled="createForm.$invalid">Create</md-button>
+      <md-button type="button" ng-click="vm.cancel()">Cancel</md-button>
+      <md-button type="submit" class="md-accent" ng-click="vm.create()" ng-disabled="createForm.$invalid">Create</md-button>
     </md-dialog-actions>
 
 </form>

@@ -20,9 +20,11 @@ module GrafikaApp {
             anim.height = this.height;
             anim.isPublic = this.isPublic;
             this.animationService.create(anim).then((res) => {
-                let anim = res.data;
-                this.appCommon.$state.go('drawing', { _id: anim._id });
                 this.close();
+                this.appCommon.showLoadingModal().then(() => {
+                    let anim = res.data;
+                    this.appCommon.$state.go('drawing', { _id: anim._id });
+                })
             })
         }
 

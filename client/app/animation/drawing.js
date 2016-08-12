@@ -14,6 +14,7 @@ var GrafikaApp;
             this.frameService = frameService;
             this.resourceService = resourceService;
             this.grafika = new Grafika();
+            this.appCommon.hideLoadingModal();
         }
         AnimationDrawingController.prototype.onLoaded = function (animation) {
             var _this = this;

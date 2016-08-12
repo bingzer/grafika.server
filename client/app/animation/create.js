@@ -21,9 +21,11 @@ var GrafikaApp;
             anim.height = this.height;
             anim.isPublic = this.isPublic;
             this.animationService.create(anim).then(function (res) {
-                var anim = res.data;
-                _this.appCommon.$state.go('drawing', { _id: anim._id });
                 _this.close();
+                _this.appCommon.showLoadingModal().then(function () {
+                    var anim = res.data;
+                    _this.appCommon.$state.go('drawing', { _id: anim._id });
+                });
             });
         };
         AnimationCreateController.$inject = ['appCommon', 'animationService'];

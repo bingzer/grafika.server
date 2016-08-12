@@ -143,7 +143,7 @@ var GrafikaApp;
             this.$timeout(function () {
                 angular.element('#progress-modal').css('visibility', 'hidden');
                 deferred.resolve();
-            }, 1000);
+            }, 500);
             return deferred.promise;
         };
         AppCommon.prototype.setLoadingModal = function (loading) {
