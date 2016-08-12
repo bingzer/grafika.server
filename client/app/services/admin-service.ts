@@ -12,11 +12,11 @@ module GrafikaApp {
         }
 
         listUsers(paging: Paging): ng.IHttpPromise<Grafika.IUser[]> {
-            return this.apiService.get<Grafika.IUser[]>('admin/users' + paging);
+            return this.apiService.get<Grafika.IUser[]>('admin/users' + paging.toQueryString());
         }
 
         listAnimations(paging: Paging): ng.IHttpPromise<Grafika.IAnimation[]> {
-            return this.apiService.get<Grafika.IAnimation[]>('admin/animations' + paging);
+            return this.apiService.get<Grafika.IAnimation[]>('admin/animations' + paging.toQueryString());
         }
 
 		sendVerificationEmail(user): ng.IHttpPromise<any> {

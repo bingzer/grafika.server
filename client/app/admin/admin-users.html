@@ -1,1 +1,10 @@
-All users
+<div ng-init="vm.fetchUsers()">
+    <div>
+        <form name="filterForm" ng-submit="vm.list()">
+            <md-input-container class="md-block">
+                <label>Search users</label>
+                <input type="search" ng-model="vm.userQuery">
+            </md-input-container>
+        </form>
+    </div>
+</div>

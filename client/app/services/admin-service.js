@@ -16,10 +16,10 @@ var GrafikaApp;
             return this.apiService.get('admin');
         };
         AdminService.prototype.listUsers = function (paging) {
-            return this.apiService.get('admin/users' + paging);
+            return this.apiService.get('admin/users' + paging.toQueryString());
         };
         AdminService.prototype.listAnimations = function (paging) {
-            return this.apiService.get('admin/animations' + paging);
+            return this.apiService.get('admin/animations' + paging.toQueryString());
         };
         AdminService.prototype.sendVerificationEmail = function (user) {
             return this.apiService.post('admin/users/' + user._id + '/reverify');
