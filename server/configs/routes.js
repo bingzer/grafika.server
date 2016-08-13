@@ -8,6 +8,7 @@ var resourcesController = require('../controllers/resources');
 var userController = require('../controllers/users');
 var syncController = require('../controllers/sync');
 var adminController = require('../controllers/admin');
+var animationController = require('../controllers/animation');
 var config = require('../configs/config');
 var animation_1 = require('../models/animation');
 var user_1 = require('../models/user');
@@ -142,7 +143,7 @@ function initialize(app) {
         app.get('/api/animations/object-id', generateAnimationId);
         app.get('/api/animations/:_id', extractUser, useAnimAccess);
         app.put('/api/animations/:_id', useSessionOrJwt, useAnimAccess);
-        app.delete('/api/animations/', useSessionOrJwt, useAnimAccess);
+        app.delete('/api/animations/:_id', useSessionOrJwt, useAnimAccess, animationController.remove);
         app.get('/api/animations/:_id/frames', extractUser, useAnimAccess);
         app.post('/api/animations/:_id/frames', useSessionOrJwt, useAnimAccess);
         app.post('/api/animations/sync', useSessionOrJwt, syncController.sync);

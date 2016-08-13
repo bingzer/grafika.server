@@ -24,9 +24,10 @@ var GrafikaApp;
                     _this.animations = res.data;
                 else
                     _this.animations = _this.animations.concat(res.data);
-                _this.hasMore = res.data.length >= _this.paging.limit;
                 _this.busy = false;
-                _this.paging = _this.paging.next();
+                _this.hasMore = res.data.length >= _this.paging.limit;
+                if (_this.hasMore)
+                    _this.paging = _this.paging.next();
             });
         };
         AnimationListController.prototype.canEdit = function () {

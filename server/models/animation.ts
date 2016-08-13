@@ -36,7 +36,7 @@ export const AnimationSchema = new mongoose.Schema({
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 let Animation = <restful.IModel<IAnimation>> restful.model('animations', AnimationSchema);
-Animation.methods(['get', 'put', 'post', 'delete']);
+Animation.methods(['get', 'put', 'post']);
 Animation.before('post', (req, res, next) => {
     // check for date time
     let now = Date.now();
@@ -48,6 +48,11 @@ Animation.before('post', (req, res, next) => {
 
     delete req.body._id;
     
+    next();
+});
+Animation.before('get', (req, res, next) => {
+    if (req.query && typeof(req.query.removed) === 'undefined')
+        req.query.removed = false;
     next();
 });
 Animation.before('put', (req, res, next) => {
