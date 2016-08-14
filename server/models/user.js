@@ -1,7 +1,8 @@
 "use strict";
 var mongoose = require('mongoose');
-var config = require('../configs/config');
+var winston = require('winston');
 var q = require('q');
+var config = require('../configs/config');
 var restful = require('../libs/restful');
 var bcrypt = require('bcrypt-nodejs');
 var crypto = require('crypto-js');
@@ -67,8 +68,18 @@ exports.UserSchema.methods.validActivationTimestamp = function () {
 exports.UserSchema.methods.sanitize = function () {
     return sanitize(this);
 };
+exports.UserSchema.index({ email: 'text', firstName: 'text', lastName: 'text', username: 'text' }, {
+    name: 'UserTextIndex',
+    weights: { email: 10, lastName: 6, firstName: 4, username: 2 }
+});
 var User = restful.model('users', exports.UserSchema);
 exports.User = User;
+User.ensureIndexes(function (err) {
+    if (err)
+        winston.error(err);
+    else
+        winston.info('   UserTextIndex [OK]');
+});
 function generateJwtToken(user) {
     return jwt.sign(sanitize(user), SECRET, {
         expiresIn: '24hr'

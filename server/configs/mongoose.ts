@@ -17,15 +17,20 @@ export function initialize(app) {
             winston.error('MongoDB [FAILED]');
             defer.reject(err);
         }
-        else {
+    });
+    instance.Promise = q.Promise;
+    instance.connection.on('open', (err) => {
+        if (!err) {
             winston.info('MongoDB [OK]');
-            instance.Promise = q.Promise;
-            instance.connection.on('error', (err) => {
-                winston.error('[Mongoose]', err);
-            });
             winston.info('   Version: ' + instance.version);
             defer.resolve();
         }
+        else {
+            defer.reject(err);
+        }
+    });
+    instance.connection.on('error', (err) => {
+        winston.error('[Mongoose]', err);
     });
 
     return defer.promise;

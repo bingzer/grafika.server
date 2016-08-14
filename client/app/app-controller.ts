@@ -18,7 +18,7 @@ module GrafikaApp {
                 // -- Roles
                 if (toState.data && toState.data.roles){
                     let user = authService.getUser();
-                    if (!user.hasRoles(toState.data.roles)){
+                    if (!user || !user.hasRoles(toState.data.roles)){
                         this.appCommon.navigateHome();
                     }
                 }

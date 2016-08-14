@@ -77,5 +77,7 @@ exports.AnimationSchema.index({ name: "text", description: "text", author: "text
 Animation.ensureIndexes(function (err) {
     if (err)
         winston.error(err);
+    else
+        winston.info('   AnimationTextIndex [OK]');
 });
 //# sourceMappingURL=animation.js.map

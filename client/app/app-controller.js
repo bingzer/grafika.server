@@ -17,7 +17,7 @@ var GrafikaApp;
             $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
                 if (toState.data && toState.data.roles) {
                     var user = authService.getUser();
-                    if (!user.hasRoles(toState.data.roles)) {
+                    if (!user || !user.hasRoles(toState.data.roles)) {
                         _this.appCommon.navigateHome();
                     }
                 }

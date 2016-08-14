@@ -95,7 +95,9 @@ AnimationSchema.index({ name: "text", description: "text", author: "text" }, { n
 Animation.ensureIndexes((err) => {
     if (err) 
         winston.error(err);
+    else winston.info('   AnimationTextIndex [OK]');
 });
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 export { Animation };
