@@ -1,6 +1,7 @@
 import * as mongoose from 'mongoose';
-import * as config from '../configs/config';
+import * as winston from 'winston';
 import * as q from 'q';
+import * as config from '../configs/config';
 
 import restful = require('../libs/restful');
 
@@ -116,9 +117,24 @@ UserSchema.methods.sanitize = function(): IUser {
     return sanitize(this);
 }
 
+UserSchema.index(
+    { email: 'text', firstName: 'text', lastName: 'text', username: 'text' }, 
+    { 
+        name: 'UserTextIndex', 
+        weights: { email: 10, lastName: 6, firstName: 4, username: 2 } 
+    }
+);
+
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 let User = <restful.IModel<IUser>> restful.model('users', UserSchema);
+
+User.ensureIndexes((err) => {
+    if (err)
+        winston.error(err);
+    else winston.info('   UserTextIndex [OK]');
+});
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

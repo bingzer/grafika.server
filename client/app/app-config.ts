@@ -1,7 +1,7 @@
 module GrafikaApp {
     export class AppConfig {
         appTitle: string = 'Grafika';
-        appVersion: string = '0.9.17-4';
+        appVersion: string = '0.9.17-5';
         baseUrl: string = ''; // injected by app-controller
         defaultBaseUrl: string = 'https://grafika.herokuapp.com/';  // default url if baseUrl is localhost
         apiBaseUrl: string = '/api/';  // local
