@@ -11,12 +11,12 @@ module GrafikaApp {
             return this.apiService.get('admin');
         }
 
-        listUsers(paging: AdminPaging): ng.IHttpPromise<Grafika.IUser[]> {
-            return this.apiService.get<Grafika.IUser[]>('admin/users' + paging.toQueryString());
+        listAnimations(paging: QueryablePaging): ng.IHttpPromise<Grafika.IAnimation[]> {
+            return this.apiService.get<Grafika.IAnimation[]>('admin/animations' + paging.toQueryString());
         }
 
-        listAnimations(paging: AdminPaging): ng.IHttpPromise<Grafika.IAnimation[]> {
-            return this.apiService.get<Grafika.IAnimation[]>('admin/animations' + paging.toQueryString());
+        listUsers(paging: QueryablePaging): ng.IHttpPromise<Grafika.IUser[]> {
+            return this.apiService.get<Grafika.IUser[]>('admin/users' + paging.toQueryString());
         }
 
 		sendVerificationEmail(user): ng.IHttpPromise<any> {
@@ -35,10 +35,4 @@ module GrafikaApp {
 			return this.apiService.post('admin/users/' + user._id + '/activate');
 		}
     }
-
-	export class AdminPaging extends Paging {
-        protected createSearchTerm(query: string): string{
-            return '&term=' + query;
-        }
-	}
 }

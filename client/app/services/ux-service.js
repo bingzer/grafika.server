@@ -7,19 +7,11 @@ var GrafikaApp;
 (function (GrafikaApp) {
     var UxService = (function (_super) {
         __extends(UxService, _super);
-        function UxService(appCommon, $rootScope) {
-            var _this = this;
+        function UxService(appCommon) {
             _super.call(this, appCommon);
             this.pageTitle = appCommon.appConfig.appTitle;
-            $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
-                if (toState.data && toState.data.pageTitle) {
-                    _this.pageTitle = toState.data.pageTitle;
-                    return;
-                }
-                _this.pageTitle = 'Grafika';
-            });
         }
-        UxService.$inject = ['appCommon', '$rootScope'];
+        UxService.$inject = ['appCommon'];
         return UxService;
     }(GrafikaApp.BaseService));
     GrafikaApp.UxService = UxService;

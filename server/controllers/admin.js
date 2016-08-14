@@ -12,9 +12,9 @@ exports.get = get;
 function listUsers(req, res, next) {
     var sort = createUserSort(req);
     var query = createQuery(req);
-    var count = safeParseInt(req.query.count) < MAX_COUNT ? safeParseInt(req.query.count) : MAX_COUNT;
-    var page = safeParseInt(req.query.page) < 0 ? 0 : safeParseInt(req.query.page);
-    user_1.User.find(query).limit(count).skip(page).sort(sort).exec(function (err, result) {
+    var limit = safeParseInt(req.query.limit) < MAX_COUNT ? safeParseInt(req.query.limit) : MAX_COUNT;
+    var skip = safeParseInt(req.query.skip) < 0 ? 0 : safeParseInt(req.query.skip);
+    user_1.User.find(query).limit(limit).skip(skip).sort(sort).exec(function (err, result) {
         if (err)
             return next(err);
         return res.json(result);
@@ -24,9 +24,9 @@ exports.listUsers = listUsers;
 function listAnimations(req, res, next) {
     var sort = createAnimationSort(req);
     var query = createQuery(req);
-    var count = safeParseInt(req.query.limit) < MAX_COUNT ? safeParseInt(req.query.limit) : MAX_COUNT;
-    var page = safeParseInt(req.query.skip) < 0 ? 0 : safeParseInt(req.query.skip);
-    animation_1.Animation.find(query).limit(count).skip(page).sort(sort).exec(function (err, result) {
+    var limit = safeParseInt(req.query.limit) < MAX_COUNT ? safeParseInt(req.query.limit) : MAX_COUNT;
+    var skip = safeParseInt(req.query.skip) < 0 ? 0 : safeParseInt(req.query.skip);
+    animation_1.Animation.find(query).limit(limit).skip(skip).sort(sort).exec(function (err, result) {
         if (err)
             return next(err);
         res.json(result);

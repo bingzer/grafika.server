@@ -33,7 +33,8 @@ module GrafikaApp {
 					controller: 'ProfileController',
 					controllerAs: 'vm',
 					data: {
-						pageTitle: 'Profile'
+						pageTitle: 'Profile',
+						roles: ['user']
 					}
 				})
 				.state('settings', {
@@ -42,7 +43,8 @@ module GrafikaApp {
 					controller: 'SettingsController',
 					controllerAs: 'vm',
 					data: {
-						pageTitle: 'Settings'
+						pageTitle: 'Settings',
+						roles: ['user']
 					}
 				})
 				.state('my-animations', {
@@ -51,7 +53,8 @@ module GrafikaApp {
 					controller: 'MyAnimationsController',
 					controllerAs: 'vm',
 					data: {
-						pageTitle: 'My Animation'
+						pageTitle: 'My Animation',
+						roles: ['user']
 					}
 				})
 				.state('admin', {
@@ -60,7 +63,8 @@ module GrafikaApp {
 					controller: 'AdminController',
 					controllerAs: 'vm',
 					data: {
-						pageTitle: 'Grafika Administration'
+						pageTitle: 'Grafika Administration',
+						roles: ['administrator']
 					}
 				})
 				.state('detail', {
@@ -73,7 +77,10 @@ module GrafikaApp {
 					url: '/animations/:_id/drawing',
 					templateUrl: 'app/animation/drawing.html',
 					controller: 'AnimationDrawingController',
-					controllerAs: 'vm'
+					controllerAs: 'vm',
+					data: {
+						roles: ['user']
+					}
 				})
 				.state('user', {
 					url: '/users/:_id',

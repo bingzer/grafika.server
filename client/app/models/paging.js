@@ -1,3 +1,8 @@
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
 var GrafikaApp;
 (function (GrafikaApp) {
     var Paging = (function () {
@@ -57,5 +62,16 @@ var GrafikaApp;
         return Paging;
     }());
     GrafikaApp.Paging = Paging;
+    var QueryablePaging = (function (_super) {
+        __extends(QueryablePaging, _super);
+        function QueryablePaging() {
+            _super.apply(this, arguments);
+        }
+        QueryablePaging.prototype.createSearchTerm = function (query) {
+            return '&term=' + query;
+        };
+        return QueryablePaging;
+    }(Paging));
+    GrafikaApp.QueryablePaging = QueryablePaging;
 })(GrafikaApp || (GrafikaApp = {}));
 //# sourceMappingURL=paging.js.map

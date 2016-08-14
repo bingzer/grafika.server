@@ -20,10 +20,10 @@ export function get(req: express.Request, res: express.Response, next: express.N
 export function listUsers(req: express.Request, res: express.Response, next: express.NextFunction) {
 	let sort = createUserSort(req);
 	let query = createQuery(req);
-	let count = safeParseInt(req.query.count) < MAX_COUNT ? safeParseInt(req.query.count) : MAX_COUNT;
-	let page = safeParseInt(req.query.page) < 0 ? 0 : safeParseInt(req.query.page);
+	let limit = safeParseInt(req.query.limit) < MAX_COUNT ? safeParseInt(req.query.limit) : MAX_COUNT;
+	let skip = safeParseInt(req.query.skip) < 0 ? 0 : safeParseInt(req.query.skip);
 	
-	User.find(query).limit(count).skip(page).sort(sort).exec((err, result) => {
+	User.find(query).limit(limit).skip(skip).sort(sort).exec((err, result) => {
         if (err) return next(err);
 		return res.json(result);
 	});
@@ -32,10 +32,10 @@ export function listUsers(req: express.Request, res: express.Response, next: exp
 export function listAnimations(req: express.Request, res: express.Response, next: express.NextFunction) {
 	let sort = createAnimationSort(req);
 	let query = createQuery(req);
-	let count = safeParseInt(req.query.limit) < MAX_COUNT ? safeParseInt(req.query.limit) : MAX_COUNT;
-	let page = safeParseInt(req.query.skip) < 0 ? 0 : safeParseInt(req.query.skip);
+	let limit = safeParseInt(req.query.limit) < MAX_COUNT ? safeParseInt(req.query.limit) : MAX_COUNT;
+	let skip = safeParseInt(req.query.skip) < 0 ? 0 : safeParseInt(req.query.skip);
 	
-	Animation.find(query).limit(count).skip(page).sort(sort).exec((err, result) => {
+	Animation.find(query).limit(limit).skip(skip).sort(sort).exec((err, result) => {
         if (err) return next(err);
         res.json(result);
     });

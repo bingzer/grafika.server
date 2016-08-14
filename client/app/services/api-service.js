@@ -46,6 +46,7 @@ var GrafikaApp;
             var deferred = this.appCommon.$q.defer();
             if (status == 401 || status == 403 || status == 0) {
                 this.appCommon.hideLoadingModal();
+                this.appCommon.navigate('/');
             }
             this.appCommon.$log.error(config.method + ': ' + config.url + ' (' + status + ')');
             deferred.resolve();

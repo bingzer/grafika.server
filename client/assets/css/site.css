@@ -24,7 +24,7 @@ body {
 	background-color: #ffffff;
 	height: 48px;
 	position: absolute;
-	bottom: 1;
+	bottom: 1px;
 	width: 100%;
 }
 @media (max-width: 599px){
@@ -162,8 +162,8 @@ nav.navbar .navbar-nav li.nav-link > a > md-icon {
 /* ---------- FAB ----------- */
 .md-fab {
 	position: fixed !important; 
-	right: 16 !important; 
-	bottom: 32 !important;
+	right: 16px !important; 
+	bottom: 32px !important;
 }
 
 
@@ -183,6 +183,11 @@ md-dialog {
 	position: absolute;
 	top: 0;
 	background: rgba(0,128,128, 0.9);
+}
+.intro #intro-canvas {
+	display: block;
+	height: 350px;
+	width: 100%;
 }
 .intro #logo {
 	position: absolute;
