@@ -22,7 +22,8 @@ module GrafikaApp {
             this.disqusConfig.disqus_url = this.appCommon.$location.absUrl();
 
             if (this.authService.isAuthorized('user')){
-                this.canEdit = this.authService.getUser()._id === this.animation.userId;
+                let user = this.authService.getUser();
+                this.canEdit = user._id === this.animation.userId || user.roles.indexOf('administrator') > 0;
                 this.authService.getDisqusToken().then((res) => {
                     if (this.authService.isAuthenticated()){
                         //this.disqusConfig.disqus_category_id = 'Animation';

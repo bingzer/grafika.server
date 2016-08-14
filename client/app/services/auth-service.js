@@ -19,7 +19,7 @@ var GrafikaApp;
         AuthService.prototype.login = function (user, provider) {
             var _this = this;
             if (!provider)
-                return this.apiService.post('accounts', user).success(function () { return _this.authenticate(); });
+                return this.apiService.post('accounts', user).success(function () { return _this.authenticate(true); });
             else {
                 window.location.href = this.appCommon.appConfig.apiBaseUrl + 'accounts/' + provider.toLowerCase();
                 return this.appCommon.$q.when(true);

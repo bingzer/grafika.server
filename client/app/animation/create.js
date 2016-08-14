@@ -7,11 +7,13 @@ var GrafikaApp;
 (function (GrafikaApp) {
     var AnimationCreateController = (function (_super) {
         __extends(AnimationCreateController, _super);
-        function AnimationCreateController(appCommon, animationService) {
+        function AnimationCreateController(appCommon, authService, animationService) {
             _super.call(this, appCommon);
+            this.authService = authService;
             this.animationService = animationService;
             this.width = 800;
             this.height = 400;
+            this.isPublic = this.authService.getUser().prefs.drawingIsPublic;
         }
         AnimationCreateController.prototype.create = function () {
             var _this = this;
@@ -28,7 +30,7 @@ var GrafikaApp;
                 });
             });
         };
-        AnimationCreateController.$inject = ['appCommon', 'animationService'];
+        AnimationCreateController.$inject = ['appCommon', 'authService', 'animationService'];
         return AnimationCreateController;
     }(GrafikaApp.DialogController));
     GrafikaApp.AnimationCreateController = AnimationCreateController;

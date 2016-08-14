@@ -17,12 +17,13 @@ function initialize(app) {
         }
         else {
             winston.info('MongoDB [OK]');
+            instance.Promise = q.Promise;
+            instance.connection.on('error', function (err) {
+                winston.error('[Mongoose]', err);
+            });
+            winston.info('   Version: ' + instance.version);
             defer.resolve();
         }
-    });
-    instance.Promise = q.Promise;
-    instance.connection.on('error', function (err) {
-        winston.error('[Mongoose]', err);
     });
     return defer.promise;
 }

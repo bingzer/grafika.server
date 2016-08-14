@@ -18,7 +18,7 @@ module GrafikaApp {
         
         login(user: any, provider: string): ng.IPromise<any> {
             if (!provider)
-                return this.apiService.post('accounts', user).success(() => this.authenticate());
+                return this.apiService.post('accounts', user).success(() => this.authenticate(true));
             else {
                 window.location.href = this.appCommon.appConfig.apiBaseUrl + 'accounts/' + provider.toLowerCase();
                 return this.appCommon.$q.when(true);

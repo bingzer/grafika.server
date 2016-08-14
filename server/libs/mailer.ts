@@ -23,11 +23,11 @@ export function sendVerificationEmail(user: IUser) : $q.Promise<{}> {
     let deferred = $q.defer();
     let url = config.setting.$server.$url + '?action=verify&hash=' + encodeURIComponent(user.activation.hash) + '&user=' + encodeURIComponent(user.email);
     
-    let opts = { title: 'Please activate your account', user: user.email, link: url, privacyUrl: config.setting.$server.$url + 'privacy-url', homeUrl: config.setting.$server.$url };
+    let opts = { title: 'Please activate your account', user: user.email, link: url, privacyUrl: config.setting.$server.$url + 'privacy', homeUrl: config.setting.$server.$url };
     let promises = $q.allSettled([
         readTemplate('verification-template.txt', opts), 
         readTemplate('verification-template.html', opts) ]);
-    promises.then(function (results){
+    promises.then((results) => {
         if (results[0].state === 'rejected' || results[1].state === 'rejected')
             return deferred.reject("fail");
         // setup e-mail data with unicode symbols
@@ -58,11 +58,11 @@ export function sendResetEmail(user : IUser) : $q.Promise<{}> {
     let deferred = $q.defer();
     let url = config.setting.$server.$url + '?action=reset-pwd&hash=' + encodeURIComponent(user.activation.hash) + '&user=' + encodeURIComponent(user.email);
     
-    let opts = { title: 'Grafika: Password Reset', user: user.email, link: url, privacyUrl: config.setting.$server.$url + 'privacy-url', homeUrl: config.setting.$server.$url };
+    let opts = { title: 'Grafika: Password Reset', user: user.email, link: url, privacyUrl: config.setting.$server.$url + 'privacy', homeUrl: config.setting.$server.$url };
     let promises = $q.allSettled([
         readTemplate('resetpwd-template.txt', opts), 
         readTemplate('resetpwd-template.html', opts) ]);
-    promises.then(function (results){
+    promises.then((results) => {
         if (results[0].state === 'rejected' || results[1].state === 'rejected')
             return deferred.reject('fail');
             
@@ -76,7 +76,7 @@ export function sendResetEmail(user : IUser) : $q.Promise<{}> {
         };
         
         // send mail with defined transport object
-        mailTransporter.sendMail(mailOptions, function(error, info){
+        mailTransporter.sendMail(mailOptions, (error, info) => {
             if (error) {
                 winston.error("Unable to sent message", error);
                 deferred.reject(error);

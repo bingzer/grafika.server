@@ -32,8 +32,8 @@ export function listUsers(req: express.Request, res: express.Response, next: exp
 export function listAnimations(req: express.Request, res: express.Response, next: express.NextFunction) {
 	let sort = createAnimationSort(req);
 	let query = createQuery(req);
-	let count = safeParseInt(req.query.count) < MAX_COUNT ? safeParseInt(req.query.count) : MAX_COUNT;
-	let page = safeParseInt(req.query.page) < 0 ? 0 : safeParseInt(req.query.page);
+	let count = safeParseInt(req.query.limit) < MAX_COUNT ? safeParseInt(req.query.limit) : MAX_COUNT;
+	let page = safeParseInt(req.query.skip) < 0 ? 0 : safeParseInt(req.query.skip);
 	
 	Animation.find(query).limit(count).skip(page).sort(sort).exec((err, result) => {
         if (err) return next(err);
@@ -110,11 +110,11 @@ function createQuery(req){
 	let q:any = { };
 	
 	// search
-	if (req.query.query){
-		if (req.query.query.indexOf('{') > -1){
-			q = JSON.parse(req.query.query)
+	if (req.query.term){
+		if (req.query.term.indexOf('{') > -1){
+			q = JSON.parse(req.query.term)
 		}
-		else q.$text = { $search: req.query.query };
+		else q.$text = { $search: req.query.term };
 	}
 	
 	return q;

@@ -7,6 +7,7 @@ var bcrypt = require('bcrypt-nodejs');
 var crypto = require('crypto-js');
 var jwt = require('jsonwebtoken');
 var SECRET = config.setting.$server.$superSecret;
+var GRAFIKA_ADMIN = 'grafika@bingzer.com';
 exports.UserSchema = new mongoose.Schema({
     firstName: String,
     lastName: String,
@@ -108,14 +109,14 @@ function userQuery(username) {
 exports.userQuery = userQuery;
 function ensureAdminExists() {
     var defer = q.defer();
-    User.findOne(userQuery('admin'), function (err, user) {
+    User.findOne(userQuery(GRAFIKA_ADMIN), function (err, user) {
         if (err)
             return defer.reject(err);
         if (!user) {
             user = new User();
             user.firstName = 'grafika';
             user.lastName = 'admin';
-            user.email = 'grafika-admin@bingzer.com';
+            user.email = GRAFIKA_ADMIN;
             user.dateCreated = Date.now();
             user.dateModified = Date.now();
             user.active = true;

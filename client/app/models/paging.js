@@ -36,9 +36,8 @@ var GrafikaApp;
                 query += '&skip=' + this.skip;
             if (this.type)
                 query += "&type=" + this.type;
-            if (this.query) {
-                query += "&name__regex=/" + this.query + "/g";
-            }
+            if (this.query)
+                query += this.createSearchTerm(this.query);
             return query;
         };
         Paging.prototype.next = function () {
@@ -51,6 +50,9 @@ var GrafikaApp;
             else
                 this.skip -= this.limit;
             return new Paging(this);
+        };
+        Paging.prototype.createSearchTerm = function (query) {
+            return "&name__regex=/" + this.query + "/g";
         };
         return Paging;
     }());

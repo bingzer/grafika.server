@@ -44,13 +44,16 @@
 					<label>Email</label>
 					<input type="text" ng-model="vm.user.email" ng-disabled="true" ng-required="true">
 				</md-input-container>
-				<md-button type="button" class="md-accent"
-					aria-label="vm.user.payload.local.registered ? 'Change Password' : 'Set password'"
-					ng-bind="vm.user.payload.local.registered ? 'Change Password' : 'Set password'" 
-					ng-click="vm.changePassword()"></md-button>
-				<md-button type="button" class="md-accent"
-					ng-bind="'Check username'" 
-					ng-click="vm.checkUsernameAvailability()"></md-button>
+				<div layout="row" flex>
+					<md-button type="button" class="md-accent"
+						aria-label="vm.user.payload.local.registered ? 'Change Password' : 'Set password'"
+						ng-bind="vm.user.payload.local.registered ? 'Change Password' : 'Set password'" 
+						ng-click="vm.changePassword()"></md-button>
+					<span flex></span>
+					<md-button type="button" class="md-accent"
+						ng-bind="'Check username'" 
+						ng-click="vm.checkUsernameAvailability()"></md-button>
+				</div>
 			</md-content>
 		</md-toolbar>   
 	</div>

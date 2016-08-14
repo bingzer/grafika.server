@@ -24,9 +24,10 @@ module GrafikaApp {
                 if (!append) this.animations = res.data;
                 else this.animations = this.animations.concat(res.data);
 
-                this.hasMore = res.data.length >= this.paging.limit;
                 this.busy = false;
-                this.paging = this.paging.next();
+                this.hasMore = res.data.length >= this.paging.limit;
+                if (this.hasMore)
+                    this.paging = this.paging.next();
             });
         }
 

@@ -1,5 +1,6 @@
 "use strict";
 var mongoose = require('mongoose');
+var winston = require('winston');
 var restful = require('../libs/restful');
 exports.AnimationSchema = new mongoose.Schema({
     localId: { type: String },
@@ -22,7 +23,7 @@ exports.AnimationSchema = new mongoose.Schema({
 });
 var Animation = restful.model('animations', exports.AnimationSchema);
 exports.Animation = Animation;
-Animation.methods(['get', 'put', 'post', 'delete']);
+Animation.methods(['get', 'put', 'post']);
 Animation.before('post', function (req, res, next) {
     var now = Date.now();
     if (!req.body.dateCreated)
@@ -35,6 +36,11 @@ Animation.before('post', function (req, res, next) {
         req.body.author = req.user.prefs.drawingAuthor || req.user.username;
     req.body.totalFrame = req.body.frames ? req.body.frames.length : 0;
     delete req.body._id;
+    next();
+});
+Animation.before('get', function (req, res, next) {
+    if (req.query && typeof (req.query.removed) === 'undefined')
+        req.query.removed = false;
     next();
 });
 Animation.before('put', function (req, res, next) {
@@ -66,5 +72,10 @@ Animation.route('resources', {
     handler: function (req, res, next) {
         next();
     }
+});
+exports.AnimationSchema.index({ name: "text", description: "text", author: "text" }, { name: 'AnimationTextIndex', weights: { name: 10, description: 4, author: 2 } });
+Animation.ensureIndexes(function (err) {
+    if (err)
+        winston.error(err);
 });
 //# sourceMappingURL=animation.js.map

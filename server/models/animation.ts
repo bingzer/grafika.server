@@ -1,4 +1,6 @@
 import * as mongoose from 'mongoose';
+import * as winston from 'winston';
+
 import restful = require('../libs/restful');
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -36,7 +38,7 @@ export const AnimationSchema = new mongoose.Schema({
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 let Animation = <restful.IModel<IAnimation>> restful.model('animations', AnimationSchema);
-Animation.methods(['get', 'put', 'post', 'delete']);
+Animation.methods(['get', 'put', 'post']);
 Animation.before('post', (req, res, next) => {
     // check for date time
     let now = Date.now();
@@ -48,6 +50,11 @@ Animation.before('post', (req, res, next) => {
 
     delete req.body._id;
     
+    next();
+});
+Animation.before('get', (req, res, next) => {
+    if (req.query && typeof(req.query.removed) === 'undefined')
+        req.query.removed = false;
     next();
 });
 Animation.before('put', (req, res, next) => {
@@ -82,6 +89,13 @@ Animation.route('resources', {
     }
 });
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+AnimationSchema.index({ name: "text", description: "text", author: "text" }, { name: 'AnimationTextIndex', weights: { name: 10, description: 4, author: 2 } });
+Animation.ensureIndexes((err) => {
+    if (err) 
+        winston.error(err);
+});
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 export { Animation };

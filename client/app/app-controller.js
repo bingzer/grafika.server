@@ -11,7 +11,7 @@ var GrafikaApp;
             _super.call(this, appCommon, authService);
             this.uxService = uxService;
             this.version = '';
-            this.authService.authenticate();
+            this.authService.authenticate(true);
             this.version = appCommon.appConfig.appVersion;
         }
         AppController.$inject = ['appCommon', 'authService', 'uxService'];

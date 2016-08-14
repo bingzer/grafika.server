@@ -22,12 +22,12 @@
 			</md-input-container>
 			<p class="md-caption" ng-show="vm.message && !vm.busy" ng-bind="vm.message"></p>
 		</div>
-		<md-progress-circular layout-margin class="md-hue-2" md-mode="indeterminate" ng-show="vm.busy" md-diamater="20px"></md-progress-circular>
+		<md-progress-circular layout-margin class="md-hue-2" md-mode="indeterminate" ng-show="vm.busy" md-diamater="5px"></md-progress-circular>
 	</md-dialog-content>
 	<md-dialog-actions layout="row" ng-show="!vm.busy">
 		<span flex></span>
-		<md-button ng-show="vm.closable" type="button" ng-click="vm.close()" ng-disabled="vm.busy" aria-label="close">Close</md-button>
-		<md-button ng-bind="vm.requireCurrentPassword ? 'Change Password' : 'Set password'" 
+		<md-button type="button" ng-show="vm.closable" type="button" ng-click="vm.close()" ng-disabled="vm.busy" aria-label="close">Close</md-button>
+		<md-button type="submit" ng-bind="vm.requireCurrentPassword ? 'Change Password' : 'Set password'" 
 			aria-label="Set password"
 			ng-click="vm.changePassword()" 
 			ng-disabled="vm.busy || passwordForm.$invalid || vm.newPassword !== vm.confirmPassword" 

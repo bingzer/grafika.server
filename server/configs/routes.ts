@@ -9,6 +9,7 @@ import * as resourcesController from '../controllers/resources';
 import * as userController      from '../controllers/users';
 import * as syncController      from '../controllers/sync';
 import * as adminController     from '../controllers/admin';
+import * as animationController from '../controllers/animation';
 
 import * as config from '../configs/config';
 import { Animation } from '../models/animation';
@@ -171,7 +172,7 @@ export function initialize(app): q.Promise<any> {
         app.get('/api/animations/object-id', generateAnimationId);
         app.get('/api/animations/:_id', extractUser, useAnimAccess); // view
         app.put('/api/animations/:_id', useSessionOrJwt, useAnimAccess); // update
-        app.delete('/api/animations/', useSessionOrJwt, useAnimAccess); // delete
+        app.delete('/api/animations/:_id', useSessionOrJwt, useAnimAccess, animationController.remove); // delete
         app.get('/api/animations/:_id/frames', extractUser, useAnimAccess); // get frames
         app.post('/api/animations/:_id/frames', useSessionOrJwt, useAnimAccess);
         

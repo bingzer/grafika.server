@@ -16,9 +16,7 @@ var GrafikaApp;
         LoginController.prototype.login = function (provider) {
             var _this = this;
             var loginProvider = provider;
-            this.appCommon.showLoadingModal().then(function () {
-                return _this.authService.login({ username: _this.username, password: _this.password }, provider);
-            })
+            this.appCommon.showLoadingModal().then(function () { return _this.authService.login({ username: _this.username, password: _this.password }, provider); })
                 .then(function (res) {
                 if (!loginProvider)
                     _this.appCommon.navigateHome();
@@ -27,6 +25,7 @@ var GrafikaApp;
             })
                 .catch(function (res) {
                 _this.appCommon.toastError(res);
+                return _this.appCommon.$q.when(true);
             })
                 .finally(function () {
                 _this.appCommon.hideLoadingModal();
