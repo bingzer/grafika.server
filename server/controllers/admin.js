@@ -24,8 +24,8 @@ exports.listUsers = listUsers;
 function listAnimations(req, res, next) {
     var sort = createAnimationSort(req);
     var query = createQuery(req);
-    var count = safeParseInt(req.query.count) < MAX_COUNT ? safeParseInt(req.query.count) : MAX_COUNT;
-    var page = safeParseInt(req.query.page) < 0 ? 0 : safeParseInt(req.query.page);
+    var count = safeParseInt(req.query.limit) < MAX_COUNT ? safeParseInt(req.query.limit) : MAX_COUNT;
+    var page = safeParseInt(req.query.skip) < 0 ? 0 : safeParseInt(req.query.skip);
     animation_1.Animation.find(query).limit(count).skip(page).sort(sort).exec(function (err, result) {
         if (err)
             return next(err);
@@ -110,12 +110,12 @@ function createUserSort(req) {
 }
 function createQuery(req) {
     var q = {};
-    if (req.query.query) {
-        if (req.query.query.indexOf('{') > -1) {
-            q = JSON.parse(req.query.query);
+    if (req.query.term) {
+        if (req.query.term.indexOf('{') > -1) {
+            q = JSON.parse(req.query.term);
         }
         else
-            q.$text = { $search: req.query.query };
+            q.$text = { $search: req.query.term };
     }
     return q;
 }

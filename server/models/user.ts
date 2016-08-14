@@ -4,10 +4,12 @@ import * as q from 'q';
 
 import restful = require('../libs/restful');
 
-const bcrypt      = require('bcrypt-nodejs');
-const crypto      = require('crypto-js');
-const jwt         = require('jsonwebtoken');
-const SECRET      = config.setting.$server.$superSecret;
+const bcrypt        = require('bcrypt-nodejs');
+const crypto        = require('crypto-js');
+const jwt           = require('jsonwebtoken');
+const SECRET        = config.setting.$server.$superSecret;
+const GRAFIKA_ADMIN = 'grafika@bingzer.com'; 
+
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -159,13 +161,13 @@ export function userQuery(username: string) : any {
 export function ensureAdminExists() : ng.IPromise<IUser> {
     let defer = q.defer<IUser>();
 
-	User.findOne(userQuery('admin'), (err, user) => {
+	User.findOne(userQuery(GRAFIKA_ADMIN), (err, user) => {
         if (err) return defer.reject(err);
         if (!user) {
 			user = new User();
 			user.firstName        = 'grafika';
 			user.lastName         = 'admin';
-			user.email            = 'grafika-admin@bingzer.com';
+			user.email            = GRAFIKA_ADMIN;
 			user.dateCreated      = Date.now();
 			user.dateModified     = Date.now();
 			user.active           = true;

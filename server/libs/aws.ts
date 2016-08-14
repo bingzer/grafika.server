@@ -81,7 +81,7 @@ export class AwsResources extends AwsHelper {
 			ContentType: resource.mime,
 			ACL: 'public-read'
 		};
-		this.create().getSignedUrl('putObject', s3_params, function(err, data){
+		this.create().getSignedUrl('putObject', s3_params, (err, data) => {
 			if (err) deferred.reject(err);
 			else deferred.resolve({ signedUrl: data, mime: resource.mime });
 		});
@@ -128,11 +128,11 @@ export class AwsAnimation extends AwsHelper {
 			};
 			
 			params.Delete.Objects.push({ Key: 'animations/' + animId });
-			data.Contents.forEach(function(content) {
+			data.Contents.forEach((content) => {
 				params.Delete.Objects.push({Key: content.Key});
 			});
 			
-			this.create().deleteObjects(params, function(err, data) {
+			this.create().deleteObjects(params, (err, data) => {
 				if (err) return deferred.reject(err);			
 				return deferred.resolve(data);
 			});

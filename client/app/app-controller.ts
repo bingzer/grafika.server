@@ -10,7 +10,7 @@ module GrafikaApp {
         )
         {
             super(appCommon, authService);
-            this.authService.authenticate();
+            this.authService.authenticate(true);
             this.version = appCommon.appConfig.appVersion;
         }
     }

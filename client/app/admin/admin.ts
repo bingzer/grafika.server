@@ -5,7 +5,7 @@ module GrafikaApp {
         configQuery: string = "";
         userQuery: string = "";
 
-        animPaging: Paging = new Paging();
+        animPaging: AdminPaging = new AdminPaging();
         animations: Grafika.IAnimation[];
 
         public static $inject = ['appCommon', 'animationService', 'adminService'];
@@ -26,12 +26,17 @@ module GrafikaApp {
         }
 
         fetchAnimations() {
-            if (this.animPaging.query) {
-                this.adminService.listAnimations(this.animPaging).then((result) => {
-                    this.animations = result.data;
-                });
-            }
-            else this.animations = [];
+            this.adminService.listAnimations(this.animPaging).then((result) => {
+                this.animations = result.data;
+            });
+        }
+
+        canEdit() {
+            return true;
+        }
+
+        canDelete() {
+            return true;
         }
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////////

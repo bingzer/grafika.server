@@ -35,9 +35,7 @@ module GrafikaApp {
             if (this.limit) query += '&limit=' + this.limit;
             if (this.skip) query += '&skip=' + this.skip;
             if (this.type) query += "&type=" + this.type;
-            if (this.query) {
-                query += "&name__regex=/" + this.query + "/g";
-            }
+            if (this.query) query += this.createSearchTerm(this.query);
 
             return query;
         }
@@ -53,6 +51,10 @@ module GrafikaApp {
             else this.skip -= this.limit;
             
             return new Paging(this);
+        }
+
+        protected createSearchTerm(query: string): string{
+            return "&name__regex=/" + this.query + "/g";
         }
     }
 }

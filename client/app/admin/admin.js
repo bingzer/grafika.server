@@ -14,7 +14,7 @@ var GrafikaApp;
             this.clientConfigs = [];
             this.configQuery = "";
             this.userQuery = "";
-            this.animPaging = new GrafikaApp.Paging();
+            this.animPaging = new GrafikaApp.AdminPaging();
         }
         AdminController.prototype.fetchServerInfo = function () {
             var _this = this;
@@ -27,13 +27,15 @@ var GrafikaApp;
         };
         AdminController.prototype.fetchAnimations = function () {
             var _this = this;
-            if (this.animPaging.query) {
-                this.adminService.listAnimations(this.animPaging).then(function (result) {
-                    _this.animations = result.data;
-                });
-            }
-            else
-                this.animations = [];
+            this.adminService.listAnimations(this.animPaging).then(function (result) {
+                _this.animations = result.data;
+            });
+        };
+        AdminController.prototype.canEdit = function () {
+            return true;
+        };
+        AdminController.prototype.canDelete = function () {
+            return true;
         };
         AdminController.prototype.pushObject = function (configs, parentName, obj) {
             var _this = this;

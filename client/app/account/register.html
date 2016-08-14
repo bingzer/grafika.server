@@ -33,7 +33,7 @@
 	<md-dialog-actions layout="row">
 		<span flex></span>
 		<md-button type="button" class="md-mini md-warn" ng-click="vm.close()" ng-disabled="vm.busy">Close</md-button>
-		<md-button class="md-mini md-primary" ng-click="vm.register()" ng-disabled="vm.busy || registrationForm.$invalid">Sign up</md-button>
+		<md-button type="submit" class="md-mini md-primary" ng-click="vm.register()" ng-disabled="vm.busy || registrationForm.$invalid" ng-show="!vm.done">Sign up</md-button>
 	</md-dialog-actions>
 </form>
 </md-dialog>

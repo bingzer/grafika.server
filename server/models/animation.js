@@ -1,5 +1,6 @@
 "use strict";
 var mongoose = require('mongoose');
+var winston = require('winston');
 var restful = require('../libs/restful');
 exports.AnimationSchema = new mongoose.Schema({
     localId: { type: String },
@@ -71,5 +72,10 @@ Animation.route('resources', {
     handler: function (req, res, next) {
         next();
     }
+});
+exports.AnimationSchema.index({ name: "text", description: "text", author: "text" }, { name: 'AnimationTextIndex', weights: { name: 10, description: 4, author: 2 } });
+Animation.ensureIndexes(function (err) {
+    if (err)
+        winston.error(err);
 });
 //# sourceMappingURL=animation.js.map

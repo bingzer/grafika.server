@@ -20,7 +20,8 @@ var GrafikaApp;
             this.disqusConfig.disqus_title = animation.name;
             this.disqusConfig.disqus_url = this.appCommon.$location.absUrl();
             if (this.authService.isAuthorized('user')) {
-                this.canEdit = this.authService.getUser()._id === this.animation.userId;
+                var user = this.authService.getUser();
+                this.canEdit = user._id === this.animation.userId || user.roles.indexOf('administrator') > 0;
                 this.authService.getDisqusToken().then(function (res) {
                     if (_this.authService.isAuthenticated()) {
                         _this.disqusConfig.disqus_remote_auth_s3 = res.data.token;

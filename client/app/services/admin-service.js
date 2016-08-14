@@ -37,5 +37,16 @@ var GrafikaApp;
         return AdminService;
     }(GrafikaApp.BaseService));
     GrafikaApp.AdminService = AdminService;
+    var AdminPaging = (function (_super) {
+        __extends(AdminPaging, _super);
+        function AdminPaging() {
+            _super.apply(this, arguments);
+        }
+        AdminPaging.prototype.createSearchTerm = function (query) {
+            return '&term=' + query;
+        };
+        return AdminPaging;
+    }(GrafikaApp.Paging));
+    GrafikaApp.AdminPaging = AdminPaging;
 })(GrafikaApp || (GrafikaApp = {}));
 //# sourceMappingURL=admin-service.js.map

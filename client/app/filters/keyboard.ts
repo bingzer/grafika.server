@@ -1,6 +1,6 @@
 module GrafikaApp {
     export function KeyboardFilter($window: ng.IWindowService){
-        return function(str) {
+        return (str) => {
             if (!str) return;
             let keys = str.split('-');
             let isOSX = /Mac OS X/.test($window.navigator.userAgent);
@@ -10,7 +10,7 @@ module GrafikaApp {
                 A: isOSX ? 'Option' : 'Alt',
                 S: 'Shift'
             };
-            return keys.map(function(key, index) {
+            return keys.map((key, index) => {
                 let last = index == keys.length - 1;
                 return last ? key : abbreviations[key];
             }).join(seperator);

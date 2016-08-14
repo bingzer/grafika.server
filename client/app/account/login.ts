@@ -14,15 +14,14 @@ module GrafikaApp {
 
         login(provider: string) {
             let loginProvider = provider;
-            this.appCommon.showLoadingModal().then(() =>{
-                    return this.authService.login({ username: this.username, password: this.password }, provider);
-                })
+            this.appCommon.showLoadingModal().then(() => this.authService.login({ username: this.username, password: this.password }, provider))
                 .then((res) => {
                     if (!loginProvider) this.appCommon.navigateHome();
                     else this.appCommon.toast('Connecting to ' + loginProvider);
                 })
                 .catch((res) => {
                     this.appCommon.toastError(res);
+                    return this.appCommon.$q.when(true);
                 })
                 .finally(() => {
                     this.appCommon.hideLoadingModal();

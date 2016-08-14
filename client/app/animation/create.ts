@@ -6,11 +6,13 @@ module GrafikaApp {
         height: number = 400;
         isPublic: boolean;
         
-        public static $inject = ['appCommon', 'animationService'];
+        public static $inject = ['appCommon', 'authService', 'animationService'];
         constructor(
             appCommon: AppCommon, 
+            private authService: AuthService,
             private animationService: AnimationService){
             super(appCommon);
+            this.isPublic = this.authService.getUser().prefs.drawingIsPublic;
         }
 
         create() {
