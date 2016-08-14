@@ -21,7 +21,7 @@
  * Supported browser: IE9 > up, chrome, edge
  */
 var Grafika = function (){	
-	var GRAFIKA_VERSION = '0.10.5';
+	var GRAFIKA_VERSION = '0.10.6';
 	
     // ---------------------------------------------------------- Constants -------------------------------------//
     var MODE_NONE = 'none', MODE_PAINT = 'paint', MODE_MOVE = 'move', MODE_SELECT = 'select', MODE_DELETE = 'delete';		
@@ -601,16 +601,24 @@ Grafika.Animation = function (grafika, anim) {
 	this._id = anim._id; // maybe undefined if new
 	this.localId = anim.localId || this.randomUid(); // always something
 	this.name = anim.name || this.localId;
+	this.description = anim.description || this.description;
+	this.timer = anim.timer || 500;
 	this.width = anim.width || window.innerWidth;
 	this.height = anim.height || window.innerHeight;
-	this.currentFrame = anim.currentFrame || 0;
-	this.timer = anim.timer || 500;
-	this.modified = anim.modified || false;
-	this.totalFrame = anim.totalFrame || 0;
-	this.views = anim.views || 0;
 	this.dateCreated = anim.dateCreated || Date.now();
 	this.dateModified = anim.dateModified || this.dateCreated;
+	this.views = anim.views || 0;
+	this.rating = anim.rating || 0;
+	this.category = anim.category || this.category;
+	this.isPublic = anim.isPublic || this.isPublic;
+	this.author = anim.author || this.author;
+	this.userId = anim.userId || this.userId;
+	this.thumbnailUrl = anim.thumbnailUrl || this.thumbnailUrl;
 	this.frames = this.setFrames(anim.frames);
+	this.totalFrame = anim.totalFrame || 0;
+	
+	this.currentFrame = anim.currentFrame || 0;
+	this.modified = anim.modified || false;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
