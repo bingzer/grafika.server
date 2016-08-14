@@ -57,4 +57,10 @@ module GrafikaApp {
             return "&name__regex=/" + this.query + "/g";
         }
     }
+
+	export class QueryablePaging extends Paging {
+        protected createSearchTerm(query: string): string{
+            return '&term=' + query;
+        }
+	}
 }

@@ -7,14 +7,16 @@ var GrafikaApp;
 (function (GrafikaApp) {
     var AdminController = (function (_super) {
         __extends(AdminController, _super);
-        function AdminController(appCommon, authService, adminService) {
+        function AdminController(appCommon, authService, animationService, adminService) {
             _super.call(this, appCommon, authService);
+            this.animationService = animationService;
             this.adminService = adminService;
             this.serverConfigs = [];
             this.clientConfigs = [];
             this.configQuery = "";
             this.userQuery = "";
-            this.animPaging = new GrafikaApp.AdminPaging();
+            this.animPaging = new GrafikaApp.QueryablePaging();
+            this.userPaging = new GrafikaApp.QueryablePaging();
         }
         AdminController.prototype.fetchServerInfo = function () {
             var _this = this;
@@ -27,8 +29,16 @@ var GrafikaApp;
         };
         AdminController.prototype.fetchAnimations = function () {
             var _this = this;
-            this.adminService.listAnimations(this.animPaging).then(function (result) {
+            this.adminService.listAnimations(this.animPaging)
+                .then(function (result) { return _this.animationService.injectThumbnailUrl(result); })
+                .then(function (result) {
                 _this.animations = result.data;
+            });
+        };
+        AdminController.prototype.fetchUsers = function () {
+            var _this = this;
+            this.adminService.listUsers(this.userPaging).then(function (result) {
+                _this.users = result.data;
             });
         };
         AdminController.prototype.canEdit = function () {
@@ -37,6 +47,42 @@ var GrafikaApp;
         AdminController.prototype.canDelete = function () {
             return true;
         };
+        AdminController.prototype.confirmUserVerification = function (user) {
+            var _this = this;
+            this.appCommon.confirm('Send verification email to ' + user.email + '?')
+                .then(function () { return _this.adminService.sendVerificationEmail(user); })
+                .then(function () { return _this.appCommon.toast('Verification email sent to ' + user.email); });
+        };
+        ;
+        AdminController.prototype.confirmUserPasswordReset = function (user) {
+            var _this = this;
+            this.appCommon.confirm('Send reset password email to ' + user.email + '?')
+                .then(function () { return _this.adminService.sendResetPasswordEmail(user); })
+                .then(function () { return _this.appCommon.toast('Reset password email sent to ' + user.email); });
+        };
+        ;
+        AdminController.prototype.confirmDeactivate = function (user) {
+            var _this = this;
+            this.appCommon.confirm('Inactivate ' + user.email + '?')
+                .then(function () { return _this.adminService.inactivateUser(user); })
+                .then(function () {
+                _this.fetchUsers();
+                _this.appCommon.toast('User is inactivated');
+                return _this.appCommon.$q.when(true);
+            });
+        };
+        ;
+        AdminController.prototype.confirmActivate = function (user) {
+            var _this = this;
+            this.appCommon.confirm('Activate ' + user.email + '?')
+                .then(function () { return _this.adminService.activateUser(user); })
+                .then(function () {
+                _this.fetchUsers();
+                _this.appCommon.toast('User is activated');
+                return _this.appCommon.$q.when(true);
+            });
+        };
+        ;
         AdminController.prototype.pushObject = function (configs, parentName, obj) {
             var _this = this;
             Object.keys(obj).forEach(function (key) {
@@ -52,7 +98,7 @@ var GrafikaApp;
                 }
             });
         };
-        AdminController.$inject = ['appCommon', 'animationService', 'adminService'];
+        AdminController.$inject = ['appCommon', 'authService', 'animationService', 'adminService'];
         return AdminController;
     }(GrafikaApp.AuthController));
     GrafikaApp.AdminController = AdminController;

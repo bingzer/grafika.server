@@ -7,14 +7,27 @@ var GrafikaApp;
 (function (GrafikaApp) {
     var AppController = (function (_super) {
         __extends(AppController, _super);
-        function AppController(appCommon, authService, uxService) {
+        function AppController(appCommon, authService, uxService, $rootScope) {
+            var _this = this;
             _super.call(this, appCommon, authService);
             this.uxService = uxService;
             this.version = '';
-            this.authService.authenticate(true);
             this.version = appCommon.appConfig.appVersion;
+            this.appCommon.appConfig.baseUrl = this.appCommon.getBaseUrl();
+            $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
+                if (toState.data && toState.data.roles) {
+                    var user = authService.getUser();
+                    if (!user.hasRoles(toState.data.roles)) {
+                        _this.appCommon.navigateHome();
+                    }
+                }
+                _this.uxService.pageTitle = _this.appCommon.appConfig.appTitle;
+                if (toState.data && toState.data.pageTitle) {
+                    _this.uxService.pageTitle = toState.data.pageTitle;
+                }
+            });
         }
-        AppController.$inject = ['appCommon', 'authService', 'uxService'];
+        AppController.$inject = ['appCommon', 'authService', 'uxService', '$rootScope'];
         return AppController;
     }(GrafikaApp.AuthController));
     GrafikaApp.AppController = AppController;
