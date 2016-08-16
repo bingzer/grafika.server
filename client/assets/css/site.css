@@ -27,6 +27,9 @@ body {
 	bottom: 1px;
 	width: 100%;
 }
+.md-dialog-is-showing .footer {
+	position: relative;
+}
 @media (max-width: 599px){
 	.footer {
 		height: 156px;

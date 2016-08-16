@@ -39,6 +39,9 @@ var GrafikaApp;
         AnimationService.prototype.incrementViewCount = function (anim) {
             return this.apiService.post('animations/' + anim._id + '/view');
         };
+        AnimationService.prototype.rate = function (animationId, rating) {
+            return this.apiService.post('animations/' + animationId + '/rating/' + rating);
+        };
         AnimationService.prototype.getDownloadLink = function (anim) {
             return this.appCommon.getBaseUrl() + 'animations/' + anim._id + '/download?token=' + this.authService.getAccessToken();
         };

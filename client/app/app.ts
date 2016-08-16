@@ -26,6 +26,7 @@ module GrafikaApp {
     app.directive('imageUploader', ImageUploaderDirective.factory());
     app.directive('noResult', NoResultDirective.factory());
     app.directive('fetchMore', FetchMoreDirective.factory());
+    app.directive('ratingStars', RatingStarsDirective.factory());
 
     app.service('uxService', UxService);
     app.service('apiService', ApiService);

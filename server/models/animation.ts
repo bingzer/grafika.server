@@ -22,8 +22,8 @@ export const AnimationSchema = new mongoose.Schema({
     dateCreated  : { type: Number, required: true },
     dateModified : { type: Number, required: true },
 
-    views        : Number,
-    rating       : Number,
+    views        : { type: Number, default: 0 },
+    rating       : { type: Number, default: 2.5 },
     category     : String,
     removed      : { type: Boolean, required: true, default: false },
 

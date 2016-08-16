@@ -36,11 +36,12 @@ module GrafikaApp {
                 } 
             }});
 
-            this.frameService.get(this.grafika.getAnimation()).then((res) => {
+            this.frameService.get(animation).then((res) => {
                 this.grafika.setFrames(res.data);
                 this.totalFrame = res.data.length;
                 this.currentFrame = 0;
-            })
+                this.animationService.incrementViewCount(animation);
+            });
         }
 
         toggle() {

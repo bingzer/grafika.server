@@ -19,11 +19,11 @@ module GrafikaApp {
 			return this.apiService.get<[Grafika.IAnimation]>('animations' + paging.toQueryString())
 				.then((res) => this.injectThumbnailUrl(res));
 		}
-		get(_id): ng.IHttpPromise<Grafika.IAnimation> {
+		get(_id: string): ng.IHttpPromise<Grafika.IAnimation> {
 			return this.apiService.get<Grafika.IAnimation>('animations/' + _id)
 				.then((res) => this.injectThumbnailUrl(res));
 		}
-		delete(_id): ng.IHttpPromise<any> {
+		delete(_id: string): ng.IHttpPromise<any> {
 			return this.apiService.delete('animations/' + _id);
 		}
 		update(anim: Grafika.IAnimation): ng.IHttpPromise<Grafika.IAnimation> {
@@ -32,6 +32,9 @@ module GrafikaApp {
 		}
 		incrementViewCount(anim: Grafika.IAnimation): ng.IHttpPromise<any> {
 			return this.apiService.post('animations/' + anim._id + '/view');
+		}
+		rate(animationId: string, rating: number): ng.IHttpPromise<number> {
+			return this.apiService.post('animations/' + animationId + '/rating/' + rating);
 		}
 		getDownloadLink(anim: Grafika.IAnimation): string {
 			return this.appCommon.getBaseUrl() + 'animations/' + anim._id + '/download?token=' + this.authService.getAccessToken();

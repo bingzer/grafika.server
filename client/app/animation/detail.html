@@ -32,6 +32,7 @@
                         {{vm.animation.author || 'anonymous'}}
                     </a>
                 </div>
+                <rating-stars animation-id="{{vm.animation._id}}" rating="{{vm.animation.rating}}"></rating-stars>
                 <div layout="row" ng-if="vm.canEdit" style="margin-top: 4px">
                     <div class="btn-group" role="group" aria-label="...">
                         <button type="button" class="btn btn-default" ng-click="vm.edit()">Edit</button>
