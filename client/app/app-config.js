@@ -6,10 +6,10 @@ var GrafikaApp;
             this.appVersion = '0.9.17-5';
             this.baseUrl = '';
             this.defaultBaseUrl = 'https://grafika.herokuapp.com/';
-            this.apiBaseUrl = '/api/';
+            this.apiBaseUrl = 'api/';
             this.animationBaseUrl = 'https://s3.amazonaws.com/bingzer/grafika/animations/';
             this.userBaseUrl = 'https://s3.amazonaws.com/bingzer/grafika/users/';
-            this.fetchSize = 25;
+            this.fetchSize = 15;
         }
         return AppConfig;
     }());
