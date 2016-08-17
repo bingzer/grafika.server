@@ -18,6 +18,8 @@ var GrafikaApp;
         }
         AnimationListController.prototype.list = function (append) {
             var _this = this;
+            if (!append)
+                this.paging.skip = 0;
             this.busy = true;
             this.animationService.list(this.paging).then(function (res) {
                 if (!append)

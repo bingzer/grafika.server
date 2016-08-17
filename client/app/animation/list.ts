@@ -19,6 +19,8 @@ module GrafikaApp {
         }
 
         list(append?: boolean) {
+            if (!append) this.paging.skip = 0;
+
             this.busy = true;
             this.animationService.list(this.paging).then((res) => {
                 if (!append) this.animations = res.data;

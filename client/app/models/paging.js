@@ -8,7 +8,7 @@ var GrafikaApp;
     var Paging = (function () {
         function Paging(paging) {
             this.skip = 0;
-            this.limit = 25;
+            this.limit = 10;
             this.sort = 'views';
             if (!paging)
                 return;
@@ -47,17 +47,20 @@ var GrafikaApp;
         };
         Paging.prototype.next = function () {
             this.skip += this.limit;
-            return new Paging(this);
+            return this.newInstance(this);
         };
         Paging.prototype.previous = function () {
             if (this.skip - this.limit <= 0)
                 this.skip = 0;
             else
                 this.skip -= this.limit;
-            return new Paging(this);
+            return this.newInstance(this);
         };
         Paging.prototype.createSearchTerm = function (query) {
             return "&name__regex=/" + this.query + "/g";
+        };
+        Paging.prototype.newInstance = function (paging) {
+            return new Paging(this);
         };
         return Paging;
     }());
@@ -69,6 +72,9 @@ var GrafikaApp;
         }
         QueryablePaging.prototype.createSearchTerm = function (query) {
             return '&term=' + query;
+        };
+        QueryablePaging.prototype.newInstance = function (paging) {
+            return new QueryablePaging(this);
         };
         return QueryablePaging;
     }(Paging));

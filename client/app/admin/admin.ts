@@ -6,10 +6,13 @@ module GrafikaApp {
         userQuery: string = "";
 
         animPaging: QueryablePaging = new QueryablePaging();
-        animations: Grafika.IAnimation[];
+        animations: Grafika.IAnimation[] = [];
+        hasMoreAnims: boolean = true;
 
         userPaging: QueryablePaging = new QueryablePaging();
-        users: Grafika.IUser[]; 
+        users: Grafika.IUser[] = []; 
+        
+        busy: boolean = false;
 
         public static $inject = ['appCommon', 'authService', 'animationService', 'adminService'];
         constructor(
@@ -29,11 +32,21 @@ module GrafikaApp {
             })
         }
 
-        fetchAnimations() {
+        fetchAnimations(append?: boolean) {
+            if (!append) this.animPaging.skip = 0;
+
+            this.busy = true;
             this.adminService.listAnimations(this.animPaging)
                 .then((result) => this.animationService.injectThumbnailUrl(result) )
-                .then((result) => {
-                    this.animations = <Grafika.IAnimation[]>result.data;
+                .then((res) => {
+                    let anims = <Grafika.IAnimation[]> res.data;
+                    if (!append) this.animations = anims;
+                    else this.animations = this.animations.concat(anims);
+
+                    this.busy = false;
+                    this.hasMoreAnims = anims.length >= this.animPaging.limit;
+                    if (this.hasMoreAnims)
+                        this.animPaging = <QueryablePaging> this.animPaging.next();
                 });
         }
 

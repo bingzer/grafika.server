@@ -7,5 +7,17 @@
             </md-input-container>
         </form>
     </div>
-    <ng-include src="'app/animation/list.html'"></ng-include>
+    
+    <div layout="column">
+        <div layout="row" layout-wrap layout-align-xs="center start" layout-align-sm="center start">
+            <ng-include src="'/app/animation/card.html'" ng-repeat="anim in vm.animations" ></ng-include>
+        </div>
+        
+        <div layout="row" layout-align="center center" layout-margin layout-padding flex>
+            <md-button class="md-button md-icon-button" ng-click="vm.fetchAnimations(true)" ng-disabled="vm.busy" ng-show="vm.hasMoreAnims">
+                <md-icon md-font-library="material designs">expand_more</md-icon>
+                <md-tooltip>Load more...</md-tooltip>
+            </md-button>
+        </div>
+    </div>
 </div>

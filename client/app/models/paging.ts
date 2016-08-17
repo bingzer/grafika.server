@@ -2,7 +2,7 @@ module GrafikaApp {
     export class Paging {
         isPublic: boolean;
         skip: number = 0;
-        limit: number = 25;
+        limit: number = 10;
 
         userId: string;
         category: string;
@@ -42,7 +42,7 @@ module GrafikaApp {
 
         next(): Paging {
             this.skip += this.limit;
-            return new Paging(this);
+            return this.newInstance(this);
         }
 
         previous(): Paging {
@@ -50,17 +50,25 @@ module GrafikaApp {
                 this.skip = 0;
             else this.skip -= this.limit;
             
-            return new Paging(this);
+            return this.newInstance(this);
         }
 
         protected createSearchTerm(query: string): string{
             return "&name__regex=/" + this.query + "/g";
+        }
+
+        protected newInstance(paging: Paging): Paging {
+            return new Paging(this);
         }
     }
 
 	export class QueryablePaging extends Paging {
         protected createSearchTerm(query: string): string{
             return '&term=' + query;
+        }
+
+        protected newInstance(paging: Paging): Paging {
+            return new QueryablePaging(this);
         }
 	}
 }

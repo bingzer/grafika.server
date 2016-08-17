@@ -16,7 +16,11 @@ var GrafikaApp;
             this.configQuery = "";
             this.userQuery = "";
             this.animPaging = new GrafikaApp.QueryablePaging();
+            this.animations = [];
+            this.hasMoreAnims = true;
             this.userPaging = new GrafikaApp.QueryablePaging();
+            this.users = [];
+            this.busy = false;
         }
         AdminController.prototype.fetchServerInfo = function () {
             var _this = this;
@@ -27,12 +31,23 @@ var GrafikaApp;
                 _this.pushObject(_this.clientConfigs, null, _this.appCommon.appConfig);
             });
         };
-        AdminController.prototype.fetchAnimations = function () {
+        AdminController.prototype.fetchAnimations = function (append) {
             var _this = this;
+            if (!append)
+                this.animPaging.skip = 0;
+            this.busy = true;
             this.adminService.listAnimations(this.animPaging)
                 .then(function (result) { return _this.animationService.injectThumbnailUrl(result); })
-                .then(function (result) {
-                _this.animations = result.data;
+                .then(function (res) {
+                var anims = res.data;
+                if (!append)
+                    _this.animations = anims;
+                else
+                    _this.animations = _this.animations.concat(anims);
+                _this.busy = false;
+                _this.hasMoreAnims = anims.length >= _this.animPaging.limit;
+                if (_this.hasMoreAnims)
+                    _this.animPaging = _this.animPaging.next();
             });
         };
         AdminController.prototype.fetchUsers = function () {
