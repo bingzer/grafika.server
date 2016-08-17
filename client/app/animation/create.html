@@ -16,6 +16,14 @@
             <input ng-model="vm.name" required>
         </md-input-container>
         <md-input-container class="md-block" flex-gt-sm>
+            <label>Orientation</label>
+            <md-select ng-model="vm.orientation">
+                <md-option ng-repeat="orientation in vm.orientations" value="{{orientation}}">
+                    {{orientation}}
+                </md-option>
+            </md-select>
+        </md-input-container>
+        <md-input-container class="md-block" flex-gt-sm>
             <md-checkbox ng-model="vm.isPublic">Public Animation</md-checkbox>
         </md-input-container>
       </div>

@@ -16,6 +16,7 @@
 /// <reference path="globals/fs-extra/index.d.ts" />
 /// <reference path="globals/grafika/index.d.ts" />
 /// <reference path="globals/jquery/index.d.ts" />
+/// <reference path="globals/markdown.js/index.d.ts" />
 /// <reference path="globals/method-override/index.d.ts" />
 /// <reference path="globals/mime/index.d.ts" />
 /// <reference path="globals/mongoose/index.d.ts" />

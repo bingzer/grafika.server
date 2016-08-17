@@ -49,7 +49,7 @@ var GrafikaApp;
         ;
         AppCommon.prototype.toast = function (msg, position, delay) {
             if (!position)
-                position = 'bottom right';
+                position = 'top left';
             if (!delay)
                 delay = 3000;
             this.$log.log(msg);

@@ -76,7 +76,10 @@ var GrafikaApp;
                 templateUrl: 'app/users/user.html',
                 controller: 'UserController',
                 controllerAs: 'vm'
-            });
+            })
+                .state('about', { url: '/about', templateUrl: 'app/content/about.html', data: { pageTitle: 'About Grafika' } })
+                .state('privacy', { url: '/privacy', templateUrl: 'app/content/privacy.html', data: { pageTitle: 'Privacy' } })
+                .state('eula', { url: '/eula', templateUrl: 'app/content/eula.html', data: { pageTitle: 'EULA' } });
             $urlRouterProvider.otherwise('/');
             $locationProvder.html5Mode(true);
         }

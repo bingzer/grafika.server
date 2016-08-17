@@ -9,7 +9,10 @@ var GrafikaApp;
             this.apiBaseUrl = 'api/';
             this.animationBaseUrl = 'https://s3.amazonaws.com/bingzer/grafika/animations/';
             this.userBaseUrl = 'https://s3.amazonaws.com/bingzer/grafika/users/';
+            this.contentBaseUrl = 'https://github.com/bingzer/grafika/';
             this.fetchSize = 10;
+            this.defaultAnimationWidth = 800;
+            this.defaultAnimationHeight = 400;
         }
         return AppConfig;
     }());

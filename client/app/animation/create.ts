@@ -5,6 +5,8 @@ module GrafikaApp {
         width: number = 800;
         height: number = 400;
         isPublic: boolean;
+        orientations: string[] = ['Landscape', 'Portrait'];
+        orientation: string = 'Landscape';
         
         public static $inject = ['appCommon', 'authService', 'animationService'];
         constructor(
@@ -18,9 +20,17 @@ module GrafikaApp {
         create() {
             let anim = new Animation();
             anim.name = this.name;
-            anim.width = this.width;
-            anim.height = this.height;
             anim.isPublic = this.isPublic;
+
+            if (this.orientation === 'Landscape'){
+                anim.width = this.width;
+                anim.height = this.height;
+            }
+            else {
+                anim.width = this.height;
+                anim.height = this.width;
+            }
+            
             this.animationService.create(anim).then((res) => {
                 this.close();
                 this.appCommon.showLoadingModal().then(() => {

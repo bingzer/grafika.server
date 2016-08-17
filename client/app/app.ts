@@ -27,6 +27,7 @@ module GrafikaApp {
     app.directive('noResult', NoResultDirective.factory());
     app.directive('fetchMore', FetchMoreDirective.factory());
     app.directive('ratingStars', RatingStarsDirective.factory());
+    app.directive('includeMarkdown', IncludeMarkdownDirective.factory());
 
     app.service('uxService', UxService);
     app.service('apiService', ApiService);

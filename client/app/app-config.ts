@@ -7,6 +7,9 @@ module GrafikaApp {
         apiBaseUrl: string = 'api/';  // local
         animationBaseUrl: string = 'https://s3.amazonaws.com/bingzer/grafika/animations/';
         userBaseUrl: string = 'https://s3.amazonaws.com/bingzer/grafika/users/';
+        contentBaseUrl: string = 'https://github.com/bingzer/grafika/';
         fetchSize: number = 10;
+        defaultAnimationWidth: number = 800;
+        defaultAnimationHeight: number = 400;
     }
 }

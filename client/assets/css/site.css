@@ -23,16 +23,15 @@ body {
 	color: gray;
 	background-color: #ffffff;
 	height: 48px;
+	max-height: 48px;
 	position: absolute;
 	bottom: 1px;
 	width: 100%;
 }
-.md-dialog-is-showing .footer {
-	position: relative;
-}
 @media (max-width: 599px){
 	.footer {
 		height: 156px;
+		max-height: 156px;
 	}
 }
 

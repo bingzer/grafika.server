@@ -13,15 +13,23 @@ var GrafikaApp;
             this.animationService = animationService;
             this.width = 800;
             this.height = 400;
+            this.orientations = ['Landscape', 'Portrait'];
+            this.orientation = 'Landscape';
             this.isPublic = this.authService.getUser().prefs.drawingIsPublic;
         }
         AnimationCreateController.prototype.create = function () {
             var _this = this;
             var anim = new GrafikaApp.Animation();
             anim.name = this.name;
-            anim.width = this.width;
-            anim.height = this.height;
             anim.isPublic = this.isPublic;
+            if (this.orientation === 'Landscape') {
+                anim.width = this.width;
+                anim.height = this.height;
+            }
+            else {
+                anim.width = this.height;
+                anim.height = this.width;
+            }
             this.animationService.create(anim).then(function (res) {
                 _this.close();
                 _this.appCommon.showLoadingModal().then(function () {
