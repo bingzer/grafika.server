@@ -14,6 +14,7 @@ var mailTransporter = nodemailer.createTransport({
         pass: config.setting.$server.$mailPassword
     }
 });
+exports.mailTransporter = mailTransporter;
 function sendVerificationEmail(user) {
     var deferred = $q.defer();
     var url = config.setting.$server.$url + '?action=verify&hash=' + encodeURIComponent(user.activation.hash) + '&user=' + encodeURIComponent(user.email);

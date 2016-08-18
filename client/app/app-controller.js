@@ -7,11 +7,14 @@ var GrafikaApp;
 (function (GrafikaApp) {
     var AppController = (function (_super) {
         __extends(AppController, _super);
-        function AppController(appCommon, authService, uxService, $rootScope) {
+        function AppController(appCommon, apiService, authService, uxService, $rootScope) {
             var _this = this;
             _super.call(this, appCommon, authService);
+            this.apiService = apiService;
             this.uxService = uxService;
             this.version = '';
+            this.feedback = new GrafikaApp.Feedback();
+            this.feedbackCategories = ['Just saying Hi!', 'Bug', 'Features', 'Other'];
             this.version = appCommon.appConfig.appVersion;
             this.appCommon.appConfig.baseUrl = this.appCommon.getBaseUrl();
             $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
@@ -27,7 +30,16 @@ var GrafikaApp;
                 }
             });
         }
-        AppController.$inject = ['appCommon', 'authService', 'uxService', '$rootScope'];
+        AppController.prototype.sendFeedback = function () {
+            var _this = this;
+            this.apiService.post('content/feedback', this.feedback)
+                .then(function (res) {
+                _this.appCommon.toast('Feedback is submitted!');
+                return _this.appCommon.$q.when(true);
+            })
+                .finally(function () { return _this.feedback = new GrafikaApp.Feedback(); });
+        };
+        AppController.$inject = ['appCommon', 'apiService', 'authService', 'uxService', '$rootScope'];
         return AppController;
     }(GrafikaApp.AuthController));
     GrafikaApp.AppController = AppController;

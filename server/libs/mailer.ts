@@ -17,6 +17,8 @@ const mailTransporter = nodemailer.createTransport({
 	}
 });
 
+export { mailTransporter };
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 export function sendVerificationEmail(user: IUser) : $q.Promise<{}> {

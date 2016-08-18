@@ -4,12 +4,54 @@
 	}
 </style>
 <div class="home">
-	<div class="intro" ng-if="!vm.isAuthorized('user')" ng-init="vm.initGrafika()">
+	<div class="banner" ng-if="!vm.isAuthorized('user')" ng-init="vm.initGrafika()">
 		<div class="canvas-container">
-			<canvas id="intro-canvas"></canvas>
+			<canvas id="banner-canvas"></canvas>
 		</div>
 		<div layout-fill class="canvas-overlay"></div>
 		<img id="logo" src="/assets/img/logo.png" />
+	</div>
+	<div class="intro md-whiteframe-z2" ng-if="!vm.isAuthorized('user')" layout-padding>
+		<div layout="row" layout-align="center" layout-wrap>
+			<div class="part" flex-gt-sm="30" flex="90" layout-padding>
+				<p>
+					<i class="material-icons">movie_filter</i><br/>
+					<span class="md-headline">Easy to use</span>
+				</p>
+				<p>
+					Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+					Mauris consectetur pharetra mi ac pulvinar. Maecenas sed eros justo. 
+					Etiam nec lacinia dui. Ut rhoncus dignissim erat.
+				</p>
+			</div>
+			<div class="part" flex-gt-sm="30" flex="90" layout-padding>
+				<p>
+					<i class="material-icons">account_box</i><br/>
+					<span class="md-headline">Personalized</span>
+				</p>
+				<p>
+					Nullam congue aliquet finibus. Ut placerat eu leo eu elementum. 
+					Phasellus maximus non magna sit amet gravida. 
+					Fusce ex libero, sollicitudin in lobortis nec, pharetra at tellus
+				</p>
+				<div layout="row" layout-padding layout-align="center">
+					<button class="btn btn-success">Login</button>
+					<span>&nbsp;</span>
+					<button class="btn btn-info">Register</button>
+				</div>
+			</div>
+			<div class="part" flex-gt-sm="30" flex="90" layout-padding>
+				<p>
+					<i class="material-icons">cloud_queue</i><br/>
+					<span class="md-headline">Cloud backed</span>
+				</p>
+				<p>
+					Etiam accumsan arcu lorem. Proin iaculis sollicitudin eleifend. 
+					Integer eget urna neque. Nam lobortis eget magna et euismod. 
+					Integer et urna vestibulum, fringilla urna eu, pretium metus.
+				</p> 
+			</div>
+		</div>
 	</div>
 
 	<div display-block layout="column" layout-gt-sm="row" ng-controller="AnimationListController as vm">

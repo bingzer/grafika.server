@@ -9,6 +9,7 @@ var userController = require('../controllers/users');
 var syncController = require('../controllers/sync');
 var adminController = require('../controllers/admin');
 var animationController = require('../controllers/animation');
+var contentController = require('../controllers/content');
 var config = require('../configs/config');
 var animation_1 = require('../models/animation');
 var user_1 = require('../models/user');
@@ -158,6 +159,7 @@ function initialize(app) {
         app.post('/api/animations/:animationId/thumbnail', useSessionOrJwt, useAnimAccess, resourcesController.createThumbnailSignedUrl);
         user_1.User.register(app, '/api/users');
         animation_1.Animation.register(app, '/api/animations');
+        app.post('/api/content/feedback', contentController.feedback);
         app.use(handleErrors);
         winston.info('Routes [OK]');
         defer.resolve();

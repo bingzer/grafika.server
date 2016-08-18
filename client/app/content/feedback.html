@@ -1,4 +1,4 @@
-<div layout="row" ng-controller="ContentController as vm" ng-init="vm.page.links[2].selected=true" flex>
+<div layout="row" flex>
 	<form name="feedbackForm" layout="row" layout-align="center start" flex>
 	<div layout="column" layout="column" layout-margin layout-padding flex-gt-md="75" flex>
 		<p class="md-subtitle">
@@ -6,20 +6,20 @@
 		</p>
 		<md-input-container>
 			<label>Area</label>
-			<md-select ng-model="vm.feedback.category" md-on-close="vm.filter()">
-				<md-option ng-value="category" ng-repeat="category in vm.feedbackCategories" ng-bind="category" ng-required="true"></md-option>
+			<md-select ng-model="app.feedback.category" md-on-close="app.filter()">
+				<md-option ng-value="category" ng-repeat="category in app.feedbackCategories"" ng-bind="category" ng-required="true"></md-option>
 			</md-select>
 		</md-input-container>
 		<md-input-container>
 			<label>Subject</label>
-			<input type="text" ng-model="vm.feedback.subject" ng-required="true">
+			<input type="text" ng-model="app.feedback.subject" ng-required="true">
 		</md-input-container>
 		<md-input-container>
 			<label>Feedback</label>
-			<textarea ng-model="vm.feedback.content" ng-required="true"></textarea>
+			<textarea ng-model="app.feedback.content" ng-required="true"></textarea>
 		</md-input-container>
 		<div layout="row" layout-align="end">
-			<md-button class="md-button md-raised md-primary" ng-click="vm.sendFeedback()" ng-disabled="feedbackForm.$invalid">
+			<md-button class="md-button md-raised md-primary" ng-click="app.sendFeedback()" ng-disabled="feedbackForm.$invalid">
 				Send
 			</md-button>
 		</div>

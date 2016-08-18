@@ -1,10 +1,13 @@
 module GrafikaApp {
     export class AppController extends AuthController {
         version: string = '';
+        feedback: Feedback = new Feedback();
+        feedbackCategories: string[] = ['Just saying Hi!', 'Bug', 'Features', 'Other'];
 
-        public static $inject = ['appCommon', 'authService', 'uxService', '$rootScope'];
+        public static $inject = ['appCommon', 'apiService', 'authService', 'uxService', '$rootScope'];
         constructor(
             appCommon: AppCommon,
+            private apiService: ApiService,
             authService: AuthService,
             public uxService: UxService,
             $rootScope: ng.IRootScopeService
@@ -29,6 +32,17 @@ module GrafikaApp {
                 }
 
             });
+
+            
+        }
+
+        sendFeedback() {
+            this.apiService.post('content/feedback', this.feedback)
+                .then((res) => {
+                    this.appCommon.toast('Feedback is submitted!');
+                    return this.appCommon.$q.when(true);
+                })
+                .finally(() => this.feedback = new Feedback() );
         }
     }
 }

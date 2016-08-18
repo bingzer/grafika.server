@@ -78,8 +78,10 @@ var GrafikaApp;
                 controllerAs: 'vm'
             })
                 .state('about', { url: '/about', templateUrl: 'app/content/about.html', data: { pageTitle: 'About Grafika' } })
+                .state('feedback', { url: '/feedback', templateUrl: 'app/content/feedback.html', data: { pageTitle: 'Feedback' } })
                 .state('privacy', { url: '/privacy', templateUrl: 'app/content/privacy.html', data: { pageTitle: 'Privacy' } })
-                .state('eula', { url: '/eula', templateUrl: 'app/content/eula.html', data: { pageTitle: 'EULA' } });
+                .state('eula', { url: '/eula', templateUrl: 'app/content/eula.html', data: { pageTitle: 'EULA' } })
+                .state('help', { url: '/help', templateUrl: 'app/content/help.html', data: { pageTitle: 'Help' } });
             $urlRouterProvider.otherwise('/');
             $locationProvder.html5Mode(true);
         }

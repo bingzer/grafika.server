@@ -49,17 +49,16 @@ var GrafikaApp;
         MainController.prototype.initGrafika = function () {
             if (this.isAuthorized('user'))
                 return;
-            var grafikaIntro = this.appCommon.$window['grafikaIntro'];
-            if (!grafikaIntro) {
-                grafikaIntro = new Grafika();
+            var bannerGrafika = this.appCommon.$window['bannerGrafika'];
+            if (!bannerGrafika) {
+                bannerGrafika = new Grafika();
             }
-            grafikaIntro.initialize('#intro-canvas', { drawingMode: 'none', useNavigationText: false, useCarbonCopy: false, loop: true });
-            grafikaIntro.demo.initialize('alphabet');
-            grafikaIntro.getAnimation().timer = 500;
-            grafikaIntro.play();
-            grafikaIntro;
+            bannerGrafika.initialize('#banner-canvas', { drawingMode: 'none', useNavigationText: false, useCarbonCopy: false, loop: true });
+            bannerGrafika.demo.initialize('alphabet');
+            bannerGrafika.getAnimation().timer = 500;
+            bannerGrafika.play();
             this.$rootScope.$on('$stateChangeStart', function (e) {
-                grafikaIntro.pause();
+                bannerGrafika.pause();
             });
         };
         MainController.prototype.getAppVersion = function () {

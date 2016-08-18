@@ -174,28 +174,39 @@ md-dialog {
 	min-width: 450px;
 }
 
-/* ---------- Intro ------------ */
-.intro {
+/* ---------- Banner ------------ */
+.banner {
 	height: 350px;
 	min-height: 250px;
 	width: 100%;
 	position: relative;
 }
-.intro > .canvas-overlay {
+.banner > .canvas-overlay {
 	position: absolute;
 	top: 0;
 	background: rgba(0,128,128, 0.9);
 }
-.intro #intro-canvas {
+.banner #banner-canvas {
 	display: block;
 	height: 350px;
 	width: 100%;
 }
-.intro #logo {
+.banner #logo {
 	position: absolute;
 	top: 35%;
 	left: 50%;
 	margin-left: -72px;
+}
+
+.intro {
+	min-height: 256px;
+}
+.intro .part {
+	text-align: center;
+}
+.intro .material-icons {
+	font-size: 96px;
+	color: rgba(0,128,128, 0.9);
 }
 /** User avatar **/
 .avatar {

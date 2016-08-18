@@ -10,6 +10,7 @@ import * as userController      from '../controllers/users';
 import * as syncController      from '../controllers/sync';
 import * as adminController     from '../controllers/admin';
 import * as animationController from '../controllers/animation';
+import * as contentController   from '../controllers/content';
 
 import * as config from '../configs/config';
 import { Animation } from '../models/animation';
@@ -196,6 +197,9 @@ export function initialize(app): q.Promise<any> {
         // --------------- Restful Registration -------------------------//
         User.register(app, '/api/users');
         Animation.register(app, '/api/animations');
+
+        // ---------------- Content -----------------------------//
+        app.post('/api/content/feedback', contentController.feedback)
 
         // --------------- Error handlers -------------------------//
         app.use(handleErrors);
