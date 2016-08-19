@@ -79,7 +79,7 @@ var GrafikaApp;
             })
                 .state('about', { url: '/about', templateUrl: 'app/content/about.html', data: { pageTitle: 'About Grafika' } })
                 .state('about.feedback', { url: '/feedback', templateUrl: 'app/content/feedback.html', data: { pageTitle: 'Feedback' } })
-                .state('about.help', { url: '/help', templateUrl: 'app/content/help.html', data: { pageTitle: 'Help' } })
+                .state('help', { url: '/help', templateUrl: 'app/content/help.html', data: { pageTitle: 'Help' } })
                 .state('privacy', { url: '/privacy', templateUrl: 'app/content/privacy.html', data: { pageTitle: 'Privacy' } })
                 .state('eula', { url: '/eula', templateUrl: 'app/content/eula.html', data: { pageTitle: 'EULA' } })
                 .state('help', { url: '/help', templateUrl: 'app/content/help.html', data: { pageTitle: 'Help' } });
