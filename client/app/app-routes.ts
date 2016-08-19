@@ -94,7 +94,6 @@ module GrafikaApp {
 				.state('help', { url: '/help', templateUrl: 'app/content/help.html', data: { pageTitle: 'Help' } })
 				.state('privacy', { url: '/privacy', templateUrl: 'app/content/privacy.html', data: { pageTitle: 'Privacy' } })
 				.state('eula', { url: '/eula', templateUrl: 'app/content/eula.html', data: { pageTitle: 'EULA' } })
-				.state('help', { url: '/help', templateUrl: 'app/content/help.html', data: { pageTitle: 'Help' } })
 				;
 			$urlRouterProvider.otherwise('/');
 			$locationProvder.html5Mode(true);
