@@ -1,4 +1,4 @@
-<style ng-if="!vm.isAuthorized('user')">
+<style>
 	nav.navbar .nav-link-logo {
 		display: none
 	}
@@ -15,55 +15,38 @@
 					<span class="font-smaller">&nbsp;v.{{app.version }}</span>
 				</p>
 				<p layout-align="center" >
-					Grafika is a simple stop-motion animation maker.
+					Grafika is a simple stop-motion animation maker.<br/>
 					This web application provides a platform for users to upload/view/create/share 
 					animations to the Interweb.
 				</p>
 			</div>
 		</div>		
 		<div layout="row" layout-align="center" layout-wrap>
-			<div class="part" flex-gt-sm="30" flex="90" layout-padding>
+			<div class="part" flex="45" layout-padding>
 				<p>
-					<i class="material-icons">movie_filter</i><br/>
+					<i class="material-icons">devices</i><br/>
 					<span class="md-headline">Platforms</span>
 				</p>
 				<p>
-					Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-					Mauris consectetur pharetra mi ac pulvinar. Maecenas sed eros justo. 
-					Etiam nec lacinia dui. Ut rhoncus dignissim erat.
+					As of right now, we're maintaining web and android platform.<br/>
+					iOS is still in the future.
+				</p>
+			</div>
+			<div class="part" flex="45" layout-padding>
+				<p>
+					<i class="material-icons">feedback</i><br/>
+					<span class="md-headline">Feedback</span>
+				</p>
+				<p>
+					Any suggestion, complainst?<br/>
+					Any feedback will be appreciated
 				</p>
 				<div layout="row" layout-padding layout-align="center">
-					<a class="btn btn-default" href="#list">Browse</a>
+					<a class="btn btn-default" ui-sref="about.feedback">Submit Feedback</a>
 				</div>
-			</div>
-			<div class="part" flex-gt-sm="30" flex="90" layout-padding>
-				<p>
-					<i class="material-icons">account_box</i><br/>
-					<span class="md-headline">Personalized</span>
-				</p>
-				<p>
-					Nullam congue aliquet finibus. Ut placerat eu leo eu elementum. 
-					Phasellus maximus non magna sit amet gravida. 
-					Fusce ex libero, sollicitudin in lobortis nec, pharetra at tellus
-				</p>
-				<div layout="row" layout-padding layout-align="center">
-					<button class="btn btn-success" ng-click="vm.login($event)">Login</button>
-					<span>&nbsp;</span>
-					<button class="btn btn-info" ng-click="vm.register($event)">Register</button>
-				</div>
-			</div>
-
-			<div class="part" flex-gt-sm="30" flex="90" layout-padding>
-				<p>
-					<i class="material-icons">devices</i><br/>
-					<span class="md-headline">Cross Platform</span>
-				</p>
-				<p>
-					Etiam accumsan arcu lorem. Proin iaculis sollicitudin eleifend. 
-					Integer eget urna neque. Nam lobortis eget magna et euismod. 
-					Integer et urna vestibulum, fringilla urna eu, pretium metus.
-				</p> 
 			</div>
 		</div>
+		<!-- Main content -->
+		<div class="page-wrap" ui-view></div>
 	</div>
 </div>
