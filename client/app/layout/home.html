@@ -11,7 +11,7 @@
 		<div layout-fill class="canvas-overlay"></div>
 		<img id="logo" src="/assets/img/logo.png" />
 	</div>
-	<div class="intro md-whiteframe-z2" ng-if="!vm.isAuthorized('user')" layout-padding>
+	<div class="intro md-whiteframe-z2" layout="column" ng-if="!vm.isAuthorized('user')">
 		<div layout="row" layout-align="center" layout-wrap>
 			<div class="part" flex-gt-sm="30" flex="90" layout-padding>
 				<p>
@@ -23,6 +23,9 @@
 					Mauris consectetur pharetra mi ac pulvinar. Maecenas sed eros justo. 
 					Etiam nec lacinia dui. Ut rhoncus dignissim erat.
 				</p>
+				<div layout="row" layout-padding layout-align="center">
+					<a class="btn btn-default" href="#list">Browse</a>
+				</div>
 			</div>
 			<div class="part" flex-gt-sm="30" flex="90" layout-padding>
 				<p>
@@ -35,21 +38,48 @@
 					Fusce ex libero, sollicitudin in lobortis nec, pharetra at tellus
 				</p>
 				<div layout="row" layout-padding layout-align="center">
-					<button class="btn btn-success">Login</button>
+					<button class="btn btn-success" ng-click="vm.login($event)">Login</button>
 					<span>&nbsp;</span>
-					<button class="btn btn-info">Register</button>
+					<button class="btn btn-info" ng-click="vm.register($event)">Register</button>
 				</div>
 			</div>
+
 			<div class="part" flex-gt-sm="30" flex="90" layout-padding>
 				<p>
-					<i class="material-icons">cloud_queue</i><br/>
-					<span class="md-headline">Cloud backed</span>
+					<i class="material-icons">devices</i><br/>
+					<span class="md-headline">Cross Platform</span>
 				</p>
 				<p>
 					Etiam accumsan arcu lorem. Proin iaculis sollicitudin eleifend. 
 					Integer eget urna neque. Nam lobortis eget magna et euismod. 
 					Integer et urna vestibulum, fringilla urna eu, pretium metus.
 				</p> 
+			</div>
+		</div>
+
+		<div style="position: relative; height: 256px" ng-if="!vm.isAuthorized('user')" >
+			<div style="position: absolute; left: 0; top: 0; height: 100%; width: 100%; background: url('assets/img/code-background.png')"></div>
+			<div style="position: absolute; left: 0; top: 0; height: 100%; width: 100%; background-color: rgba(0,128,128, 0.9)">
+				<div layout="row" class="open-source" style="margin: 32px">
+					<div layout="row" layout-padding layout-align-gt-md="center" flex-gt-md>
+						<img src="assets/img/github_light.png" width="64" height="64">
+						<div class="text-white" layout-align="center">
+							<p class="md-headline" layout="row" layout-wrap>
+								Open
+							</p>
+							<p>
+								Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+								Maecenas et interdum nunc. Nullam in nisi ac mauris rutrum vulputate 
+								Maecenas ac arcu nec dolor porttitor ac eu purus.
+							</p>
+							<div layout="row" layout-padding>
+								<a class="btn btn-success" href="http://github.com/bingzer/grafika" target="_blank">Grafika</a>
+								<span>&nbsp;</span>
+								<a class="btn btn-info" href="http://github.com/bingzer/grafika.js" target="_blank">Grafika.js</a>
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -64,6 +94,6 @@
 				</md-input-container>
 			</form>
 		</div>
-		<div ng-include="'app/animation/list.html'" flex></div>
+		<div id="list" ng-include="'app/animation/list.html'" flex></div>
 	</div>
 </div>

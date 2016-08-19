@@ -36,6 +36,11 @@ module GrafikaApp {
         reset() {
             this.username = '';
             this.password = '';
+            this.close();
+        }
+
+        close(){
+            this.appCommon.$mdDialog.hide();
         }
     }
 }

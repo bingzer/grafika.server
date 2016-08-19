@@ -16,7 +16,7 @@ module GrafikaApp {
 			$stateProvider
 				.state('home', {
 					url: '/',
-					templateUrl: 'app/layout/home.html'
+					templateUrl: 'app/layout/home.html',
 				})
 				.state('login', {
 					url: '/login',

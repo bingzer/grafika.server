@@ -1,3 +1,69 @@
-<div layout-margin>
-	<include-markdown markdown-url="'/app/content/about.md'" layout-padding layout-margin layout="row" flex></include-markdown>
+<style ng-if="!vm.isAuthorized('user')">
+	nav.navbar .nav-link-logo {
+		display: none
+	}
+	nav.md-whiteframe-z1 {
+		box-shadow: none;
+	}
+</style>
+<div class="about">
+	<div class="intro md-whiteframe-z1">
+		<div layout="row" layout-padding style="background-color: rgba(0,128,128, 0.9)">
+			<div class="text-white text-center" layout-align="center" style="margin: 24px" flex>
+				<p>
+					<a href="/"><img src="assets/img/logo.png" height="48px"></a>
+					<span class="font-smaller">&nbsp;v.{{app.version }}</span>
+				</p>
+				<p layout-align="center" >
+					Grafika is a simple stop-motion animation maker.
+					This web application provides a platform for users to upload/view/create/share 
+					animations to the Interweb.
+				</p>
+			</div>
+		</div>		
+		<div layout="row" layout-align="center" layout-wrap>
+			<div class="part" flex-gt-sm="30" flex="90" layout-padding>
+				<p>
+					<i class="material-icons">movie_filter</i><br/>
+					<span class="md-headline">Platforms</span>
+				</p>
+				<p>
+					Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+					Mauris consectetur pharetra mi ac pulvinar. Maecenas sed eros justo. 
+					Etiam nec lacinia dui. Ut rhoncus dignissim erat.
+				</p>
+				<div layout="row" layout-padding layout-align="center">
+					<a class="btn btn-default" href="#list">Browse</a>
+				</div>
+			</div>
+			<div class="part" flex-gt-sm="30" flex="90" layout-padding>
+				<p>
+					<i class="material-icons">account_box</i><br/>
+					<span class="md-headline">Personalized</span>
+				</p>
+				<p>
+					Nullam congue aliquet finibus. Ut placerat eu leo eu elementum. 
+					Phasellus maximus non magna sit amet gravida. 
+					Fusce ex libero, sollicitudin in lobortis nec, pharetra at tellus
+				</p>
+				<div layout="row" layout-padding layout-align="center">
+					<button class="btn btn-success" ng-click="vm.login($event)">Login</button>
+					<span>&nbsp;</span>
+					<button class="btn btn-info" ng-click="vm.register($event)">Register</button>
+				</div>
+			</div>
+
+			<div class="part" flex-gt-sm="30" flex="90" layout-padding>
+				<p>
+					<i class="material-icons">devices</i><br/>
+					<span class="md-headline">Cross Platform</span>
+				</p>
+				<p>
+					Etiam accumsan arcu lorem. Proin iaculis sollicitudin eleifend. 
+					Integer eget urna neque. Nam lobortis eget magna et euismod. 
+					Integer et urna vestibulum, fringilla urna eu, pretium metus.
+				</p> 
+			</div>
+		</div>
+	</div>
 </div>

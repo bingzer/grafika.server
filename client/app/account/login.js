@@ -38,6 +38,10 @@ var GrafikaApp;
         LoginController.prototype.reset = function () {
             this.username = '';
             this.password = '';
+            this.close();
+        };
+        LoginController.prototype.close = function () {
+            this.appCommon.$mdDialog.hide();
         };
         LoginController.$inject = ['appCommon', 'authService'];
         return LoginController;

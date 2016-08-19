@@ -34,6 +34,15 @@ var GrafikaApp;
                 }
             }
         }
+        MainController.prototype.close = function () {
+            this.appCommon.$mdDialog.hide();
+        };
+        MainController.prototype.login = function (evt) {
+            this.appCommon.showDialog('LoginController', 'app/account/login-dialog.html', evt, 'vm');
+        };
+        MainController.prototype.register = function (evt) {
+            this.appCommon.showDialog('RegisterController', 'app/account/register.html', evt, 'vm');
+        };
         MainController.prototype.confirmLogout = function () {
             var _this = this;
             this.appCommon.confirm('Are you sure you want to log out?')

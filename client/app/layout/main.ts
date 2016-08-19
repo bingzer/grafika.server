@@ -30,6 +30,18 @@ module GrafikaApp {
             }
         }    
 
+        close() {
+            this.appCommon.$mdDialog.hide();
+        }
+
+        login(evt: MouseEvent): void {
+            this.appCommon.showDialog('LoginController', 'app/account/login-dialog.html', evt, 'vm');
+        }
+
+        register(evt: MouseEvent): void {
+            this.appCommon.showDialog('RegisterController', 'app/account/register.html', evt, 'vm');
+        }
+
         confirmLogout(): void {
             this.appCommon.confirm('Are you sure you want to log out?')
                 .then(() => {

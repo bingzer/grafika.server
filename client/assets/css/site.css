@@ -28,11 +28,22 @@ body {
 	bottom: 1px;
 	width: 100%;
 }
+.md-dialog-is-showing .footer{
+	display: none;
+}
 @media (max-width: 599px){
 	.footer {
 		height: 156px;
 		max-height: 156px;
 	}
+}
+
+pre.wrap {
+	white-space: pre-wrap;       /* css-3 */
+	white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+	white-space: -pre-wrap;      /* Opera 4-6 */
+	white-space: -o-pre-wrap;    /* Opera 7 */
+	word-wrap: break-word;
 }
 
 /* ---------- Common ------------ */
@@ -98,6 +109,13 @@ body {
   bottom: 0;
   margin-top: auto;
   margin-bottom: auto;
+}
+.text-white {
+	color: #ffffff;
+}
+a.btn,
+button.btn {
+	border-radius: 2px;
 }
 /*-- Progress Modal --*/
 .progress-modal {
@@ -175,38 +193,45 @@ md-dialog {
 }
 
 /* ---------- Banner ------------ */
-.banner {
+.home .banner {
 	height: 350px;
 	min-height: 250px;
 	width: 100%;
 	position: relative;
 }
-.banner > .canvas-overlay {
+.home .banner > .canvas-overlay {
 	position: absolute;
 	top: 0;
 	background: rgba(0,128,128, 0.9);
 }
-.banner #banner-canvas {
+.home .banner #banner-canvas {
 	display: block;
 	height: 350px;
 	width: 100%;
 }
-.banner #logo {
+.home .banner #logo {
 	position: absolute;
 	top: 35%;
 	left: 50%;
 	margin-left: -72px;
 }
 
-.intro {
+.home .intro {
 	min-height: 256px;
 }
-.intro .part {
+
+.home .intro .part,
+.about .intro .part {
 	text-align: center;
 }
-.intro .material-icons {
+.home .intro .material-icons,
+.about .intro .material-icons {
 	font-size: 96px;
 	color: rgba(0,128,128, 0.9);
+}
+
+.home .open-source {
+	min-height: 128px;
 }
 /** User avatar **/
 .avatar {
