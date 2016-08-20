@@ -1,7 +1,13 @@
-<md-toolbar class="md-menu-toolbar md-whiteframe-z2">
+<md-toolbar class="drawing-toolbar md-menu-toolbar md-whiteframe-z2">
     <div layout="row">
-        <div>
-            <h2 class="md-toolbar-tools">{{vm.grafika.getAnimation().name}}</h2>
+        <div flex>
+            <div class="md-toolbar-tools text-white" layout="row">
+                <h2>{{vm.grafika.getAnimation().name}}</h2>
+                <span flex></span>
+                <div>
+                    NUM
+                </div>
+            </div>
             <md-menu-bar>
                 <md-menu>
                     <button ng-click="$mdOpenMenu()">File</button>
@@ -50,7 +56,6 @@
                                 Background Color
                                 <spectrum-colorpicker 
                                     format="'hex'"
-                                    style="padding-bottom: 4px"
                                     ng-model="vm.grafika.getOptions().backgroundColor"
                                     on-change="vm.grafika.setOptions({ backgroundColor: color})"/>
                             </md-button>

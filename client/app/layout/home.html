@@ -57,7 +57,7 @@
 			</div>
 		</div>
 
-		<div style="position: relative; height: 256px" ng-if="!vm.isAuthorized('user')" >
+		<div style="position: relative; height: 256px;" ng-if="!vm.isAuthorized('user')" >
 			<div style="position: absolute; left: 0; top: 0; height: 100%; width: 100%; background: url('assets/img/code-background.png')"></div>
 			<div style="position: absolute; left: 0; top: 0; height: 100%; width: 100%; background-color: rgba(0,128,128, 0.9)">
 				<div layout="row" class="open-source" style="margin: 32px">
@@ -84,7 +84,7 @@
 		</div>
 	</div>
 
-	<div display-block layout="column" layout-gt-sm="row" ng-controller="AnimationListController as vm">
+	<div id="list" display-block layout="column" layout-gt-sm="row" ng-controller="AnimationListController as vm">
 		<div layout-margin-sm>
 			<form name="filterForm" ng-submit="vm.list()">
 				<md-input-container class="md-icon-float md-icon-left md-block">
@@ -94,6 +94,6 @@
 				</md-input-container>
 			</form>
 		</div>
-		<div id="list" ng-include="'app/animation/list.html'" flex></div>
+		<div ng-include="'app/animation/list.html'" flex></div>
 	</div>
 </div>

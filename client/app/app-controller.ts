@@ -1,6 +1,7 @@
 module GrafikaApp {
     export class AppController extends AuthController {
         version: string = '';
+        buildTimestamp: string = '';
         feedback: Feedback = new Feedback();
         feedbackCategories: string[] = ['Just saying Hi!', 'Bug', 'Features', 'Other'];
 
@@ -15,7 +16,9 @@ module GrafikaApp {
         {
             super(appCommon, authService);
             this.version = appCommon.appConfig.appVersion;
+            this.buildTimestamp = appCommon.appConfig.appBuildTimestamp;
             this.appCommon.appConfig.baseUrl = this.appCommon.getBaseUrl();
+            this.authService.authenticate(true);
             
             $rootScope.$on('$stateChangeStart', (event, toState: ng.ui.IState, toParams: ng.ui.IStateParamsService, fromState, fromParams) => {
                 // -- Roles

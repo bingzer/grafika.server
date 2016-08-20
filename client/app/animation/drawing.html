@@ -5,31 +5,21 @@
     body .footer {
         display: none;
     }
-    /*
-    body {
-        padding-bottom: 0;
-        margin-bottom: 88px;
-        overflow: hidden;
-    }
-    
-    /** Page **/
-    /*.drawing,
-    .drawing #canvas-container,
-    .drwaing #canvas {
-        width: 100%;
-        height: 100%;
-    }
-
-    .drawing #canvas-container,
-    .drawing #canvas {
-            max-height: inherit !important;
-    }*/
 </style>
-<!-- Toolbar -->
-<ng-include src="'/app/animation/toolbar.html'"></ng-include>
-<!-- Canvas -->
-<div class="drawing" layout-padding flex layout="column" layout-align="center center">
-    <md-card id="canvas-container" class="editor">
-        <canvas id="canvas">No canvas support</canvas>
-    </md-card>
+<div class="drawing">
+    <!-- Toolbar -->
+    <ng-include src="'/app/animation/toolbar.html'"></ng-include>
+    <!-- Canvas -->
+    <div class="drawing" layout-padding flex layout="column" layout-align="center center">
+        <md-card id="canvas-container" class="editor">
+            <canvas id="canvas">No canvas support</canvas>
+        </md-card>
+    </div>
+    <!-- Fabs -->
+    <md-button class="md-fab md-fab-bottom-right md-primary" ng-click="vm.grafika.nextFrame()">
+        <md-icon><i class="material-icons">navigate_next</i></md-icon>
+    </md-button>
+    <md-button class="md-fab md-fab-bottom-left md-primary" ng-click="vm.grafika.previousFrame()">
+        <md-icon><i class="material-icons">navigate_before</i></md-icon>
+    </md-button>
 </div>

@@ -1,114 +1,23 @@
-<!doctype html>
-<html lang="en" ng-app="app" ng-controller="AppController as app" ng-cloak>
+<html ng-app="app" ng-controller="AppController as app" ng-cloak>
 <head>
-	<title ng-bind="app.uxService.pageTitle"></title>
-	<meta charset="utf-8">
-	<meta name="description" content="Super simple animation maker">
-	<meta name="author" content="Grafika Team">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<base href="/">
-	<link rel="stylesheet" type="text/css" href="//ajax.googleapis.com/ajax/libs/angular_material/1.1.0-rc2/angular-material.min.css"/>
-	<link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css"/>
-	<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/icon?family=Material+Icons"/>
-	<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Roboto:400,500,700"/>
-	<link rel="stylesheet" type="text/css" href="/assets/js/spectrum/spectrum.css"/>
-	<link rel="stylesheet" type="text/css" href="/assets/css/site.css"/>
+<title ng-bind="app.uxService.pageTitle"></title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<base href="/">
+<link rel="stylesheet" type="text/css" href="/assets/grafika.app.css"/>
+<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/icon?family=Material+Icons"/>
+<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Roboto:400,500,700"/>
 </head>
 <body ng-controller="MainController as vm">
-	<div id="progress-modal" layout-fill class="progress-modal" layout-align="center center">
+    <div id="progress-modal" layout-fill class="progress-modal" layout-align="center center">
 		<md-progress-circular md-mode="indeterminate" class="md-primary"></md-progress-circular>    
-	</div>
-
-	<!-- Header -->
+    </div>
 	<ng-include src="'/app/layout/header.html'"></ng-include>
-	<!-- Main content -->
 	<div id="content" class="page-wrap" ui-view></div>
-	<!-- Footer -->
 	<ng-include src="'/app/layout/footer.html'"></ng-include>
-
-	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
-	<!-- Angular Material requires Angular.js Libraries -->
-	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular.js"></script>
-	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-animate.min.js"></script>
-	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-aria.min.js"></script>
-	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-messages.min.js"></script>
-	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-touch.min.js"></script>
-	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-cookies.min.js"></script>
-	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-sanitize.js"></script>
-	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angular_material/1.1.0-rc.5/angular-material.min.js"></script>
-
-	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.3.1/angular-ui-router.js"></script>
-	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/markdown.js/0.5.0/markdown.min.js"></script>
-	<script type="text/javascript" src="//cdn.rawgit.com/auth0/angular-jwt/master/dist/angular-jwt.js"></script>
-
-	<script type="text/javascript" src="/assets/js/spectrum/spectrum.js"></script>
-	<script type="text/javascript" src="/assets/js/angular-spectrum-colorpicker/angular-spectrum-colorpicker.min.js"></script>
-	<script type="text/javascript" src="/assets/js/angularUtils-disqus/dirDisqus.js"></script>
-
-	<script type="text/javascript" src="/assets/js/grafika.js/dist/grafika-core.min.js"></script>
-	<!--<script type="text/javascript" src="/assets/js/grafika.js/src/grafika.js"></script>
-	<script type="text/javascript" src="/assets/js/grafika.js/src/grafika.extensions.js"></script>-->
-	<script type="text/javascript" src="/assets/js/grafika.js/dist/grafika.demo.min.js"></script>
-
-	<script type="text/javascript" src="/app/app-routes.js"></script>
-	<script type="text/javascript" src="/app/app-themes.js"></script>
-	<script type="text/javascript" src="/app/app-config.js"></script>
-	<script type="text/javascript" src="/app/app-common.js"></script>
-	<script type="text/javascript" src="/app/app-http.js"></script>
-	<script type="text/javascript" src="/app/app-base.js"></script>
-	<script type="text/javascript" src="/app/app-controller.js"></script>
-
-	<script type="text/javascript" src="/app/models/user.js"></script>
-	<script type="text/javascript" src="/app/models/animation.js"></script>
-	<script type="text/javascript" src="/app/models/paging.js"></script>
-	<script type="text/javascript" src="/app/models/disqus-config.js"></script>
-	<script type="text/javascript" src="/app/models/feedback.js"></script>
-
-	<script type="text/javascript" src="/app/directives/active-link.js"></script>
-	<script type="text/javascript" src="/app/directives/image-uploader.js"></script>
-	<script type="text/javascript" src="/app/directives/no-result.js"></script>
-	<script type="text/javascript" src="/app/directives/fetch-more.js"></script>
-	<script type="text/javascript" src="/app/directives/rating-stars.js"></script>
-	<script type="text/javascript" src="/app/directives/include-markdown.js"></script>
-
-	<script type="text/javascript" src="/app/services/ux-service.js"></script>
-	<script type="text/javascript" src="/app/services/api-service.js"></script>
-	<script type="text/javascript" src="/app/services/auth-service.js"></script>
-	<script type="text/javascript" src="/app/services/animation-service.js"></script>
-	<script type="text/javascript" src="/app/services/frame-service.js"></script>
-	<script type="text/javascript" src="/app/services/resource-service.js"></script>
-	<script type="text/javascript" src="/app/services/user-service.js"></script>
-	<script type="text/javascript" src="/app/services/admin-service.js"></script>
-
-	<script type="text/javascript" src="/app/filters/keyboard.js"></script>
-
-	<script type="text/javascript" src="/app/layout/main.js"></script>
-
-	<script type="text/javascript" src="/app/account/login.js"></script>
-	<script type="text/javascript" src="/app/account/register.js"></script>
-	<script type="text/javascript" src="/app/account/forget.js"></script>
-	<script type="text/javascript" src="/app/account/reset.js"></script>
-	<script type="text/javascript" src="/app/account/profile.js"></script>
-	<script type="text/javascript" src="/app/account/settings.js"></script>
-	<script type="text/javascript" src="/app/account/password.js"></script>
-
-	<script type="text/javascript" src="/app/animation/base.js"></script>
-	<script type="text/javascript" src="/app/animation/list.js"></script>
-	<script type="text/javascript" src="/app/animation/detail.js"></script>
-	<script type="text/javascript" src="/app/animation/edit.js"></script>
-	<script type="text/javascript" src="/app/animation/drawing.js"></script>
-	<script type="text/javascript" src="/app/animation/create.js"></script>
-	<script type="text/javascript" src="/app/animation/mine.js"></script>
-	<script type="text/javascript" src="/app/animation/playback.js"></script>
-
-	<script type="text/javascript" src="/app/users/user.js"></script>
-
-	<script type="text/javascript" src="/app/content/content.js"></script>
-
-	<script type="text/javascript" src="/app/admin/admin.js"></script>
-
-	<script type="text/javascript" src="/app/app.js"></script>
-
-	</body>
+<script type="text/javascript" src="/assets/grafika.js"></script>
+<script type="text/javascript" src="/assets/grafika.lib.js"></script>
+<script type="text/javascript" src="/assets/grafika.vendor.js"></script>
+<script type="text/javascript" src="/assets/grafika.app.js"></script>
+</body>
 </html>

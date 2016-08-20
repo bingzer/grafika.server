@@ -23,6 +23,7 @@ var GrafikaApp;
     app.directive('fetchMore', GrafikaApp.FetchMoreDirective.factory());
     app.directive('ratingStars', GrafikaApp.RatingStarsDirective.factory());
     app.directive('includeMarkdown', GrafikaApp.IncludeMarkdownDirective.factory());
+    app.directive('gfSpinner', GrafikaApp.GfSpinner.factory());
     app.service('uxService', GrafikaApp.UxService);
     app.service('apiService', GrafikaApp.ApiService);
     app.service('authService', GrafikaApp.AuthService);

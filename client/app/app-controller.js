@@ -13,10 +13,13 @@ var GrafikaApp;
             this.apiService = apiService;
             this.uxService = uxService;
             this.version = '';
+            this.buildTimestamp = '';
             this.feedback = new GrafikaApp.Feedback();
             this.feedbackCategories = ['Just saying Hi!', 'Bug', 'Features', 'Other'];
             this.version = appCommon.appConfig.appVersion;
+            this.buildTimestamp = appCommon.appConfig.appBuildTimestamp;
             this.appCommon.appConfig.baseUrl = this.appCommon.getBaseUrl();
+            this.authService.authenticate(true);
             $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
                 if (toState.data && toState.data.roles) {
                     var user = authService.getUser();

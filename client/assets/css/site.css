@@ -251,6 +251,22 @@ md-dialog {
 	width: 64px;
 }
 
+/* ---------- Drawing ----------- */
+.drawing .drawing-toolbar {
+	height: 88px;
+	min-height: 88px;
+	max-height: 88px;
+}
+.drawing .drawing-toolbar .md-toolbar-tools {
+	height: 50px;
+	min-height: 50px;
+	max-height: 50px;
+	background-color: rgba(0,128,128, 0.9);
+}
+md-menu-item .sp-replacer.sp-light {
+	margin-bottom: 8px;
+}
+
 /* ---------- Card ------------ */
 .animation-card {
 	margin: 16px;
@@ -378,4 +394,50 @@ button.sign-in-button > img{
 }
 button.sign-in-button > span{
   color: #ffffff;
+}
+
+/** --------------- Loading (gf-spinner) --------------- */
+.gf-spinner {
+  width: 50px;
+  height: 40px;
+  text-align: center;
+  font-size: 10px;
+}
+.gf-spinner > div {
+  background-color: #c0c0c0;
+  height: 100%;
+  width: 6px;
+  display: inline-block;
+  
+  -webkit-animation: sk-stretchdelay 1.2s infinite ease-in-out;
+  animation: sk-stretchdelay 1.2s infinite ease-in-out;
+}
+.gf-spinner .rect2 {
+  -webkit-animation-delay: -1.1s;
+  animation-delay: -1.1s;
+}
+.gf-spinner .rect3 {
+  -webkit-animation-delay: -1.0s;
+  animation-delay: -1.0s;
+}
+.gf-spinner .rect4 {
+  -webkit-animation-delay: -0.9s;
+  animation-delay: -0.9s;
+}
+.gf-spinner .rect5 {
+  -webkit-animation-delay: -0.8s;
+  animation-delay: -0.8s;
+}
+@-webkit-keyframes sk-stretchdelay {
+  0%, 40%, 100% { -webkit-transform: scaleY(0.4) }  
+  20% { -webkit-transform: scaleY(1.0) }
+}
+@keyframes sk-stretchdelay {
+  0%, 40%, 100% { 
+    transform: scaleY(0.4);
+    -webkit-transform: scaleY(0.4);
+  }  20% { 
+    transform: scaleY(1.0);
+    -webkit-transform: scaleY(1.0);
+  }
 }
