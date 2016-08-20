@@ -115,18 +115,7 @@ module.exports = function (grunt) {
                         'node_modules/angular-sanitize/angular-sanitize.js',
                         'node_modules/angular-material/angular-material.js',        
                         'node_modules/angular-ui-router/release/angular-ui-router.js',      
-                        'node_modules/angular-jwt/dist/angular-jwt.js',             
-                    ]
-                }
-            },
-            vendor_js: {
-                options: {
-                    mangle: true,
-                    sourceMap: true,
-                    sourceMapName: 'client/assets/grafika.vendor.js.map'
-                },
-                files: {
-                    'client/assets/grafika.vendor.js': [
+                        'node_modules/angular-jwt/dist/angular-jwt.js',
                         'client/assets/js/spectrum/spectrum.js',
                         'bower_components/angular-spectrum-colorpicker/dist/angular-spectrum-colorpicker.js',
                         'client/assets/js/angularUtils-disqus/dirDisqus.js',
