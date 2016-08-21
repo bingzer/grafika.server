@@ -8,6 +8,7 @@ var Setting = (function () {
     function Setting() {
         this.name = 'Grafika Web Server';
         this.version = pkg.version;
+        this.debug = process.env.NODE_ENV !== 'production';
         this.server = new Server();
         this.client = new Client();
         this.auth = new Auth();
@@ -45,6 +46,13 @@ var Setting = (function () {
     Object.defineProperty(Setting.prototype, "$version", {
         get: function () {
             return this.version;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Setting.prototype, "$debug", {
+        get: function () {
+            return this.debug;
         },
         enumerable: true,
         configurable: true

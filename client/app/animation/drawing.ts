@@ -18,9 +18,9 @@ module GrafikaApp {
         onLoaded(animation: Grafika.IAnimation) {
             this.uxService.pageTitle = 'Edit ' + this.animation.name;
             this.appCommon.elem('#canvas-container').css('width', this.animation.width).css('height', this.animation.height);
-            this.grafika.initialize('#canvas', { drawingMode: 'paint' }, this.animation);
-            this.frameService.get(this.grafika.getAnimation()).then((res) => {
-                this.grafika.setFrames(res.data);
+            this.frameService.get(this.animation).then((res) => {
+                this.animation.frames = res.data;
+                this.grafika.initialize('#canvas', { drawingMode: 'paint' }, this.animation);
             })
         }
 

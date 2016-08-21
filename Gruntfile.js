@@ -18,7 +18,10 @@ module.exports = function (grunt) {
         "cssmin",
         "uglify"
     ]);
-    grunt.registerTask("build", [
+    grunt.registerTask("dev-build", [ 
+        "ts"
+    ]);
+    grunt.registerTask("prod-build", [ 
         "ts",
         "cssmin",
         "uglify"
@@ -180,8 +183,10 @@ module.exports = function (grunt) {
                         'client/app/services/frame-service.js',
                         'client/app/services/resource-service.js',
                         'client/app/services/user-service.js',
+                        'client/app/services/admin-service.js',
                         'client/app/filters/keyboard-service.js',
                         'client/app/layout/main.js',
+                        'client/app/admin/admin.js',
                         'client/app/account/login.js',
                         'client/app/account/register.js',
                         'client/app/account/forget.js',

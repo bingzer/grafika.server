@@ -13,6 +13,7 @@ interface IConfig {
 class Setting implements IConfig {
     private name: string;
     private version: string;
+	private debug: boolean;
 
     private server: Server;
 	private client: Client;
@@ -21,6 +22,7 @@ class Setting implements IConfig {
 	constructor() {
 		this.name = 'Grafika Web Server';
 		this.version = pkg.version;
+		this.debug = process.env.NODE_ENV !== 'production';
 		this.server = new Server();
 		this.client = new Client();
 		this.auth = new Auth();
@@ -60,6 +62,10 @@ class Setting implements IConfig {
 
 	public get $version(): string {
 		return this.version;
+	}
+
+	public get $debug(): boolean {
+		return this.debug;
 	}
 
 	public get $server(): Server {

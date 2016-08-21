@@ -19,6 +19,7 @@ const app = express();
 
 export const server = app.listen(process.env.PORT || 3000, () => {
     winston.info('Grafika version : ' + config.setting.$version);
+    winston.info('   Debug : ' + config.setting.$debug);
 	winston.info('Server is starting at port ' + server.address().port);
 	winston.info('   URL address : ' + config.setting.$server.$url + ' (' + server.address().address + ')');
     
@@ -29,12 +30,16 @@ export const server = app.listen(process.env.PORT || 3000, () => {
         .then(() => passportConfig.initialize(app))
         .then(() => adminConfig.initialize(app))
         .then(() => {
-            app.use("/", express.static(__dirname + "/client"));
+            const indexHtml = config.setting.$debug ? "index.debug.html" : "index.html"; 
+            const staticOptions = { index: indexHtml };
+
+            app.use("/", express.static(__dirname + "/client", staticOptions));
             app.all('/api/*', (req, res, next) => {
                 res.sendStatus(404);
             });
+            
             app.all('/*', (req, res, next) => {
-                res.sendFile('index.html', { root: __dirname + '/client' });
+                res.sendFile(indexHtml, { root: __dirname + '/client' });
             });
         })
         .then(() => {

@@ -20,9 +20,9 @@ var GrafikaApp;
             var _this = this;
             this.uxService.pageTitle = 'Edit ' + this.animation.name;
             this.appCommon.elem('#canvas-container').css('width', this.animation.width).css('height', this.animation.height);
-            this.grafika.initialize('#canvas', { drawingMode: 'paint' }, this.animation);
-            this.frameService.get(this.grafika.getAnimation()).then(function (res) {
-                _this.grafika.setFrames(res.data);
+            this.frameService.get(this.animation).then(function (res) {
+                _this.animation.frames = res.data;
+                _this.grafika.initialize('#canvas', { drawingMode: 'paint' }, _this.animation);
             });
         };
         AnimationDrawingController.prototype.showProperties = function (ev) {
