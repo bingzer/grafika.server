@@ -19,12 +19,19 @@
                 </div>
             </div>
             <div layout="row">
-                <md-button href class="md-icon-button md-mini" ui-sref="drawing({_id: anim._id})" ng-if="vm.canEdit()">
-                    <md-icon><i class="material-icons">mode_edit</i></md-icon>
-                </md-button>
-                <md-button class="md-icon-button md-mini" ng-click="vm.confirmDelete(anim)" ng-if="vm.canDelete()">
-                    <md-icon><i class="material-icons">delete</i></md-icon>
-                </md-button>
+                <div layout="column" layout-align="start end">
+                    <div class="md-caption text-muted" layout="column" style="padding-top: 2px">
+                        <span>{{ anim.totalFrame + ' frames'}}</span>
+                    </div>
+                    <div layout="row">
+                        <a href ui-sref="drawing({_id: anim._id})" ng-if="vm.canEdit()">
+                            <i class="material-icons" style="font-size: 18px; padding-left: 8px">mode_edit</i>
+                        </a>
+                        <a href ng-click="vm.confirmDelete(anim)" ng-if="vm.canDelete()">
+                            <i class="material-icons" style="font-size: 18px; padding-left: 8px">delete</i>
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
     </md-whiteframe>
