@@ -7,7 +7,7 @@
     "isShellCommand": true,
     "tasks": [
         {
-            "taskName": "ts",
+            "taskName": "build",
             "isBuildCommand": true,
             "problemMatcher": [
                 "$tsc"

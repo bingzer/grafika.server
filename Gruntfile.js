@@ -18,6 +18,11 @@ module.exports = function (grunt) {
         "cssmin",
         "uglify"
     ]);
+    grunt.registerTask("build", [
+        "ts",
+        "cssmin",
+        "uglify"
+    ]);
 
     ///////////////////////////////////////////////////////////////////////////////////////////
 
