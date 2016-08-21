@@ -6,9 +6,8 @@
 				<p>Profile</p>
 			</div>
 			<md-content class="font-medium" layout-padding>
-				<div class="font-medium">
-					<img class="avatar avatar-lg link text-center-vertical" 
-						layout-margin
+				<div class="font-medium" layout="row" layout-align="start start">
+					<img class="avatar avatar-lg link text-center-vertical" style="margin: 8px; border: 1px dotted gray"
 						ng-src="{{vm.user.prefs.avatar}}" 
 						image-uploader
 						preview-width="128" 
@@ -17,14 +16,16 @@
 						actual-height="128"
 						on-upload="vm.uploadAvatar($imageData)"
 						on-closed="vm.onClose()">
-					<md-input-container flex>
-						<label>First Name</label>
-						<input type="text" ng-model="vm.user.firstName" ng-change="vm.needsUpdate = true" ng-required="true">
-					</md-input-container>
-					<md-input-container flex>
-						<label>Last Name</label>
-						<input type="text" ng-model="vm.user.lastName" ng-change="vm.needsUpdate = true" ng-required="true">
-					</md-input-container>
+					<div class="layout-column" style="margin-left: 8px" flex>
+						<md-input-container>
+							<label>First Name</label>
+							<input type="text" ng-model="vm.user.firstName" ng-change="vm.needsUpdate = true" ng-required="true">
+						</md-input-container>
+						<md-input-container>
+							<label>Last Name</label>
+							<input type="text" ng-model="vm.user.lastName" ng-change="vm.needsUpdate = true" ng-required="true">
+						</md-input-container>
+					</div>
 				</div>
 			</md-content>
 		</md-toolbar>   
