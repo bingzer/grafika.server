@@ -117,6 +117,13 @@ a.btn,
 button.btn {
 	border-radius: 2px;
 }
+/** ng-material vs bootstrap fixers **/
+
+md-input-container > label {
+	margin-bottom: 0 !important;
+	font-weight: inherit !important;
+}
+
 /*-- Progress Modal --*/
 .progress-modal {
   visibility: hidden;
@@ -144,8 +151,11 @@ button.btn {
 nav.navbar {
 	margin-bottom: 0;    
 	background-color: rgba(0,128,128, 0.9);
-    border: 0;
-    border-radius: 0;
+	border: 0;
+	border-radius: 0;
+	height: 58px;
+	min-height: 58px;
+	max-height: 58px;
 }
 nav.navbar .navbar-toggle{
 	border-color: transparent;

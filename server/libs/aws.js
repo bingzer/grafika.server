@@ -85,6 +85,8 @@ var AwsResources = (function (_super) {
         return deferred.promise;
     };
     AwsResources.prototype.getResourceUrl = function (animId, resourceId) {
+        if (config.setting.$auth.$awsBucket === 'fake')
+            return '/assets/img/placeholder.png';
         return config.setting.$auth.$awsUrl + config.setting.$auth.$awsBucket + '/grafika/animations/' + animId + "/" + resourceId;
     };
     AwsResources.prototype.deleteResource = function (animId, resourceId) {

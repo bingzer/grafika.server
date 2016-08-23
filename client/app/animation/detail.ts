@@ -50,7 +50,7 @@ module GrafikaApp {
         }
 
         delete(): ng.IPromise<any> {
-            return this.appCommon.confirm('Delete?').then(() => {
+            return this.appCommon.confirm('Delete? This action is not reversible', this.animation.name).then(() => {
                 return this.animationService.delete(this.animation._id).then(() => {
                     this.appCommon.navigateHome();
                     return this.appCommon.toast('Deleted');

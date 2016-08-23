@@ -1,5 +1,23 @@
 "use strict";
+var utils = require('../libs/utils');
 var animation_1 = require("../models/animation");
+function search(req, res, next) {
+    if (req.query.term) {
+        var sort = createSort(req);
+        var query = createQuery(req);
+        var limit = utils.safeParseInt(req.query.limit) < 0 ? 25 : utils.safeParseInt(req.query.limit);
+        var skip = utils.safeParseInt(req.query.skip) < 0 ? 0 : utils.safeParseInt(req.query.skip);
+        animation_1.Animation.find(query).limit(limit).skip(skip).sort(sort).exec(function (err, result) {
+            if (err)
+                return next(err);
+            res.json(result);
+        });
+    }
+    else {
+        next();
+    }
+}
+exports.search = search;
 function remove(req, res, next) {
     animation_1.Animation.findByIdAndUpdate(req.params._id, { removed: true }, function (err, anim) {
         if (err)
@@ -40,4 +58,18 @@ function submitRating(req, res, next) {
     });
 }
 exports.submitRating = submitRating;
+function createQuery(req) {
+    return { $text: { $search: req.query.term } };
+}
+function createSort(req) {
+    var sort = {};
+    if (req.query.sort === 'rating')
+        sort.rating = -1;
+    else if (req.query.sort === 'views')
+        sort.views = -1;
+    else if (req.query.sort === 'newest')
+        sort.modifiedDate = -1;
+    sort._id = -1;
+    return sort;
+}
 //# sourceMappingURL=animation.js.map

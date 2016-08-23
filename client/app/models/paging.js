@@ -1,8 +1,3 @@
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
 var GrafikaApp;
 (function (GrafikaApp) {
     var Paging = (function () {
@@ -18,7 +13,7 @@ var GrafikaApp;
             this.userId = paging.userId;
             this.category = paging.category;
             this.sort = paging.sort;
-            this.query = paging.query;
+            this.term = paging.term;
             this.type = paging.type;
         }
         Paging.prototype.toQueryString = function () {
@@ -41,43 +36,23 @@ var GrafikaApp;
                 query += '&skip=' + this.skip;
             if (this.type)
                 query += "&type=" + this.type;
-            if (this.query)
-                query += this.createSearchTerm(this.query);
+            if (this.term)
+                query += "&term=" + this.term;
             return query;
         };
         Paging.prototype.next = function () {
             this.skip += this.limit;
-            return this.newInstance(this);
+            return new Paging(this);
         };
         Paging.prototype.previous = function () {
             if (this.skip - this.limit <= 0)
                 this.skip = 0;
             else
                 this.skip -= this.limit;
-            return this.newInstance(this);
-        };
-        Paging.prototype.createSearchTerm = function (query) {
-            return "&name__regex=/" + this.query + "/g";
-        };
-        Paging.prototype.newInstance = function (paging) {
             return new Paging(this);
         };
         return Paging;
     }());
     GrafikaApp.Paging = Paging;
-    var QueryablePaging = (function (_super) {
-        __extends(QueryablePaging, _super);
-        function QueryablePaging() {
-            _super.apply(this, arguments);
-        }
-        QueryablePaging.prototype.createSearchTerm = function (query) {
-            return '&term=' + query;
-        };
-        QueryablePaging.prototype.newInstance = function (paging) {
-            return new QueryablePaging(this);
-        };
-        return QueryablePaging;
-    }(Paging));
-    GrafikaApp.QueryablePaging = QueryablePaging;
 })(GrafikaApp || (GrafikaApp = {}));
 //# sourceMappingURL=paging.js.map

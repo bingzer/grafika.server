@@ -5,11 +5,11 @@ module GrafikaApp {
         configQuery: string = "";
         userQuery: string = "";
 
-        animPaging: QueryablePaging = new QueryablePaging();
+        animPaging: Paging = new Paging();
         animations: Grafika.IAnimation[] = [];
         hasMoreAnims: boolean = true;
 
-        userPaging: QueryablePaging = new QueryablePaging();
+        userPaging: Paging = new Paging();
         users: Grafika.IUser[] = []; 
         
         busy: boolean = false;
@@ -46,7 +46,7 @@ module GrafikaApp {
                     this.busy = false;
                     this.hasMoreAnims = anims.length >= this.animPaging.limit;
                     if (this.hasMoreAnims)
-                        this.animPaging = <QueryablePaging> this.animPaging.next();
+                        this.animPaging = this.animPaging.next();
                 });
         }
 

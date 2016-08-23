@@ -46,7 +46,7 @@ var GrafikaApp;
         };
         AnimationDetailController.prototype.delete = function () {
             var _this = this;
-            return this.appCommon.confirm('Delete?').then(function () {
+            return this.appCommon.confirm('Delete? This action is not reversible', this.animation.name).then(function () {
                 return _this.animationService.delete(_this.animation._id).then(function () {
                     _this.appCommon.navigateHome();
                     return _this.appCommon.toast('Deleted');

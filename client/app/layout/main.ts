@@ -1,5 +1,6 @@
 module GrafikaApp {
     export class MainController extends AuthController {
+
         public static $inject = ['appCommon', 'authService', 'animationService', '$rootScope'];
         constructor(appCommon: AppCommon, authService: AuthService, 
             private animationService: AnimationService,

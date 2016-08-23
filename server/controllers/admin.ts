@@ -6,6 +6,7 @@ import * as express from 'express';
 
 import * as mailer from '../libs/mailer';
 import * as config from '../configs/config';
+import * as utils from '../libs/utils';
 
 import { ISync, IServerSync, ServerSync, ILocalSync } from '../models/sync';
 import { Animation, IAnimation } from '../models/animation';
@@ -20,8 +21,8 @@ export function get(req: express.Request, res: express.Response, next: express.N
 export function listUsers(req: express.Request, res: express.Response, next: express.NextFunction) {
 	let sort = createUserSort(req);
 	let query = createQuery(req);
-	let limit = safeParseInt(req.query.limit) < MAX_COUNT ? safeParseInt(req.query.limit) : MAX_COUNT;
-	let skip = safeParseInt(req.query.skip) < 0 ? 0 : safeParseInt(req.query.skip);
+	let limit = utils.safeParseInt(req.query.limit) < MAX_COUNT ? utils.safeParseInt(req.query.limit) : MAX_COUNT;
+	let skip = utils.safeParseInt(req.query.skip) < 0 ? 0 : utils.safeParseInt(req.query.skip);
 	
 	User.find(query).limit(limit).skip(skip).sort(sort).exec((err, result) => {
         if (err) return next(err);
@@ -32,8 +33,8 @@ export function listUsers(req: express.Request, res: express.Response, next: exp
 export function listAnimations(req: express.Request, res: express.Response, next: express.NextFunction) {
 	let sort = createAnimationSort(req);
 	let query = createQuery(req);
-	let limit = safeParseInt(req.query.limit) < MAX_COUNT ? safeParseInt(req.query.limit) : MAX_COUNT;
-	let skip = safeParseInt(req.query.skip) < 0 ? 0 : safeParseInt(req.query.skip);
+	let limit = utils.safeParseInt(req.query.limit) < MAX_COUNT ? utils.safeParseInt(req.query.limit) : MAX_COUNT;
+	let skip = utils.safeParseInt(req.query.skip) < 0 ? 0 : utils.safeParseInt(req.query.skip);
 	
 	Animation.find(query).limit(limit).skip(skip).sort(sort).exec((err, result) => {
         if (err) return next(err);
@@ -92,11 +93,7 @@ export function activateUser(req: express.Request, res: express.Response, next: 
 };
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
-function safeParseInt(num){
-	let i = parseInt(num);
-	if (isNaN(i)) i = -1;
-	return i;
-}
+
 function createUserSort(req: any){
 	let sort:any = {};
 	if (req.query.sort === 'username') 

@@ -15,10 +15,10 @@ var GrafikaApp;
             this.clientConfigs = [];
             this.configQuery = "";
             this.userQuery = "";
-            this.animPaging = new GrafikaApp.QueryablePaging();
+            this.animPaging = new GrafikaApp.Paging();
             this.animations = [];
             this.hasMoreAnims = true;
-            this.userPaging = new GrafikaApp.QueryablePaging();
+            this.userPaging = new GrafikaApp.Paging();
             this.users = [];
             this.busy = false;
         }

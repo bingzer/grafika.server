@@ -2,6 +2,7 @@ module GrafikaApp {
     export class AnimationListController extends BaseController {
         paging: Paging;
         animations: Animation[];
+        animationSorts: any[];
         selectedAnimationId: string;
         hasMore: boolean = true;
         busy: boolean = false;
@@ -14,6 +15,7 @@ module GrafikaApp {
         ){
             super(appCommon)
 
+            this.animationSorts = appCommon.appConfig.animationSorts;
             this.paging = this.createPaging();
             this.list();
         }
@@ -42,7 +44,7 @@ module GrafikaApp {
         }
 
         protected createPaging() : Paging {
-            return new Paging({ isPublic: true, limit: this.appCommon.appConfig.fetchSize, skip: 0});
+            return new Paging({ isPublic: true, limit: this.appCommon.appConfig.fetchSize, skip: 0, sort: 'newest'});
         }
     }
 }

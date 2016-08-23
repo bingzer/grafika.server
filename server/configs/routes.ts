@@ -163,7 +163,7 @@ export function initialize(app): q.Promise<any> {
         app.post('/api/accounts/username-check', useSessionOrJwt, accountController.checkUsernameAvailability)
         
         // ---------------- Animation -----------------------------//
-        app.get('/api/animations');  // List => use nothing
+        app.get('/api/animations', animationController.search);
         app.post('/api/animations', useSessionOrJwt); // create
         app.get('/api/animations/:_id', extractUser, useAnimAccess); // view
         app.put('/api/animations/:_id', useSessionOrJwt, useAnimAccess); // update

@@ -2,7 +2,7 @@ module GrafikaApp {
     export class AppConfig {
         appTitle: string = 'Grafika';
         appVersion: string = '0.9.19-10'; // injected by grunt
-        appBuildTimestamp: string = 'Sun Aug 21 2016 08:19:44 GMT-0400 (Eastern Daylight Time)'; // injected by grunt
+        appBuildTimestamp: string = 'Mon Aug 22 2016 08:23:21 GMT-0400 (Eastern Daylight Time)'; // injected by grunt
         baseUrl: string = ''; // injected by app-controller
         defaultBaseUrl: string = 'https://grafika.herokuapp.com/';  // default url if baseUrl is localhost
         apiBaseUrl: string = 'api/';  // local
@@ -12,5 +12,10 @@ module GrafikaApp {
         fetchSize: number = 10;
         defaultAnimationWidth: number = 800;
         defaultAnimationHeight: number = 400;
+        animationSorts: any = [
+            { key: 'newest', value: 'Newest' },
+            { key: 'views', value: 'Views' },
+            { key: 'rating', value: 'Ratings' }
+        ];
     }
 }

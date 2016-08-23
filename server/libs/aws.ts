@@ -90,6 +90,8 @@ export class AwsResources extends AwsHelper {
 	
 	/** Returns the resource url */
 	getResourceUrl (animId: string, resourceId: string): string{
+		if (config.setting.$auth.$awsBucket === 'fake')
+			return '/assets/img/placeholder.png';
 		return config.setting.$auth.$awsUrl + config.setting.$auth.$awsBucket + '/grafika/animations/' + animId + "/" + resourceId;
 	}
 	

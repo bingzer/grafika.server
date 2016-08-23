@@ -135,7 +135,7 @@ function initialize(app) {
         app.post('/api/accounts/pwd/reset', accountController.resetPassword);
         app.post('/api/accounts/pwd', useSessionOrJwt, accountController.changePassword);
         app.post('/api/accounts/username-check', useSessionOrJwt, accountController.checkUsernameAvailability);
-        app.get('/api/animations');
+        app.get('/api/animations', animationController.search);
         app.post('/api/animations', useSessionOrJwt);
         app.get('/api/animations/:_id', extractUser, useAnimAccess);
         app.put('/api/animations/:_id', useSessionOrJwt, useAnimAccess);

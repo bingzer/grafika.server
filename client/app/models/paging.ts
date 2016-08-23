@@ -7,7 +7,7 @@ module GrafikaApp {
         userId: string;
         category: string;
         sort: string = 'views';
-        query: string;
+        term: string;
         type: string;
 
         constructor(paging?: Paging | any) {
@@ -18,7 +18,7 @@ module GrafikaApp {
             this.userId = paging.userId;
             this.category = paging.category;
             this.sort = paging.sort;
-            this.query = paging.query;
+            this.term = paging.term;
             this.type = paging.type;
         }
 
@@ -35,14 +35,14 @@ module GrafikaApp {
             if (this.limit) query += '&limit=' + this.limit;
             if (this.skip) query += '&skip=' + this.skip;
             if (this.type) query += "&type=" + this.type;
-            if (this.query) query += this.createSearchTerm(this.query);
+            if (this.term) query += "&term=" + this.term;
 
             return query;
         }
 
         next(): Paging {
             this.skip += this.limit;
-            return this.newInstance(this);
+            return new Paging(this);
         }
 
         previous(): Paging {
@@ -50,25 +50,7 @@ module GrafikaApp {
                 this.skip = 0;
             else this.skip -= this.limit;
             
-            return this.newInstance(this);
-        }
-
-        protected createSearchTerm(query: string): string{
-            return "&name__regex=/" + this.query + "/g";
-        }
-
-        protected newInstance(paging: Paging): Paging {
             return new Paging(this);
         }
     }
-
-	export class QueryablePaging extends Paging {
-        protected createSearchTerm(query: string): string{
-            return '&term=' + query;
-        }
-
-        protected newInstance(paging: Paging): Paging {
-            return new QueryablePaging(this);
-        }
-	}
 }

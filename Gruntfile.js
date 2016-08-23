@@ -18,10 +18,10 @@ module.exports = function (grunt) {
         "cssmin",
         "uglify"
     ]);
-    grunt.registerTask("dev-build", [ 
+    grunt.registerTask("build-dev", [ 
         "ts"
     ]);
-    grunt.registerTask("prod-build", [ 
+    grunt.registerTask("build-prod", [ 
         "ts",
         "cssmin",
         "uglify"
@@ -105,32 +105,6 @@ module.exports = function (grunt) {
             }
         },
         uglify: {
-            lib_js: {
-                options: {
-                    mangle: true,
-                    sourceMap: true,
-                    sourceMapName: 'client/assets/grafika.lib.js.map'
-                },
-                files: {
-                    'client/assets/grafika.lib.js': [
-                        'node_modules/jquery/dist/jquery.js',
-                        'node_modules/bootstrap/dist/js/bootstrap.js',
-                        'node_modules/angular/angular.js',
-                        'node_modules/angular-animate/angular-animate.js',
-                        'node_modules/angular-aria/angular-aria.js',
-                        'node_modules/angular-messages/angular-messages.js',
-                        'node_modules/angular-touch/angular-touch.js',
-                        'node_modules/angular-cookies/angular-cookies.js',
-                        'node_modules/angular-sanitize/angular-sanitize.js',
-                        'node_modules/angular-material/angular-material.js',        
-                        'node_modules/angular-ui-router/release/angular-ui-router.js',      
-                        'node_modules/angular-jwt/dist/angular-jwt.js',
-                        'client/assets/js/spectrum/spectrum.js',
-                        'bower_components/angular-spectrum-colorpicker/dist/angular-spectrum-colorpicker.js',
-                        'client/assets/js/angularUtils-disqus/dirDisqus.js',
-                    ]
-                }
-            },
             grafika_js: {
                 options: {
                     mangle: true,
@@ -157,6 +131,23 @@ module.exports = function (grunt) {
                 },
                 files: {
                     'client/assets/grafika.app.js': [
+                        'node_modules/jquery/dist/jquery.js',
+                        'node_modules/bootstrap/dist/js/bootstrap.js',
+                        'node_modules/angular/angular.js',
+                        'node_modules/angular-animate/angular-animate.js',
+                        'node_modules/angular-aria/angular-aria.js',
+                        'node_modules/angular-messages/angular-messages.js',
+                        'node_modules/angular-touch/angular-touch.js',
+                        'node_modules/angular-cookies/angular-cookies.js',
+                        'node_modules/angular-sanitize/angular-sanitize.js',
+                        'node_modules/angular-material/angular-material.js',        
+                        'node_modules/angular-ui-router/release/angular-ui-router.js',      
+                        'node_modules/angular-jwt/dist/angular-jwt.js',
+
+                        'client/assets/js/spectrum/spectrum.js',
+                        'bower_components/angular-spectrum-colorpicker/dist/angular-spectrum-colorpicker.js',
+                        'client/assets/js/angularUtils-disqus/dirDisqus.js',
+
                         'client/app/app-routes.js',
                         'client/app/app-themes.js',
                         'client/app/app-config.js',

@@ -1,6 +1,7 @@
 "use strict";
 var mailer = require('../libs/mailer');
 var config = require('../configs/config');
+var utils = require('../libs/utils');
 var animation_1 = require('../models/animation');
 var user_1 = require('../models/user');
 var MAX_COUNT = 25;
@@ -12,8 +13,8 @@ exports.get = get;
 function listUsers(req, res, next) {
     var sort = createUserSort(req);
     var query = createQuery(req);
-    var limit = safeParseInt(req.query.limit) < MAX_COUNT ? safeParseInt(req.query.limit) : MAX_COUNT;
-    var skip = safeParseInt(req.query.skip) < 0 ? 0 : safeParseInt(req.query.skip);
+    var limit = utils.safeParseInt(req.query.limit) < MAX_COUNT ? utils.safeParseInt(req.query.limit) : MAX_COUNT;
+    var skip = utils.safeParseInt(req.query.skip) < 0 ? 0 : utils.safeParseInt(req.query.skip);
     user_1.User.find(query).limit(limit).skip(skip).sort(sort).exec(function (err, result) {
         if (err)
             return next(err);
@@ -24,8 +25,8 @@ exports.listUsers = listUsers;
 function listAnimations(req, res, next) {
     var sort = createAnimationSort(req);
     var query = createQuery(req);
-    var limit = safeParseInt(req.query.limit) < MAX_COUNT ? safeParseInt(req.query.limit) : MAX_COUNT;
-    var skip = safeParseInt(req.query.skip) < 0 ? 0 : safeParseInt(req.query.skip);
+    var limit = utils.safeParseInt(req.query.limit) < MAX_COUNT ? utils.safeParseInt(req.query.limit) : MAX_COUNT;
+    var skip = utils.safeParseInt(req.query.skip) < 0 ? 0 : utils.safeParseInt(req.query.skip);
     animation_1.Animation.find(query).limit(limit).skip(skip).sort(sort).exec(function (err, result) {
         if (err)
             return next(err);
@@ -93,12 +94,6 @@ function activateUser(req, res, next) {
 }
 exports.activateUser = activateUser;
 ;
-function safeParseInt(num) {
-    var i = parseInt(num);
-    if (isNaN(i))
-        i = -1;
-    return i;
-}
 function createUserSort(req) {
     var sort = {};
     if (req.query.sort === 'username')

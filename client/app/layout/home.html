@@ -84,16 +84,23 @@
 		</div>
 	</div>
 
-	<div id="list" display-block layout="column" layout-gt-sm="row" ng-controller="AnimationListController as vm">
-		<div layout-margin-sm>
-			<form name="filterForm" ng-submit="vm.list()">
-				<md-input-container class="md-icon-float md-icon-left md-block">
-					<md-icon md-font-library="material-icons">search</md-icon>
-					<label>Search</label>
-					<input type="search" ng-model="vm.paging.query">
-				</md-input-container>
-			</form>
-		</div>
-		<div ng-include="'app/animation/list.html'" flex></div>
+	<div id="list" layout-gt-sm="row" layout="column" ng-controller="AnimationListController as vm">
+		<form style="margin-top: 16px; margin-bottom: -24px" layout-gt-sm="column" layout="row" name="filterForm" ng-submit="vm.list()" layout-margin-gt-sm>
+			<md-input-container flex-xs flex-sm>
+				<label>Search</label>
+				<input type="search" ng-model="vm.paging.term" flex>
+			</md-input-container>
+			<md-input-container>
+				<label>Sort</label>
+				<md-select ng-model="vm.paging.sort" ng-change="vm.list()">
+					<md-option ng-repeat="sort in vm.animationSorts" ng-value="sort.key" ng-bind="sort.value"></md-option>
+				</md-select>
+			</md-input-container>
+			<span style="margin-top: 2px">
+				<md-button class="md-button md-primary" type="submit">Search</md-button>
+				<md-button class="md-button" type="button">Reset</md-button>
+			</span>
+		</form>
+		<div ng-include="'app/animation/list.html'" layout-margin-xs layout-margin-sm flex-gt-sm></div>
 	</div>
 </div>
