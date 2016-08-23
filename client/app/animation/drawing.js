@@ -33,11 +33,11 @@ var GrafikaApp;
             var _this = this;
             this.grafika.save();
             var animation = this.grafika.getAnimation();
-            this.animationService.update(animation).then(function (res) {
-                return _this.resourceService.saveThumbnail(animation);
-            }).then(function (res) {
-                return _this.resourceService.upload(res.data, _this.grafika.exts.getCanvasBlob());
-            }).then(function (res) {
+            this.animationService.update(animation)
+                .then(function (res) { return _this.frameService.update(animation, _this.grafika.getFrames()); })
+                .then(function (res) { return _this.resourceService.saveThumbnail(animation); })
+                .then(function (res) { return _this.resourceService.upload(res.data, _this.grafika.exts.getCanvasBlob()); })
+                .then(function (res) {
                 if (exit)
                     _this.exit();
                 _this.appCommon.toast('Successfully saved!');

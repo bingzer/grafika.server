@@ -5,32 +5,36 @@
             <a href ui-sref="detail({_id: anim._id})">
                 <img class="card-image" ng-src="{{anim.thumbnailUrl}}" alt="thumbnail">
             </a>
-            <span class="thumbnail-left-icon" ng-if="!anim.isPublic">
-                <md-icon><i class="material-icons">lock_outline</i></md-icon>
-            </span>
+            <div class="thumbnail-overlay link" ui-sref="detail({_id: anim._id})">
+                <span class="thumbnail-left-icons" ng-if="!anim.isPublic">
+                    <span>
+                        <md-tooltip md-direction="bottom">Private to you</md-tooltip>
+                        <i class="material-icons">lock_outline</i>
+                    </span>
+                </span>
+                <span class="thumbnail-right-icons" layout="row">
+                    <a href ui-sref="drawing({_id: anim._id})" ng-if="vm.canEdit()">
+                        <md-tooltip md-direction="bottom">Edit</md-tooltip>
+                        <i class="material-icons">mode_edit</i>
+                    </a>
+                    <a href ng-click="vm.confirmDelete(anim)" ng-if="vm.canDelete()">
+                        <md-tooltip md-direction="bottom">Delete</md-tooltip>
+                        <i class="material-icons">delete</i>
+                    </a>
+                </span>
+            </div>
         </div>
         <div class="thumbnail-content" layout="row">
             <div layout="column" flex>
-                <div class="md-display">
+                <div layout="column">
                     <a class="md-body-2 link" ui-sref="detail({_id: anim._id})" ng-bind="anim.name"></a>
-                </div>
-                <div class="md-caption text-muted" layout="column">
                     <a class="md-subtitle link" ui-sref="user({_id: anim.userId})" ng-bind="anim.author || 'anonymous'"></a>
                 </div>
             </div>
-            <div layout="row">
-                <div layout="column" layout-align="start end">
-                    <div class="md-caption text-muted" layout="column" style="padding-top: 2px">
-                        <span>{{ anim.totalFrame + ' frames'}}</span>
-                    </div>
-                    <div layout="row">
-                        <a href ui-sref="drawing({_id: anim._id})" ng-if="vm.canEdit()">
-                            <i class="material-icons" style="font-size: 18px; padding-left: 8px">mode_edit</i>
-                        </a>
-                        <a href ng-click="vm.confirmDelete(anim)" ng-if="vm.canDelete()">
-                            <i class="material-icons" style="font-size: 18px; padding-left: 8px">delete</i>
-                        </a>
-                    </div>
+            <div layout="column" layout-align="start end">
+                <div class="md-caption text-muted" layout-align="center end" layout="column">
+                    <span>{{ anim.totalFrame + ' frames'}}&nbsp;&middot;&nbsp;{{ anim.views + ' views'}}</span>
+                    <rating-stars class="font-medium" rating="{{anim.rating}}" readonly></rating-stars>
                 </div>
             </div>
         </div>

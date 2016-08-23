@@ -2,14 +2,14 @@ var GrafikaApp;
 (function (GrafikaApp) {
     'use-strict';
     var AppCommon = (function () {
-        function AppCommon($q, $log, $interval, $timeout, $location, $window, $cookieStore, $mdToast, $mdDialog, $state, $stateParams, $mdPanel, $mdMedia, appConfig, uxService) {
+        function AppCommon($q, $log, $interval, $timeout, $location, $window, $cookies, $mdToast, $mdDialog, $state, $stateParams, $mdPanel, $mdMedia, appConfig, uxService) {
             this.$q = $q;
             this.$log = $log;
             this.$interval = $interval;
             this.$timeout = $timeout;
             this.$location = $location;
             this.$window = $window;
-            this.$cookieStore = $cookieStore;
+            this.$cookies = $cookies;
             this.$mdToast = $mdToast;
             this.$mdDialog = $mdDialog;
             this.$state = $state;
@@ -171,7 +171,7 @@ var GrafikaApp;
             '$timeout',
             '$location',
             '$window',
-            '$cookieStore',
+            '$cookies',
             '$mdToast',
             '$mdDialog',
             '$state',

@@ -49,7 +49,7 @@ function useAnimAccess(req, res, next) {
     var userId = (req.user && req.user._id) ? new mongoose.Types.ObjectId(req.user._id) : undefined;
     var queryAdmin = null;
     var query = null;
-    var isAdmin = isAdministrator(req);
+    var isAdmin = user_1.isAdministrator(req.user);
     if (isAdmin) {
         queryAdmin = { _id: animId };
     }
@@ -75,15 +75,12 @@ function useAnimAccess(req, res, next) {
     });
 }
 function useAdminAccess(req, res, next) {
-    if (!isAdministrator(req))
+    if (!user_1.isAdministrator(req))
         return next(401);
     return next();
 }
 function redirectHome(req, res, next) {
     res.redirect('/');
-}
-function isAdministrator(req) {
-    return req.user && req.user.roles && req.user.roles.indexOf('administrator') > -1;
 }
 function handleErrors(err, req, res, next) {
     if (err) {

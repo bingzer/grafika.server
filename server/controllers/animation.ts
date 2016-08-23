@@ -14,7 +14,7 @@ export function search(req: express.Request, res: express.Response, next: expres
         let limit = utils.safeParseInt(req.query.limit) < 0 ? 25 : utils.safeParseInt(req.query.limit);
         let skip = utils.safeParseInt(req.query.skip) < 0 ? 0 : utils.safeParseInt(req.query.skip);
         
-        Animation.find(query).limit(limit).skip(skip).sort(sort).exec((err, result) => {
+        Animation.find(query).sort(sort).limit(limit).skip(skip).exec((err, result) => {
             if (err) return next(err);
             res.json(result);
         });
@@ -59,11 +59,14 @@ export function submitRating(req: express.Request, res: express.Response, next: 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-function createQuery(req){
-    return { $text : { $search: req.query.term } };
+function createQuery(req): any{
+    if (req.query.term) {
+        return { $text : { $search: req.query.term } };
+    }
+    return {};
 }
 
-function createSort(req){
+function createSort(req): any{
 	let sort:any = {};
 	if (req.query.sort === 'rating') 
 		sort.rating = -1;

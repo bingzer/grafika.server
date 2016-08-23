@@ -40,7 +40,7 @@ var GrafikaApp;
             return false;
         };
         AnimationListController.prototype.createPaging = function () {
-            return new GrafikaApp.Paging({ isPublic: true, limit: this.appCommon.appConfig.fetchSize, skip: 0, sort: 'newest' });
+            return new GrafikaApp.Paging({ isPublic: true, limit: this.appCommon.appConfig.fetchSize, skip: 0, sort: this.appCommon.appConfig.animationSorts[0].key });
         };
         AnimationListController.$inject = ['appCommon', 'animationService', 'authService'];
         return AnimationListController;

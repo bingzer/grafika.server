@@ -2,12 +2,17 @@
 var user_1 = require("../models/user");
 function get(req, res, next) {
     var userId = req.params._id;
+    var sameUser = (req.user && req.user._id.toString() == userId);
+    var isAdmin = user_1.isAdministrator(req.user);
     user_1.User.findById(userId, function (err, user) {
         if (!user)
             err = 404;
         if (err)
             return next(err);
-        res.send(user_1.sanitize(user));
+        user = user.sanitize();
+        if (!sameUser && !isAdmin)
+            delete user.email;
+        res.send(user);
     });
 }
 exports.get = get;

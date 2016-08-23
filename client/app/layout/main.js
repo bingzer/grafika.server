@@ -62,7 +62,7 @@ var GrafikaApp;
             if (!bannerGrafika) {
                 bannerGrafika = new Grafika();
             }
-            bannerGrafika.initialize('#banner-canvas', { drawingMode: 'none', useNavigationText: false, useCarbonCopy: false, loop: true });
+            bannerGrafika.initialize('#banner-canvas', { debugMode: false, drawingMode: 'none', useNavigationText: false, useCarbonCopy: false, loop: true });
             bannerGrafika.demo.initialize('alphabet');
             bannerGrafika.getAnimation().timer = 500;
             bannerGrafika.play();

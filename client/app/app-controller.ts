@@ -18,6 +18,7 @@ module GrafikaApp {
             this.version = appCommon.appConfig.appVersion;
             this.buildTimestamp = appCommon.appConfig.appBuildTimestamp;
             this.appCommon.appConfig.baseUrl = this.appCommon.getBaseUrl();
+            this.authService.authenticate(true);
             
             $rootScope.$on('$stateChangeStart', (event, toState: ng.ui.IState, toParams: ng.ui.IStateParamsService, fromState, fromParams) => {
                 // -- Roles

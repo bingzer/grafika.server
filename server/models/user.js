@@ -68,6 +68,9 @@ exports.UserSchema.methods.validActivationTimestamp = function () {
 exports.UserSchema.methods.sanitize = function () {
     return sanitize(this);
 };
+exports.UserSchema.methods.isAdministrator = function () {
+    return isAdministrator(this);
+};
 exports.UserSchema.index({ email: 'text', firstName: 'text', lastName: 'text', username: 'text' }, {
     name: 'UserTextIndex',
     weights: { email: 10, lastName: 6, firstName: 4, username: 2 }
@@ -113,6 +116,10 @@ function checkAvailability(user) {
     return deferred.promise;
 }
 exports.checkAvailability = checkAvailability;
+function isAdministrator(user) {
+    return user && user.roles && user.roles.indexOf('administrator') > -1;
+}
+exports.isAdministrator = isAdministrator;
 function userQuery(username) {
     var name = username ? username.toLowerCase() : null;
     return { $or: [{ 'email': name }, { 'username': name }] };

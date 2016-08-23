@@ -51,7 +51,7 @@ module GrafikaApp {
         }
         
         clearSession() {
-            this.appCommon.$cookieStore.remove('grafika.session');
+            this.appCommon.$cookies.put('grafika.session', 'done');
         }
         
         authenticate(skipLogout?: boolean): ng.IPromise<any>{

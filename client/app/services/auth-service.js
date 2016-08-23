@@ -49,7 +49,7 @@ var GrafikaApp;
             this.appCommon.$window.sessionStorage.removeItem('token');
         };
         AuthService.prototype.clearSession = function () {
-            this.appCommon.$cookieStore.remove('grafika.session');
+            this.appCommon.$cookies.put('grafika.session', 'done');
         };
         AuthService.prototype.authenticate = function (skipLogout) {
             var _this = this;

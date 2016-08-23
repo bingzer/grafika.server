@@ -1,13 +1,21 @@
 import * as express from "express";
-import { IUser, User, sanitize, checkAvailability } from "../models/user";
+import { IUser, User, sanitize, checkAvailability, isAdministrator } from "../models/user";
 
-export function get(req: express.Request, res: express.Response, next: express.NextFunction) {
+export function get(req: express.Request | any, res: express.Response, next: express.NextFunction) {
     let userId = req.params._id;
+    let sameUser = (req.user && req.user._id.toString() == userId);
+    let isAdmin = isAdministrator(req.user);
+
     User.findById(userId, (err, user) => {
         if (!user) err = 404;
         if (err) return next(err);
+
+        user = user.sanitize();
         
-        res.send(sanitize(user));
+        if (!sameUser && !isAdmin)
+            delete user.email;
+            
+        res.send(user);
     });
 }
 

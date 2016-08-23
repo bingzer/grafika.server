@@ -27,6 +27,7 @@ export interface IUser extends mongoose.Document, Grafika.IUser {
     validActivationHash(activationHash : string): boolean;
     validActivationTimestamp(): boolean;
     sanitize(): IUser;
+    isAdministrator(): boolean;
 }
 
 export interface IActivation {
@@ -115,7 +116,10 @@ UserSchema.methods.validActivationTimestamp = function(): boolean{
 };
 UserSchema.methods.sanitize = function(): IUser {
     return sanitize(this);
-}
+};
+UserSchema.methods.isAdministrator = function(): boolean {
+    return isAdministrator(this);
+};
 
 UserSchema.index(
     { email: 'text', firstName: 'text', lastName: 'text', username: 'text' }, 
@@ -167,6 +171,10 @@ export function checkAvailability(user : IUser | any) : q.IPromise<{}> {
         else deferred.resolve();
     });
     return deferred.promise;
+}
+
+export function isAdministrator(user: IUser | any): boolean {
+    return user && user.roles && user.roles.indexOf('administrator') > -1;
 }
 
 export function userQuery(username: string) : any {

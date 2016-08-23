@@ -32,14 +32,14 @@ module GrafikaApp {
 			this.grafika.save();
 
             let animation = this.grafika.getAnimation();
-			this.animationService.update(animation).then((res) => {
-                return this.resourceService.saveThumbnail(animation);
-            }).then((res) => {
-                return this.resourceService.upload(res.data, this.grafika.exts.getCanvasBlob());
-            }).then((res) => {
-                if (exit) this.exit();
-                this.appCommon.toast('Successfully saved!');
-            });
+			this.animationService.update(animation)
+                .then((res) => this.frameService.update(animation, this.grafika.getFrames()))
+                .then((res) => this.resourceService.saveThumbnail(animation) )
+                .then((res) => this.resourceService.upload(res.data, this.grafika.exts.getCanvasBlob()) )
+                .then((res) => {
+                    if (exit) this.exit();
+                    this.appCommon.toast('Successfully saved!');
+                });
 		}
 
         confirmExit() {

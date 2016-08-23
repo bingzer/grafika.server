@@ -2,9 +2,9 @@
     export class RatingStarsDirective implements ng.IDirective {
         msgHtml = ``;
         starHtml = `<div class="star" style="display: inline">
-                        <a href="javascript:void(0)" class="full hidden" class="md-icon-button"><i class="material-icons">star</i></a>
-                        <a href="javascript:void(0)" class="half hidden" class="md-icon-button"><i class="material-icons">star_half</i></a>
-                        <a href="javascript:void(0)" class="empty hidden" class="md-icon-button"><i class="material-icons">star_border</i></a>
+                        <a href="javascript:void(0)" class="full hidden md-icon-button"><i class="material-icons">star</i></a>
+                        <a href="javascript:void(0)" class="half hidden md-icon-button"><i class="material-icons">star_half</i></a>
+                        <a href="javascript:void(0)" class="empty hidden md-icon-button"><i class="material-icons">star_border</i></a>
                     </div>`
 
         restrict = 'AE';
@@ -27,42 +27,45 @@
                 if (name === 'rating')
                     rating = value;
 
-                if (!animationId || !rating)
+                if (!rating)
                     return;
 
                 evaluate();
             }
 
             function evaluate(){
-                let counter = 0;
                 if (!rating) rating = 2.5;
-                elem.html('');
+
+                let counter = 0;
+                let counterRating = rating;
+                let readonly = angular.isDefined(attrs['readonly']);
+                let classnames = attrs['class'];
+
+                elem.html('').attr('title', rating);
                 while (counter >= 0 && counter < 5) {
                     let html = jQuery(that.starHtml);
-                    // full star
-                    if (rating >= 1) {
-                        html.find('.full').removeClass("hidden")
-                            .attr('title', counter + 1)
-                            .data('value', counter + 1).bind('click', (e) => rate(jQuery(e.target).parent()));
-                    }
-                    // half star
-                    else if (rating >= 0.5 && rating <= 1){
-                        html.find('.half').removeClass("hidden")
-                            .attr('title', counter + 1)
-                            .data('value', counter + 1).bind('click', (e) => rate(jQuery(e.target).parent()));
-                    }
-                    // empty
-                    else {
-                        html.find('.empty').removeClass("hidden")
-                            .attr('title', counter + 1)
-                            .data('value', counter + 1).bind('click', (e) => rate(jQuery(e.target).parent()));
-                    }
+
+                    html.find(getClassByRating(counterRating))
+                        .removeClass('hidden')
+                        .addClass(classnames)
+                        .data('value', counter + 1)
+                        .find('i').addClass(classnames);
+                    if (animationId && !readonly)
+                        html.find('a').bind('click', (e) => rate(jQuery(e.target).parent()))
+                    if (readonly)
+                        html.find('a').removeAttr('href');
                     elem.append(html);
 
-                    if (rating > 0)
-                        rating--;
+                    if (counterRating > 0)
+                        counterRating--;
                     counter++;
                 }
+            }
+
+            function getClassByRating(rating: number): string {
+                if (rating >= 1) return 'a.full';
+                else if(rating >= 0.5 && rating <= 1) return 'a.half';
+                else return 'a.empty';
             }
 
             function rate(elem) {

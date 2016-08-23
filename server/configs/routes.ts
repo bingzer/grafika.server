@@ -14,7 +14,7 @@ import * as contentController   from '../controllers/content';
 
 import * as config from '../configs/config';
 import { Animation } from '../models/animation';
-import { User } from '../models/user';
+import { User, isAdministrator } from '../models/user';
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -58,12 +58,12 @@ function useSessionOrJwt(req: express.Request, res: express.Response, next: expr
 }
 
 /** Check animation access */
-function useAnimAccess(req: any, res: express.Response, next: express.NextFunction) {
+function useAnimAccess(req: express.Request | any, res: express.Response, next: express.NextFunction) {
     let animId = new mongoose.Types.ObjectId(req.params._id || req.params.animationId);
     let userId = (req.user && req.user._id) ? new mongoose.Types.ObjectId(req.user._id) : undefined;
     let queryAdmin = null;
     let query = null;
-    let isAdmin = isAdministrator(req);
+    let isAdmin = isAdministrator(req.user);
     if (isAdmin) {
         queryAdmin = { _id: animId };
     }        
@@ -92,18 +92,15 @@ function useAnimAccess(req: any, res: express.Response, next: express.NextFuncti
     });
 }
 
-function useAdminAccess(req: express.Request, res: express.Response, next: express.NextFunction) {
-    if (!isAdministrator(req)) return next(401);
+function useAdminAccess(req: express.Request | any, res: express.Response, next: express.NextFunction) {
+    if (!isAdministrator(req))
+        return next(401);
     return next();
 }
 
 /** Simply redirect to '/' */
 function redirectHome(req: express.Request, res: express.Response, next: express.NextFunction) {
     res.redirect('/');
-}
-
-function isAdministrator(req: any) {
-    return req.user && req.user.roles && req.user.roles.indexOf('administrator') > -1;
 }
 
 function handleErrors(err: any, req: express.Request, res: express.Response, next: express.NextFunction) {

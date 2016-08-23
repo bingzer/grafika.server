@@ -9,6 +9,7 @@ var GrafikaApp;
         __extends(MyAnimationsController, _super);
         function MyAnimationsController(appCommon, animationService, authService) {
             _super.call(this, appCommon, animationService, authService);
+            this.user = authService.getUser();
         }
         MyAnimationsController.prototype.create = function (ev) {
             var _this = this;

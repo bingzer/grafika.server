@@ -59,6 +59,7 @@ Animation.before('get', (req, res, next) => {
 });
 Animation.before('put', (req, res, next) => {
     req.body.totalFrame = req.body.frames ? req.body.frames.length : 0;
+    delete req.body.frames;
     next();
 });
 // -- Frames
@@ -66,15 +67,15 @@ Animation.route('frames', {
     detail: true,
     handler: (req, res, next) => {
         if (req.method === 'GET') {
-            Animation.findOne({_id: req.params.id}, "frames").lean().exec((err, result) =>{
+            Animation.db.collections.animations.findOne({ _id: new mongoose.Types.ObjectId(req.params.id) }, { frames: 1}, (err, result) =>{
+                if (err) return next(err);
+                if (!result) return next(400);
                 res.send(result.frames);
             });
         }
         else if (req.method == 'POST') {
-            Animation.findOne({_id: req.params.id}, (err, result) => {
-                result.frames = req.body;
-                result.totalFrame = result.frames.length;
-                result.save();
+            Animation.db.collections.animations.findOneAndUpdate({_id: new mongoose.Types.ObjectId(req.params.id) }, { $set: { 'frames': req.body} }, (err) => {
+                if (err) return next(err);
                 res.sendStatus(201);
             });
         }

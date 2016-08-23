@@ -7,7 +7,7 @@ function search(req, res, next) {
         var query = createQuery(req);
         var limit = utils.safeParseInt(req.query.limit) < 0 ? 25 : utils.safeParseInt(req.query.limit);
         var skip = utils.safeParseInt(req.query.skip) < 0 ? 0 : utils.safeParseInt(req.query.skip);
-        animation_1.Animation.find(query).limit(limit).skip(skip).sort(sort).exec(function (err, result) {
+        animation_1.Animation.find(query).sort(sort).limit(limit).skip(skip).exec(function (err, result) {
             if (err)
                 return next(err);
             res.json(result);
@@ -59,7 +59,10 @@ function submitRating(req, res, next) {
 }
 exports.submitRating = submitRating;
 function createQuery(req) {
-    return { $text: { $search: req.query.term } };
+    if (req.query.term) {
+        return { $text: { $search: req.query.term } };
+    }
+    return {};
 }
 function createSort(req) {
     var sort = {};

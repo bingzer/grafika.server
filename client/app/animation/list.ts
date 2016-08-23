@@ -44,7 +44,7 @@ module GrafikaApp {
         }
 
         protected createPaging() : Paging {
-            return new Paging({ isPublic: true, limit: this.appCommon.appConfig.fetchSize, skip: 0, sort: 'newest'});
+            return new Paging({ isPublic: true, limit: this.appCommon.appConfig.fetchSize, skip: 0, sort: this.appCommon.appConfig.animationSorts[0].key });
         }
     }
 }

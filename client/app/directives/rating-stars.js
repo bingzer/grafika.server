@@ -6,7 +6,7 @@ var GrafikaApp;
             this.appCommon = appCommon;
             this.animationService = animationService;
             this.msgHtml = "";
-            this.starHtml = "<div class=\"star\" style=\"display: inline\">\n                        <a href=\"javascript:void(0)\" class=\"full hidden\" class=\"md-icon-button\"><i class=\"material-icons\">star</i></a>\n                        <a href=\"javascript:void(0)\" class=\"half hidden\" class=\"md-icon-button\"><i class=\"material-icons\">star_half</i></a>\n                        <a href=\"javascript:void(0)\" class=\"empty hidden\" class=\"md-icon-button\"><i class=\"material-icons\">star_border</i></a>\n                    </div>";
+            this.starHtml = "<div class=\"star\" style=\"display: inline\">\n                        <a href=\"javascript:void(0)\" class=\"full hidden md-icon-button\"><i class=\"material-icons\">star</i></a>\n                        <a href=\"javascript:void(0)\" class=\"half hidden md-icon-button\"><i class=\"material-icons\">star_half</i></a>\n                        <a href=\"javascript:void(0)\" class=\"empty hidden md-icon-button\"><i class=\"material-icons\">star_border</i></a>\n                    </div>";
             this.restrict = 'AE';
             this.link = function (scope, elem, attrs, ctr) {
                 attrs.$observe('animationId', function (val) { return check('animationId', val); });
@@ -21,37 +21,42 @@ var GrafikaApp;
                         animationId = value;
                     if (name === 'rating')
                         rating = value;
-                    if (!animationId || !rating)
+                    if (!rating)
                         return;
                     evaluate();
                 }
                 function evaluate() {
-                    var counter = 0;
                     if (!rating)
                         rating = 2.5;
-                    elem.html('');
+                    var counter = 0;
+                    var counterRating = rating;
+                    var readonly = angular.isDefined(attrs['readonly']);
+                    var classnames = attrs['class'];
+                    elem.html('').attr('title', rating);
                     while (counter >= 0 && counter < 5) {
                         var html = jQuery(that.starHtml);
-                        if (rating >= 1) {
-                            html.find('.full').removeClass("hidden")
-                                .attr('title', counter + 1)
-                                .data('value', counter + 1).bind('click', function (e) { return rate(jQuery(e.target).parent()); });
-                        }
-                        else if (rating >= 0.5 && rating <= 1) {
-                            html.find('.half').removeClass("hidden")
-                                .attr('title', counter + 1)
-                                .data('value', counter + 1).bind('click', function (e) { return rate(jQuery(e.target).parent()); });
-                        }
-                        else {
-                            html.find('.empty').removeClass("hidden")
-                                .attr('title', counter + 1)
-                                .data('value', counter + 1).bind('click', function (e) { return rate(jQuery(e.target).parent()); });
-                        }
+                        html.find(getClassByRating(counterRating))
+                            .removeClass('hidden')
+                            .addClass(classnames)
+                            .data('value', counter + 1)
+                            .find('i').addClass(classnames);
+                        if (animationId && !readonly)
+                            html.find('a').bind('click', function (e) { return rate(jQuery(e.target).parent()); });
+                        if (readonly)
+                            html.find('a').removeAttr('href');
                         elem.append(html);
-                        if (rating > 0)
-                            rating--;
+                        if (counterRating > 0)
+                            counterRating--;
                         counter++;
                     }
+                }
+                function getClassByRating(rating) {
+                    if (rating >= 1)
+                        return 'a.full';
+                    else if (rating >= 0.5 && rating <= 1)
+                        return 'a.half';
+                    else
+                        return 'a.empty';
                 }
                 function rate(elem) {
                     that.animationService.rate(animationId, elem.data('value')).then(function (res) {

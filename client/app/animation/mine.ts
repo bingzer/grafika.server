@@ -1,5 +1,6 @@
 module GrafikaApp {
     export class MyAnimationsController extends AnimationListController {
+        user: Grafika.IUser;
 
         public static $inject = ['appCommon', 'animationService', 'authService' ];
         constructor(
@@ -8,6 +9,7 @@ module GrafikaApp {
             authService: AuthService
         ){
             super(appCommon, animationService, authService);
+            this.user = authService.getUser();
         }
         
         create(ev: MouseEvent){
