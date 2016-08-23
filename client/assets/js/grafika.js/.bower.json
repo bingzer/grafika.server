@@ -1,0 +1,31 @@
+{
+  "name": "grafika-js",
+  "description": "Grafika js",
+  "main": "",
+  "authors": [
+    "Ricky <ricky@bingzer.com>"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/bingzer/grafika.js",
+  "private": false,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "grunt": "^1.0.1"
+  },
+  "version": "0.10.6",
+  "_release": "0.10.6",
+  "_resolution": {
+    "type": "version",
+    "tag": "v0.10.6",
+    "commit": "bb4eb74ef8f152abb2f5a61fa6f1cab3b9527291"
+  },
+  "_source": "https://github.com/bingzer/grafika.js.git",
+  "_target": "0.10.6",
+  "_originalSource": "grafika.js"
+}
