@@ -1,7 +1,7 @@
-<div class="md-whiteframe-z2" style="background: linear-gradient(rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.5)), url('{{vm.user.prefs.backdrop}}'); background-size: cover; height: 150px;">
-    <div layout="row" layout-fill layout-margin layout-align="start center">
+<div class="md-whiteframe-z2" style="background: linear-gradient(rgba(0, 128, 128, 1), rgba(0, 0, 0, 0.5)), url('{{vm.user.prefs.backdrop}}'); background-size: cover; height: 150px;">
+    <div layout="row" layout-fill layout-margin layout-align="start center" style="margin-left: 16px">
         <img class="avatar avatar-lg" ng-src="{{vm.user.prefs.avatar}}"/>
-        <div layout-margin layout="column">
+        <div layout="column">
             <p class="text-white md-headline" ng-bind="vm.user.getDisplayName()"></p>
             <p>
                 <span class="text-white md-subtitle">{{vm.user.username}}</span><br/>
