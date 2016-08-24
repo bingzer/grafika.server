@@ -22,7 +22,7 @@
 	<!-- Header -->
 	<ng-include src="'/app/layout/header.html'"></ng-include>
 	<!-- Main content -->
-	<div id="content" class="page-wrap" ui-view></div>
+	<ng-include src="'/app/layout/content.html'"></ng-include>
 	<!-- Footer -->
 	<ng-include src="'/app/layout/footer.html'"></ng-include>
 
@@ -64,6 +64,7 @@
 	<script type="text/javascript" src="/app/models/paging.js"></script>
 	<script type="text/javascript" src="/app/models/disqus-config.js"></script>
 	<script type="text/javascript" src="/app/models/feedback.js"></script>
+	<script type="text/javascript" src="/app/models/navigation-menu.js"></script>
 
 	<script type="text/javascript" src="/app/directives/active-link.js"></script>
 	<script type="text/javascript" src="/app/directives/image-uploader.js"></script>
@@ -72,6 +73,7 @@
 	<script type="text/javascript" src="/app/directives/rating-stars.js"></script>
 	<script type="text/javascript" src="/app/directives/include-markdown.js"></script>
 	<script type="text/javascript" src="/app/directives/gf-spinner.js"></script>
+	<script type="text/javascript" src="/app/directives/avatar.js"></script>
 
 	<script type="text/javascript" src="/app/services/ux-service.js"></script>
 	<script type="text/javascript" src="/app/services/api-service.js"></script>

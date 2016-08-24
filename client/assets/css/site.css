@@ -93,19 +93,19 @@ pre.wrap {
   border-radius: 50%;
 }
 .font-normal {
-	font-size: normal;
+	font-size: normal !important;
 }
 .font-medium {
-  font-size: medium;
+  font-size: medium !important;
 }
 .font-smaller {
-	font-size: smaller;
+	font-size: smaller !important;
 }
 .font-small {
-  font-size: small;
+  font-size: small !important;
 }
 .font-x-small {
-  font-size: x-small;
+  font-size: x-small !important;
 }
 .text-center-vertical{
   top: 0;
@@ -255,6 +255,10 @@ md-dialog {
 	-moz-border-radius: 50%;
 	background-repeat: no-repeat;
 }
+.avatar-xs {
+	height: 16px;
+	width: 16px;
+}
 .avatar-sm {
 	height: 24px;
 	width: 24px;
@@ -284,16 +288,16 @@ md-menu-item .sp-replacer.sp-light {
 .animation-card {
 	margin: 16px;
 }
-.animation-card > md-whiteframe img {
+.animation-card > md-whiteframe img.card-image {
 	width: 320px;
 	height: 160px;
 }
-/*@media (max-width: 599px){
-	.animation-card > md-whiteframe img {
-		width: 128px;
-		height: 64px;
+@media (max-width: 320px){
+	.animation-card > md-whiteframe img.card-image {
+		width: 100%;
+		height: 128px;
 	}
-}*/
+}
 .animation-card span.options {
 	right: 2px;
 	top: 2px;

@@ -29,6 +29,7 @@ module GrafikaApp {
     app.directive('ratingStars', RatingStarsDirective.factory());
     app.directive('includeMarkdown', IncludeMarkdownDirective.factory());
     app.directive('gfSpinner', GfSpinner.factory());
+    app.directive('avatar', AvatarDirective.factory());
 
     app.service('uxService', UxService);
     app.service('apiService', ApiService);

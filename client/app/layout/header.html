@@ -2,30 +2,20 @@
     <div class="container-fluid">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header" style="margin-right: 0; margin-left: 0">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar .collapse" aria-expanded="false" style="padding: 6px">
+            <a href="#" ng-click="app.openSideNav()" show-xs show-sm hide-gt-sm layout-margin style="text-decoration: none; outline: none">
                 <md-icon md-font-family="material icons" style="color: white">menu</md-icon>
-            </button>
+            </a>
             <a class="nav-link nav-link-logo" active-link="active" ui-sref="home">
                 <img id="logo" src="/assets/img/logo.png" height="48px" style="margin-top: 3px"/>
             </a>
         </div>
         
         <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse">
+        <div hide-xs hide-sm show-gt-sm style="margin-right: 8px; margin-left: 0">
             <ul class="nav navbar-nav navbar-right">
-                <li class="nav-link" ng-if="!vm.isAuthorized('user')">
-                    <a href="#" ui-sref="login" active-link="active">
-                        <md-icon md-font-family="material icons">lock_outline</md-icon>&nbsp;Login
-                    </a>
-                </li>
-                <li class="nav-link" ng-if="vm.isAuthorized('user')">
-                    <a href="#" ui-sref="my-animations" active-link="active">
-                        <md-icon md-font-family="material icons">movie</md-icon>&nbsp;My Animations
-                    </a>
-                </li>
-                <li class="nav-link" ng-if="vm.isAuthorized('administrator')">
-                    <a href="#" ui-sref="admin" active-link="active">
-                        <md-icon md-font-family="material icons">assignment_ind</md-icon>&nbsp;Administration
+                <li class="nav-link" ng-repeat="menu in app.getNavigationMenus()">
+                    <a href="#" ui-sref="{{menu.sref}}" active-link="active">
+                        <md-icon md-font-family="material icons">{{menu.icon}}</md-icon>&nbsp;{{menu.name}}
                     </a>
                 </li>
                 <li class="nav-link dropdown" ng-if="vm.isAuthorized('user')">

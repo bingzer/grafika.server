@@ -33,6 +33,9 @@ var GrafikaApp;
                 }
             });
         }
+        AppController.prototype.getNavigationMenus = function () {
+            return GrafikaApp.NavigationMenu.getMenus(this);
+        };
         AppController.prototype.sendFeedback = function () {
             var _this = this;
             this.apiService.post('content/feedback', this.feedback)
@@ -41,6 +44,12 @@ var GrafikaApp;
                 return _this.appCommon.$q.when(true);
             })
                 .finally(function () { return _this.feedback = new GrafikaApp.Feedback(); });
+        };
+        AppController.prototype.openSideNav = function () {
+            this.appCommon.$mdSidenav('left').open();
+        };
+        AppController.prototype.closeSidenav = function () {
+            this.appCommon.$mdSidenav('left').close();
         };
         AppController.$inject = ['appCommon', 'apiService', 'authService', 'uxService', '$rootScope'];
         return AppController;

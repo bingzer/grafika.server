@@ -19,7 +19,7 @@ export function get(req: express.Request | any, res: express.Response, next: exp
     });
 }
 
-export function update(req: any, res: express.Response, next: express.NextFunction) {
+export function update(req: express.Request | any, res: express.Response, next: express.NextFunction) {
     if (!req.body || !req.params._id) return next();
 
     let userId = req.params._id;
@@ -44,3 +44,11 @@ export function update(req: any, res: express.Response, next: express.NextFuncti
         });
     }, (error) => next(error));
 }
+
+export function getAvatar(req: express.Request | any, res: express.Response, next: express.NextFunction) {
+    User.findOne(req.params._id, (err, user) => {
+        if (err) return next(err);
+        if (!user) return next(404);
+        res.redirect(user.prefs.avatar);
+    });
+};

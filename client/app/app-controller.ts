@@ -34,9 +34,11 @@ module GrafikaApp {
                     this.uxService.pageTitle = toState.data.pageTitle;
                 }
 
-            });
+            });   
+        }
 
-            
+        getNavigationMenus(): NavigationMenu[] {
+            return NavigationMenu.getMenus(this);
         }
 
         sendFeedback() {
@@ -46,6 +48,14 @@ module GrafikaApp {
                     return this.appCommon.$q.when(true);
                 })
                 .finally(() => this.feedback = new Feedback() );
+        }
+
+        openSideNav(){
+            this.appCommon.$mdSidenav('left').open();
+        }
+
+        closeSidenav(){
+            this.appCommon.$mdSidenav('left').close();
         }
     }
 }

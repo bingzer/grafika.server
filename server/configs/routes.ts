@@ -93,7 +93,7 @@ function useAnimAccess(req: express.Request | any, res: express.Response, next: 
 }
 
 function useAdminAccess(req: express.Request | any, res: express.Response, next: express.NextFunction) {
-    if (!isAdministrator(req))
+    if (!isAdministrator(req.user))
         return next(401);
     return next();
 }
@@ -144,6 +144,8 @@ function handleErrors(err: any, req: express.Request, res: express.Response, nex
 export function initialize(app): q.Promise<any> {
     let defer = q.defer();
     setTimeout(() => {
+        app.use(extractUser);
+
         app.get('/api/accounts/google', accountController.googleLogin);
         app.get('/api/accounts/google/callback', accountController.googleCallback, accountController.providerLogin);
         app.get('/api/accounts/facebook', accountController.facebookLogin);
@@ -162,10 +164,10 @@ export function initialize(app): q.Promise<any> {
         // ---------------- Animation -----------------------------//
         app.get('/api/animations', animationController.search);
         app.post('/api/animations', useSessionOrJwt); // create
-        app.get('/api/animations/:_id', extractUser, useAnimAccess); // view
+        app.get('/api/animations/:_id', useAnimAccess); // view
         app.put('/api/animations/:_id', useSessionOrJwt, useAnimAccess); // update
         app.delete('/api/animations/:_id', useSessionOrJwt, useAnimAccess, animationController.remove); // delete
-        app.get('/api/animations/:_id/frames', extractUser, useAnimAccess); // get frames
+        app.get('/api/animations/:_id/frames', useAnimAccess); // get frames
         app.post('/api/animations/:_id/frames', useSessionOrJwt, useAnimAccess);
         app.post('/api/animations/:_id/view', animationController.incrementViewCount);
         app.post('/api/animations/:_id/rating/:rating', animationController.submitRating);
@@ -176,6 +178,7 @@ export function initialize(app): q.Promise<any> {
 
         // ---------------- Users -----------------------------//
         app.get('/api/users/:_id', userController.get);
+        app.get('/api/users/:_id/avatar', userController.getAvatar);
         app.put('/api/users/:_id', useSessionOrJwt, userController.update);
         
         // ------------------ Admin ---------------------//

@@ -16,6 +16,7 @@ module GrafikaApp {
             '$stateParams',
             '$mdPanel',
             '$mdMedia',
+            '$mdSidenav',
             'appConfig'
         ]
 
@@ -33,8 +34,8 @@ module GrafikaApp {
             public $stateParams: ng.ui.IStateParamsService,
             public $mdPanel: ng.material.IPanelService,
             public $mdMedia: ng.material.IMedia,
-            public appConfig: AppConfig,
-            public uxService: UxService
+            public $mdSidenav: ng.material.ISidenavService,
+            public appConfig: AppConfig
         )
         {
             // nothing

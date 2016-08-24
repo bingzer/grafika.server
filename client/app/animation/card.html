@@ -27,8 +27,10 @@
         <div class="thumbnail-content" layout="row">
             <div layout="column" flex>
                 <div layout="column">
-                    <a class="md-body-2 link" ui-sref="detail({_id: anim._id})" ng-bind="anim.name"></a>
-                    <a class="md-subtitle link" ui-sref="user({_id: anim.userId})" ng-bind="anim.author || 'anonymous'"></a>
+                    <a class="md-body-2 link" ui-sref="detail({_id: anim._id})">
+                        <span ng-bind="anim.name"></span>
+                    </a>
+                    <avatar class="avatar avatar-xs" user-id="{{anim.userId}}" username="{{anim.author || 'anonymous'}}"></avatar>
                 </div>
             </div>
             <div layout="column" layout-align="start end">

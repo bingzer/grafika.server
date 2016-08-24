@@ -75,7 +75,7 @@ function useAnimAccess(req, res, next) {
     });
 }
 function useAdminAccess(req, res, next) {
-    if (!user_1.isAdministrator(req))
+    if (!user_1.isAdministrator(req.user))
         return next(401);
     return next();
 }
@@ -119,6 +119,7 @@ function handleErrors(err, req, res, next) {
 function initialize(app) {
     var defer = q.defer();
     setTimeout(function () {
+        app.use(extractUser);
         app.get('/api/accounts/google', accountController.googleLogin);
         app.get('/api/accounts/google/callback', accountController.googleCallback, accountController.providerLogin);
         app.get('/api/accounts/facebook', accountController.facebookLogin);
@@ -134,16 +135,17 @@ function initialize(app) {
         app.post('/api/accounts/username-check', useSessionOrJwt, accountController.checkUsernameAvailability);
         app.get('/api/animations', animationController.search);
         app.post('/api/animations', useSessionOrJwt);
-        app.get('/api/animations/:_id', extractUser, useAnimAccess);
+        app.get('/api/animations/:_id', useAnimAccess);
         app.put('/api/animations/:_id', useSessionOrJwt, useAnimAccess);
         app.delete('/api/animations/:_id', useSessionOrJwt, useAnimAccess, animationController.remove);
-        app.get('/api/animations/:_id/frames', extractUser, useAnimAccess);
+        app.get('/api/animations/:_id/frames', useAnimAccess);
         app.post('/api/animations/:_id/frames', useSessionOrJwt, useAnimAccess);
         app.post('/api/animations/:_id/view', animationController.incrementViewCount);
         app.post('/api/animations/:_id/rating/:rating', animationController.submitRating);
         app.post('/api/animations/sync', useSessionOrJwt, syncController.sync);
         app.post('/api/animations/sync/update', useSessionOrJwt, syncController.syncUpdate);
         app.get('/api/users/:_id', userController.get);
+        app.get('/api/users/:_id/avatar', userController.getAvatar);
         app.put('/api/users/:_id', useSessionOrJwt, userController.update);
         app.get('/api/admin', useSessionOrJwt, useAdminAccess, adminController.get);
         app.get('/api/admin/users', useSessionOrJwt, useAdminAccess, adminController.listUsers);

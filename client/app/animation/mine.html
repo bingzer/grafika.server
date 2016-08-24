@@ -1,5 +1,5 @@
 <div class="mine">
-    <ng-include src="'app/users/user-banner.html'"></ng-include>
+    <ng-include src="'app/users/user-banner.html'" ng-init="user=vm.user"></ng-include>
 	<div display-block layout="column">
 		<div>
 			<form name="filterForm" ng-submit="vm.filter()" novalidate class="ng-pristine ng-valid">

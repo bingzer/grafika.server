@@ -19,12 +19,7 @@
             <div flex></div>
             <!-- Right -->
             <div class="text-align-end" layout="column">
-                <div>
-                    <a class="md-subtitle link" ui-sref="user({_id: vm.animation.userId})">
-                        <img src="assets/img/ic_user.png" class="avatar avatar-sm"/>
-                        {{vm.animation.author || 'anonymous'}}
-                    </a>
-                </div>
+                <avatar user-id="{{vm.animation.userId}}" username="{{vm.animation.author || 'anonymous'}}"></avatar>
                 <rating-stars animation-id="{{vm.animation._id}}" rating="{{vm.animation.rating}}"></rating-stars>
                 <div layout="row" ng-if="vm.canEdit" style="margin-top: 4px">
                     <div class="btn-group" role="group" aria-label="...">

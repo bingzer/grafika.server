@@ -47,4 +47,15 @@ function update(req, res, next) {
     }, function (error) { return next(error); });
 }
 exports.update = update;
+function getAvatar(req, res, next) {
+    user_1.User.findOne(req.params._id, function (err, user) {
+        if (err)
+            return next(err);
+        if (!user)
+            return next(404);
+        res.redirect(user.prefs.avatar);
+    });
+}
+exports.getAvatar = getAvatar;
+;
 //# sourceMappingURL=users.js.map

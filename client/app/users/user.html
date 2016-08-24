@@ -1,4 +1,4 @@
 <div class="user">
-    <ng-include src="'app/users/user-banner.html'"></ng-include>
+    <ng-include src="'app/users/user-banner.html'" ng-if="vm.user" ng-init="user=vm.user"></ng-include>
     <ng-include src="'app/animation/list.html'"></ng-include>
 </div>
