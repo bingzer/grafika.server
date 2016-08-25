@@ -5,13 +5,13 @@ module GrafikaApp {
         feedback: Feedback = new Feedback();
         feedbackCategories: string[] = ['Just saying Hi!', 'Bug', 'Features', 'Other'];
 
-        public static $inject = ['appCommon', 'apiService', 'authService', 'uxService', '$rootScope'];
+        public static $inject = ['appCommon', 'authService', 'apiService', 'uxService', '$rootScope'];
         constructor(
             appCommon: AppCommon,
-            private apiService: ApiService,
             authService: AuthService,
+            public apiService: ApiService,
             public uxService: UxService,
-            $rootScope: ng.IRootScopeService
+            private $rootScope: ng.IRootScopeService
         )
         {
             super(appCommon, authService);
@@ -33,12 +33,49 @@ module GrafikaApp {
                 if (toState.data && toState.data.pageTitle) {
                     this.uxService.pageTitle = toState.data.pageTitle;
                 }
+            });
 
-            });   
+            let query = appCommon.$location.search();
+            if (query && query.action){
+                if ((query.action == 'verify' || query.action == 'reset-pwd') && query.hash && query.user){
+                    appCommon.$mdDialog.show({
+                        controller: 'ResetController',
+                        controllerAs: 'vm',
+                        templateUrl: 'app/account/reset.html',
+                        parent: angular.element(document.body),
+                        locals: { hash: query.hash, email: query.user }
+                    }).then(() => appCommon.navigate("/login") );
+                    this.cleanUrlQueries();
+                }
+                else if(query.action == 'authenticate') {
+                    this.authService.authenticate().then(() => this.appCommon.navigateHome());
+                    this.cleanUrlQueries();
+                }
+                else {
+                    appCommon.alert('Unknown action or link has expired');
+                    this.cleanUrlQueries();
+                }
+            }
         }
 
-        getNavigationMenus(): NavigationMenu[] {
-            return NavigationMenu.getMenus(this);
+        login(evt: MouseEvent): void {
+            this.appCommon.showDialog('LoginController', 'app/account/login-dialog.html', evt, 'vm');
+        }
+
+        register(evt: MouseEvent): void {
+            this.appCommon.showDialog('RegisterController', 'app/account/register.html', evt, 'vm');
+        }
+
+        confirmLogout(): void {
+            this.appCommon.confirm('Are you sure you want to log out?')
+                .then(() => {
+                    this.appCommon.showLoadingModal();
+                    return this.authService.logout();
+                })
+                .then(() => {
+                    this.appCommon.toast('Successfully logged out');
+                    this.appCommon.hideLoadingModal();
+                });
         }
 
         sendFeedback() {
@@ -50,12 +87,45 @@ module GrafikaApp {
                 .finally(() => this.feedback = new Feedback() );
         }
 
-        openSideNav(){
-            this.appCommon.$mdSidenav('left').open();
+        getAppVersion() {
+            return this.appCommon.appConfig.appVersion;
         }
 
-        closeSidenav(){
-            this.appCommon.$mdSidenav('left').close();
+        navigate(path: string) {
+            this.appCommon.navigate(path);
+        }        
+
+        goto(to: string, params?: string) {
+            this.appCommon.$state.go(to, params);
+        }
+
+        initGrafika() {
+            if (this.isAuthorized('user')) return;
+            
+            let bannerGrafika = this.appCommon.$window['bannerGrafika'];
+            if (!bannerGrafika){
+                bannerGrafika = new Grafika();
+            }
+            bannerGrafika.initialize('#banner-canvas', { debugMode: false, drawingMode: 'none', useNavigationText: false, useCarbonCopy: false, loop: true });
+            bannerGrafika.demo.initialize('alphabet');
+            bannerGrafika.getAnimation().timer = 500;
+            bannerGrafika.play();
+            
+            this.$rootScope.$on('$stateChangeStart', (e) => {
+                bannerGrafika.pause();
+            });
+        }
+
+        ///////////////////////////////////////////////////////////////////////////////////////////////
+        
+        private cleanUrlQueries(){
+            let keys = this.appCommon.$location.search();
+            let loc = this.appCommon.$location;
+            Object.keys(keys).forEach((key) => {
+               delete loc.search(key, null); 
+            });
+
+            this.appCommon.$location.hash(null);
         }
     }
 }

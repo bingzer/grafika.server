@@ -7,11 +7,30 @@ var GrafikaApp;
 (function (GrafikaApp) {
     var UxService = (function (_super) {
         __extends(UxService, _super);
-        function UxService(appCommon) {
+        function UxService(appCommon, authService) {
             _super.call(this, appCommon);
+            this.authService = authService;
             this.pageTitle = appCommon.appConfig.appTitle;
         }
-        UxService.$inject = ['appCommon'];
+        UxService.prototype.isAuthenticated = function () {
+            return this.authService.isAuthenticated();
+        };
+        UxService.prototype.isAuthorized = function (roles) {
+            return this.authService.isAuthorized(roles);
+        };
+        UxService.prototype.getUser = function () {
+            return this.authService.getUser();
+        };
+        UxService.prototype.getNavigationMenus = function (type) {
+            return GrafikaApp.NavigationMenu.getMenus(this, type);
+        };
+        UxService.prototype.openSideNav = function () {
+            this.appCommon.$mdSidenav('left').open();
+        };
+        UxService.prototype.closeSidenav = function () {
+            this.appCommon.$mdSidenav('left').close();
+        };
+        UxService.$inject = ['appCommon', 'authService'];
         return UxService;
     }(GrafikaApp.BaseService));
     GrafikaApp.UxService = UxService;

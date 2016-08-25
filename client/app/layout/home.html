@@ -1,17 +1,17 @@
-<style ng-if="!vm.isAuthorized('user')">
+<style ng-if="!app.isAuthorized('user')">
 	nav.navbar .nav-link-logo {
 		display: none
 	}
 </style>
 <div class="home">
-	<div class="banner" ng-if="!vm.isAuthorized('user')" ng-init="vm.initGrafika()">
+	<div class="banner" ng-if="!app.isAuthorized('user')" ng-init="app.initGrafika()">
 		<div class="canvas-container">
 			<canvas id="banner-canvas"></canvas>
 		</div>
 		<div layout-fill class="canvas-overlay"></div>
 		<img id="logo" src="/assets/img/logo.png" />
 	</div>
-	<div class="intro md-whiteframe-z2" layout="column" ng-if="!vm.isAuthorized('user')">
+	<div class="intro md-whiteframe-z2" layout="column" ng-if="!app.isAuthorized('user')">
 		<div layout="row" layout-align="center" layout-wrap>
 			<div class="part" flex-gt-sm="30" flex="90" layout-padding>
 				<p>
@@ -38,9 +38,9 @@
 					Fusce ex libero, sollicitudin in lobortis nec, pharetra at tellus
 				</p>
 				<div layout="row" layout-padding layout-align="center">
-					<button class="btn btn-success" ng-click="vm.login($event)">Login</button>
+					<button class="btn btn-success" ng-click="app.login($event)">Login</button>
 					<span>&nbsp;</span>
-					<button class="btn btn-info" ng-click="vm.register($event)">Register</button>
+					<button class="btn btn-info" ng-click="app.register($event)">Register</button>
 				</div>
 			</div>
 
@@ -57,7 +57,7 @@
 			</div>
 		</div>
 
-		<div style="position: relative; height: 256px;" ng-if="!vm.isAuthorized('user')" >
+		<div style="position: relative; height: 256px;" ng-if="!app.isAuthorized('user')" >
 			<div style="position: absolute; left: 0; top: 0; height: 100%; width: 100%; background: url('assets/img/code-background.png')"></div>
 			<div style="position: absolute; left: 0; top: 0; height: 100%; width: 100%; background-color: rgba(0,128,128, 0.9)">
 				<div layout="row" class="open-source" style="margin: 32px">

@@ -41,7 +41,6 @@ module GrafikaApp {
     app.service('adminService', AdminService);
 
     app.controller('AppController', AppController);
-    app.controller('MainController', MainController);
     app.controller('ForgetController', ForgetController);
     app.controller('LoginController', LoginController);
     app.controller('RegisterController', RegisterController);

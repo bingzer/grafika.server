@@ -149,6 +149,11 @@ md-input-container > label {
   left: 0;
   right: 0;
 }
+/* ---------- Header ----------- */
+md-sidenav.sidenav {
+	height: 480px;
+	max-height: 480px;
+}
 
 /* ---------- Header ----------- */
 nav.navbar {

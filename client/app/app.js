@@ -34,7 +34,6 @@ var GrafikaApp;
     app.service('userService', GrafikaApp.UserService);
     app.service('adminService', GrafikaApp.AdminService);
     app.controller('AppController', GrafikaApp.AppController);
-    app.controller('MainController', GrafikaApp.MainController);
     app.controller('ForgetController', GrafikaApp.ForgetController);
     app.controller('LoginController', GrafikaApp.LoginController);
     app.controller('RegisterController', GrafikaApp.RegisterController);

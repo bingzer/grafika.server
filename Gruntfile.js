@@ -178,7 +178,6 @@ module.exports = function (grunt) {
                         'client/app/services/user-service.js',
                         'client/app/services/admin-service.js',
                         'client/app/filters/keyboard-service.js',
-                        'client/app/layout/main.js',
                         'client/app/admin/admin.js',
                         'client/app/account/login.js',
                         'client/app/account/register.js',
