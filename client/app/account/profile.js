@@ -27,7 +27,7 @@ var GrafikaApp;
         };
         ProfileController.prototype.save = function () {
             var _this = this;
-            this.userService.update(this.user)
+            return this.userService.update(this.user)
                 .then(function () {
                 _this.needsUpdate = false;
                 _this.appCommon.toast('Saved!');
@@ -35,9 +35,15 @@ var GrafikaApp;
             })
                 .catch(function (err) { return _this.appCommon.toastError(err); });
         };
-        ProfileController.prototype.uploadAvatar = function ($imageData) {
-            var avatar = { name: $imageData.name, size: $imageData.size, mime: $imageData.mime };
-            return this.appCommon.$q.when(true);
+        ProfileController.prototype.uploadAvatar = function (avatar) {
+            var _this = this;
+            return this.userService.saveAvatar(this.user, avatar.mime)
+                .then(function (signedUrl) { return _this.userService.upload(signedUrl.data, avatar.getBlob()); })
+                .then(function () {
+                _this.user.prefs.avatar = "" + _this.appCommon.appConfig.userBaseUrl + _this.user._id + "/avatar";
+                return _this.save();
+            })
+                .finally(function () { return window.location.reload(true); });
         };
         ProfileController.$inject = ['appCommon', 'authService', 'userService'];
         return ProfileController;

@@ -33,7 +33,7 @@ exports.getThumbnail = getThumbnail;
 function createThumbnailSignedUrl(req, res, next) {
     var animId = new mongoose.Types.ObjectId(req.params.animationId);
     var resource = new resource_1.Resource({ _id: 'thumbnail', mime: 'image/png', animationId: animId });
-    return aws.createSignedUrl(resource).then(function (signedUrl) {
+    aws.createSignedUrl(resource).then(function (signedUrl) {
         res.send(signedUrl);
     }).catch(next);
 }

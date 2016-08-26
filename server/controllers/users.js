@@ -1,5 +1,7 @@
 "use strict";
+var aws_1 = require('../libs/aws');
 var user_1 = require("../models/user");
+var aws = new aws_1.AwsUsers();
 function get(req, res, next) {
     var userId = req.params._id;
     var sameUser = (req.user && req.user._id.toString() == userId);
@@ -29,6 +31,10 @@ function update(req, res, next) {
         user.username = req.body.username;
     if (req.body.prefs) {
         user.prefs = {};
+        if (req.body.prefs.avatar)
+            user.prefs.avatar = req.body.prefs.avatar;
+        if (req.body.prefs.backdrop)
+            user.prefs.backdrop = req.body.prefs.backdrop;
         if (req.body.prefs.playbackLoop)
             user.prefs.playbackLoop = req.body.prefs.playbackLoop;
         if (req.body.prefs.drawingTimer)
@@ -48,7 +54,7 @@ function update(req, res, next) {
 }
 exports.update = update;
 function getAvatar(req, res, next) {
-    user_1.User.findOne(req.params._id, function (err, user) {
+    user_1.User.findById(req.params._id, function (err, user) {
         if (err)
             return next(err);
         if (!user)
@@ -57,5 +63,23 @@ function getAvatar(req, res, next) {
     });
 }
 exports.getAvatar = getAvatar;
+;
+function createAvatarSignedUrl(req, res, next) {
+    var userId = req.user._id;
+    var mimeType = req.body.mime;
+    var imageType = req.body.imageType;
+    if (!userId || !mimeType || !imageType)
+        return next("User, ImageType or Mime type must be specified in the request body");
+    user_1.User.findById(userId, function (err, user) {
+        if (err)
+            return next(err);
+        else if (!user)
+            return next(404);
+        aws.createSignedUrl(user, imageType, mimeType)
+            .then(function (signedUrl) { return res.send(signedUrl); })
+            .catch(next);
+    });
+}
+exports.createAvatarSignedUrl = createAvatarSignedUrl;
 ;
 //# sourceMappingURL=users.js.map

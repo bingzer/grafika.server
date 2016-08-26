@@ -161,6 +161,7 @@ module.exports = function (grunt) {
                         'client/app/models/feedback.js',
                         'client/app/models/animation.js',
                         'client/app/models/navigation-menu.js',
+                        'client/app/models/image-data.js',
                         'client/app/directives/active-link.js',
                         'client/app/directives/image-uploader.js',
                         'client/app/directives/no-result.js',

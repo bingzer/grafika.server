@@ -4,7 +4,7 @@ module GrafikaApp {
         previewHeight: number;
         actualWidth: number;
         actualHeight: number;
-        onUpload: (data: any) => ng.IPromise<any>;
+        onUpload: (data: GrafikaApp.IImageData | any) => ng.IPromise<any>;
         onClosed: () => void;
     }
 
@@ -70,7 +70,7 @@ module GrafikaApp {
                 let img = new Image();
                 img.onload = () => {
                     context.drawImage(img, 0, 0, canvasWidth, canvasHeight);
-                    let data = { name: file.name, size: file.size, mime: file.type, getBlob: getCanvasBlob };
+                    let data = new ImageData(file.name, file.size, file.type, () => getCanvasBlob());
                     vm.upload(data);
                 };
                 if (!img.src) {
@@ -79,7 +79,7 @@ module GrafikaApp {
             };
             fileReader.readAsDataURL(file);
         };			
-        vm.upload = (imageData) => {
+        vm.upload = (imageData: ImageData) => {
             vm.message = 'Uploading...';
             vm.uploading = false;
             return uploadOptions.onUpload({$imageData: imageData})

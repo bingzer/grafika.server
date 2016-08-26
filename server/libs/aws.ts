@@ -22,8 +22,8 @@ export class AwsUsers extends AwsHelper {
 	/**
 	 * Creates signed url
 	 */
-	createSignedUrl(user: IUser, imageType?: string, mime?: string) : $q.IPromise<Grafika.ISignedUrl> {
-		let deferred = $q.defer();
+	createSignedUrl(user: IUser, imageType?: string, mime?: string) : $q.Promise<Grafika.ISignedUrl> {
+		let deferred = $q.defer<Grafika.ISignedUrl>();
 		if (!imageType) imageType = 'avatar';
 		if (!mime) mime = 'image/png';
 		
@@ -69,8 +69,8 @@ export class AwsResources extends AwsHelper {
 	 * Create SignedUrl for resources 
 	 * 
 	 * */
-	createSignedUrl(resource: Grafika.IResource): ng.IPromise<Grafika.ISignedUrl>{
-		let deferred = $q.defer();
+	createSignedUrl(resource: Grafika.IResource): $q.Promise<Grafika.ISignedUrl>{
+		let deferred = $q.defer<Grafika.ISignedUrl>();
 		
 		// get signedurl from s3
 		let s3_params = {

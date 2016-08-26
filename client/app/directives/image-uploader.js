@@ -59,7 +59,7 @@ var GrafikaApp;
                 var img = new Image();
                 img.onload = function () {
                     context.drawImage(img, 0, 0, canvasWidth, canvasHeight);
-                    var data = { name: file.name, size: file.size, mime: file.type, getBlob: getCanvasBlob };
+                    var data = new GrafikaApp.ImageData(file.name, file.size, file.type, function () { return getCanvasBlob(); });
                     vm.upload(data);
                 };
                 if (!img.src) {

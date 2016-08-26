@@ -26,13 +26,10 @@ var GrafikaApp;
             var _this = this;
             this.grafika.save();
             var animation = this.grafika.getAnimation();
-            this.animationService.update(animation).then(function (res) {
-                return _this.resourceService.saveThumbnail(animation);
-            }).then(function (res) {
-                return _this.resourceService.upload(res.data, _this.grafika.exts.getCanvasBlob());
-            }).then(function (res) {
-                _this.appCommon.toast('Successfully saved!');
-            });
+            this.animationService.update(animation)
+                .then(function (res) { return _this.resourceService.saveThumbnail(animation); })
+                .then(function (res) { return _this.resourceService.upload(res.data, _this.grafika.exts.getCanvasBlob()); })
+                .then(function (res) { return _this.appCommon.toast('Successfully saved!'); });
         };
         AnimationEditorController.$inject = [
             '$rootScope',

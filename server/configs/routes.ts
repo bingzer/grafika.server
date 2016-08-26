@@ -178,8 +178,9 @@ export function initialize(app): q.Promise<any> {
 
         // ---------------- Users -----------------------------//
         app.get('/api/users/:_id', userController.get);
-        app.get('/api/users/:_id/avatar', userController.getAvatar);
         app.put('/api/users/:_id', useSessionOrJwt, userController.update);
+        app.get('/api/users/:_id/avatar', userController.getAvatar);
+        app.post('/api/users/:_id/avatar', useSessionOrJwt, userController.createAvatarSignedUrl);
         
         // ------------------ Admin ---------------------//
         app.get('/api/admin', useSessionOrJwt, useAdminAccess, adminController.get);

@@ -145,8 +145,9 @@ function initialize(app) {
         app.post('/api/animations/sync', useSessionOrJwt, syncController.sync);
         app.post('/api/animations/sync/update', useSessionOrJwt, syncController.syncUpdate);
         app.get('/api/users/:_id', userController.get);
-        app.get('/api/users/:_id/avatar', userController.getAvatar);
         app.put('/api/users/:_id', useSessionOrJwt, userController.update);
+        app.get('/api/users/:_id/avatar', userController.getAvatar);
+        app.post('/api/users/:_id/avatar', useSessionOrJwt, userController.createAvatarSignedUrl);
         app.get('/api/admin', useSessionOrJwt, useAdminAccess, adminController.get);
         app.get('/api/admin/users', useSessionOrJwt, useAdminAccess, adminController.listUsers);
         app.get('/api/admin/animations', useSessionOrJwt, useAdminAccess, adminController.listAnimations);

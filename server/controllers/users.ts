@@ -1,5 +1,9 @@
 import * as express from "express";
+
+import { AwsUsers } from '../libs/aws';
 import { IUser, User, sanitize, checkAvailability, isAdministrator } from "../models/user";
+
+const aws = new AwsUsers();
 
 export function get(req: express.Request | any, res: express.Response, next: express.NextFunction) {
     let userId = req.params._id;
@@ -30,6 +34,8 @@ export function update(req: express.Request | any, res: express.Response, next: 
     if (req.body.username) user.username = req.body.username;
     if (req.body.prefs) {
         user.prefs = {};
+        if (req.body.prefs.avatar) user.prefs.avatar = req.body.prefs.avatar;
+        if (req.body.prefs.backdrop) user.prefs.backdrop = req.body.prefs.backdrop;
         if (req.body.prefs.playbackLoop) user.prefs.playbackLoop = req.body.prefs.playbackLoop;
         if (req.body.prefs.drawingTimer) user.prefs.drawingTimer = req.body.prefs.drawingTimer;
         if (req.body.prefs.drawingIsPublic) user.prefs.drawingIsPublic = req.body.prefs.drawingIsPublic;
@@ -46,9 +52,25 @@ export function update(req: express.Request | any, res: express.Response, next: 
 }
 
 export function getAvatar(req: express.Request | any, res: express.Response, next: express.NextFunction) {
-    User.findOne(req.params._id, (err, user) => {
+    User.findById(req.params._id, (err, user) => {
         if (err) return next(err);
         if (!user) return next(404);
         res.redirect(user.prefs.avatar);
+    });
+};
+
+export function createAvatarSignedUrl(req : express.Request | any, res : express.Response, next: express.NextFunction) {
+    let userId = req.user._id;
+    let mimeType = req.body.mime;
+    let imageType = req.body.imageType;
+    if (!userId || !mimeType || !imageType) return next("User, ImageType or Mime type must be specified in the request body");
+
+    User.findById(userId, (err, user) => {
+        if (err) return next(err);
+        else if (!user) return next(404);
+        
+        aws.createSignedUrl(user, imageType, mimeType)
+            .then((signedUrl) => res.send(signedUrl))
+            .catch(next);
     });
 };

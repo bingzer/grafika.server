@@ -24,8 +24,8 @@ module GrafikaApp {
                 .catch((err) => this.appCommon.toastError(err));
         }
 
-        save() {
-            this.userService.update(this.user)
+        save(): ng.IPromise<any> {
+            return this.userService.update(this.user)
                 .then(() => {
                     this.needsUpdate = false;
                     this.appCommon.toast('Saved!');
@@ -34,9 +34,14 @@ module GrafikaApp {
                 .catch((err) => this.appCommon.toastError(err));
         }
 		
-		uploadAvatar($imageData){
-			let avatar = { name: $imageData.name, size: $imageData.size, mime: $imageData.mime };
-            return this.appCommon.$q.when(true);
+		uploadAvatar(avatar: IImageData): ng.IPromise<any> {
+            return this.userService.saveAvatar(this.user, avatar.mime)
+                .then((signedUrl) => this.userService.upload(signedUrl.data, avatar.getBlob()))
+                .then(() => {
+                    this.user.prefs.avatar = `${this.appCommon.appConfig.userBaseUrl}${this.user._id}/avatar`;
+                    return this.save();
+                })
+                .finally(() => window.location.reload(true) );
 		}
     }
 }

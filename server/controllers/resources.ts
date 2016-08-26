@@ -1,7 +1,7 @@
 import * as express from 'express';
 import * as mongoose from 'mongoose';
 
-import { AwsUsers, AwsResources } from '../libs/aws';
+import { AwsResources } from '../libs/aws';
 import { Resource } from '../models/resource';
 
 const aws = new AwsResources();
@@ -38,7 +38,7 @@ export function getThumbnail(req : express.Request, res : express.Response, next
 export function createThumbnailSignedUrl(req : express.Request, res : express.Response, next: express.NextFunction) {
     let animId = new mongoose.Types.ObjectId(req.params.animationId);
     let resource = new Resource({ _id: 'thumbnail', mime: 'image/png', animationId: animId });
-    return aws.createSignedUrl(resource).then((signedUrl) => {
+    aws.createSignedUrl(resource).then((signedUrl) => {
         res.send(signedUrl);
     }).catch(next);
 };
