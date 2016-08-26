@@ -1,6 +1,8 @@
 module GrafikaApp {
-    export class AnimationDrawingController extends BaseAnimationController {
+    export class AnimationDrawingController extends BaseAnimationController implements Grafika.ICallback {
         grafika: Grafika.IGrafika = new Grafika();
+        currentFrame: number = 1;
+        totalFrame: number = 0;
         
         public static $inject = ['appCommon', 'authService', 'uxService', 'animationService', 'frameService', 'resourceService'];
         constructor(
@@ -13,7 +15,18 @@ module GrafikaApp {
         ){
             super(appCommon, authService, animationService, frameService, resourceService);
             this.appCommon.hideLoadingModal();
+            this.grafika.setCallback(this);
         }
+
+        on(eventName: string, obj: any) {
+            switch(eventName) {
+                case "frameChanged":
+                    this.currentFrame = (<number> obj) + 1;
+                case "frameCount":
+                    this.totalFrame = this.grafika.getAnimation().frames.length;
+                    break;
+            }
+        } 
 
         onLoaded(animation: Grafika.IAnimation) {
             this.uxService.pageTitle = 'Edit ' + this.animation.name;

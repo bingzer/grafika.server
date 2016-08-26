@@ -4,8 +4,11 @@
             <div class="md-toolbar-tools text-white" layout="row">
                 <h2>{{vm.grafika.getAnimation().name}}</h2>
                 <span flex></span>
-                <div>
-                    NUM
+                <div layout="row" layout-align="end">
+                    <div>
+                        <input style="color: gray" type="number" min="1" max="{{vm.totalFrame + 1}}" ng-model="vm.currentFrame" ng-change="vm.grafika.navigateToFrame(vm.currentFrame - 1)" >
+                        <span ng-bind="'of ' + vm.totalFrame">
+                    </div>
                 </div>
             </div>
             <md-menu-bar>

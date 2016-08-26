@@ -14,8 +14,20 @@ var GrafikaApp;
             this.frameService = frameService;
             this.resourceService = resourceService;
             this.grafika = new Grafika();
+            this.currentFrame = 1;
+            this.totalFrame = 0;
             this.appCommon.hideLoadingModal();
+            this.grafika.setCallback(this);
         }
+        AnimationDrawingController.prototype.on = function (eventName, obj) {
+            switch (eventName) {
+                case "frameChanged":
+                    this.currentFrame = obj + 1;
+                case "frameCount":
+                    this.totalFrame = this.grafika.getAnimation().frames.length;
+                    break;
+            }
+        };
         AnimationDrawingController.prototype.onLoaded = function (animation) {
             var _this = this;
             this.uxService.pageTitle = 'Edit ' + this.animation.name;
