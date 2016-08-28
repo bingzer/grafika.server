@@ -38,7 +38,7 @@ module GrafikaApp {
         }
 
         protected createPaging() : Paging {
-            return new Paging({ userId: this.authService.getUser()._id, limit: this.appCommon.appConfig.fetchSize, skip: 0});
+            return new Paging({ userId: this.authService.getUser()._id, limit: this.appCommon.appConfig.fetchSize, skip: 0, sort: '-dateModified'});
         }
     }
 }

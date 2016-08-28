@@ -35,7 +35,7 @@ var GrafikaApp;
             });
         };
         MyAnimationsController.prototype.createPaging = function () {
-            return new GrafikaApp.Paging({ userId: this.authService.getUser()._id, limit: this.appCommon.appConfig.fetchSize, skip: 0 });
+            return new GrafikaApp.Paging({ userId: this.authService.getUser()._id, limit: this.appCommon.appConfig.fetchSize, skip: 0, sort: '-dateModified' });
         };
         MyAnimationsController.$inject = ['appCommon', 'animationService', 'authService'];
         return MyAnimationsController;
