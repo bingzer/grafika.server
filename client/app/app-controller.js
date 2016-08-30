@@ -56,10 +56,10 @@ var GrafikaApp;
             }
         }
         AppController.prototype.login = function (evt) {
-            this.appCommon.showDialog('LoginController', 'app/account/login-dialog.html', evt, 'vm');
+            this.appCommon.showDialog('app/account/login-dialog.html', 'LoginController', evt);
         };
         AppController.prototype.register = function (evt) {
-            this.appCommon.showDialog('RegisterController', 'app/account/register.html', evt, 'vm');
+            this.appCommon.showDialog('app/account/register.html', 'RegisterController', evt);
         };
         AppController.prototype.confirmLogout = function () {
             var _this = this;

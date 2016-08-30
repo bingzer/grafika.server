@@ -8,11 +8,13 @@ module GrafikaApp {
             authService: AuthService,
             protected animationService: AnimationService,
             protected frameService: FrameService,
-            protected resourceService: ResourceService
+            protected resourceService: ResourceService,
+            autoLoad: boolean = true
         )
         {
             super(appCommon, authService);
-            this.load();
+            if (autoLoad)
+                this.load();
         }
 
         load() {

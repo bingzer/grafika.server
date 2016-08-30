@@ -21,6 +21,7 @@ module GrafikaApp {
     app.config(Theme);    
 
     app.filter('keyboardShortcut', KeyboardFilter);
+    app.filter('capitalizeFirstLetter', CapitalizeFirstLetterFilter);
 
     app.directive('activeLink', ActiveLinkDirective.factory());
     app.directive('imageUploader', ImageUploaderDirective.factory());

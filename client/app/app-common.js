@@ -57,7 +57,7 @@ var GrafikaApp;
                 .position(position)
                 .hideDelay(delay));
         };
-        AppCommon.prototype.showDialog = function (controller, templateUrl, event, controllerAs) {
+        AppCommon.prototype.showDialog = function (templateUrl, controller, event, locals, controllerAs) {
             if (!controllerAs)
                 controllerAs = 'vm';
             var useFullScreen = (this.$mdMedia('sm') || this.$mdMedia('xs'));
@@ -68,7 +68,8 @@ var GrafikaApp;
                 parent: angular.element(document.body),
                 templateUrl: templateUrl,
                 clickOutsideToClose: true,
-                targetEvent: event
+                targetEvent: event,
+                locals: locals
             });
         };
         AppCommon.prototype.refreshPage = function () {

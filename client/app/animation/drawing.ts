@@ -1,6 +1,6 @@
 module GrafikaApp {
     export class AnimationDrawingController extends BaseAnimationController implements Grafika.ICallback {
-        grafika: Grafika.IGrafika = new Grafika();
+        grafika: Grafika.IGrafika | any = new Grafika();
         currentFrame: number = 1;
         totalFrame: number = 0;
         canvas: JQuery;
@@ -14,7 +14,7 @@ module GrafikaApp {
             protected frameService: FrameService,
             protected resourceService: ResourceService
         ){
-            super(appCommon, authService, animationService, frameService, resourceService);
+            super(appCommon, authService, animationService, frameService, resourceService, false);
             this.appCommon.hideLoadingModal();
             this.grafika.setCallback(this);
         }
@@ -35,12 +35,22 @@ module GrafikaApp {
             this.appCommon.elem('#canvas-container').css('width', this.animation.width).css('height', this.animation.height);
             this.frameService.get(this.animation).then((res) => {
                 this.animation.frames = res.data;
-                this.grafika.initialize('#canvas', { drawingMode: 'paint' }, this.animation);
-            })
+                this.grafika.initialize('#canvas', { drawingMode: 'paint', useNavigationText: false }, this.animation);
+            });
         }
 
         showProperties(ev: MouseEvent) {
-            return this.appCommon.showDialog('AnimationEditController', '/app/animation/edit.html', ev).then(() => this.load());
+            return this.appCommon.showDialog('/app/animation/edit.html', 'AnimationEditController', ev).then(() => this.load());
+        }
+
+        showFrameProperties(ev: MouseEvent) {
+            let controller = new FrameController(this.appCommon, this.grafika);
+            return this.appCommon.showDialog('/app/animation/drawing-frame.html', () => controller, ev);
+        }
+
+        showGraphicsProperties(ev: MouseEvent) {
+            let controller = new GraphicController(this.appCommon, this.grafika);
+            return this.appCommon.showDialog('/app/animation/drawing-graphics.html', () => controller, ev);
         }
 
 		save(exit: boolean) {
@@ -58,13 +68,18 @@ module GrafikaApp {
 		}
 
         confirmExit() {
-            let anim: any = this.animation;
-            if (anim.modified) this.appCommon.confirm('Close?').then(() => this.exit());
+            if (this.grafika.isModified()) 
+                this.appCommon.confirm('Close?').then(() => this.exit());
             else this.exit();
         }
 
         exit() {
             this.appCommon.$state.go('my-animations');
+        }
+
+        update() {
+            this.canvas.removeClass("none paint select move delete");
+            this.canvas.addClass(this.grafika.getOptions().drawingMode);
         }
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -73,5 +88,31 @@ module GrafikaApp {
             if (!this.canvas) return;
 			this.canvas.attr('context-menu-x', event.offsetX).attr('context-menu-y', event.offsetY);
         }
+    }
+    
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    class FrameController extends DialogController {
+        protected frame: Grafika.IFrame;
+
+        constructor(appCommon: AppCommon, protected grafika: Grafika.IGrafika | any) {
+            super(appCommon);
+            this.frame = this.grafika.getFrame();
+        }
+
+        close(response?: any): ng.IPromise<any> {
+            this.grafika.refresh();
+            return super.close();
+        }
+    }
+
+    class GraphicController extends FrameController {
+        protected graphics: Grafika.Graphics.IGraphic[];
+
+        constructor(appCommon: AppCommon, grafika: Grafika.IGrafika | any) {
+            super(appCommon, grafika);
+            this.graphics = this.frame.layers[0].graphics
+        }        
+
     }
 }

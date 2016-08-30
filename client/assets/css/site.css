@@ -309,9 +309,23 @@ md-menu-item .sp-replacer.sp-light {
 .drawing-context-menu md-list-item {
   min-height: 32px !important;
 }
+.drawing-context-menu .md-list-item-inner,
 .drawing-context-menu ._md-list-item-inner {
   height: 24px !important;
   min-height: 24px !important;
+}
+.drawing #canvas,
+.drawing #canvas.paint {
+	cursor: default;
+}
+.drawing #canvas.none {
+	cursor: not-allowed;
+}
+.drawing #canvas.select {
+	cursor: pointer;
+}
+.drawing #canvas.move {
+	cursor: move;
 }
 
 /* ---------- Card ------------ */

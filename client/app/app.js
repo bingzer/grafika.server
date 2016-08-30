@@ -17,6 +17,7 @@ var GrafikaApp;
     app.config(GrafikaApp.HttpInterceptor);
     app.config(GrafikaApp.Theme);
     app.filter('keyboardShortcut', GrafikaApp.KeyboardFilter);
+    app.filter('capitalizeFirstLetter', GrafikaApp.CapitalizeFirstLetterFilter);
     app.directive('activeLink', GrafikaApp.ActiveLinkDirective.factory());
     app.directive('imageUploader', GrafikaApp.ImageUploaderDirective.factory());
     app.directive('noResult', GrafikaApp.NoResultDirective.factory());

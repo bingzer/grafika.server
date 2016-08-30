@@ -59,11 +59,11 @@ module GrafikaApp {
         }
 
         login(evt: MouseEvent): void {
-            this.appCommon.showDialog('LoginController', 'app/account/login-dialog.html', evt, 'vm');
+            this.appCommon.showDialog('app/account/login-dialog.html', 'LoginController', evt);
         }
 
         register(evt: MouseEvent): void {
-            this.appCommon.showDialog('RegisterController', 'app/account/register.html', evt, 'vm');
+            this.appCommon.showDialog('app/account/register.html', 'RegisterController', evt);
         }
 
         confirmLogout(): void {

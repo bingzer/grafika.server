@@ -7,12 +7,14 @@ var GrafikaApp;
 (function (GrafikaApp) {
     var BaseAnimationController = (function (_super) {
         __extends(BaseAnimationController, _super);
-        function BaseAnimationController(appCommon, authService, animationService, frameService, resourceService) {
+        function BaseAnimationController(appCommon, authService, animationService, frameService, resourceService, autoLoad) {
+            if (autoLoad === void 0) { autoLoad = true; }
             _super.call(this, appCommon, authService);
             this.animationService = animationService;
             this.frameService = frameService;
             this.resourceService = resourceService;
-            this.load();
+            if (autoLoad)
+                this.load();
         }
         BaseAnimationController.prototype.load = function () {
             var _this = this;

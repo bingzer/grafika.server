@@ -8,7 +8,7 @@ var GrafikaApp;
     var AnimationDrawingController = (function (_super) {
         __extends(AnimationDrawingController, _super);
         function AnimationDrawingController(appCommon, authService, uxService, animationService, frameService, resourceService) {
-            _super.call(this, appCommon, authService, animationService, frameService, resourceService);
+            _super.call(this, appCommon, authService, animationService, frameService, resourceService, false);
             this.uxService = uxService;
             this.animationService = animationService;
             this.frameService = frameService;
@@ -35,12 +35,20 @@ var GrafikaApp;
             this.appCommon.elem('#canvas-container').css('width', this.animation.width).css('height', this.animation.height);
             this.frameService.get(this.animation).then(function (res) {
                 _this.animation.frames = res.data;
-                _this.grafika.initialize('#canvas', { drawingMode: 'paint' }, _this.animation);
+                _this.grafika.initialize('#canvas', { drawingMode: 'paint', useNavigationText: false }, _this.animation);
             });
         };
         AnimationDrawingController.prototype.showProperties = function (ev) {
             var _this = this;
-            return this.appCommon.showDialog('AnimationEditController', '/app/animation/edit.html', ev).then(function () { return _this.load(); });
+            return this.appCommon.showDialog('/app/animation/edit.html', 'AnimationEditController', ev).then(function () { return _this.load(); });
+        };
+        AnimationDrawingController.prototype.showFrameProperties = function (ev) {
+            var controller = new FrameController(this.appCommon, this.grafika);
+            return this.appCommon.showDialog('/app/animation/drawing-frame.html', function () { return controller; }, ev);
+        };
+        AnimationDrawingController.prototype.showGraphicsProperties = function (ev) {
+            var controller = new GraphicController(this.appCommon, this.grafika);
+            return this.appCommon.showDialog('/app/animation/drawing-graphics.html', function () { return controller; }, ev);
         };
         AnimationDrawingController.prototype.save = function (exit) {
             var _this = this;
@@ -58,14 +66,17 @@ var GrafikaApp;
         };
         AnimationDrawingController.prototype.confirmExit = function () {
             var _this = this;
-            var anim = this.animation;
-            if (anim.modified)
+            if (this.grafika.isModified())
                 this.appCommon.confirm('Close?').then(function () { return _this.exit(); });
             else
                 this.exit();
         };
         AnimationDrawingController.prototype.exit = function () {
             this.appCommon.$state.go('my-animations');
+        };
+        AnimationDrawingController.prototype.update = function () {
+            this.canvas.removeClass("none paint select move delete");
+            this.canvas.addClass(this.grafika.getOptions().drawingMode);
         };
         AnimationDrawingController.prototype.captureContextMenu = function (event) {
             if (!this.canvas)
@@ -76,5 +87,26 @@ var GrafikaApp;
         return AnimationDrawingController;
     }(GrafikaApp.BaseAnimationController));
     GrafikaApp.AnimationDrawingController = AnimationDrawingController;
+    var FrameController = (function (_super) {
+        __extends(FrameController, _super);
+        function FrameController(appCommon, grafika) {
+            _super.call(this, appCommon);
+            this.grafika = grafika;
+            this.frame = this.grafika.getFrame();
+        }
+        FrameController.prototype.close = function (response) {
+            this.grafika.refresh();
+            return _super.prototype.close.call(this);
+        };
+        return FrameController;
+    }(GrafikaApp.DialogController));
+    var GraphicController = (function (_super) {
+        __extends(GraphicController, _super);
+        function GraphicController(appCommon, grafika) {
+            _super.call(this, appCommon, grafika);
+            this.graphics = this.frame.layers[0].graphics;
+        }
+        return GraphicController;
+    }(FrameController));
 })(GrafikaApp || (GrafikaApp = {}));
 //# sourceMappingURL=drawing.js.map

@@ -30,7 +30,7 @@ module GrafikaApp {
         }
 
         forgetPassword(evt: MouseEvent) {
-            this.appCommon.showDialog('ForgetController', 'app/account/forget.html', evt, 'vm');
+            this.appCommon.showDialog('app/account/forget.html', 'ForgetController', evt);
         }
 
         reset() {

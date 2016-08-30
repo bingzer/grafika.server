@@ -33,7 +33,7 @@ var GrafikaApp;
             });
         };
         LoginController.prototype.forgetPassword = function (evt) {
-            this.appCommon.showDialog('ForgetController', 'app/account/forget.html', evt, 'vm');
+            this.appCommon.showDialog('app/account/forget.html', 'ForgetController', evt);
         };
         LoginController.prototype.reset = function () {
             this.username = '';
