@@ -30,6 +30,7 @@ module GrafikaApp {
     app.directive('includeMarkdown', IncludeMarkdownDirective.factory());
     app.directive('gfSpinner', GfSpinner.factory());
     app.directive('avatar', AvatarDirective.factory());
+    app.directive('contextMenu', ContextMenuDirective.factory());
 
     app.service('uxService', UxService);
     app.service('apiService', ApiService);

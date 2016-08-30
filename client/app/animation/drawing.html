@@ -10,9 +10,9 @@
     <!-- Toolbar -->
     <ng-include src="'/app/animation/toolbar.html'"></ng-include>
     <!-- Canvas -->
-    <div class="drawing" layout-padding flex layout="column" layout-align="center center">
+    <div class="drawing" layout-padding layout="column" layout-align="center center">
         <md-card id="canvas-container" class="editor">
-            <canvas id="canvas">No canvas support</canvas>
+            <canvas id="canvas" context-menu="drawing-context-menu" ng-if="vm.contextMenuReady">No canvas support</canvas>
         </md-card>
     </div>
     <!-- Fabs -->
@@ -22,4 +22,6 @@
     <md-button class="md-fab md-fab-bottom-left md-accent" ng-click="vm.grafika.previousFrame()">
         <md-icon><i class="material-icons">navigate_before</i></md-icon>
     </md-button>
+    <!-- Context menu -->
+    <ng-include src="'/app/animation/drawing-context-menu.html'" onload="vm.contextMenuReady = true"></ng-include>
 </div>

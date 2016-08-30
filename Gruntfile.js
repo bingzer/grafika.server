@@ -170,6 +170,7 @@ module.exports = function (grunt) {
                         'client/app/directives/include-markdown.js',
                         'client/app/directives/gf-spinner.js',
                         'client/app/directives/avatar.js',
+                        'client/app/directives/context-menu.js',
                         'client/app/services/ux-service.js',
                         'client/app/services/api-service.js',
                         'client/app/services/auth-service.js',

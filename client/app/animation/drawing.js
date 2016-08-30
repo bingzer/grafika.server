@@ -31,6 +31,7 @@ var GrafikaApp;
         AnimationDrawingController.prototype.onLoaded = function (animation) {
             var _this = this;
             this.uxService.pageTitle = 'Edit ' + this.animation.name;
+            this.canvas = this.appCommon.elem('#canvas').contextmenu(this.captureContextMenu);
             this.appCommon.elem('#canvas-container').css('width', this.animation.width).css('height', this.animation.height);
             this.frameService.get(this.animation).then(function (res) {
                 _this.animation.frames = res.data;
@@ -65,6 +66,11 @@ var GrafikaApp;
         };
         AnimationDrawingController.prototype.exit = function () {
             this.appCommon.$state.go('my-animations');
+        };
+        AnimationDrawingController.prototype.captureContextMenu = function (event) {
+            if (!this.canvas)
+                return;
+            this.canvas.attr('context-menu-x', event.offsetX).attr('context-menu-y', event.offsetY);
         };
         AnimationDrawingController.$inject = ['appCommon', 'authService', 'uxService', 'animationService', 'frameService', 'resourceService'];
         return AnimationDrawingController;

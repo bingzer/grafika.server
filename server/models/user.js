@@ -1,9 +1,11 @@
 "use strict";
 var mongoose = require('mongoose');
 var winston = require('winston');
+var fs = require('fs');
 var q = require('q');
 var config = require('../configs/config');
 var restful = require('../libs/restful');
+var utils_1 = require('../libs/utils');
 var bcrypt = require('bcrypt-nodejs');
 var crypto = require('crypto-js');
 var jwt = require('jsonwebtoken');
@@ -38,7 +40,7 @@ exports.UserSchema = new mongoose.Schema({
     },
     prefs: {
         avatar: { type: String, default: '/assets/img/ic_user.png' },
-        backdrop: { type: String, default: '/assets/img/ic_backdrop.png' },
+        backdrop: { type: String, default: randomlyPickBackdrop },
         drawingIsPublic: { type: Boolean, default: false },
         drawingAuthor: { type: String },
         drawingTimer: { type: Number, default: 1000 },
@@ -134,6 +136,7 @@ function ensureAdminExists() {
             user = new User();
             user.firstName = 'grafika';
             user.lastName = 'admin';
+            user.username = 'grafika';
             user.email = GRAFIKA_ADMIN;
             user.dateCreated = Date.now();
             user.dateModified = Date.now();
@@ -153,4 +156,10 @@ function randomUsername() {
     return 'user-' + (("000000" + (Math.random() * Math.pow(36, 6) << 0).toString(36)).slice(-6));
 }
 exports.randomUsername = randomUsername;
+function randomlyPickBackdrop() {
+    var prefix = '/assets/img/backdrops/';
+    var backdropFiles = fs.readdirSync('client/assets/img/backdrops');
+    var backdrop = utils_1.randomlyPick(backdropFiles);
+    return prefix + backdrop;
+}
 //# sourceMappingURL=user.js.map

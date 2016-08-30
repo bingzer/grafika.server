@@ -52,7 +52,7 @@ module GrafikaApp {
                 .ok(okText || 'Ok');
             if (title) alert.title(title);
             return this.$mdDialog.show(alert);
-        }    
+        }  
         confirm(msg: string, title?: string, okText?: string, cancelText?: string): ng.IPromise<any>{
             let confirm = this.$mdDialog.confirm()
                 .parent(angular.element(document.body))
@@ -67,7 +67,7 @@ module GrafikaApp {
             return this.toast(this.formatErrorMessage(error), position, delay);
         };
         toast(msg: string, position?: string, delay?: number): ng.IPromise<any>{
-            if (!position) position = 'top left';
+            if (!position) position = 'top right';
             if (!delay) delay = 3000;
             this.$log.log(msg);
 
@@ -106,11 +106,12 @@ module GrafikaApp {
         }
 
         formatErrorMessage(msg: any): string{
-            if (!msg) return msg;
             if (msg.errorMessage && msg.errorMessage.length > 0) return msg.errorMessage;   
             if (msg.message && msg.message.length > 0) return msg.message;
+            if (msg.statusText) return msg.statusText;
             if (msg.data && msg.data.length > 0) return msg.data;
-            return 'An error has occured';
+            if (!msg) msg = 'An error has occured';
+            return msg;
         };
         putStorageItem(key: string, value: any): ng.IPromise<string>{
             return this.$q(function (resolve, reject){

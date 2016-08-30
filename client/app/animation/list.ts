@@ -35,6 +35,11 @@ module GrafikaApp {
             });
         }
 
+        reset() {
+            this.paging = this.createPaging();
+            this.list();
+        }
+
         canEdit() {
             return false;
         }

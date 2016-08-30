@@ -288,6 +288,31 @@ md-dialog {
 md-menu-item .sp-replacer.sp-light {
 	margin-bottom: 8px;
 }
+/*-- drawing context menu --*/
+.drawing-context-menu md-list{
+  margin: 0 !important;
+  padding: 0 !important;
+  min-width: 160px;
+}
+.drawing-context-menu md-list button{
+  padding-top: 2px !important;
+  padding-bottom: 2px !important;
+}
+.drawing-context-menu md-icon{
+  margin-top: 2px !important;
+  margin-bottom: 2px !important;
+  margin-right: 16px !important;
+}
+.drawing-context-menu p{
+  font-size: small !important;
+}
+.drawing-context-menu md-list-item {
+  min-height: 32px !important;
+}
+.drawing-context-menu ._md-list-item-inner {
+  height: 24px !important;
+  min-height: 24px !important;
+}
 
 /* ---------- Card ------------ */
 .animation-card {

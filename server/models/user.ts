@@ -1,9 +1,11 @@
 import * as mongoose from 'mongoose';
 import * as winston from 'winston';
+import * as fs from 'fs';
 import * as q from 'q';
 import * as config from '../configs/config';
 
 import restful = require('../libs/restful');
+import { randomlyPick } from '../libs/utils';
 
 const bcrypt        = require('bcrypt-nodejs');
 const crypto        = require('crypto-js');
@@ -83,7 +85,7 @@ export const UserSchema = new mongoose.Schema({
     },
     prefs               : {
         avatar          : { type: String, default: '/assets/img/ic_user.png' },
-        backdrop        : { type: String, default: '/assets/img/ic_backdrop.png' },
+        backdrop        : { type: String, default: randomlyPickBackdrop },
         drawingIsPublic : { type: Boolean, default: false },
         drawingAuthor   : { type: String },
         drawingTimer    : { type: Number, default: 1000 },
@@ -120,7 +122,6 @@ UserSchema.methods.sanitize = function(): IUser {
 UserSchema.methods.isAdministrator = function(): boolean {
     return isAdministrator(this);
 };
-
 UserSchema.index(
     { email: 'text', firstName: 'text', lastName: 'text', username: 'text' }, 
     { 
@@ -191,6 +192,7 @@ export function ensureAdminExists() : ng.IPromise<IUser> {
 			user = new User();
 			user.firstName        = 'grafika';
 			user.lastName         = 'admin';
+            user.username         = 'grafika';
 			user.email            = GRAFIKA_ADMIN;
 			user.dateCreated      = Date.now();
 			user.dateModified     = Date.now();
@@ -211,3 +213,12 @@ export function randomUsername(){
 }
 
 export { User };
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+function randomlyPickBackdrop(){
+    const prefix = '/assets/img/backdrops/';
+    let backdropFiles = fs.readdirSync('client/assets/img/backdrops');
+    let backdrop = randomlyPick(backdropFiles); // todo: use file.list()
+    return prefix + backdrop;
+}

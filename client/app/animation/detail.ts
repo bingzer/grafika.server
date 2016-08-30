@@ -38,7 +38,7 @@ module GrafikaApp {
         }
 
         onError(err: any){
-            this.appCommon.alert("An error has occured").then(() => this.appCommon.navigateHome());
+            this.appCommon.alert(err).then(() => this.appCommon.navigateHome());
         }
 
         edit() {

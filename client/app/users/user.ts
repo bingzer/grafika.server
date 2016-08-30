@@ -19,6 +19,10 @@ module GrafikaApp {
                 .then((res) => {
                     this.user = new User(res.data);
                     this.loadAnimations()
+                })
+                .catch((err) => {
+                    this.appCommon.alert(this.appCommon.formatErrorMessage(err))
+                        .then(() => this.appCommon.navigateHome());
                 });
         }
 

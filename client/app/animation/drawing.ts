@@ -3,6 +3,7 @@ module GrafikaApp {
         grafika: Grafika.IGrafika = new Grafika();
         currentFrame: number = 1;
         totalFrame: number = 0;
+        canvas: JQuery;
         
         public static $inject = ['appCommon', 'authService', 'uxService', 'animationService', 'frameService', 'resourceService'];
         constructor(
@@ -30,6 +31,7 @@ module GrafikaApp {
 
         onLoaded(animation: Grafika.IAnimation) {
             this.uxService.pageTitle = 'Edit ' + this.animation.name;
+            this.canvas = this.appCommon.elem('#canvas').contextmenu(this.captureContextMenu);
             this.appCommon.elem('#canvas-container').css('width', this.animation.width).css('height', this.animation.height);
             this.frameService.get(this.animation).then((res) => {
                 this.animation.frames = res.data;
@@ -63,6 +65,13 @@ module GrafikaApp {
 
         exit() {
             this.appCommon.$state.go('my-animations');
+        }
+
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        private captureContextMenu(event: JQueryMouseEventObject) {
+            if (!this.canvas) return;
+			this.canvas.attr('context-menu-x', event.offsetX).attr('context-menu-y', event.offsetY);
         }
     }
 }

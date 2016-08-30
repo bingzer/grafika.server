@@ -49,7 +49,7 @@ var GrafikaApp;
         ;
         AppCommon.prototype.toast = function (msg, position, delay) {
             if (!position)
-                position = 'top left';
+                position = 'top right';
             if (!delay)
                 delay = 3000;
             this.$log.log(msg);
@@ -84,15 +84,17 @@ var GrafikaApp;
             return ("0000" + (Math.random() * Math.pow(36, 4) << 0).toString(36)).slice(-4);
         };
         AppCommon.prototype.formatErrorMessage = function (msg) {
-            if (!msg)
-                return msg;
             if (msg.errorMessage && msg.errorMessage.length > 0)
                 return msg.errorMessage;
             if (msg.message && msg.message.length > 0)
                 return msg.message;
+            if (msg.statusText)
+                return msg.statusText;
             if (msg.data && msg.data.length > 0)
                 return msg.data;
-            return 'An error has occured';
+            if (!msg)
+                msg = 'An error has occured';
+            return msg;
         };
         ;
         AppCommon.prototype.putStorageItem = function (key, value) {

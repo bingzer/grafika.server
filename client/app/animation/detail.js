@@ -35,7 +35,7 @@ var GrafikaApp;
         };
         AnimationDetailController.prototype.onError = function (err) {
             var _this = this;
-            this.appCommon.alert("An error has occured").then(function () { return _this.appCommon.navigateHome(); });
+            this.appCommon.alert(err).then(function () { return _this.appCommon.navigateHome(); });
         };
         AnimationDetailController.prototype.edit = function () {
             this.appCommon.$state.go("drawing", { _id: this.animation._id });

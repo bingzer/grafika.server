@@ -19,6 +19,10 @@ var GrafikaApp;
                 .then(function (res) {
                 _this.user = new GrafikaApp.User(res.data);
                 _this.loadAnimations();
+            })
+                .catch(function (err) {
+                _this.appCommon.alert(_this.appCommon.formatErrorMessage(err))
+                    .then(function () { return _this.appCommon.navigateHome(); });
             });
         };
         UserController.prototype.loadAnimations = function () {

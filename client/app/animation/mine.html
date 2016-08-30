@@ -1,14 +1,12 @@
 <div class="mine">
     <ng-include src="'app/users/user-banner.html'" ng-init="user=vm.user"></ng-include>
 	<div display-block layout="column">
-		<div>
-			<form name="filterForm" ng-submit="vm.filter()" novalidate class="ng-pristine ng-valid">
-				<md-input-container class="md-block">
-					<label for="input_2">Search my animations</label>
-					<input type="search" ng-model="vm.query" class="ng-pristine ng-valid md-input ng-touched" id="input_2" tabindex="0" aria-invalid="false">
-				</md-input-container>
-			</form>
-		</div>
+		<form name="searchForm" ng-submit="vm.list()">
+			<md-input-container class="md-block">
+				<label>Search my animations</label>
+				<input type="search" ng-model="vm.paging.term">
+			</md-input-container>
+		</form>
         <ng-include src="'app/animation/list.html'" flex></ng-include>
 	</div>
 

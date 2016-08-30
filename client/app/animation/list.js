@@ -33,6 +33,10 @@ var GrafikaApp;
                     _this.paging = _this.paging.next();
             });
         };
+        AnimationListController.prototype.reset = function () {
+            this.paging = this.createPaging();
+            this.list();
+        };
         AnimationListController.prototype.canEdit = function () {
             return false;
         };

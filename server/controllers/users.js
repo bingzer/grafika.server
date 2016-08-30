@@ -58,7 +58,7 @@ function getAvatar(req, res, next) {
         if (err)
             return next(err);
         if (!user)
-            return next(404);
+            return res.redirect('/assets/img/ic_user.png');
         res.redirect(user.prefs.avatar);
     });
 }
