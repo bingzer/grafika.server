@@ -15,7 +15,7 @@ module GrafikaApp {
         }
 
         changePassword(event: MouseEvent) {
-            this.appCommon.showDialog("PasswordController", "app/account/reset.html", event);
+            this.appCommon.showDialog("app/account/reset.html", "PasswordController", event);
         }
 
         checkUsernameAvailability() {

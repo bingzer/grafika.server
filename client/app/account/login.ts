@@ -9,7 +9,7 @@ module GrafikaApp {
         }
 
         register() {
-            return this.appCommon.showDialog('RegisterController', 'app/account/register.html');
+            return this.appCommon.showDialog('app/account/register.html', 'RegisterController');
         }
 
         login(provider: string) {

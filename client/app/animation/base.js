@@ -13,17 +13,20 @@ var GrafikaApp;
             this.animationService = animationService;
             this.frameService = frameService;
             this.resourceService = resourceService;
+            this.busy = false;
             if (autoLoad)
                 this.load();
         }
         BaseAnimationController.prototype.load = function () {
             var _this = this;
+            this.busy = true;
             this.animationService.get(this.appCommon.$stateParams['_id'])
                 .then(function (res) {
                 _this.animation = res.data;
-                _this.onLoaded(_this.animation);
+                return _this.onLoaded(_this.animation);
             })
-                .catch(function (err) { return _this.onError(err); });
+                .catch(function (err) { return _this.onError(err); })
+                .finally(function () { return _this.busy = false; });
         };
         BaseAnimationController.prototype.onError = function (error) {
             this.appCommon.$log.error(this.appCommon.formatErrorMessage(error));

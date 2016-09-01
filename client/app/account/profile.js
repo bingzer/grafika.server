@@ -17,7 +17,7 @@ var GrafikaApp;
             });
         }
         ProfileController.prototype.changePassword = function (event) {
-            this.appCommon.showDialog("PasswordController", "app/account/reset.html", event);
+            this.appCommon.showDialog("app/account/reset.html", "PasswordController", event);
         };
         ProfileController.prototype.checkUsernameAvailability = function () {
             var _this = this;

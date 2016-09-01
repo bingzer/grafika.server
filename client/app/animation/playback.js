@@ -33,11 +33,13 @@ var GrafikaApp;
                             break;
                     }
                 } });
-            this.frameService.get(animation).then(function (res) {
+            return this.frameService.get(animation)
+                .then(function (res) {
                 _this.grafika.setFrames(res.data);
                 _this.totalFrame = res.data.length;
                 _this.currentFrame = 0;
                 _this.animationService.incrementViewCount(animation);
+                return _this.appCommon.$q.when(animation);
             });
         };
         AnimationPlaybackController.prototype.toggle = function () {

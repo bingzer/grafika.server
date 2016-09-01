@@ -13,7 +13,7 @@ module GrafikaApp {
         }
         
         create(ev: MouseEvent){
-            return this.appCommon.showDialog('AnimationCreateController', '/app/animation/create.html', ev).then((answer) => {
+            return this.appCommon.showDialog('/app/animation/create.html', 'AnimationCreateController', ev).then((answer) => {
                 return this.appCommon.toast('Animation is created');
             });
 		} 

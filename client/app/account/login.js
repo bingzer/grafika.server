@@ -11,7 +11,7 @@ var GrafikaApp;
             _super.call(this, appCommon, authService);
         }
         LoginController.prototype.register = function () {
-            return this.appCommon.showDialog('RegisterController', 'app/account/register.html');
+            return this.appCommon.showDialog('app/account/register.html', 'RegisterController');
         };
         LoginController.prototype.login = function (provider) {
             var _this = this;

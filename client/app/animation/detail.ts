@@ -15,7 +15,7 @@ module GrafikaApp {
             super(appCommon, authService, animationService, frameService, resourceService);
         }
         
-        onLoaded(animation: Grafika.IAnimation){
+        onLoaded(animation: Grafika.IAnimation): ng.IPromise<any>{
             this.uxService.pageTitle = this.animation.name;
             this.disqusConfig = new DisqusConfig(this.appCommon, animation._id);
             this.disqusConfig.disqus_title = animation.name;
@@ -35,6 +35,8 @@ module GrafikaApp {
             else {
                 this.disqusReady = true;
             }
+            
+            return this.appCommon.$q.when(animation);
         }
 
         onError(err: any){
@@ -46,7 +48,7 @@ module GrafikaApp {
         }
 
         editData(ev: MouseEvent) {
-            this.appCommon.showDialog('AnimationEditController', '/app/animation/edit.html', ev).then(() => this.load());
+            this.appCommon.showDialog('/app/animation/edit.html', 'AnimationEditController', ev).then(() => this.load());
         }
 
         delete(): ng.IPromise<any> {

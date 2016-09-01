@@ -14,7 +14,8 @@
     <!-- Footer -->
     <div class="playback-footer" layout="row">
         <div layout-margin></div>
-        <div flex layout="row" layout="center center">
+        <gf-spinner flex layout-align="center center" ng-show="vm.busy"></gf-spinner>
+        <div flex layout="row" layout="center center" ng-show="!vm.busy">
             <md-button style="margin-top: 4px" class="md-mini md-icon-button" ng-click="vm.previousFrame()" ng-disabled="vm.currentFrame <= 0">
                 <md-icon md-font-library="material-icons">skip_previous</md-icon>
             </md-button>
@@ -28,7 +29,7 @@
             <md-slider style="margin: auto 16px" flex min="0" max="{{vm.totalFrame - 1}}" ng-model="vm.currentFrame" aria-label="Animation tracker"></md-slider>
         </div>
         <div layout-margin></div>
-        <span class="md-subtitle text-muted text-center-vertical" style="margin-top: 13px;" ng-bind="vm.totalFrame + ' frames'"></span>
+        <span class="md-subtitle text-muted text-center-vertical" style="margin-top: 13px;" ng-bind="vm.totalFrame + ' frames'" ng-show="!vm.busy"></span>
         <div layout-margin></div>
     </div>
 </div>

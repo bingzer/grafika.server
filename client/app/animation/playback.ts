@@ -18,7 +18,7 @@ module GrafikaApp {
             super(appCommon, authService, animationService, frameService, resourceService);
         }
 
-        onLoaded(animation: Grafika.IAnimation) {
+        onLoaded(animation: Grafika.IAnimation): ng.IPromise<any> {
             this.animationName = this.animation.name;
             if (!this.grafika)
                 this.grafika = new Grafika();
@@ -36,12 +36,14 @@ module GrafikaApp {
                 } 
             }});
 
-            this.frameService.get(animation).then((res) => {
-                this.grafika.setFrames(res.data);
-                this.totalFrame = res.data.length;
-                this.currentFrame = 0;
-                this.animationService.incrementViewCount(animation);
-            });
+            return this.frameService.get(animation)
+                .then((res) => {
+                    this.grafika.setFrames(res.data);
+                    this.totalFrame = res.data.length;
+                    this.currentFrame = 0;
+                    this.animationService.incrementViewCount(animation);
+                    return this.appCommon.$q.when(animation);
+                });
         }
 
         toggle() {

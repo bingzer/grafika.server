@@ -37,24 +37,15 @@ module GrafikaApp {
 
             let query = appCommon.$location.search();
             if (query && query.action){
-                if ((query.action == 'verify' || query.action == 'reset-pwd') && query.hash && query.user){
-                    appCommon.$mdDialog.show({
-                        controller: 'ResetController',
-                        controllerAs: 'vm',
-                        templateUrl: 'app/account/reset.html',
-                        parent: angular.element(document.body),
-                        locals: { hash: query.hash, email: query.user }
-                    }).then(() => appCommon.navigate("/login") );
-                    this.cleanUrlQueries();
+                if ((query.action == 'verify' || query.action == 'reset-pwd') && query.hash && query.user) {
+                    appCommon.showDialog('app/account/reset.html', 'ResetController', undefined, { hash: query.hash, email: query.user })
+                            .then(() => appCommon.navigate("/login") );
                 }
-                else if(query.action == 'authenticate') {
+                else if(query.action == 'authenticate')
                     this.authService.authenticate().then(() => this.appCommon.navigateHome());
-                    this.cleanUrlQueries();
-                }
-                else {
+                else 
                     appCommon.alert('Unknown action or link has expired');
-                    this.cleanUrlQueries();
-                }
+                this.cleanUrlQueries();
             }
         }
 

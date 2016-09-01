@@ -13,7 +13,7 @@ var GrafikaApp;
         }
         MyAnimationsController.prototype.create = function (ev) {
             var _this = this;
-            return this.appCommon.showDialog('AnimationCreateController', '/app/animation/create.html', ev).then(function (answer) {
+            return this.appCommon.showDialog('/app/animation/create.html', 'AnimationCreateController', ev).then(function (answer) {
                 return _this.appCommon.toast('Animation is created');
             });
         };

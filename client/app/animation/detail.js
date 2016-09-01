@@ -32,6 +32,7 @@ var GrafikaApp;
             else {
                 this.disqusReady = true;
             }
+            return this.appCommon.$q.when(animation);
         };
         AnimationDetailController.prototype.onError = function (err) {
             var _this = this;
@@ -42,7 +43,7 @@ var GrafikaApp;
         };
         AnimationDetailController.prototype.editData = function (ev) {
             var _this = this;
-            this.appCommon.showDialog('AnimationEditController', '/app/animation/edit.html', ev).then(function () { return _this.load(); });
+            this.appCommon.showDialog('/app/animation/edit.html', 'AnimationEditController', ev).then(function () { return _this.load(); });
         };
         AnimationDetailController.prototype.delete = function () {
             var _this = this;
