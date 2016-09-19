@@ -5,18 +5,21 @@ module GrafikaApp {
         totalFrame: number = 0;
         canvas: JQuery;
         
-        public static $inject = ['appCommon', 'authService', 'uxService', 'animationService', 'frameService', 'resourceService'];
+        public static $inject = ['appCommon', 'authService', 'uxService', 'animationService', 'frameService', 'resourceService', '$rootScope'];
         constructor(
             appCommon: AppCommon, 
             authService: AuthService,
             private uxService: UxService,
             protected animationService: AnimationService,
             protected frameService: FrameService,
-            protected resourceService: ResourceService
+            protected resourceService: ResourceService,
+            $rootScope: angular.IRootScopeService
         ){
             super(appCommon, authService, animationService, frameService, resourceService, false);
             this.appCommon.hideLoadingModal();
             this.grafika.setCallback(this);
+
+            window['grafika'] = this.grafika;
         }
 
         on(eventName: string, obj: any) {
@@ -51,7 +54,7 @@ module GrafikaApp {
 
         showGraphicsProperties(ev: MouseEvent) {
             let controller = new GraphicController(this.appCommon, this.grafika);
-            return this.appCommon.showDialog('/app/animation/drawing-graphics.html', () => controller, ev);
+            return this.appCommon.showDialog('/app/animation/drawing-graphics.html', () => controller, ev).then(() => this.grafika.refresh());
         }
 
 		save(exit: boolean) {
@@ -67,6 +70,10 @@ module GrafikaApp {
                     this.appCommon.toast('Successfully saved!');
                 });
 		}
+
+        confirmClearFrame(){
+            this.appCommon.confirm("Clear all graphics in this frame?").then(() => this.grafika.clear());
+        }
 
         confirmExit() {
             if (this.grafika.isModified()) 
@@ -106,6 +113,8 @@ module GrafikaApp {
             return super.close();
         }
     }
+    
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     class GraphicController extends FrameController {
         protected graphics: Grafika.Graphics.IGraphic[];
@@ -113,7 +122,11 @@ module GrafikaApp {
         constructor(appCommon: AppCommon, grafika: Grafika.IGrafika | any) {
             super(appCommon, grafika);
             this.graphics = this.frame.layers[0].graphics
-        }        
+        }    
+
+        stringify(obj: any){
+            return JSON.stringify(obj);
+        }    
 
     }
 }

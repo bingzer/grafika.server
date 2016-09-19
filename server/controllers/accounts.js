@@ -42,11 +42,11 @@ function logout(req, res) {
 exports.logout = logout;
 ;
 function authenticate(req, res, next) {
-    if (req.isAuthenticated()) {
-        res.send({ token: user_1.generateJwtToken(req.user) });
-    }
-    else
-        res.sendStatus(401);
+    tryAuthenticate(req, function (err, user) {
+        if (err)
+            return next(err);
+        return res.send({ token: user_1.generateJwtToken(user) });
+    });
 }
 exports.authenticate = authenticate;
 ;
@@ -156,5 +156,19 @@ function disqusSignon(user) {
         public: config.setting.$auth.$disqusId,
         token: message + " " + hexsig + " " + timestamp
     };
+}
+function tryAuthenticate(req, callback) {
+    if (req.isAuthenticated())
+        return callback(undefined, req.user);
+    else {
+        var authHeader = req.header("Authorization");
+        if (authHeader) {
+            var token = authHeader.substring(authHeader.indexOf("Bearer ") + "Bearer ".length);
+            if (token) {
+                return user_1.verifyJwtToken(token, callback);
+            }
+        }
+        return callback(401);
+    }
 }
 //# sourceMappingURL=accounts.js.map

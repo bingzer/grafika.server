@@ -8,13 +8,15 @@ module GrafikaApp {
             let ul = jQuery(ulId).css({ display: 'none' });
             let last = null;
             let xscope = scope;
+            let body = jQuery(document.body);
             ul.parent().remove(ulId);  // remove from current parent
             jQuery('body').append(ul); // append to body
             
             jQuery(element).on('contextmenu', (event) => {
-                ul.css({ position: "fixed", display: "block", left: event.clientX + 'px', top: event.clientY + 'px' });
-                if (ul.position().top + ul.height() > ul.parent().offset().top + ul.parent().height()){
-                    ul.css({ top: ul.position().top - ul.height() });
+                ul.css({ position: "fixed", display: "block", left: event.clientX + 'px', top: event.clientY + 'px', zIndex: 3000 });
+                if (ul.position().top + ul.height() > body.offset().top + body.height()){
+                    let top = ul.position().top - ul.height();
+                    if (top > 5) ul.css({ top: ul.position().top - ul.height() });
                 }
                 xscope.$apply();
                 event.preventDefault();

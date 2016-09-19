@@ -12,17 +12,19 @@
             <md-icon md-font-library="material-icons" aria-label="Previous frame">navigate_before</md-icon>
             <p>Previous Frame</p>
         </md-list-item>
+        <div ng-show="vm.grafika.getFrame().layers[0].graphics.length > 0">
+            <md-divider></md-divider>
+            <md-list-item ng-click="vm.grafika.setOptions({ drawingMode: 'select'})">
+                <md-icon md-font-library="material-icons" aria-label="Move">photo_size_select_small</md-icon>
+                <p>Select</p>
+            </md-list-item>
+            <md-list-item ng-click="vm.pasteGraphics()" ng-show="vm.canPasteGraphics">
+                <md-icon md-font-library="material-icons" aria-label="Paste">content_paste</md-icon>
+                <p>Paste graphics</p>
+            </md-list-item>
+        </div>
         <md-divider></md-divider>
-        <md-list-item ng-click="vm.grafika.setOptions({ drawingMode: 'select'})">
-            <md-icon md-font-library="material-icons" aria-label="Move">open_with</md-icon>
-            <p ng-bind="Select"></p>
-        </md-list-item>
-        <md-list-item ng-click="vm.pasteGraphics()" ng-show="vm.canPasteGraphics">
-            <md-icon md-font-library="material-icons" aria-label="Paste">content_paste</md-icon>
-            <p>Paste graphics</p>
-        </md-list-item>
-        <md-divider></md-divider>
-        <md-list-item ng-click="vm.clearFrame()">
+        <md-list-item ng-click="vm.confirmClearFrame()">
             <md-icon md-font-library="material-icons" aria-label="Clear frame">crop_free</md-icon>
             <p>Clear</p>
         </md-list-item>
@@ -39,16 +41,7 @@
             <p>Delete frame</p>
         </md-list-item>
         <md-divider></md-divider>
-        <md-list-item ng-click="vm.insertAfter()">
-            <md-icon md-font-library="material-icons" aria-label="Insert after">skip_next</md-icon>
-            <p>Insert After</p>
-        </md-list-item>
-        <md-list-item ng-click="vm.insertBefore()">
-            <md-icon md-font-library="material-icons" aria-label="Insert before">skip_previous</md-icon>
-            <p>Insert Before</p>
-        </md-list-item>
-        <md-divider></md-divider>
-        <md-list-item ng-click="vm.propertiesFrame()">
+        <md-list-item ng-click="vm.showFrameProperties()">
             <md-icon md-font-library="material-icons" aria-label="Properties">bookmark</md-icon>
             <p>Properties</p>
         </md-list-item>
@@ -56,9 +49,13 @@
     
     <!-- Graphics -->
     <div ng-show="vm.grafika.getSelectedGraphics().length > 0">
+        <md-list-item ng-click="vm.grafika.setOptions({ drawingMode: 'paint'})">
+            <md-icon md-font-library="material-icons" aria-label="Done">check</md-icon>
+            <p>Done</p>
+        </md-list-item>
         <md-list-item ng-click="vm.grafika.setOptions({ drawingMode: 'move'})">
             <md-icon md-font-library="material-icons" aria-label="Move">open_with</md-icon>
-            <p ng-bind="Move"></p>
+            <p>Move</p>
         </md-list-item>
         <md-divider></md-divider>
         <md-list-item ng-click="vm.cutGraphics()">
@@ -78,7 +75,7 @@
             <p>Delete</p>
         </md-list-item>
         <md-divider></md-divider>
-        <md-list-item ng-click="vm.propertiesGraphics()">
+        <md-list-item ng-click="vm.showGraphicsProperties()">
             <md-icon md-font-library="material-icons" aria-label="Properties">bookmark</md-icon>
             <p>Properties</p>
         </md-list-item>

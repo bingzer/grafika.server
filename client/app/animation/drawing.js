@@ -7,7 +7,7 @@ var GrafikaApp;
 (function (GrafikaApp) {
     var AnimationDrawingController = (function (_super) {
         __extends(AnimationDrawingController, _super);
-        function AnimationDrawingController(appCommon, authService, uxService, animationService, frameService, resourceService) {
+        function AnimationDrawingController(appCommon, authService, uxService, animationService, frameService, resourceService, $rootScope) {
             _super.call(this, appCommon, authService, animationService, frameService, resourceService, false);
             this.uxService = uxService;
             this.animationService = animationService;
@@ -18,6 +18,7 @@ var GrafikaApp;
             this.totalFrame = 0;
             this.appCommon.hideLoadingModal();
             this.grafika.setCallback(this);
+            window['grafika'] = this.grafika;
         }
         AnimationDrawingController.prototype.on = function (eventName, obj) {
             switch (eventName) {
@@ -48,8 +49,9 @@ var GrafikaApp;
             return this.appCommon.showDialog('/app/animation/drawing-frame.html', function () { return controller; }, ev);
         };
         AnimationDrawingController.prototype.showGraphicsProperties = function (ev) {
+            var _this = this;
             var controller = new GraphicController(this.appCommon, this.grafika);
-            return this.appCommon.showDialog('/app/animation/drawing-graphics.html', function () { return controller; }, ev);
+            return this.appCommon.showDialog('/app/animation/drawing-graphics.html', function () { return controller; }, ev).then(function () { return _this.grafika.refresh(); });
         };
         AnimationDrawingController.prototype.save = function (exit) {
             var _this = this;
@@ -64,6 +66,10 @@ var GrafikaApp;
                     _this.exit();
                 _this.appCommon.toast('Successfully saved!');
             });
+        };
+        AnimationDrawingController.prototype.confirmClearFrame = function () {
+            var _this = this;
+            this.appCommon.confirm("Clear all graphics in this frame?").then(function () { return _this.grafika.clear(); });
         };
         AnimationDrawingController.prototype.confirmExit = function () {
             var _this = this;
@@ -84,7 +90,7 @@ var GrafikaApp;
                 return;
             this.canvas.attr('context-menu-x', event.offsetX).attr('context-menu-y', event.offsetY);
         };
-        AnimationDrawingController.$inject = ['appCommon', 'authService', 'uxService', 'animationService', 'frameService', 'resourceService'];
+        AnimationDrawingController.$inject = ['appCommon', 'authService', 'uxService', 'animationService', 'frameService', 'resourceService', '$rootScope'];
         return AnimationDrawingController;
     }(GrafikaApp.BaseAnimationController));
     GrafikaApp.AnimationDrawingController = AnimationDrawingController;
@@ -107,6 +113,9 @@ var GrafikaApp;
             _super.call(this, appCommon, grafika);
             this.graphics = this.frame.layers[0].graphics;
         }
+        GraphicController.prototype.stringify = function (obj) {
+            return JSON.stringify(obj);
+        };
         return GraphicController;
     }(FrameController));
 })(GrafikaApp || (GrafikaApp = {}));

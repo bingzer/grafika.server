@@ -87,10 +87,14 @@ User.ensureIndexes(function (err) {
 });
 function generateJwtToken(user) {
     return jwt.sign(sanitize(user), SECRET, {
-        expiresIn: '24hr'
+        expiresIn: '24h'
     });
 }
 exports.generateJwtToken = generateJwtToken;
+function verifyJwtToken(token, callback) {
+    jwt.verify(token, SECRET, { ignoreExpiration: true }, callback);
+}
+exports.verifyJwtToken = verifyJwtToken;
 function sanitize(user) {
     var lean = user;
     if (user.toObject) {

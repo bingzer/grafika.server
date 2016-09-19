@@ -145,8 +145,16 @@ User.ensureIndexes((err) => {
 
 export function generateJwtToken(user: IUser | any) : string {
     return jwt.sign(sanitize(user), SECRET, {
-        expiresIn: '24hr' // expires in 24 hours
+        expiresIn: '24h' // expires in 24 hours
     });
+}
+
+/**
+ * Verify JWT Token.
+ * This will not check if the token is expired
+ */
+export function verifyJwtToken(token: string, callback: (err, user) => void) {
+    jwt.verify(token, SECRET, { ignoreExpiration: true }, callback);
 }
 
 export function sanitize(user: IUser | any) : any | IUser {

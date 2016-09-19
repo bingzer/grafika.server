@@ -10,12 +10,15 @@ var GrafikaApp;
                 var ul = jQuery(ulId).css({ display: 'none' });
                 var last = null;
                 var xscope = scope;
+                var body = jQuery(document.body);
                 ul.parent().remove(ulId);
                 jQuery('body').append(ul);
                 jQuery(element).on('contextmenu', function (event) {
-                    ul.css({ position: "fixed", display: "block", left: event.clientX + 'px', top: event.clientY + 'px' });
-                    if (ul.position().top + ul.height() > ul.parent().offset().top + ul.parent().height()) {
-                        ul.css({ top: ul.position().top - ul.height() });
+                    ul.css({ position: "fixed", display: "block", left: event.clientX + 'px', top: event.clientY + 'px', zIndex: 3000 });
+                    if (ul.position().top + ul.height() > body.offset().top + body.height()) {
+                        var top_1 = ul.position().top - ul.height();
+                        if (top_1 > 5)
+                            ul.css({ top: ul.position().top - ul.height() });
                     }
                     xscope.$apply();
                     event.preventDefault();

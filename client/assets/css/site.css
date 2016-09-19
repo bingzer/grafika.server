@@ -387,14 +387,13 @@ md-menu-item .sp-replacer.sp-light {
 #canvas {
 	display: block;
 	width: 100%;
-	max-height: 480px;
+	height: 100%;
 }
 #canvas-container {
 	margin: 0 auto;
 	box-shadow: 0px 1px 2px 1px rgba(0, 0, 0, 0.25); 
 	padding: 0;
 	width: 100%;
-	max-height: 480px;
 }
 /** playback */
 .playback {
@@ -404,6 +403,10 @@ md-menu-item .sp-replacer.sp-light {
 .playback #canvas-container {
 	margin-top: 4px;
 	margin-bottom: 4px;
+	max-height: 480px;
+}
+.playback #canvas {
+	max-height: 480px;
 }
 .playback-header {
 	background-color: rgba(0,0,0,0.3);

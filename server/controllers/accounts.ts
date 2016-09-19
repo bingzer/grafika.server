@@ -3,7 +3,7 @@ import * as crypto from "crypto-js"
 import * as express from "express";
 import * as passport from "passport";
 
-import { IUser, User, userQuery, sanitize, generateJwtToken, checkAvailability } from '../models/user';
+import { IUser, User, userQuery, sanitize, generateJwtToken, verifyJwtToken, checkAvailability } from '../models/user';
 import * as mailer from '../libs/mailer';
 import * as config from '../configs/config';
 let jwt            = require('jsonwebtoken');
@@ -38,11 +38,11 @@ export function logout(req : express.Request, res : express.Response) {
     });
 };
 
-export function authenticate(req: any, res: any, next: express.NextFunction){
-    if (req.isAuthenticated()) {
-        res.send({token: generateJwtToken(req.user) });
-    }
-    else res.sendStatus(401);
+export function authenticate(req: express.Request | any, res: express.Response | any, next: express.NextFunction){
+    tryAuthenticate(req, (err, user) => {
+        if (err) return next(err);
+        return res.send({token: generateJwtToken(user) });
+    });
 };
 export function authenticateGoogle(req: express.Request, res: express.Response, next: express.NextFunction){
     passport.authenticate('google-android')(req, res, next);  
@@ -155,4 +155,19 @@ function disqusSignon(user: Grafika.IUser) {
       public: config.setting.$auth.$disqusId,
       token: message + " " + hexsig + " " + timestamp
     };
+}
+
+function tryAuthenticate(req: express.Request|any, callback: (err, user?) => void) {
+    if (req.isAuthenticated())
+        return callback(undefined, req.user)
+    else {
+        let authHeader = req.header("Authorization");
+        if (authHeader) {
+            let token = authHeader.substring(authHeader.indexOf("Bearer ") + "Bearer ".length);
+            if (token) {
+                return verifyJwtToken(token, callback);
+            }
+        }
+        return callback(401);
+    }
 }
