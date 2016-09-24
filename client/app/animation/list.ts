@@ -1,7 +1,7 @@
 module GrafikaApp {
     export class AnimationListController extends BaseController {
         paging: Paging;
-        animations: Animation[];
+        animations: Grafika.IAnimation[];
         animationSorts: any[];
         selectedAnimationId: string;
         hasMore: boolean = true;

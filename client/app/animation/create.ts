@@ -18,7 +18,7 @@ module GrafikaApp {
         }
 
         create() {
-            let anim = new Animation();
+            let anim = new Grafika.Animation();
             anim.name = this.name;
             anim.isPublic = this.isPublic;
 

@@ -116,10 +116,10 @@ module.exports = function (grunt) {
                 },
                 files: {
                     'client/assets/grafika.js': [
-                        'client/assets/js/grafika.js/src/grafika.js',
-                        'client/assets/js/grafika.js/src/grafika.extensions.js',
-                        'client/assets/js/grafika.js/src/grafika.demo.js',
-                        'client/assets/js/grafika.js/src/grafika.random-drawing.js',
+                        'client/assets/js/grafika.js/dist/grafika.js',
+                        'client/assets/js/grafika.js/dist/grafika.extensions.js',
+                        'client/assets/js/grafika.js/dist/grafika.demo.js',
+                        'client/assets/js/grafika.js/dist/grafika.random-drawing.js',
                     ]
                 }
             },

@@ -42,7 +42,7 @@ var GrafikaApp;
         };
         ResourceService.prototype.getResourceUrl = function (anim, resource) {
             var resourceId = resource;
-            if (resource instanceof Grafika.IResource)
+            if (resource && resource._id)
                 resourceId = resource._id;
             return this.appCommon.appConfig.animationBaseUrl + anim._id + '/' + resourceId;
         };

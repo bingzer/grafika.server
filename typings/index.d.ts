@@ -14,6 +14,7 @@
 /// <reference path="globals/express-unless/index.d.ts" />
 /// <reference path="globals/express/index.d.ts" />
 /// <reference path="globals/fs-extra/index.d.ts" />
+/// <reference path="globals/grafika.exts/index.d.ts" />
 /// <reference path="globals/grafika/index.d.ts" />
 /// <reference path="globals/jquery/index.d.ts" />
 /// <reference path="globals/markdown.js/index.d.ts" />

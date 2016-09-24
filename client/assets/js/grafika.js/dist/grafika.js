@@ -1,1127 +1,1099 @@
-/**
- * Copyright 2014 Ricky Tobing
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance insert the License.
- * You may obtain a copy of the License at
- *
- *        http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
-"use strict";
-
-/**
- * Grafika.js is written with pure javascript with no dependencies.
- * Supported browser: IE9 > up, chrome, edge
- */
-var Grafika = function (){	
-	var GRAFIKA_VERSION = '0.10.6';
-	
-    // ---------------------------------------------------------- Constants -------------------------------------//
-    var MODE_NONE = 'none', MODE_PAINT = 'paint', MODE_MOVE = 'move', MODE_SELECT = 'select', MODE_DELETE = 'delete';		
-    // ---------------------------------------------------------- variables -------------------------------------//
-	this.version = GRAFIKA_VERSION;
-	
-    var options = {
-        backgroundColor: '#ffffff',
-        foregroundColor: '#000000',
-        brushSize: 2,
-        graphic: 'freeform',
-        graphicFill: false,
-        useCarbonCopy: true,
-        useNavigationText: true,
-        debugMode: true,
-        drawingMode: 'none',
-		loop: false
-    };
-    var animation = {};
-    var frame;
-    var selectedGraphics = [];
-    var isMovingGraphics = false;
-    var animator = null;
-    
-    var canvas;
-    var context;
-    var lastX, lastY;
-    var currentGraphic;
-    var callback = {
-        on : function(eventName, obj){
-            log('[callback] ' + eventName, obj);
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var Grafika = (function () {
+    function Grafika() {
+        var _this = this;
+        this.animation = {};
+        this.selectedGraphics = [];
+        this.isMovingGraphics = false;
+        this.options = {
+            backgroundColor: '#ffffff',
+            foregroundColor: '#000000',
+            brushSize: 2,
+            graphic: 'freeform',
+            graphicFill: false,
+            useCarbonCopy: true,
+            useNavigationText: true,
+            debugMode: true,
+            drawingMode: 'none',
+            loop: false
+        };
+        this.callback = {
+            on: function (eventName, obj) { return _this.log('[callback] ' + eventName, obj); }
+        };
+        this.plugins = [];
+        this.renderers = [];
+        this.version = Grafika.VERSION;
+    }
+    Grafika.prototype.initialize = function (canvasId, opts, anim) {
+        var _this = this;
+        this.canvas = this.validateCanvas(canvasId);
+        this.renderers.push(this.animRenderer = new Grafika.AnimationRenderer(this));
+        this.renderers.push(this.frameRenderer = new Grafika.FrameRenderer(this));
+        this.renderers.push(this.layerRenderer = new Grafika.LayerRenderer(this));
+        this.renderers.push(new Grafika.Renderers.RectangleRenderer(this));
+        this.renderers.push(new Grafika.Renderers.SquareRenderer(this));
+        this.renderers.push(new Grafika.Renderers.CircleRenderer(this));
+        this.renderers.push(new Grafika.Renderers.OvalRenderer(this));
+        this.renderers.push(new Grafika.Renderers.FreeformRenderer(this));
+        this.renderers.push(new Grafika.Renderers.LineRenderer(this));
+        this.renderers.push(new Grafika.Renderers.TriangleRenderer(this));
+        this.renderers.push(new Grafika.Renderers.LineRenderer(this));
+        this.renderers.push(new Grafika.Renderers.TextRenderer(this));
+        this.setAnimation(anim);
+        this.setOptions(opts);
+        if (Grafika.Plugins) {
+            Grafika.Plugins.forEach(function (func) {
+                var plugin = func(_this);
+                _this.log('Plugin: ' + (plugin.name) + ' v.' + (plugin.version || '{unknown}'));
+                _this.plugins.push(plugin);
+            });
         }
+        this.log('Grafika v.' + this.version + ' [initialized]', this);
+        this.callback.on('initialized');
     };
-	
-	var plugins = [];
-	var factory = new Grafika.Graphics.Factory();
-	
-	var that = this;
-	
-	////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //////////////////////////////////////// PUBLIC FUNCTIONS //////////////////////////////////////////////////////
-	////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	
-	this.initialize = function(canvasId, opts, anim) {
-		//this.log('Grafika v.' + api.version);
-		canvas = validateCanvas(canvasId);
-		this.setAnimation(anim);	
-		this.setOptions(opts);
-		
-		// grab plugins
-		if (Grafika.Plugins){
-			Grafika.Plugins.forEach(function (func){
-				var plugin = func(that);
-				log('Plugin: ' + (plugin.name) + ' v.' + (plugin.version || '{unknown}'));
-				plugins.push(plugin);
-			});
-		}
-	
-		log('Grafika v.' + this.version + ' [initialized]', this);
-		callback.on('initialized');	
-	}
-	
-    // ----------------------------------------------------- Animations -------------------------------------//
-	
-	this.getAnimation = function() {
-		return animation;
-	}	
-	this.setAnimation = function(anim){
-		animation = new Grafika.Animation(this, anim);
-		log('Animation (' + animation.localId + ')' +
-			' name: ' + animation.name +
-			', timer: ' + animation.timer + 
-			', size: ' + animation.width + ' x ' + animation.height +
-			', frames: ' + animation.frames.length + ' frames');
-			
-        canvas.setAttribute('width', animation.width);
-        canvas.setAttribute('height', animation.height);
-		this.setFrames(animation.frames);
-	}
-	this.saveAnimation = function(){
-	    animation.totalFrame = animation.frames.length;
-		animation.modified = false;
-		animation.dateModified = Date.now();
-		animation.client = {
-			navigator: navigator
-		};
-		callback.on('animationSaved')
-	}
-    this.play = function() {
-        if (animator)  return; // already animating
-        if (!animation.timer) 
-            animation.timer = 500;
-		
-        log('Animation started. Timer: ' + animation.timer + 'ms', animation);
-        animator = window.setInterval(animate, animation.timer);
-		
-		callback.on('frameCount', animation.frames.length);
-        callback.on('playing', true);
-        this.navigateToFrame(0, true);
-
-		function animate() {
-			if (animation.currentFrame >= animation.frames.length - 1) {
-				if (options.loop)
-					animation.currentFrame = 0;
-				else
-					return that.pause();
-			}
-			else {
-				navigateTo(animation.currentFrame + 1, false);
-			}
-		}
-    }
-    this.pause = function() {
-        if (typeof animator === 'undefined') return;
-        window.clearInterval(animator);
-        animator = null;
-
-        callback.on('playing', false);
-        log('Animation stopped');
-    }
-    this.isPlaying = function() {
-        return animator != null;
-    }
-    this.isModified = function(){
-        if (animation.modified) return true;
-        if (frame.modified) return true;
+    Grafika.prototype.destroy = function () {
+        this.selectedGraphics = [];
+        if (this.isPlaying())
+            this.pause();
+        this.clearCanvas();
+        this.clear();
+        this.setAnimation(this.animRenderer.create());
+        this.refresh();
+        this.callback.on('destroyed');
+    };
+    Grafika.prototype.getAnimation = function () {
+        return this.animation;
+    };
+    Grafika.prototype.setAnimation = function (anim) {
+        if (!anim) {
+            anim = {};
+        }
+        else {
+            if (!anim.name)
+                throw new Error('Animation name is required');
+            if (!anim.width || !anim.height)
+                throw new Error('Animation width + height is required');
+            if (typeof anim.frames === 'undefined' || anim.frames.length == 0) {
+                anim.frames = [this.frameRenderer.create()];
+            }
+        }
+        this.animation = this.animRenderer.create(anim);
+        this.log('Animation (' + this.animation.localId + ')' +
+            ' name: ' + this.animation.name +
+            ', timer: ' + this.animation.timer +
+            ', size: ' + this.animation.width + ' x ' + this.animation.height +
+            ', frames: ' + this.animation.frames.length + ' frames');
+        this.canvas.setAttribute('width', "" + this.animation.width);
+        this.canvas.setAttribute('height', "" + this.animation.height);
+        this.setFrames(this.animation.frames);
+    };
+    Grafika.prototype.saveAnimation = function () {
+        this.animation.totalFrame = this.animation.frames.length;
+        this.animation.modified = false;
+        this.animation.dateModified = Date.now();
+        this.animation.client = {
+            navigator: navigator
+        };
+        this.callback.on('animationSaved');
+    };
+    Grafika.prototype.play = function () {
+        var _this = this;
+        if (this.animator)
+            return;
+        if (!this.animation.timer)
+            this.animation.timer = 500;
+        this.log('Animation started. Timer: ' + this.animation.timer + 'ms', this.animation);
+        this.animator = window.setInterval(function () {
+            if (_this.animation.currentFrame >= _this.animation.frames.length - 1) {
+                if (_this.options.loop)
+                    _this.animation.currentFrame = 0;
+                else
+                    return _this.pause();
+            }
+            else {
+                _this.navigateTo(_this.animation.currentFrame + 1, false);
+            }
+        }, this.animation.timer);
+        this.callback.on('frameCount', this.animation.frames.length);
+        this.callback.on('playing', true);
+        this.navigateToFrame(0);
+    };
+    Grafika.prototype.pause = function () {
+        if (typeof this.animator === 'undefined')
+            return;
+        window.clearInterval(this.animator);
+        this.animator = null;
+        this.callback.on('playing', false);
+        this.log('Animation stopped');
+    };
+    Grafika.prototype.isPlaying = function () {
+        return this.animator != null;
+    };
+    Grafika.prototype.isModified = function () {
+        if (this.animation.modified)
+            return true;
+        if (this.frame.modified)
+            return true;
         return false;
-    }
-    this.save = function(){
+    };
+    Grafika.prototype.save = function () {
         this.saveAnimation();
         this.saveFrame();
-    }
-    
-    // ------------------------------------------------------ Frames -------------------------------------//
-	
-	this.getFrame = function(){
-		return frame;
-	}
-	this.getFrames = function(){
-		return animation.frames;
-	}
-	this.setFrames = function(frames) {		
-		animation.setFrames(frames);
-		frame = animation.frames[0];
-		this.navigateToFrame(0);
-		callback.on('frameCount', animation.totalFrame);
-	}
-    this.saveFrame = function() {
-        frame.modified = false;
-        animation.frames[animation.currentFrame] = frame;
-        callback.on('frameSaved', animation.currentFrame);
-    }
-    this.nextFrame = function() {
-        this.navigateToFrame(animation.currentFrame + 1, true);
-    }
-    this.previousFrame = function() {
-        this.navigateToFrame(animation.currentFrame - 1, true);
-    }
-    this.navigateToFrame = function(idx){
-		navigateTo(idx, true);
-	}
-	
-    // ------------------------------------------------------ Graphics -------------------------------------//
-	
-    this.findSelectedGraphics = function(x, y) {
-        selectedGraphics = [];
-        for (var i = 0; i < frame.layers.length; i++){
-            var layer = frame.layers[i];
-            for (var j = 0; j < layer.graphics.length; j++){
+    };
+    Grafika.prototype.getFrame = function () {
+        return this.frame;
+    };
+    Grafika.prototype.getFrames = function () {
+        return this.animation.frames;
+    };
+    Grafika.prototype.setFrames = function (frames) {
+        this.animation.frames = frames;
+        this.frame = this.animation.frames[0];
+        this.navigateToFrame(0);
+        this.callback.on('frameCount', this.animation.totalFrame);
+    };
+    Grafika.prototype.saveFrame = function () {
+        this.frame.modified = false;
+        this.animation.frames[this.animation.currentFrame] = this.frame;
+        this.callback.on('frameSaved', this.animation.currentFrame);
+    };
+    Grafika.prototype.nextFrame = function () {
+        this.navigateToFrame(this.animation.currentFrame + 1);
+    };
+    Grafika.prototype.previousFrame = function () {
+        this.navigateToFrame(this.animation.currentFrame - 1);
+    };
+    Grafika.prototype.navigateToFrame = function (index) {
+        this.navigateTo(index, true);
+    };
+    Grafika.prototype.findSelectedGraphics = function (x, y) {
+        this.selectedGraphics = [];
+        for (var i = 0; i < this.frame.layers.length; i++) {
+            var layer = this.frame.layers[i];
+            for (var j = 0; j < layer.graphics.length; j++) {
                 var g = layer.graphics[j];
-                if (g.contains(x, y)){
-                    selectedGraphics.push(g);
-                    return selectedGraphics;
+                if (this.getGraphicRenderer(g).contains(g, x, y)) {
+                    this.selectedGraphics.push(g);
+                    return this.selectedGraphics;
                 }
             }
         }
-		
-        return selectedGraphics;
-    }
-	this.getSelectedGraphics = function(){
-		return selectedGraphics;
-	}
-    this.deleteSelectedGraphics = function(){
-        frame.modified = true;
+        return this.selectedGraphics;
+    };
+    Grafika.prototype.getSelectedGraphics = function () {
+        return this.selectedGraphics;
+    };
+    Grafika.prototype.deleteSelectedGraphics = function () {
+        this.frame.modified = true;
         var temp = [];
-		var graphics = frame.currentLayer().graphics;
-        for(var i = 0; i < graphics.length; i++){
+        var graphics = this.frame.layers[0].graphics;
+        for (var i = 0; i < graphics.length; i++) {
             var found = false;
-            for (var j = 0; j < selectedGraphics.length; j++){
-                if (graphics[i].id == selectedGraphics[j].id){
+            for (var j = 0; j < this.selectedGraphics.length; j++) {
+                if (graphics[i].id == this.selectedGraphics[j].id) {
                     found = true;
-                    if (found) break;
+                    if (found)
+                        break;
                 }
             }
-            
-            if (!found) temp.push(graphics[i]);
+            if (!found)
+                temp.push(graphics[i]);
         }
         graphics = temp;
-        selectedGraphics = [];
+        this.selectedGraphics = [];
         this.refresh();
-    }
-	this.currentGraphic = function(){
-		return currentGraphic;
-	};
-	
-    // ---------------------------------------------------- Setters/Getters -------------------------------------//
-	
-    this.setCallback = function(cb) {
-        if (!cb) throw new Error('callback cannot be undefined');
-
-        callback = cb;
-    }
-    this.setOptions = function(opts) {
-        if (!opts) return;
+    };
+    Grafika.prototype.getCurrentGraphic = function () {
+        return this.currentGraphic;
+    };
+    Grafika.prototype.getOptions = function () {
+        return this.options;
+    };
+    Grafika.prototype.getCanvas = function () {
+        return this.canvas;
+    };
+    Grafika.prototype.getCanvasContext = function () {
+        return this.context;
+    };
+    Grafika.prototype.setCallback = function (callback) {
+        if (!callback)
+            throw new Error('callback cannot be undefined');
+        this.callback = callback;
+    };
+    Grafika.prototype.setOptions = function (opts) {
+        if (!opts)
+            return;
         if (opts.backgroundColor) {
-            options.backgroundColor = opts.backgroundColor;
-            frame.backgroundColor = options.backgroundColor;
-			frame.modified = true;
+            this.options.backgroundColor = opts.backgroundColor;
+            this.frame.backgroundColor = this.options.backgroundColor;
+            this.frame.modified = true;
             this.refresh();
         }
         if (opts.foregroundColor) {
-            options.foregroundColor = opts.foregroundColor;
-            frame.foregroundColor = options.foregroundColor;
+            this.options.foregroundColor = opts.foregroundColor;
+            this.frame.foregroundColor = this.options.foregroundColor;
             this.refresh();
         }
-        if (opts.brushSize) options.brushSize = opts.brushSize;
+        if (opts.brushSize)
+            this.options.brushSize = opts.brushSize;
         if (opts.graphic) {
-			var g = factory.createGraphic(opts.graphic);
-			if (g) options.graphic = g.type;
+            this.options.graphic = opts.graphic;
             this.refresh();
         }
         if (typeof opts.graphicFill !== 'undefined' && opts.graphicFill != null) {
-            options.graphicFill = opts.graphicFill;
+            this.options.graphicFill = opts.graphicFill;
             this.refresh();
         }
         if (typeof opts.useCarbonCopy !== 'undefined' && opts.useCarbonCopy != null) {
-            options.useCarbonCopy = opts.useCarbonCopy;
+            this.options.useCarbonCopy = opts.useCarbonCopy;
             this.refresh();
         }
         if (typeof opts.useNavigationText !== 'undefined' && opts.useNavigationText != null) {
-            options.useNavigationText = opts.useNavigationText;
+            this.options.useNavigationText = opts.useNavigationText;
             this.refresh();
         }
-		if (typeof opts.loop !== 'undefined' && opts.loop != null) {
-			options.loop = opts.loop;
-		}
-        if (opts.drawingMode){
+        if (typeof opts.loop !== 'undefined' && opts.loop != null) {
+            this.options.loop = opts.loop;
+        }
+        if (opts.drawingMode) {
             var mode = opts.drawingMode.toLowerCase();
-            if (mode != MODE_NONE && mode != MODE_PAINT && mode != MODE_MOVE && mode != MODE_SELECT && mode != MODE_DELETE)
+            if (mode != Grafika.MODE_NONE && mode != Grafika.MODE_PAINT && mode != Grafika.MODE_MOVE && mode != Grafika.MODE_SELECT && mode != Grafika.MODE_DELETE)
                 throw new Error('Drawing mode is not supported: ' + mode);
-            options.drawingMode = mode;
-            if (options.drawingMode == MODE_PAINT || options.drawingMode == MODE_NONE)
-            this.refresh();
-			if (options.drawingMode == MODE_DELETE) {
-				this.deleteSelectedGraphics();
-				this.refresh();
-			}
-        }
-        if (typeof opts.debugMode !== 'undefined' && opts.debugMode != null){
-            options.debugMode = opts.debugMode;
-        }
-        log("Options: ", options);
-    }
-    this.getOptions = function(){
-        return options;
-    }
-	this.getGraphicsFactory = function() {
-		return factory;
-	}
-	this.getCanvas = function(){
-		return canvas;
-	}
-	
-    // ---------------------------------------------------- Functions -------------------------------------//
-	
-	this.refresh = function(){
-        currentGraphic = null;
-        return setFrame(frame, true);
-    }
-	this.clear = function(){
-		frame = new Grafika.Frame(that);
-		this.refresh();
-	}
-	
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //////////////////////////////////////// PRIVATE FUNCTIONS //////////////////////////////////////////////////////
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	
-    function onMouseDown(e) {
-        if (!e || that.isPlaying()) return;
-        if( navigator.userAgent.match(/Android/i) ) {
-            e.preventDefault();
-        }
-        
-        if (e.type === 'mousedown' && e.which != 1) return; // left click only
-        if (that.isPlaying()) return;
-        
-        var eX = e.offsetX;
-        var eY = e.offsetY;
-        if (e.changedTouches){
-            eX = e.changedTouches[0].pageX;
-            eY = e.changedTouches[0].pageY;
-        }
-
-        if (options.drawingMode == MODE_MOVE && selectedGraphics.length > 0) {
-            isMovingGraphics = true;
-            return;
-        }
-        if (options.drawingMode == MODE_SELECT){
-            var newSelectedGraphics = that.findSelectedGraphics(eX, eY);
-            if (newSelectedGraphics.length > 0) {
-                selectedGraphics = [];
-                redraw();
-                selectedGraphics = newSelectedGraphics;
-                redraw();
-                return;
-            } else {
-                selectedGraphics = [];
-                redraw();
+            this.options.drawingMode = mode;
+            if (this.options.drawingMode == Grafika.MODE_PAINT || this.options.drawingMode == Grafika.MODE_NONE)
+                this.refresh();
+            if (this.options.drawingMode == Grafika.MODE_DELETE) {
+                this.deleteSelectedGraphics();
+                this.refresh();
             }
         }
-
-        // painting
-        if (options.drawingMode != MODE_PAINT) return;
-        canvas.isPainting = options.drawingMode == MODE_PAINT;
-        currentGraphic = factory.createGraphic(options.graphic);
-        currentGraphic.isFilled = options.graphicFill;
-        currentGraphic.x = eX;
-        currentGraphic.y = eY;
-        currentGraphic.brushSize = options.brushSize;
-        currentGraphic.backgroundColor = options.backgroundColor;
-        currentGraphic.foregroundColor = options.foregroundColor;
-		currentGraphic.invoke(context, 'mousedown', eX, eY);
-    }
-
-    function onMouseMove(e) {
-        if (!e || that.isPlaying()) return;
-
-        var eX = e.offsetX;
-        var eY = e.offsetY;
-        if (!eX || !eY){
-            if (e.changedTouches){
-                eX = e.changedTouches[0].pageX;
-                eY = e.changedTouches[0].pageY;   
-            }
-            else return;
+        if (typeof opts.debugMode !== 'undefined' && opts.debugMode != null) {
+            this.options.debugMode = opts.debugMode;
         }
-
-        if (isMovingGraphics && selectedGraphics.length > 0) {			
-			if (!lastX) lastX = eX;
-			if (!lastY) lastY = eY;    
-            for (var i = 0; i < selectedGraphics.length; i++) {
-				selectedGraphics[i].move(context, eX, eY, lastX, lastY);
-            }
-            lastX = eX;
-            lastY = eY;
-            clearCanvas();
-            redraw();
+        this.log("Options: ", this.options);
+    };
+    Grafika.prototype.refresh = function () {
+        this.currentGraphic = null;
+        return this.setFrame(this.frame, true);
+    };
+    Grafika.prototype.clear = function () {
+        this.frame = this.frameRenderer.create();
+        this.refresh();
+    };
+    Grafika.prototype.getRenderer = function (drawableOrType) {
+        for (var i = 0; i < this.renderers.length; i++) {
+            if (this.renderers[i].canRender(drawableOrType))
+                return this.renderers[i];
+        }
+        throw new Error("No renderer found for " + drawableOrType);
+    };
+    Grafika.prototype.getGraphicRenderer = function (graphicOrType) {
+        return this.getRenderer(graphicOrType);
+    };
+    Grafika.prototype.log = function () {
+        var optionalParams = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            optionalParams[_i - 0] = arguments[_i];
+        }
+        if (!this.options.debugMode)
             return;
-        }
-        if (canvas.isPainting && currentGraphic) {
-			currentGraphic.invoke(context, 'mousemove', eX, eY);
-			redraw();
-        }
-    }
-
-    function onMouseUp(e) {
-        if (!e || that.isPlaying()) return;
-
-        var eX = e.offsetX;
-        var eY = e.offsetY;
-        if (!eX || !eY){
-            if (e.changedTouches){
-                eX = e.changedTouches[0].pageX;
-                eY = e.changedTouches[0].pageY;   
-            }
-            else return;
-        }
-        
-        if (that.isPlaying() && e.type == 'mouseup') {
-            pause();
+        if (arguments.length == 0)
             return;
+        var params = [];
+        for (var i = 1; i < arguments.length; i++) {
+            params.push(arguments[i]);
         }
-        if (isMovingGraphics) {
-            isMovingGraphics = false;
-            callback.on('frameUpdated', frame.index);
-            lastX = null;
-            lastY = null;
-            clearCanvas();
-            redraw();
+        if (params.length == 0)
+            params = '';
+        console.log('[grafika] ' + arguments[0], params);
+    };
+    Grafika.prototype.validateCanvas = function (canvasId) {
+        var _this = this;
+        if (!canvasId)
+            throw new Error('canvasId is required');
+        this.canvas = (document.querySelector(canvasId) || document.getElementById(canvasId));
+        if (!this.canvas)
+            throw new Error('No element found for ' + canvasId + '.');
+        this.canvas["isPainting"] = false;
+        this.canvas.addEventListener('mousedown', function (e) { return _this.onMouseDown(e); });
+        this.canvas.addEventListener('touchstart', function (e) { return _this.onMouseDown(e); });
+        this.canvas.addEventListener('mousemove', function (e) { return _this.onMouseMove(e); });
+        this.canvas.addEventListener('touchmove', function (e) { return _this.onMouseMove(e); });
+        this.canvas.addEventListener('mouseup', function (e) { return _this.onMouseUp(e); });
+        this.canvas.addEventListener('touchend', function (e) { return _this.onMouseUp(e); });
+        this.canvas.addEventListener('mouseleave', function (e) { return _this.onMouseUp(e); });
+        this.canvas.addEventListener('touchleave', function (e) { return _this.onMouseUp(e); });
+        this.context = this.canvas.getContext('2d');
+        if (!this.context.setLineDash) {
+            this.log('LineDash: is not available!');
+            this.context.setLineDash = function () { };
+        }
+        return this.canvas;
+    };
+    Grafika.prototype.navigateTo = function (idx, save) {
+        if (idx <= 0)
+            idx = 0;
+        if (save)
+            this.saveFrame();
+        this.animation.currentFrame = idx;
+        this.frame = this.animation.frames[this.animation.currentFrame];
+        if (!this.frame) {
+            this.frame = this.frameRenderer.create();
+        }
+        if (save)
+            this.saveFrame();
+        this.setFrame(this.frame, true);
+        this.callback.on('frameChanged', this.frame.index);
+        this.log('Current Frame: ' + (this.animation.currentFrame + 1) + '/' + this.animation.frames.length, this.frame);
+    };
+    Grafika.prototype.setFrame = function (fr, clear) {
+        var _this = this;
+        if (!fr)
             return;
+        if (clear || !fr || fr.id != this.frame.id) {
+            this.clearCanvas();
+            this.selectedGraphics = [];
+            this.frame = fr;
         }
-        if (!canvas.isPainting) return;
-		
-		currentGraphic.invoke(context, 'mouseup', eX, eY);
-        if (currentGraphic && currentGraphic.isValid()) {
-            frame.currentLayer().graphics.push(currentGraphic);
-            frame.modified = true;
-			callback.on('frameUpdated', frame.index);
+        this.context.rect(-2, -2, parseInt(this.canvas.getAttribute('width')) + 2, parseInt(this.canvas.getAttribute('height')) + 2);
+        this.context.fillStyle = this.frame.backgroundColor;
+        this.context.fill();
+        if (this.options.useNavigationText) {
+            this.context.fillStyle = 'gray';
+            this.context.font = '25px verdana';
+            this.context["fontWeight"] = 'bold';
+            this.context.fillText((this.animation.currentFrame + 1) + ' / ' + (this.animation.frames.length), 15, 40);
         }
-
-		that.refresh();
-        canvas.isPainting = false;
-    }
-
-    function clear() {
-        if (animator) return;
-        frame = new Grafika.Frame(that);
-        selectedGraphics = [];
-        currentGraphic = null;
-        isMovingGraphics = false;
-        //movingGraphicsMode = false;
-        options.drawingMode = MODE_PAINT;
-        clearCanvas();
-    }
-
-    function clearCanvas() {
-		// Clears the canvas
-		context.clearRect(0, 0, context.canvas.width, context.canvas.height);
-		// background color
-		context.rect(-2, -2, canvas.getAttribute('width') + 2, canvas.getAttribute('height') + 2);
-		context.fillStyle = '#ffffff';
-		context.fill();
-    }
-    
-    function redraw() {
-        return setFrame(frame);
-    }
-	
-	function navigateTo(idx, save) {
-        if (idx <= 0) idx = 0;
-        
-        // save current frames
-        if (save) that.saveFrame();
-        animation.currentFrame = idx;
-        
-        frame = animation.frames[animation.currentFrame];
-        if (!frame){
-            frame = new Grafika.Frame(that);
-        }
-        if (save) that.saveFrame();
-        setFrame(frame, true);
-        
-        callback.on('frameChanged', frame.index);
-        log('Current Frame: ' + (animation.currentFrame + 1) + '/' + animation.frames.length, frame);
-	}
-    
-	function setFrame(fr, clear) {
-        if (!fr) return;
-        if (clear || !fr || fr._id != frame._id) {
-            clearCanvas();
-            selectedGraphics = [];
-            frame = fr;
-        }
-        // background color
-        context.rect(-2, -2, canvas.getAttribute('width') + 2, canvas.getAttribute('height') + 2);
-        context.fillStyle = frame.backgroundColor;
-        context.fill();
-        // navigation text
-        if (options.useNavigationText) {
-            context.fillStyle = 'gray';
-            context.font = '25px Verdana';
-            context.fontWeight = 'bold';
-            context.fillText((animation.currentFrame + 1) + ' / ' + (animation.frames.length), 15, 40);   
-        }
-
-        if (frame.backgroundResourceId) {
+        if (this.frame.backgroundResourceId) {
             var img = new Image();
             img.onload = function () {
-                context.drawImage(img, 0, 0, canvas.getAttribute('width'), canvas.getAttribute('height'));
-                fr.draw(context);
+                _this.context.drawImage(img, 0, 0, parseInt(_this.canvas.getAttribute('width')), parseInt(_this.canvas.getAttribute('height')));
+                _this.frameRenderer.draw(_this.frame);
             };
             img.onerror = function (e) {
-                fr.draw(context);
+                _this.frameRenderer.draw(_this.frame);
             };
-            //img.crossOrigin="anonymous"
             img.crossOrigin = "use-credentials";
             if (!img.src) {
-                //img.src = resourceService.getResourceUrl(animation, frame.backgroundResourceId);
             }
         }
         else {
-            //backgroundImage.removeAttribute('src');
-            fr.draw(context);
+            this.frameRenderer.draw(this.frame);
         }
-    }	
-    
-    function validateCanvas(canvasId){
-        if (!canvasId) throw new Error('canvasId is required');
-        canvas = document.querySelector(canvasId) || document.getElementById(canvasId);
-        if (!canvas) throw new Error('No element found for ' + canvasId + '.');
-        canvas.isPainting = false;
-        canvas.addEventListener('mousedown', onMouseDown);
-        canvas.addEventListener('touchstart', onMouseDown);        
-        canvas.addEventListener('mousemove', onMouseMove);
-        canvas.addEventListener('touchmove', onMouseMove);        
-        canvas.addEventListener('mouseup', onMouseUp);
-        canvas.addEventListener('touchend', onMouseUp);        
-        canvas.addEventListener('mouseleave', onMouseUp);
-        canvas.addEventListener('touchleave', onMouseUp);
-		
-        context = canvas.getContext('2d');		
-        if (!context.setLineDash) {
-			log('LineDash: is not available!');
-            context.setLineDash = function () { }			
-		}
-        
-        return canvas;
-    }
-	
-	function log(){
-		if (!options.debugMode) return;
-		if (arguments.length == 0) return;		
-		var params = [];
-		for (var i = 1; i < arguments.length; i++) {
-			params.push(arguments[i]);
-		}
-		if (params.length == 0) 
-			params = '';
-		
-		console.log('[grafika] ' + arguments[0], params);
-	}		
-	
-};
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-Grafika.Plugins = [];
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-Grafika.Graphics = {};
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-Grafika.Drawable = function (grafika) {	
-	if (!grafika) throw new Error('grafika instance is required');
-	
-	this.randomUid = function(){
-		return (("000000" + (Math.random()*Math.pow(36,6) << 0).toString(36)).slice(-6));
-	}
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-Grafika.Animation = function (grafika, anim) {
-	Grafika.Drawable.call(this, grafika);
-	anim = validate(anim);
-	
-	this.setFrames = function (frames) {
-		if (!frames || frames.length == 0)
-			frames = [ new Grafika.Frame(grafika) ];
-		
-		this.frames = [];
-		for (var i = 0; i < frames.length; i++) {
-			this.frames[i] = new Grafika.Frame(grafika, frames[i]);
-		}
-		this.totalFrame = this.frames.length;
-
-		return this.frames;
-	}
-	
-	function validate(anim){
-		if (!anim) {
-			anim = { };			
-		}
-		else {
-			if (!anim.name) throw new Error('Animation name is required');
-			if (!anim.width || !anim.height) throw new Error('Animation width + height is required');
-			if (typeof anim.frames === 'undefined' || anim.frames.length == 0) {
-				anim.frames = [ new Grafika.Frame(grafika) ];
-			}			
-		}
-		return anim;
-	}
-	
-	this._id = anim._id; // maybe undefined if new
-	this.localId = anim.localId || this.randomUid(); // always something
-	this.name = anim.name || this.localId;
-	this.description = anim.description || this.description;
-	this.timer = anim.timer || 500;
-	this.width = anim.width || window.innerWidth;
-	this.height = anim.height || window.innerHeight;
-	this.dateCreated = anim.dateCreated || Date.now();
-	this.dateModified = anim.dateModified || this.dateCreated;
-	this.views = anim.views || 0;
-	this.rating = anim.rating || 0;
-	this.category = anim.category || this.category;
-	this.isPublic = anim.isPublic || this.isPublic;
-	this.author = anim.author || this.author;
-	this.userId = anim.userId || this.userId;
-	this.thumbnailUrl = anim.thumbnailUrl || this.thumbnailUrl;
-	this.frames = this.setFrames(anim.frames);
-	this.totalFrame = anim.totalFrame || 0;
-	
-	this.currentFrame = anim.currentFrame || 0;
-	this.modified = anim.modified || false;
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-Grafika.Frame = function (grafika, frame) {
-	Grafika.Drawable.call(this, grafika);
-	if (!frame) frame = {};
-	
-	this.setLayers = function (layers) {
-		if (!layers || layers.length == 0)
-			layers = [ new Grafika.Layer(grafika) ];
-		
-		this.layers = [];
-		for (var i = 0; i < layers.length; i++){
-			this.layers[i] = new Grafika.Layer(grafika, layers[i]);
-		}
-		return this.layers;
-	};
-	this.currentLayer = function(){
-        return this.layers[this.layers.length - 1];
-	};
-	this.draw = function(context) {
-        // selected graphics
-		var selectedGraphics = grafika.getSelectedGraphics();
-		var animation = grafika.getAnimation();
-		var options = grafika.getOptions();
-		var currentGraphic = grafika.currentGraphic();
-		
-        for (var i = 0; i < selectedGraphics.length; i++) {
-            var g = selectedGraphics[i];
-            var rect = g.getBounds();
-            var offset = g.brushSize / 2;
-            
-            context.lineWidth = 2;
-            context.setLineDash([2,4 ]);
-            if (this.backgroundColor != '#000000')
-                context.strokeStyle = 'rgba(0, 0, 0, 0.5)';
-            else context.strokeStyle = 'rgba(255, 255, 255, 0.6)';
-            context.strokeRect(rect.x - offset - 2, rect.y - offset - 2, rect.width + (offset * 2) + 4, rect.height + (offset * 2) + 4);
-        }        
-        // previous frame
-        if (options.useCarbonCopy && animation.currentFrame > 0){
-            var previousFrame = animation.frames[animation.currentFrame - 1];
-            if (previousFrame){
-                for (var li = 0; li < previousFrame.layers.length; li++) {
-					previousFrame.layers[li].draw(context, true);
-                }
+    };
+    Grafika.prototype.onMouseDown = function (e) {
+        if (!e || this.isPlaying())
+            return;
+        if (navigator.userAgent.match(/Android/i)) {
+            e.preventDefault();
+        }
+        if (e.type === 'mousedown' && e.which != 1)
+            return;
+        if (this.isPlaying())
+            return;
+        var eX = e.offsetX;
+        var eY = e.offsetY;
+        if (e.changedTouches) {
+            eX = e.changedTouches[0].pageX;
+            eY = e.changedTouches[0].pageY;
+        }
+        if (this.options.drawingMode == Grafika.MODE_MOVE && this.selectedGraphics.length > 0) {
+            this.isMovingGraphics = true;
+            return;
+        }
+        if (this.options.drawingMode == Grafika.MODE_SELECT) {
+            var newSelectedGraphics = this.findSelectedGraphics(eX, eY);
+            if (newSelectedGraphics.length > 0) {
+                this.selectedGraphics = [];
+                this.redraw();
+                this.selectedGraphics = newSelectedGraphics;
+                this.redraw();
+                return;
+            }
+            else {
+                this.selectedGraphics = [];
+                this.redraw();
             }
         }
-        // current frame
-        for (var i = 0; i < this.layers.length; i++) {
-			this.layers[i].draw(context);
+        if (this.options.drawingMode != Grafika.MODE_PAINT)
+            return;
+        var renderer = this.getGraphicRenderer(this.options.graphic);
+        this.canvas["isPainting"] = this.options.drawingMode == Grafika.MODE_PAINT;
+        this.currentGraphic = renderer.create();
+        this.currentGraphic.isFilled = this.options.graphicFill;
+        this.currentGraphic.x = eX;
+        this.currentGraphic.y = eY;
+        this.currentGraphic.brushSize = this.options.brushSize;
+        this.currentGraphic.backgroundColor = this.options.backgroundColor;
+        this.currentGraphic.foregroundColor = this.options.foregroundColor;
+        renderer.invoke(this.currentGraphic, "mousedown", eX, eY);
+    };
+    Grafika.prototype.onMouseMove = function (e) {
+        if (!e || this.isPlaying())
+            return;
+        var eX = e.offsetX;
+        var eY = e.offsetY;
+        if (!eX || !eY) {
+            if (e.changedTouches) {
+                eX = e.changedTouches[0].pageX;
+                eY = e.changedTouches[0].pageY;
+            }
+            else
+                return;
         }
-		
-		if (currentGraphic)
-			currentGraphic.draw(context);
-	}
-	
-	this.id = frame.id || this.randomUid();
-	this.index = (frame.index >= 0 ? frame.index : (grafika.getAnimation().currentFrame || 0));
-	this.backgroundColor = frame.backgroundColor || grafika.getOptions().backgroundColor;
-	this.foregroundColor = frame.foregroundColor || grafika.getOptions().foregroundColor;
-	this.layers = this.setLayers(frame.layers);
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-Grafika.Layer = function (grafika, layer) {
-	Grafika.Drawable.call(this, grafika);
-	if (!layer) layer = {};
-	
-	this.setGraphics = function (graphics) {
-		if (!graphics || graphics.length == 0)
-			graphics = [ ];
-		
-		this.graphics = [];
-		for (var i = 0; i < graphics.length; i++) {
-			this.graphics[i] = grafika.getGraphicsFactory().createGraphic(graphics[i]);
-		}
-		return this.graphics;
-	}
-	this.draw = function (context, carbonCopy) {
-		var g;
-		context.setLineDash([]);
-		context.lineJoin = "round";
-		context.lineCap = "round";
-		for(var i = 0; i < this.graphics.length; i++) {
-			g = this.graphics[i];
-			if (carbonCopy) {
-				var rgb = hexToRgb(g.foregroundColor);
-				g.foregroundAlpha = 'rgba(' + rgb.r + ',' + rgb.g + ',' + rgb.b + ', 0.2)';
-			}
-			
-			g.draw(context);
-			
-			delete g.foregroundAlpha;
-		}
-	}
-	
-	this.id = layer.id || this.randomUid();
-	this.index = layer.index || 0;
-	this.graphics = this.setGraphics(layer.graphics);
-	
-	function hexToRgb(hex) {		
-		// Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
-		var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
-		hex = hex.replace(shorthandRegex, function(m, r, g, b) {
-			return r + r + g + g + b + b;
-		});
-	
-		var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-		return result ? { r: parseInt(result[1], 16), g: parseInt(result[2], 16), b: parseInt(result[3], 16) } : { r: 0, g: 0, b: 0 };
-	}
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-Grafika.Graphics.Shape = function(g){
-	if (!g) throw new Error('invalid type');
-	if (g && !g.type) throw new Error('invalid type');
-	
-	this.id = g.id || (("0000" + (Math.random()*Math.pow(36,4) << 0).toString(36)).slice(-4));
-	this.x = g.x || 0;
-	this.y = g.y || 0;
-	this.width = g.width || 0;
-	this.height = g.height || 0;
-	this.backgroundColor = g.backgroundColor || '#ffffff';
-	this.foregroundColor = g.foregroundColor || '#000000';
-	this.isFilled = g.isFilled || false;
-	this.type = g.type;
-	this.brushSize = g.brushSize || 2;
-	this.isVisible = (typeof g.isVisible !== 'undefined' && g.isVisible != null) ? g.isVisible : true;
-	
-	this.getBounds = function (){
-		return {
-			x: this.width > 0 ? this.x : this.x + this.width,
-			y: this.height > 0 ? this.y : this.y + this.height,
-			width: Math.abs(this.width),
-			height: Math.abs(this.height)
-		}
-	};
-    this.contains = function (x, y) {
-		var bounds = this.getBounds();
-		return bounds.x < x && bounds.x + bounds.width > x && bounds.y < y && bounds.y + bounds.height > y;
-	};
-	this.isValid = function() {
-		return Math.abs(this.width) > 20 && Math.abs(this.height) > 20;
-	};
-	this.draw = function(context) {
-		context.lineWidth = this.brushSize > 1 ? this.brushSize : 1;
-		context.strokeStyle = this.foregroundAlpha || this.foregroundColor;
-		context.fillStyle = this.foregroundAlpha || this.foregroundColor;	
-		this.onDraw(context);
-	};
-	this.move = function(context, x, y, lastX, lastY) {
-		this.onMove(context, x, y, lastX, lastY);
-	};
-	this.invoke = function(context, eventType, eventX, eventY) {
-		this.onEvent(context, eventType, eventX, eventY);
-	};
-	
-	// ------------- needs to be implemented -------- //
-	this.onDraw = function(context) {
-		throw new Error('Not implemented onDraw()');
-	};
-	this.onMove = function(context, x, y, lastX, lastY) {
-		throw new Error('Not implemented onMove()');
-	};
-	this.onEvent = function(context, eventType, eventX, eventY){
-		throw new Error('Not implemented onEvent()');
-	};
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-Grafika.Graphics.Freeform = function(g) {
-	g = g || { type: 'freeform' };
-	Grafika.Graphics.Shape.call(this, g);
-	
-	this.points = g.points || [];
-	
-	this.getBounds = function(){
-		var rect = {
-			x: this.x,
-			y: this.y,
-			width: this.x,
-			height: this.y,
-		}
-		for (var pI = 0; pI < this.points.length; pI++) {
-			var p = this.points[pI];
-			if (rect.x > p.x)
-				rect.x = p.x;
-			if (rect.y > p.y)
-				rect.y = p.y;
-			if (rect.width < p.x)
-				rect.width = p.x;
-			if (rect.height < p.y)
-				rect.height = p.y;
-		}
-		rect.width = rect.width - rect.x;
-		rect.height = rect.height - rect.y;
-		return rect;
-	};
-	this.isValid = function() {
-		var rect = this.getBounds();
-		return rect.width > 5 || rect.height > 5;
-	};
-	
-	this.onDraw = function(context) {
-		context.beginPath();
-		context.moveTo(this.x, this.y);
-		for (var i = 0; i < this.points.length; i++) {
-			var point = this.points[i];
-			context.lineTo(point.x, point.y);
-		}
-		
-		if (this.isFilled)
-			context.fill();
-		else context.stroke();
-	};
-	this.onMove = function(context, x, y, lastX, lastY) {
-		// implemented: don't touch (08/27/2015)
-		var lastGX = this.x;
-		var lastGY = this.y;
-		this.x = this.x + (x - lastX);
-		this.y = this.y + (y - lastY);
-		var deltaX = lastGX - this.x;
-		var deltaY = lastGY - this.y;
-		for (var i = 0; i < this.points.length; i++){
-			this.points[i].x -= deltaX;
-			this.points[i].y -= deltaY;
-		}
-	};
-	this.onEvent = function(context, eventType, eventX, eventY) {
-		switch (eventType) {
-			case "mousemove":
-				this.points.push({ x: eventX, y: eventY });
-				break;
-		}
-	};
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-Grafika.Graphics.Line = function(g){
-	g = g || { type: 'line' };
-	Grafika.Graphics.Shape.call(this, g);
-	
-	this.endX = g.endX || 0;
-	this.endY = g.endY || 0;
-	
-	this.getBounds = function() {		
-		return {
-			x: this.x < this.endX ? this.x : this.endX,
-			y: this.y < this.endY ? this.y : this.endY,
-			width: this.x > this.endX ? this.x - this.endX : this.endX - this.x,
-			height: this.y > this.endY ? this.y - this.endY : this.endY - this.y,
-		}
-	}
-	this.isValid = function() {
-		return Math.abs(this.endX - this.x) > 20 || Math.abs(this.endY - this.y) > 20;
-	};
-	
-	this.onDraw = function(context) {
-		context.moveTo(this.x, this.y);
-		context.lineTo(this.endX, this.endY);
-		context.stroke();
-	};
-	this.onMove = function(context, x, y, lastX, lastY) {
-		// implemented: don't touch (08/27/2015)
-		this.x = this.x + (x - lastX);
-		this.y = this.y + (y - lastY);
-		this.endX = this.endX + (x - lastX);
-		this.endY = this.endY + (y - lastY);
-	};
-	this.onEvent = function(context, eventType, eventX, eventY) {
-		switch (eventType) {
-			case "mousemove":
-                this.endX = eventX;
-                this.endY = eventY;
-				break;
-		}
-	};
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-Grafika.Graphics.Rectangle = function(g) {
-	g = g || { type: 'rectangle' };
-	Grafika.Graphics.Shape.call(this, g);
-	
-	this.width = g.width || 10;
-	this.height = g.height || this.width;
-	
-	this.onDraw = function(context) {
-		if (this.isFilled)
-			context.fillRect(this.x, this.y, this.width, this.height);
-		else {
-			context.strokeRect(this.x, this.y, this.width, this.height);
-		}
-	};
-	this.onMove = function(context, x, y, lastX, lastY) {
-		this.x = this.x + (x - lastX);
-		this.y = this.y + (y - lastY);
-	};
-	this.onEvent = function(context, eventType, eventX, eventY) {
-		switch (eventType) {
-			case "mousemove":
-                this.width = eventX - this.x;
-                this.height = eventY - this.y;
-				break;
-		}
-	};
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-Grafika.Graphics.Square = function(g) {
-	g = g || { type: 'square' };
-	Grafika.Graphics.Rectangle.call(this, g);
-	
-	this.onEvent = function(context, eventType, eventX, eventY) {
-		switch (eventType) {
-			case "mousemove":
-                this.width = eventX - this.x;
-                this.height = eventY - this.y;
-                this.width = this.width > this.height ? this.height : this.width;
-                this.height = this.width > this.height ? this.height : this.width;
-				break;
-		}
-	};
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-Grafika.Graphics.Circle = function(g) {
-	g = g || { type: 'circle' };
-	Grafika.Graphics.Rectangle.call(this, g);
-	
-	this.radius = g.radius || 5;
-	
-	this.getBounds = function() {	
-		return {
-			x: this.x - this.radius,
-			y: this.y - this.radius,
-			width: this.radius * 2,
-			height: this.radius * 2,
-		}
-	}
-	this.isValid = function() {
-		return this.radius > 5;
-	};
-	
-	this.onDraw = function(context) {
-		context.beginPath();
-		context.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
-		if (this.isFilled)
-			context.fill();
-		else
-			context.stroke();
-	};
-	this.onEvent = function(context, eventType, eventX, eventY) {
-		switch (eventType) {
-			case "mousemove":
-                this.radius = Math.abs(eventX - this.x);
-				break;
-		}
-	};
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-Grafika.Graphics.Oval = function(g) {
-	g = g || { type: 'oval' };
-	Grafika.Graphics.Circle.call(this, g);
-	
-	this.radiusY = g.radiusY || 10;
-	
-	this.getBounds = function() {	
-		return {
-			x: this.x - this.radius,
-			y: this.y - this.radiusY,
-			width: this.radius * 2,
-			height: this.radiusY * 2,
-		}
-	};
-	this.isValid = function() {
-		return this.radius > 10 && this.radiusY > 10;
-	};
-	this.onDraw = function(context) {
-		context.beginPath();
-		context.ellipse(this.x, this.y, this.radius, this.radiusY, 0, 0, 2 * Math.PI);
-		if (this.isFilled)
-			context.fill();
-		else context.stroke();
-	};
-	this.onEvent = function(context, eventType, eventX, eventY) {
-		switch (eventType) {
-			case "mousemove":
-                this.radius = Math.abs(eventX - this.x);
-				this.radiusY = Math.abs(eventY - this.y);
-				break;
-		}
-	};
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-Grafika.Graphics.Text = function(g) {
-	g = g || { type: 'text' };
-	if (typeof g.isFilled === 'undefined') g.isFilled = true;
-	Grafika.Graphics.Rectangle.call(this, g);
-	
-	this.text = g.text || '';
-	this.font = g.font || 'verdana';
-	this.fontWeight = g.fontWeight || 'normal';
-	this.height = g.height || 25;
-	
-	this.isValid = function() {
-		return this.text && this.text.length > 0;
-	};
-	
-	this.onDraw = function(context) {
-		context.font = this.height + 'px ' + this.font;
-		if (this.isFilled) {
-            context.fillStyle = this.foregroundAlpha || this.foregroundColor;
-			context.fillText(this.text, this.x, this.y + this.height);
-		}
-		else {
-			context.strokeStyle = this.foregroundAlpha || this.foregroundColor;
-			context.strokeText(this.text, this.x, this.y + this.height);
-		}
-	};
-	this.onEvent = function(context, eventType, eventX, eventY){
-		switch (eventType) {
-			case "mouseup": 
-				this.text = this.prompt('Insert text');
-				this.drawFocusRectangle(context);
-				
-				this.draw(context);
-				break;
-		}
-	};
-	
-	this.drawFocusRectangle = function(context) {
-		var rect = context.measureText(this.text);
-		this.width = rect.width;
-		context.lineWidth = 1;
-		context.setLineDash([2,4]);
-		context.strokeStyle = this.foregroundColor;
-		context.rect(this.x, this.y, this.width, this.height);		
-	}
-	this.prompt = function(text, title) {
-		return prompt(text, title);
-	}
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-Grafika.Graphics.Triangle = function(g) {
-	g = g || { type: 'triangle' };
-	Grafika.Graphics.Rectangle.call(this, g);
-	
-	this.onDraw = function(context) {
-		context.beginPath();
-		context.moveTo(this.x + (this.width/2), this.y);
-		context.lineTo(this.x, this.y + this.height);
-		context.lineTo(this.x + this.width, this.y + this.height);
-		context.closePath();
-		if (this.isFilled)
-			context.fill();
-		else context.stroke();
-	};
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-Grafika.Graphics.Factory = function (){
-	this.providers = [
-		{ type: 'freeform', create: function(g) { return new Grafika.Graphics.Freeform(g) } },
-		{ type: 'line', create: function(g) { return new Grafika.Graphics.Line(g) } },
-		{ type: 'rectangle', create: function(g) { return new Grafika.Graphics.Rectangle(g) } },
-		{ type: 'square', create: function(g) { return new Grafika.Graphics.Square(g) } },
-		{ type: 'circle', create: function(g) { return new Grafika.Graphics.Circle(g) } },
-		{ type: 'oval', create: function(g) { return new Grafika.Graphics.Oval(g) } },
-		{ type: 'text', create: function(g) { return new Grafika.Graphics.Text(g) } },
-		{ type: 'triangle', create: function(g) { return new Grafika.Graphics.Triangle(g) } },
-	],
-	
-	this.createGraphic = function (graphicOrType) {
-		if (!graphicOrType) throw new Error('Graphic/type is required');
-        var g = { };
-        if (typeof(graphicOrType) == 'string')
-            g.type = graphicOrType;
-        if (typeof(graphicOrType) == 'object')
-            g = graphicOrType;
-		
-		if (!g.type) throw new Error('Graphic/type is required (unspecified)');
-		for(var i = 0; i < this.providers.length; i++) {
-			if (this.providers[i].type.toLowerCase() === g.type.toLowerCase())
-				return this.providers[i].create(g);
-		}
-	
-		throw new Error('Unsupported graphic: ' + graphicOrType);
-	}
-};
+        if (this.isMovingGraphics && this.selectedGraphics.length > 0) {
+            if (!this.lastX)
+                this.lastX = eX;
+            if (!this.lastY)
+                this.lastY = eY;
+            for (var i = 0; i < this.selectedGraphics.length; i++) {
+                this.getGraphicRenderer(this.selectedGraphics[i]).move(this.selectedGraphics[i], eX, eY, this.lastX, this.lastY);
+            }
+            this.lastX = eX;
+            this.lastY = eY;
+            this.clearCanvas();
+            this.redraw();
+            return;
+        }
+        if (this.canvas["isPainting"] && this.currentGraphic) {
+            this.getGraphicRenderer(this.currentGraphic).invoke(this.currentGraphic, 'mousemove', eX, eY);
+            this.redraw();
+        }
+    };
+    Grafika.prototype.onMouseUp = function (e) {
+        if (!e || this.isPlaying())
+            return;
+        var eX = e.offsetX;
+        var eY = e.offsetY;
+        if (!eX || !eY) {
+            if (e.changedTouches) {
+                eX = e.changedTouches[0].pageX;
+                eY = e.changedTouches[0].pageY;
+            }
+            else
+                return;
+        }
+        if (this.isPlaying() && e.type == 'mouseup') {
+            this.pause();
+            return;
+        }
+        if (this.isMovingGraphics) {
+            this.isMovingGraphics = false;
+            this.callback.on('frameUpdated', this.frame.index);
+            this.lastX = null;
+            this.lastY = null;
+            this.clearCanvas();
+            this.redraw();
+            return;
+        }
+        if (!this.canvas["isPainting"])
+            return;
+        var renderer = this.getGraphicRenderer(this.currentGraphic);
+        renderer.invoke(this.currentGraphic, 'mouseup', eX, eY);
+        if (this.currentGraphic && renderer.isValid(this.currentGraphic)) {
+            this.frame.layers[0].graphics.push(this.currentGraphic);
+            this.frame.modified = true;
+            this.callback.on('frameUpdated', this.frame.index);
+        }
+        this.refresh();
+        this.canvas["isPainting"] = false;
+    };
+    Grafika.prototype.clearCanvas = function () {
+        this.context.clearRect(0, 0, this.context.canvas.width, this.context.canvas.height);
+        this.context.rect(-2, -2, parseInt(this.canvas.getAttribute('width')) + 2, parseInt(this.canvas.getAttribute('height')) + 2);
+        this.context.fillStyle = '#ffffff';
+        this.context.fill();
+    };
+    Grafika.prototype.redraw = function () {
+        return this.setFrame(this.frame);
+    };
+    Grafika.randomUid = function () {
+        return (("000000" + (Math.random() * Math.pow(36, 6) << 0).toString(36)).slice(-6));
+    };
+    Grafika.hexToRgb = function (hex) {
+        var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+        hex = hex.replace(shorthandRegex, function (m, r, g, b) {
+            return r + r + g + g + b + b;
+        });
+        var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+        return result ? { r: parseInt(result[1], 16), g: parseInt(result[2], 16), b: parseInt(result[3], 16) } : { r: 0, g: 0, b: 0 };
+    };
+    return Grafika;
+}());
+var Grafika;
+(function (Grafika) {
+    Grafika.Plugins = [];
+    Grafika.VERSION = '0.11.1';
+    Grafika.MODE_NONE = 'none', Grafika.MODE_PAINT = 'paint', Grafika.MODE_MOVE = 'move', Grafika.MODE_SELECT = 'select', Grafika.MODE_DELETE = 'delete';
+    (function (DrawingMode) {
+        DrawingMode[DrawingMode["None"] = 0] = "None";
+        DrawingMode[DrawingMode["Paint"] = 1] = "Paint";
+        DrawingMode[DrawingMode["Move"] = 2] = "Move";
+        DrawingMode[DrawingMode["Select"] = 3] = "Select";
+        DrawingMode[DrawingMode["Delete"] = 4] = "Delete";
+    })(Grafika.DrawingMode || (Grafika.DrawingMode = {}));
+    var DrawingMode = Grafika.DrawingMode;
+    (function (Events) {
+        Events[Events["Initialized"] = 0] = "Initialized";
+        Events[Events["FrameChanged"] = 1] = "FrameChanged";
+        Events[Events["FrameUpdated"] = 2] = "FrameUpdated";
+        Events[Events["Destroyed"] = 3] = "Destroyed";
+    })(Grafika.Events || (Grafika.Events = {}));
+    var Events = Grafika.Events;
+    var Animation = (function () {
+        function Animation() {
+        }
+        return Animation;
+    }());
+    Grafika.Animation = Animation;
+    var Renderer = (function () {
+        function Renderer(grafika) {
+            this.grafika = grafika;
+            this.canvas = grafika.getCanvas();
+            this.context = grafika.getCanvasContext();
+        }
+        Renderer.prototype.canRender = function (drawable) {
+            return (drawable && drawable.type === this.getRenderingType() || drawable === this.getRenderingType());
+        };
+        return Renderer;
+    }());
+    Grafika.Renderer = Renderer;
+    var AnimationRenderer = (function (_super) {
+        __extends(AnimationRenderer, _super);
+        function AnimationRenderer() {
+            _super.apply(this, arguments);
+        }
+        AnimationRenderer.prototype.create = function (anim) {
+            if (!anim)
+                anim = {};
+            anim._id = anim._id;
+            anim.localId = anim.localId || Grafika.randomUid();
+            anim.name = anim.name || anim.localId;
+            anim.description = anim.description || anim.description;
+            anim.timer = anim.timer || 500;
+            anim.width = anim.width || window.innerWidth;
+            anim.height = anim.height || window.innerHeight;
+            anim.dateCreated = anim.dateCreated || Date.now();
+            anim.dateModified = anim.dateModified || anim.dateCreated;
+            anim.views = anim.views || 0;
+            anim.rating = anim.rating || 0;
+            anim.category = anim.category || anim.category;
+            anim.isPublic = anim.isPublic || anim.isPublic;
+            anim.author = anim.author || anim.author;
+            anim.userId = anim.userId || anim.userId;
+            anim.thumbnailUrl = anim.thumbnailUrl || anim.thumbnailUrl;
+            anim.frames = anim.frames || [this.grafika.getRenderer('frame').create()];
+            anim.totalFrame = anim.totalFrame || 0;
+            anim.currentFrame = anim.currentFrame || 0;
+            anim.modified = anim.modified || false;
+            return anim;
+        };
+        AnimationRenderer.prototype.draw = function (animation) {
+            throw new Error();
+        };
+        AnimationRenderer.prototype.getRenderingType = function () {
+            return "animation";
+        };
+        return AnimationRenderer;
+    }(Renderer));
+    Grafika.AnimationRenderer = AnimationRenderer;
+    var FrameRenderer = (function (_super) {
+        __extends(FrameRenderer, _super);
+        function FrameRenderer() {
+            _super.apply(this, arguments);
+        }
+        FrameRenderer.prototype.create = function (frame) {
+            if (!frame) {
+                frame = { type: "frame" };
+            }
+            frame.id = frame.id || Grafika.randomUid();
+            frame.index = (frame.index >= 0 ? frame.index : (this.grafika.getAnimation().currentFrame || 0));
+            frame.modified = frame.modified || false;
+            frame.backgroundResourceId = frame.backgroundResourceId || undefined;
+            frame.backgroundColor = frame.backgroundColor || this.grafika.getOptions().backgroundColor;
+            frame.foregroundColor = frame.foregroundColor || this.grafika.getOptions().foregroundColor;
+            frame.layers = frame.layers || [this.grafika.getRenderer('layer').create()];
+            frame.type = "frame";
+            return frame;
+        };
+        FrameRenderer.prototype.draw = function (frame, opts) {
+            var selectedGraphics = this.grafika.getSelectedGraphics();
+            var animation = this.grafika.getAnimation();
+            var options = this.grafika.getOptions();
+            var currentGraphic = this.grafika.getCurrentGraphic();
+            var layerRenderer = this.grafika.getRenderer("layer");
+            for (var i = 0; i < selectedGraphics.length; i++) {
+                var g = selectedGraphics[i];
+                var renderer = this.grafika.getGraphicRenderer(g);
+                var rect = renderer.getBounds(g);
+                var offset = g.brushSize / 2;
+                this.context.lineWidth = 2;
+                this.context.setLineDash([2, 4]);
+                if (frame.backgroundColor != '#000000')
+                    this.context.strokeStyle = 'rgba(0, 0, 0, 0.5)';
+                else
+                    this.context.strokeStyle = 'rgba(255, 255, 255, 0.6)';
+                this.context.strokeRect(rect.x - offset - 2, rect.y - offset - 2, rect.width + (offset * 2) + 4, rect.height + (offset * 2) + 4);
+            }
+            if (options.useCarbonCopy && animation.currentFrame > 0) {
+                var previousFrame = animation.frames[animation.currentFrame - 1];
+                if (previousFrame) {
+                    for (var li = 0; li < previousFrame.layers.length; li++) {
+                        layerRenderer.draw(previousFrame.layers[li], { useCarbonCopy: true });
+                    }
+                }
+            }
+            for (var i = 0; i < frame.layers.length; i++) {
+                layerRenderer.draw(frame.layers[i]);
+            }
+            if (currentGraphic) {
+                var renderer = this.grafika.getGraphicRenderer(currentGraphic);
+                renderer.draw(currentGraphic);
+            }
+        };
+        FrameRenderer.prototype.getRenderingType = function () {
+            return "frame";
+        };
+        return FrameRenderer;
+    }(Renderer));
+    Grafika.FrameRenderer = FrameRenderer;
+    var LayerRenderer = (function (_super) {
+        __extends(LayerRenderer, _super);
+        function LayerRenderer(grafika) {
+            _super.call(this, grafika);
+        }
+        LayerRenderer.prototype.create = function (layer) {
+            if (!layer) {
+                layer = { type: "layer" };
+            }
+            layer.id = layer.id || Grafika.randomUid();
+            layer.index = layer.index || 0;
+            layer.graphics = layer.graphics || [];
+            return layer;
+        };
+        LayerRenderer.prototype.draw = function (layer, opts) {
+            var g;
+            this.context.setLineDash([]);
+            this.context.lineJoin = "round";
+            this.context.lineCap = "round";
+            for (var i = 0; i < layer.graphics.length; i++) {
+                g = layer.graphics[i];
+                if (opts && opts.useCarbonCopy) {
+                    var rgb = Grafika.hexToRgb(g.foregroundColor);
+                    g.foregroundAlpha = 'rgba(' + rgb.r + ',' + rgb.g + ',' + rgb.b + ', 0.2)';
+                }
+                this.grafika.getGraphicRenderer(g).draw(g);
+                delete g.foregroundAlpha;
+            }
+        };
+        LayerRenderer.prototype.getRenderingType = function () {
+            return "layer";
+        };
+        return LayerRenderer;
+    }(Renderer));
+    Grafika.LayerRenderer = LayerRenderer;
+    var Renderers;
+    (function (Renderers) {
+        var GraphicRenderer = (function (_super) {
+            __extends(GraphicRenderer, _super);
+            function GraphicRenderer(grafika) {
+                _super.call(this, grafika);
+            }
+            GraphicRenderer.prototype.create = function (graphic) {
+                if (!graphic)
+                    graphic = { type: this.getRenderingType() };
+                graphic.id = graphic.id || (("0000" + (Math.random() * Math.pow(36, 4) << 0).toString(36)).slice(-4));
+                graphic.x = graphic.x || 0;
+                graphic.y = graphic.y || 0;
+                graphic.width = graphic.width || 10;
+                graphic.height = graphic.height || 10;
+                graphic.backgroundColor = graphic.backgroundColor || "#ffffff";
+                graphic.foregroundColor = graphic.foregroundColor || "#000000";
+                graphic.foregroundAlpha = graphic.foregroundAlpha || undefined;
+                graphic.isFilled = (typeof graphic.isFilled !== 'undefined' && graphic.isFilled != null) ? graphic.isFilled : false;
+                graphic.isVisible = (typeof graphic.isVisible !== 'undefined' && graphic.isVisible != null) ? graphic.isVisible : true;
+                graphic.brushSize = graphic.brushSize || 2;
+                graphic.type = graphic.type || undefined;
+                return graphic;
+            };
+            GraphicRenderer.prototype.draw = function (graphic) {
+                this.context.lineWidth = graphic.brushSize > 1 ? graphic.brushSize : 1;
+                this.context.strokeStyle = graphic.foregroundAlpha || graphic.foregroundColor;
+                this.context.fillStyle = graphic.foregroundAlpha || graphic.foregroundColor;
+                this.onDraw(graphic);
+            };
+            GraphicRenderer.prototype.move = function (graphic, x, y, lastX, lastY) {
+                this.onMove(graphic, x, y, lastX, lastY);
+            };
+            GraphicRenderer.prototype.invoke = function (graphic, eventType, eventX, eventY) {
+                this.onEvent(graphic, eventType, eventX, eventY);
+            };
+            return GraphicRenderer;
+        }(Renderer));
+        Renderers.GraphicRenderer = GraphicRenderer;
+        var ShapeRenderer = (function (_super) {
+            __extends(ShapeRenderer, _super);
+            function ShapeRenderer() {
+                _super.apply(this, arguments);
+            }
+            ShapeRenderer.prototype.getBounds = function (graphic) {
+                return {
+                    x: graphic.width > 0 ? graphic.x : graphic.x + graphic.width,
+                    y: graphic.height > 0 ? graphic.y : graphic.y + graphic.height,
+                    width: Math.abs(graphic.width),
+                    height: Math.abs(graphic.height)
+                };
+            };
+            ShapeRenderer.prototype.contains = function (graphic, x, y) {
+                var bounds = this.getBounds(graphic);
+                return bounds.x < x && bounds.x + bounds.width > x && bounds.y < y && bounds.y + bounds.height > y;
+            };
+            ShapeRenderer.prototype.isValid = function (graphic) {
+                return Math.abs(graphic.width) > 20 && Math.abs(graphic.height) > 20;
+            };
+            return ShapeRenderer;
+        }(GraphicRenderer));
+        Renderers.ShapeRenderer = ShapeRenderer;
+        var FreeformRenderer = (function (_super) {
+            __extends(FreeformRenderer, _super);
+            function FreeformRenderer() {
+                _super.apply(this, arguments);
+            }
+            FreeformRenderer.prototype.create = function (graphic) {
+                graphic = _super.prototype.create.call(this, graphic);
+                graphic.points = graphic.points || [];
+                return graphic;
+            };
+            FreeformRenderer.prototype.getBounds = function (graphic) {
+                var rect = {
+                    x: graphic.x,
+                    y: graphic.y,
+                    width: graphic.x,
+                    height: graphic.y,
+                };
+                for (var pI = 0; pI < graphic.points.length; pI++) {
+                    var p = graphic.points[pI];
+                    if (rect.x > p.x)
+                        rect.x = p.x;
+                    if (rect.y > p.y)
+                        rect.y = p.y;
+                    if (rect.width < p.x)
+                        rect.width = p.x;
+                    if (rect.height < p.y)
+                        rect.height = p.y;
+                }
+                rect.width = rect.width - rect.x;
+                rect.height = rect.height - rect.y;
+                return rect;
+            };
+            FreeformRenderer.prototype.isValid = function (graphic) {
+                var rect = this.getBounds(graphic);
+                return rect.width > 5 || rect.height > 5;
+            };
+            FreeformRenderer.prototype.onDraw = function (graphic) {
+                this.context.beginPath();
+                this.context.moveTo(graphic.x, graphic.y);
+                for (var i = 0; i < graphic.points.length; i++) {
+                    var point = graphic.points[i];
+                    this.context.lineTo(point.x, point.y);
+                }
+                if (graphic.isFilled)
+                    this.context.fill();
+                else
+                    this.context.stroke();
+            };
+            FreeformRenderer.prototype.onMove = function (graphic, x, y, lastX, lastY) {
+                var lastGX = graphic.x;
+                var lastGY = graphic.y;
+                graphic.x = graphic.x + (x - lastX);
+                graphic.y = graphic.y + (y - lastY);
+                var deltaX = lastGX - graphic.x;
+                var deltaY = lastGY - graphic.y;
+                for (var i = 0; i < graphic.points.length; i++) {
+                    graphic.points[i].x -= deltaX;
+                    graphic.points[i].y -= deltaY;
+                }
+            };
+            FreeformRenderer.prototype.onEvent = function (graphic, eventType, eventX, eventY) {
+                switch (eventType) {
+                    case "mousemove":
+                        graphic.points.push({ x: eventX, y: eventY });
+                        break;
+                }
+            };
+            FreeformRenderer.prototype.getRenderingType = function () {
+                return "freeform";
+            };
+            return FreeformRenderer;
+        }(ShapeRenderer));
+        Renderers.FreeformRenderer = FreeformRenderer;
+        var LineRenderer = (function (_super) {
+            __extends(LineRenderer, _super);
+            function LineRenderer() {
+                _super.apply(this, arguments);
+            }
+            LineRenderer.prototype.create = function (graphic) {
+                graphic = _super.prototype.create.call(this, graphic);
+                graphic.endX = graphic.endX || graphic.x;
+                graphic.endY = graphic.endY || graphic.y;
+                return graphic;
+            };
+            LineRenderer.prototype.getBounds = function (graphic) {
+                return {
+                    x: graphic.x < graphic.endX ? graphic.x : graphic.endX,
+                    y: graphic.y < graphic.endY ? graphic.y : graphic.endY,
+                    width: graphic.x > graphic.endX ? graphic.x - graphic.endX : graphic.endX - graphic.x,
+                    height: graphic.y > graphic.endY ? graphic.y - graphic.endY : graphic.endY - graphic.y,
+                };
+            };
+            LineRenderer.prototype.isValid = function (graphic) {
+                return Math.abs(graphic.endX - graphic.x) > 20 || Math.abs(graphic.endY - graphic.y) > 20;
+            };
+            LineRenderer.prototype.onDraw = function (graphic) {
+                this.context.moveTo(graphic.x, graphic.y);
+                this.context.lineTo(graphic.endX, graphic.endY);
+                this.context.stroke();
+            };
+            LineRenderer.prototype.onMove = function (graphic, x, y, lastX, lastY) {
+                graphic.x = graphic.x + (x - lastX);
+                graphic.y = graphic.y + (y - lastY);
+                graphic.endX = graphic.endX + (x - lastX);
+                graphic.endY = graphic.endY + (y - lastY);
+            };
+            LineRenderer.prototype.onEvent = function (graphic, eventType, eventX, eventY) {
+                switch (eventType) {
+                    case "mousemove":
+                        graphic.endX = eventX;
+                        graphic.endY = eventY;
+                        break;
+                }
+            };
+            LineRenderer.prototype.getRenderingType = function () {
+                return "line";
+            };
+            return LineRenderer;
+        }(ShapeRenderer));
+        Renderers.LineRenderer = LineRenderer;
+        var RectangleRenderer = (function (_super) {
+            __extends(RectangleRenderer, _super);
+            function RectangleRenderer() {
+                _super.apply(this, arguments);
+            }
+            RectangleRenderer.prototype.onDraw = function (graphic) {
+                if (graphic.isFilled)
+                    this.context.fillRect(graphic.x, graphic.y, graphic.width, graphic.height);
+                else {
+                    this.context.strokeRect(graphic.x, graphic.y, graphic.width, graphic.height);
+                }
+            };
+            RectangleRenderer.prototype.onMove = function (graphic, x, y, lastX, lastY) {
+                graphic.x = graphic.x + (x - lastX);
+                graphic.y = graphic.y + (y - lastY);
+            };
+            RectangleRenderer.prototype.onEvent = function (graphic, eventType, eventX, eventY) {
+                switch (eventType) {
+                    case "mousemove":
+                        graphic.width = eventX - graphic.x;
+                        graphic.height = eventY - graphic.y;
+                        break;
+                }
+            };
+            RectangleRenderer.prototype.getRenderingType = function () {
+                return "rectangle";
+            };
+            return RectangleRenderer;
+        }(ShapeRenderer));
+        Renderers.RectangleRenderer = RectangleRenderer;
+        var SquareRenderer = (function (_super) {
+            __extends(SquareRenderer, _super);
+            function SquareRenderer() {
+                _super.apply(this, arguments);
+            }
+            SquareRenderer.prototype.onEvent = function (graphic, eventType, eventX, eventY) {
+                switch (eventType) {
+                    case "mousemove":
+                        graphic.width = eventX - graphic.x;
+                        graphic.height = eventY - graphic.y;
+                        graphic.width = graphic.width > graphic.height ? graphic.height : graphic.width;
+                        graphic.height = graphic.width > graphic.height ? graphic.height : graphic.width;
+                        break;
+                }
+            };
+            SquareRenderer.prototype.getRenderingType = function () {
+                return "square";
+            };
+            return SquareRenderer;
+        }(RectangleRenderer));
+        Renderers.SquareRenderer = SquareRenderer;
+        var CircleRenderer = (function (_super) {
+            __extends(CircleRenderer, _super);
+            function CircleRenderer() {
+                _super.apply(this, arguments);
+            }
+            CircleRenderer.prototype.create = function (graphic) {
+                graphic = _super.prototype.create.call(this, graphic);
+                graphic.radius = graphic.radius || 10;
+                return graphic;
+            };
+            CircleRenderer.prototype.getBounds = function (graphic) {
+                return {
+                    x: graphic.x - graphic.radius,
+                    y: graphic.y - graphic.radius,
+                    width: graphic.radius * 2,
+                    height: graphic.radius * 2,
+                };
+            };
+            CircleRenderer.prototype.isValid = function (graphic) {
+                return graphic.radius > 5;
+            };
+            CircleRenderer.prototype.onDraw = function (graphic) {
+                this.context.beginPath();
+                this.context.arc(graphic.x, graphic.y, graphic.radius, 0, 2 * Math.PI);
+                if (graphic.isFilled)
+                    this.context.fill();
+                else
+                    this.context.stroke();
+            };
+            CircleRenderer.prototype.onEvent = function (graphic, eventType, eventX, eventY) {
+                switch (eventType) {
+                    case "mousemove":
+                        graphic.radius = Math.abs(eventX - graphic.x);
+                        break;
+                }
+            };
+            CircleRenderer.prototype.getRenderingType = function () {
+                return "circle";
+            };
+            return CircleRenderer;
+        }(RectangleRenderer));
+        Renderers.CircleRenderer = CircleRenderer;
+        var OvalRenderer = (function (_super) {
+            __extends(OvalRenderer, _super);
+            function OvalRenderer() {
+                _super.apply(this, arguments);
+            }
+            OvalRenderer.prototype.create = function (graphic) {
+                graphic = _super.prototype.create.call(this, graphic);
+                graphic.radiusY = graphic.radiusY || 5;
+                return graphic;
+            };
+            OvalRenderer.prototype.getBounds = function (graphic) {
+                return {
+                    x: graphic.x - graphic.radius,
+                    y: graphic.y - graphic.radiusY,
+                    width: graphic.radius * 2,
+                    height: graphic.radiusY * 2,
+                };
+            };
+            OvalRenderer.prototype.isValid = function (graphic) {
+                return graphic.radius > 10 && graphic.radiusY > 10;
+            };
+            OvalRenderer.prototype.onDraw = function (graphic) {
+                this.context.beginPath();
+                this.context.ellipse(graphic.x, graphic.y, graphic.radius, graphic.radiusY, 0, 0, 2 * Math.PI);
+                if (graphic.isFilled)
+                    this.context.fill();
+                else
+                    this.context.stroke();
+            };
+            OvalRenderer.prototype.onEvent = function (graphic, eventType, eventX, eventY) {
+                switch (eventType) {
+                    case "mousemove":
+                        graphic.radius = Math.abs(eventX - graphic.x);
+                        graphic.radiusY = Math.abs(eventY - graphic.y);
+                        break;
+                }
+            };
+            OvalRenderer.prototype.getRenderingType = function () {
+                return "oval";
+            };
+            return OvalRenderer;
+        }(CircleRenderer));
+        Renderers.OvalRenderer = OvalRenderer;
+        var TriangleRenderer = (function (_super) {
+            __extends(TriangleRenderer, _super);
+            function TriangleRenderer() {
+                _super.apply(this, arguments);
+            }
+            TriangleRenderer.prototype.onDraw = function (graphic) {
+                this.context.beginPath();
+                this.context.moveTo(graphic.x + (graphic.width / 2), graphic.y);
+                this.context.lineTo(graphic.x, graphic.y + graphic.height);
+                this.context.lineTo(graphic.x + graphic.width, graphic.y + graphic.height);
+                this.context.closePath();
+                if (graphic.isFilled)
+                    this.context.fill();
+                else
+                    this.context.stroke();
+            };
+            TriangleRenderer.prototype.getRenderingType = function () {
+                return "triangle";
+            };
+            return TriangleRenderer;
+        }(RectangleRenderer));
+        Renderers.TriangleRenderer = TriangleRenderer;
+        var TextRenderer = (function (_super) {
+            __extends(TextRenderer, _super);
+            function TextRenderer() {
+                _super.apply(this, arguments);
+            }
+            TextRenderer.prototype.create = function (graphic) {
+                if (!graphic) {
+                    graphic = {
+                        isFilled: true,
+                        height: 25
+                    };
+                }
+                graphic = _super.prototype.create.call(this, graphic);
+                graphic.text = graphic.text || "";
+                graphic.font = graphic.font || "verdana";
+                graphic.fontWeight = graphic.fontWeight || "normal";
+                return graphic;
+            };
+            TextRenderer.prototype.isValid = function (graphic) {
+                return graphic.text && graphic.text.length > 0;
+            };
+            TextRenderer.prototype.onDraw = function (graphic) {
+                this.context.font = graphic.height + 'px ' + graphic.font;
+                if (graphic.isFilled) {
+                    this.context.fillStyle = graphic.foregroundAlpha || graphic.foregroundColor;
+                    this.context.fillText(graphic.text, graphic.x, graphic.y + graphic.height);
+                }
+                else {
+                    this.context.strokeStyle = graphic.foregroundAlpha || graphic.foregroundColor;
+                    this.context.strokeText(graphic.text, graphic.x, graphic.y + graphic.height);
+                }
+            };
+            TextRenderer.prototype.onEvent = function (graphic, eventType, eventX, eventY) {
+                switch (eventType) {
+                    case "mouseup":
+                        graphic.text = this.prompt('Insert text');
+                        this.drawFocusRectangle(graphic);
+                        this.draw(graphic);
+                        break;
+                }
+            };
+            TextRenderer.prototype.drawFocusRectangle = function (graphic) {
+                var rect = this.context.measureText(graphic.text);
+                graphic.width = rect.width;
+                this.context.lineWidth = 1;
+                this.context.setLineDash([2, 4]);
+                this.context.strokeStyle = graphic.foregroundColor;
+                this.context.rect(graphic.x, graphic.y, graphic.width, graphic.height);
+            };
+            TextRenderer.prototype.prompt = function (text, title) {
+                return window.prompt(text, title);
+            };
+            TextRenderer.prototype.getRenderingType = function () {
+                return "text";
+            };
+            return TextRenderer;
+        }(RectangleRenderer));
+        Renderers.TextRenderer = TextRenderer;
+    })(Renderers = Grafika.Renderers || (Grafika.Renderers = {}));
+})(Grafika || (Grafika = {}));
+//# sourceMappingURL=grafika.js.map

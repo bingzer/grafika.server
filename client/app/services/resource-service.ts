@@ -37,7 +37,7 @@ module GrafikaApp {
 		}
 		getResourceUrl(anim: Grafika.IAnimation, resource: Grafika.IResource | string): string {
 			let resourceId = resource;
-            if (resource instanceof Grafika.IResource)
+            if (resource && (<Grafika.IResource> resource)._id)
                 resourceId = (<Grafika.IResource> resource)._id;
 
 			return this.appCommon.appConfig.animationBaseUrl + anim._id + '/' + resourceId;

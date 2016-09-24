@@ -9,7 +9,12 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks("grunt-contrib-copy");
 	grunt.loadNpmTasks('grunt-string-replace');
     grunt.loadNpmTasks('grunt-contrib-qunit');
-    grunt.registerTask("default", ["qunit:all", "clean", "bower:install", "string-replace", "uglify:my_target", "copy:main"]);
+    grunt.loadNpmTasks('grunt-ts');
+    //grunt.registerTask("default", ["qunit:all", "clean", "bower:install", "string-replace", "uglify:my_target", "copy:main"]);
+    grunt.registerTask("build-dev", [ 
+        "ts"
+    ]);
+    grunt.registerTask("default", ["clean", "string-replace", "ts", "uglify:my_target", "qunit:all"])
     
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
@@ -23,6 +28,11 @@ module.exports = function (grunt) {
                 }
             }
         },
+        ts: {
+            default: {
+                tsconfig: true,
+            }
+        },
         uglify: {
             options: {
                 sourceMap: true,
@@ -33,13 +43,13 @@ module.exports = function (grunt) {
             },
             my_target: {
                 files: [
-					{ 'dist/grafika.min.js': 'src/grafika.js' },
-					{ 'dist/grafika.extensions.min.js': 'src/grafika.extensions.js' },
-					{ 'dist/grafika.android.min.js': 'src/grafika.android.js' },
-					{ 'dist/grafika.demo.min.js': 'src/grafika.demo.js' },
-					{ 'dist/grafika.random-drawing.min.js': 'src/grafika.random-drawing.js' },
-					{ 'dist/grafika-android.min.js' : ['src/grafika.js', 'src/grafika.extensions.js', 'src/grafika.android.js'] },
-					{ 'dist/grafika-core.min.js' : ['src/grafika.js', 'src/grafika.extensions.js' ] }
+					{ 'dist/grafika.min.js': 'dist/grafika.js' },
+					{ 'dist/grafika.extensions.min.js': 'dist/grafika.extensions.js' },
+					{ 'dist/grafika.android.min.js': 'dist/grafika.android.js' },
+					{ 'dist/grafika.demo.min.js': 'dist/grafika.demo.js' },
+					{ 'dist/grafika.random-drawing.min.js': 'dist/grafika.random-drawing.js' },
+					{ 'dist/grafika-android.min.js' : ['dist/grafika.js', 'dist/grafika.extensions.js', 'dist/grafika.android.js'] },
+					{ 'dist/grafika-core.min.js' : ['dist/grafika.js', 'dist/grafika.extensions.js' ] }
 				]
             }
         },
@@ -72,14 +82,15 @@ module.exports = function (grunt) {
 		'string-replace': {
 			inline: {
 				files: {
-					'src/grafika.js': 'src/grafika.js',
+					'src/grafika.ts': 'src/grafika.ts',
 				},
 				options: {
 					replacements: [
-					// place files inline example 
+					// place files inline example
+                    // export const VERSION = "1.0.0"
 						{
-							pattern: /var GRAFIKA_VERSION = [^;]+/g,
-							replacement: 'var GRAFIKA_VERSION = \'' + grunt.file.readJSON('package.json').version + '\''
+							pattern: /export const VERSION = [^;]+/g,
+							replacement: 'export const VERSION = \'' + grunt.file.readJSON('package.json').version + '\''
 						}
 					]
 				}

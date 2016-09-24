@@ -4,6 +4,7 @@ var winston = require('winston');
 var restful = require('../libs/restful');
 exports.AnimationSchema = new mongoose.Schema({
     localId: { type: String },
+    type: { type: String, required: true, default: 'animation' },
     name: { type: String, required: true },
     description: String,
     timer: Number,

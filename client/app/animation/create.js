@@ -19,7 +19,7 @@ var GrafikaApp;
         }
         AnimationCreateController.prototype.create = function () {
             var _this = this;
-            var anim = new GrafikaApp.Animation();
+            var anim = new Grafika.Animation();
             anim.name = this.name;
             anim.isPublic = this.isPublic;
             if (this.orientation === 'Landscape') {

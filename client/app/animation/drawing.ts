@@ -117,7 +117,7 @@ module GrafikaApp {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     class GraphicController extends FrameController {
-        protected graphics: Grafika.Graphics.IGraphic[];
+        protected graphics: Grafika.IGraphic[];
 
         constructor(appCommon: AppCommon, grafika: Grafika.IGrafika | any) {
             super(appCommon, grafika);

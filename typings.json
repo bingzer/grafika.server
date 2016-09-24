@@ -17,6 +17,7 @@
     "express-unless": "registry:dt/express-unless#0.0.0+20160317120654",
     "fs-extra": "registry:dt/fs-extra#0.0.0+20160517121359",
     "grafika": "github:bingzer/grafika.js/dist/grafika.d.ts",
+    "grafika.exts": "github:bingzer/grafika.js/dist/grafika.extensions.d.ts",
     "jquery": "registry:dt/jquery#1.10.0+20160704162008",
     "markdown.js": "file:shared/markdown.js.d.ts",
     "method-override": "registry:dt/method-override#0.0.0+20160317120654",
