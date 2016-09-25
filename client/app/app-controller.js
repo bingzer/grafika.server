@@ -16,7 +16,7 @@ var GrafikaApp;
             this.version = '';
             this.buildTimestamp = '';
             this.feedback = new GrafikaApp.Feedback();
-            this.feedbackCategories = ['Just saying Hi!', 'Bug', 'Features', 'Other'];
+            this.feedbackCategories = GrafikaApp.Feedback.categories;
             this.version = appCommon.appConfig.appVersion;
             this.buildTimestamp = appCommon.appConfig.appBuildTimestamp;
             this.appCommon.appConfig.baseUrl = this.appCommon.getBaseUrl();
@@ -34,16 +34,23 @@ var GrafikaApp;
                 }
             });
             var query = appCommon.$location.search();
-            if (query && query.action) {
-                if ((query.action == 'verify' || query.action == 'reset-pwd') && query.hash && query.user) {
-                    appCommon.showDialog('app/account/reset.html', 'ResetController', undefined, { hash: query.hash, email: query.user })
-                        .then(function () { return appCommon.navigate("/login"); });
+            if (query) {
+                if (query.action) {
+                    if ((query.action == 'verify' || query.action == 'reset-pwd') && query.hash && query.user) {
+                        appCommon.showDialog('app/account/reset.html', 'ResetController', undefined, { hash: query.hash, email: query.user })
+                            .then(function () { return appCommon.navigate("/login"); });
+                    }
+                    else if (query.action == 'authenticate')
+                        this.authService.authenticate().then(function () { return _this.appCommon.navigateHome(); });
+                    else
+                        appCommon.alert('Unknown action or link has expired');
+                    this.cleanUrlQueries();
                 }
-                else if (query.action == 'authenticate')
-                    this.authService.authenticate().then(function () { return _this.appCommon.navigateHome(); });
-                else
-                    appCommon.alert('Unknown action or link has expired');
-                this.cleanUrlQueries();
+                else if (query.feedback && query.category && query.subject) {
+                    this.feedback.category = query.category;
+                    this.feedback.subject = query.subject;
+                    this.cleanUrlQueries();
+                }
             }
         }
         AppController.prototype.login = function (evt) {

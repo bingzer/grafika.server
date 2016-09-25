@@ -3,7 +3,7 @@ module GrafikaApp {
         version: string = '';
         buildTimestamp: string = '';
         feedback: Feedback = new Feedback();
-        feedbackCategories: string[] = ['Just saying Hi!', 'Bug', 'Features', 'Other'];
+        feedbackCategories: string[] = Feedback.categories;
 
         public static $inject = ['appCommon', 'authService', 'apiService', 'uxService', '$rootScope'];
         constructor(
@@ -36,16 +36,23 @@ module GrafikaApp {
             });
 
             let query = appCommon.$location.search();
-            if (query && query.action){
-                if ((query.action == 'verify' || query.action == 'reset-pwd') && query.hash && query.user) {
-                    appCommon.showDialog('app/account/reset.html', 'ResetController', undefined, { hash: query.hash, email: query.user })
-                            .then(() => appCommon.navigate("/login") );
+            if (query) {
+                if (query.action){
+                    if ((query.action == 'verify' || query.action == 'reset-pwd') && query.hash && query.user) {
+                        appCommon.showDialog('app/account/reset.html', 'ResetController', undefined, { hash: query.hash, email: query.user })
+                                .then(() => appCommon.navigate("/login") );
+                    }
+                    else if(query.action == 'authenticate')
+                        this.authService.authenticate().then(() => this.appCommon.navigateHome());
+                    else 
+                        appCommon.alert('Unknown action or link has expired');
+                    this.cleanUrlQueries();
                 }
-                else if(query.action == 'authenticate')
-                    this.authService.authenticate().then(() => this.appCommon.navigateHome());
-                else 
-                    appCommon.alert('Unknown action or link has expired');
-                this.cleanUrlQueries();
+                else if(query.feedback && query.category && query.subject){
+                    this.feedback.category = query.category;
+                    this.feedback.subject = query.subject;
+                    this.cleanUrlQueries(); 
+                }
             }
         }
 
