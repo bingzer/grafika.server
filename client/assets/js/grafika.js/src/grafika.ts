@@ -565,7 +565,7 @@ class Grafika implements Grafika.IGrafika {
 
 namespace Grafika {
     export const Plugins:Grafika.IPluginFunction[] = [];
-    export const VERSION = '0.11.1';
+    export const VERSION = '0.11.3';
 
     export const MODE_NONE = 'none', 
                  MODE_PAINT = 'paint', 
@@ -721,6 +721,15 @@ namespace Grafika {
         isFilled: boolean;
         brushSize: number;
         isVisible: boolean;
+    }
+
+    /**
+     * Base contract for a resource
+     */
+    export interface IResource {
+        _id: any | string;
+        animationId: string;
+        mime: string;
     }
 
     export interface IRenderer<T extends IDrawable> {

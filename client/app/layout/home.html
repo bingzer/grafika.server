@@ -62,27 +62,27 @@
 			</div>
 		</div>
 
-		<div style="position: relative; height: 256px;" ng-if="!app.isAuthorized('user')" >
+		<div style="position: relative; height: 264px;" ng-if="!app.isAuthorized('user')" >
 			<div style="position: absolute; left: 0; top: 0; height: 100%; width: 100%; background: url('assets/img/code-background.png')"></div>
 			<div style="position: absolute; left: 0; top: 0; height: 100%; width: 100%; background-color: rgba(0,128,128, 0.9)">
-				<div layout="row" class="open-source" style="margin: 32px">
-					<div layout="row" layout-padding layout-align-gt-md="center" flex-gt-md>
+				<div layout="column" class="open-source" style="margin: 32px" layout-align-gt-md="center center">
+					<div layout="row" layout-margin layout-align="start">
 						<img src="assets/img/github_light.png" width="64" height="64">
-						<div class="text-white" layout-align="center">
-							<p class="md-headline" layout="row" layout-wrap>
-								Open
-							</p>
-							<p>
-								The platform is totally open! Documentation is not great, but if you like code please do check it out. 
-								Mostly javascript/typescript.
-							</p>
-							<div layout="row" layout-padding>
-								<a class="btn btn-info" href="http://github.com/bingzer/grafika.js" target="_blank" title="The core engine that renders the animations">Grafika.js</a>
-								<span>&nbsp;</span>
-								<a class="btn btn-success" href="http://github.com/bingzer/grafika" target="_blank" title="This web site">Grafika</a>
-								<span>&nbsp;</span>
-								<a class="btn btn-warning" href="http://github.com/bingzer/grafika.android" target="_blank" disabled="disabled" title="(not yet available)">Grafika.Android</a>
-							</div>
+						<p class="md-headline text-white" layout="row" layout-wrap layout-align="center center">
+							Open
+						</p>
+					</div>
+					<div layout="column" class="text-white" layout-align="center">
+						<p layout="row" layout-wrap>
+							The platform is totally open! Documentation is not great, but if you like code please do check it out. <br/>
+							Mostly javascript/typescript.
+						</p>
+						<div layout="row" layout-padding layout-align-gt-md="center center">
+							<a class="btn btn-info" href="http://github.com/bingzer/grafika.js" target="_blank" title="The core engine that renders the animations">Grafika.js</a>
+							<span>&nbsp;</span>
+							<a class="btn btn-success" href="http://github.com/bingzer/grafika" target="_blank" title="This web site">Grafika</a>
+							<span>&nbsp;</span>
+							<a class="btn btn-warning" href="http://github.com/bingzer/grafika.android" target="_blank" disabled="disabled" title="(not yet available)">Grafika.Android</a>
 						</div>
 					</div>
 				</div>

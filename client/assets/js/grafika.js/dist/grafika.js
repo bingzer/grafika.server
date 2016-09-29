@@ -527,7 +527,7 @@ var Grafika = (function () {
 var Grafika;
 (function (Grafika) {
     Grafika.Plugins = [];
-    Grafika.VERSION = '0.11.1';
+    Grafika.VERSION = '0.11.3';
     Grafika.MODE_NONE = 'none', Grafika.MODE_PAINT = 'paint', Grafika.MODE_MOVE = 'move', Grafika.MODE_SELECT = 'select', Grafika.MODE_DELETE = 'delete';
     (function (DrawingMode) {
         DrawingMode[DrawingMode["None"] = 0] = "None";

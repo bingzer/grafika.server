@@ -48,8 +48,9 @@ module.exports = function (grunt) {
 					{ 'dist/grafika.android.min.js': 'dist/grafika.android.js' },
 					{ 'dist/grafika.demo.min.js': 'dist/grafika.demo.js' },
 					{ 'dist/grafika.random-drawing.min.js': 'dist/grafika.random-drawing.js' },
-					{ 'dist/grafika-android.min.js' : ['dist/grafika.js', 'dist/grafika.extensions.js', 'dist/grafika.android.js'] },
-					{ 'dist/grafika-core.min.js' : ['dist/grafika.js', 'dist/grafika.extensions.js' ] }
+
+					{ 'dist/grafika.core.min.js' : ['dist/grafika.js', 'dist/grafika.extensions.js' ] },
+					{ 'dist/grafika.android.core.min.js' : ['dist/grafika.js', 'dist/grafika.extensions.js', 'dist/grafika.android.js'] },
 				]
             }
         },
@@ -68,9 +69,14 @@ module.exports = function (grunt) {
                 files: [
                     {
                         expand: true,
-                        cwd: 'src',
-                        src: ['**'],
-                        dest: '../grafika.android/engine/src/main/assets/'
+                        cwd: 'dist',
+                        src: [
+                            'grafika.js',
+                            'grafika.extensions.js',
+                            'grafika.android.js',
+                            'grafika.android.core.min.js'
+                        ],
+                        dest: '../grafika.android/app/src/main/assets/'
                     }
                 ]
             }

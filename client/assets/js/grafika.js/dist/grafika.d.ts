@@ -183,6 +183,11 @@ declare namespace Grafika {
         brushSize: number;
         isVisible: boolean;
     }
+    interface IResource {
+        _id: any | string;
+        animationId: string;
+        mime: string;
+    }
     interface IRenderer<T extends IDrawable> {
         create(drawable?: T): T;
         draw(drawable: T, opts?: any): any;

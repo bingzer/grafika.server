@@ -14,10 +14,10 @@
         "**/typings/globals": true,
         "**/*.tmp.txt": true,
         "**/*.log": true,
-        "server/**/*.js": true,
-        "server/**/*.js.map": true,
-        "client/**/*.js": true,
-        "**/*.js.map": true
+        "server/**/**.js": true,
+        "client/**/**.js": true,
+
+        "**/**.js.map": true
     },
     "search.exclude": {
         "node_modules": true,
@@ -30,7 +30,7 @@
         "**/typings/globals": true,
         "**/*.tmp.txt": true,
         "**/*.log": true,
-        "**/*.js.map": true
+        "**/**.js.map": true
     },
 
     "typescript.tsdk": "node_modules/typescript/lib"

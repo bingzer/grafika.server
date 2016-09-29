@@ -15,7 +15,7 @@
   ],
   "dependencies": {
     "q": "latest",
-    "grafika.js": "0.11.1",
+    "grafika.js": "0.11.3",
     "angular-spectrum-colorpicker": "latest",
     "angularUtils-disqus": "angular-utils-disqus#^1.0.0"
   }
