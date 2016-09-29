@@ -149,6 +149,7 @@ module.exports = function (grunt) {
                         'client/assets/js/angularUtils-disqus/dirDisqus.js',
                         'client/assets/js/angulartics/angulartics.js',
 	                    'client/assets/js/angulartics-google-analytics/angulartics-ga.js',
+                        'client/assets/js/angular-google-adsense/angular-google-adsense.js',
 
                         'client/app/app-routes.js',
                         'client/app/app-themes.js',
