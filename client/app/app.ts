@@ -8,7 +8,11 @@ module GrafikaApp {
 
         'angular-jwt',
         'angularSpectrumColorpicker',
-        'angularUtils.directives.dirDisqus'
+        'angularUtils.directives.dirDisqus',
+        // -- analytics + adsense
+        'angulartics', 
+        'angulartics.google.analytics',
+        'angular-google-adsense'
     ]);
 
     app.constant('appConfig', new AppConfig());
@@ -29,6 +33,7 @@ module GrafikaApp {
     app.directive('fetchMore', FetchMoreDirective.factory());
     app.directive('ratingStars', RatingStarsDirective.factory());
     app.directive('includeMarkdown', IncludeMarkdownDirective.factory());
+    app.directive('gfAdsense', GfAdsense.factory());
     app.directive('gfSpinner', GfSpinner.factory());
     app.directive('avatar', AvatarDirective.factory());
     app.directive('contextMenu', ContextMenuDirective.factory());

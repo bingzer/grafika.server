@@ -8,7 +8,10 @@ var GrafikaApp;
         'ngSanitize',
         'angular-jwt',
         'angularSpectrumColorpicker',
-        'angularUtils.directives.dirDisqus'
+        'angularUtils.directives.dirDisqus',
+        'angulartics',
+        'angulartics.google.analytics',
+        'angular-google-adsense'
     ]);
     app.constant('appConfig', new GrafikaApp.AppConfig());
     app.service('appCommon', GrafikaApp.AppCommon);
@@ -24,6 +27,7 @@ var GrafikaApp;
     app.directive('fetchMore', GrafikaApp.FetchMoreDirective.factory());
     app.directive('ratingStars', GrafikaApp.RatingStarsDirective.factory());
     app.directive('includeMarkdown', GrafikaApp.IncludeMarkdownDirective.factory());
+    app.directive('gfAdsense', GrafikaApp.GfAdsense.factory());
     app.directive('gfSpinner', GrafikaApp.GfSpinner.factory());
     app.directive('avatar', GrafikaApp.AvatarDirective.factory());
     app.directive('contextMenu', GrafikaApp.ContextMenuDirective.factory());

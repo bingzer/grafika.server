@@ -51,6 +51,9 @@
 	<script type="text/javascript" src="/assets/js/spectrum/spectrum.js"></script>
 	<script type="text/javascript" src="/assets/js/angular-spectrum-colorpicker/angular-spectrum-colorpicker.min.js"></script>
 	<script type="text/javascript" src="/assets/js/angularUtils-disqus/dirDisqus.js"></script>
+	<script type="text/javascript" src="/assets/js/angulartics/angulartics.js"></script>
+	<script type="text/javascript" src="/assets/js/angulartics-google-analytics/angulartics-ga.js"></script>
+	<script type="text/javascript" src="/assets/js/angular-google-adsense/angular-google-adsense.js"></script>
 
 	<!--<script type="text/javascript" src="/assets/js/grafika.js/dist/grafika-core.min.js"></script>-->
 	<script type="text/javascript" src="/assets/js/grafika.js/dist/grafika.js"></script>
@@ -79,6 +82,7 @@
 	<script type="text/javascript" src="/app/directives/fetch-more.js"></script>
 	<script type="text/javascript" src="/app/directives/rating-stars.js"></script>
 	<script type="text/javascript" src="/app/directives/include-markdown.js"></script>
+	<script type="text/javascript" src="/app/directives/gf-adsense.js"></script>
 	<script type="text/javascript" src="/app/directives/gf-spinner.js"></script>
 	<script type="text/javascript" src="/app/directives/avatar.js"></script>
 	<script type="text/javascript" src="/app/directives/context-menu.js"></script>
@@ -119,6 +123,13 @@
 	<script type="text/javascript" src="/app/admin/admin.js"></script>
 
 	<script type="text/javascript" src="/app/app.js"></script>
+	<script type="text/javascript">
+		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
+		ga('create', 'UA-38178471-6', 'auto');
+	</script>
 	</body>
 </html>

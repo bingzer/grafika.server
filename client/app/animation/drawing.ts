@@ -1,9 +1,10 @@
 module GrafikaApp {
     export class AnimationDrawingController extends BaseAnimationController implements Grafika.ICallback {
-        grafika: Grafika.IGrafika | any = new Grafika();
+        grafika: Grafika.IGrafika = new Grafika();
         currentFrame: number = 1;
         totalFrame: number = 0;
         canvas: JQuery;
+        graphics = ['freeform', 'line', 'rectangle', 'square', 'circle', 'oval', 'triangle', 'text'];
         
         public static $inject = ['appCommon', 'authService', 'uxService', 'animationService', 'frameService', 'resourceService', '$rootScope'];
         constructor(

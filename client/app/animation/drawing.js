@@ -16,6 +16,7 @@ var GrafikaApp;
             this.grafika = new Grafika();
             this.currentFrame = 1;
             this.totalFrame = 0;
+            this.graphics = ['freeform', 'line', 'rectangle', 'square', 'circle', 'oval', 'triangle', 'text'];
             this.appCommon.hideLoadingModal();
             this.grafika.setCallback(this);
             window['grafika'] = this.grafika;

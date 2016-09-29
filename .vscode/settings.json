@@ -14,8 +14,8 @@
         "**/typings/globals": true,
         "**/*.tmp.txt": true,
         "**/*.log": true,
-        "server/**/**.js": true,
-        "client/**/**.js": true,
+        "server/*/**.js": true,
+        "client/app/**.js": true,
 
         "**/**.js.map": true
     },
@@ -30,7 +30,11 @@
         "**/typings/globals": true,
         "**/*.tmp.txt": true,
         "**/*.log": true,
-        "**/**.js.map": true
+        "**/**.js.map": true,
+        
+        "server/*/**.js": true,
+        "client/app/**.js": true,
+        "client/assets/": true,
     },
 
     "typescript.tsdk": "node_modules/typescript/lib"

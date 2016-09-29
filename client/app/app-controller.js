@@ -104,6 +104,9 @@ var GrafikaApp;
                 bannerGrafika.pause();
             });
         };
+        AppController.prototype.media = function (media) {
+            return this.appCommon.$mdMedia(media);
+        };
         AppController.prototype.cleanUrlQueries = function () {
             var keys = this.appCommon.$location.search();
             var loc = this.appCommon.$location;

@@ -147,6 +147,8 @@ module.exports = function (grunt) {
                         'client/assets/js/spectrum/spectrum.js',
                         'bower_components/angular-spectrum-colorpicker/dist/angular-spectrum-colorpicker.js',
                         'client/assets/js/angularUtils-disqus/dirDisqus.js',
+                        'client/assets/js/angulartics/angulartics.js',
+	                    'client/assets/js/angulartics-google-analytics/angulartics-ga.js',
 
                         'client/app/app-routes.js',
                         'client/app/app-themes.js',
@@ -168,6 +170,7 @@ module.exports = function (grunt) {
                         'client/app/directives/fetch-more.js',
                         'client/app/directives/rating-stars.js',
                         'client/app/directives/include-markdown.js',
+                        'client/app/directives/gf-adsense.js',
                         'client/app/directives/gf-spinner.js',
                         'client/app/directives/avatar.js',
                         'client/app/directives/context-menu.js',

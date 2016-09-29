@@ -124,10 +124,10 @@
                             </md-button>
                         </md-menu-item>
                         <md-menu-divider></md-menu-divider>
-                        <md-menu-item ng-repeat="provider in vm.grafika.getGraphicsFactory().providers">
-                            <md-button ng-click="vm.grafika.setOptions({ graphic: provider.type })" md-prevent-menu-close="md-prevent-menu-close">
-                                <md-icon><i class="material-icons">{{vm.grafika.getOptions().graphic === provider.type ? 'check_box' : 'check_box_outline_blank'}}</i></md-icon>
-                                {{provider.type | capitalizeFirstLetter}}
+                        <md-menu-item ng-repeat="graphic in vm.graphics">
+                            <md-button ng-click="vm.grafika.setOptions({ graphic: graphic })" md-prevent-menu-close="md-prevent-menu-close">
+                                <md-icon><i class="material-icons">{{vm.grafika.getOptions().graphic === graphic ? 'check_box' : 'check_box_outline_blank'}}</i></md-icon>
+                                {{graphic | capitalizeFirstLetter}}
                             </md-button>
                         </md-menu-item>
                     </md-menu-content>

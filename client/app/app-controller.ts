@@ -114,6 +114,10 @@ module GrafikaApp {
             });
         }
 
+        media(media) {
+            return this.appCommon.$mdMedia(media);
+        }
+
         ///////////////////////////////////////////////////////////////////////////////////////////////
         
         private cleanUrlQueries(){
