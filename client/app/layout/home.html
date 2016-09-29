@@ -97,7 +97,7 @@
 
 	<div id="list" layout-gt-sm="row" layout="column" ng-controller="AnimationListController as vm">
 		<form style="margin-top: 16px; margin-bottom: -24px" layout-gt-sm="column" layout="row" name="filterForm" ng-submit="vm.list()" layout-margin-gt-sm>
-			<md-input-container flex-xs flex-sm>
+			<md-input-container>
 				<label>Search</label>
 				<input type="search" ng-model="vm.paging.term" flex>
 			</md-input-container>
@@ -114,7 +114,7 @@
 			
     		<gf-adsense ng-if="app.media('gt-sm')"></gf-adsense>
 		</form>
-		<gf-adsense ng-if="app.media('sm')"></gf-adsense>
 		<div ng-include="'app/animation/list.html'" layout-margin-xs layout-margin-sm flex-gt-sm></div>
+		<gf-adsense ng-if="app.media('sm') || app.media('xs')"></gf-adsense>
 	</div>
 </div>
