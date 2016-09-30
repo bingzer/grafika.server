@@ -57,4 +57,5 @@ var GrafikaApp;
     app.controller('MyAnimationsController', GrafikaApp.MyAnimationsController);
     app.controller('UserController', GrafikaApp.UserController);
 })(GrafikaApp || (GrafikaApp = {}));
+window.onerror = function (err) { return console.error(err); };
 //# sourceMappingURL=app.js.map

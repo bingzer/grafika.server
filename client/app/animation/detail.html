@@ -1,4 +1,7 @@
-<div class="detail" layout="column">
+<div ng-if="!vm.animation" layout-margin layout-align="center center">
+    <gf-spinner></gf-spinner>
+</div>
+<div class="detail" layout="column" ng-if="vm.animation">
     <div ng-include="'/app/animation/playback.html'"></div>
     
     <md-divider></md-divider>

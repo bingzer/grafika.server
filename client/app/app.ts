@@ -65,3 +65,5 @@ module GrafikaApp {
     app.controller('MyAnimationsController', MyAnimationsController);
     app.controller('UserController', UserController);
 }
+
+window.onerror = (err) => console.error(err);

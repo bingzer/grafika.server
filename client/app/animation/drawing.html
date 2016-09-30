@@ -8,15 +8,21 @@
 </style>
 <!-- Context menu -->
 <ng-include src="'/app/animation/drawing-context-menu.html'" onload="vm.contextMenuReady = true; vm.load()"></ng-include>
-<div class="drawing">
+<div class="drawing" layout-fill>
     <!-- Toolbar -->
     <ng-include src="'/app/animation/drawing-toolbar.html'"></ng-include>
     <!-- Canvas -->
-    <div class="drawing" layout-padding layout="column" layout-align="center center">
+    <div class="drawing" layout-padding layout="column" layout-align="top center">
         <md-card id="canvas-container" class="editor">
             <canvas id="canvas" class="canvas drawing-mode" context-menu="drawing-context-menu" ng-if="vm.contextMenuReady">No canvas support</canvas>
         </md-card>
     </div>
+
+
+    <div style="position: absolute;bottom: 1px; width: 100%" layout-align="center center">
+        <gf-adsense></gf-adsense>
+    </div>
+
     <!-- Fabs -->
     <md-button class="md-fab md-fab-bottom-right md-accent" ng-click="vm.grafika.nextFrame()">
         <md-icon><i class="material-icons">navigate_next</i></md-icon>
