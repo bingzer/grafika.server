@@ -64,7 +64,7 @@ function commentForMobile(req, res, next) {
             return next(err);
         if (!anim)
             return next(404);
-        var url = "/assets/comment.html?url=http://grafika.bingzer.com/animations/" + anim._id + "&title=" + anim.name + "&shortname=grafika-app&identifier=" + anim._id;
+        var url = "/app/content/comment.html?url=http://grafika.bingzer.com/animations/" + anim._id + "&title=" + anim.name + "&shortname=grafika-app&identifier=" + anim._id;
         return res.redirect(url);
     });
 }

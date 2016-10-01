@@ -62,7 +62,7 @@ export function commentForMobile(req: express.Request, res: express.Response, ne
         if (err) return next(err);
         if (!anim) return next(404);
 
-        let url = `/assets/comment.html?url=http://grafika.bingzer.com/animations/${anim._id}&title=${anim.name}&shortname=grafika-app&identifier=${anim._id}`;
+        let url = `/app/content/comment.html?url=http://grafika.bingzer.com/animations/${anim._id}&title=${anim.name}&shortname=grafika-app&identifier=${anim._id}`;
         return res.redirect(url);
     });
 }
