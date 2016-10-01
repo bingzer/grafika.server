@@ -157,7 +157,7 @@ function ensureAdminExists() {
 exports.ensureAdminExists = ensureAdminExists;
 ;
 function randomUsername() {
-    return 'user-' + (("000000" + (Math.random() * Math.pow(36, 6) << 0).toString(36)).slice(-6));
+    return 'user-' + (("0000000" + (Math.random() * Math.pow(36, 7) << 0).toString(36)).slice(-7));
 }
 exports.randomUsername = randomUsername;
 function randomlyPickBackdrop() {

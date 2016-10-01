@@ -14,6 +14,7 @@ var mongooseConfig = require('./server/configs/mongoose');
 var routeConfig = require('./server/configs/routes');
 var passportConfig = require('./server/configs/passport');
 var adminConfig = require('./server/configs/admin');
+var onInitializeFunction;
 var app = express();
 exports.server = app.listen(process.env.PORT || 3000, function () {
     winston.info('Grafika version : ' + config.setting.$version);
@@ -44,6 +45,10 @@ exports.server = app.listen(process.env.PORT || 3000, function () {
         .catch(function (err) {
         winston.error('Server [FAILED]');
         winston.error(err);
+    })
+        .finally(function () {
+        if (onInitializeFunction)
+            onInitializeFunction();
     });
 });
 function initialize(app) {
@@ -63,4 +68,8 @@ function initialize(app) {
     }, 100);
     return defer.promise;
 }
+function onInitialized(done) {
+    onInitializeFunction = done;
+}
+exports.onInitialized = onInitialized;
 //# sourceMappingURL=index.js.map

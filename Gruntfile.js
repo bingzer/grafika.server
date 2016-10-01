@@ -16,7 +16,8 @@ module.exports = function (grunt) {
         "typings", 
         "ts", 
         "cssmin",
-        "uglify"
+        "uglify",
+        "mochacli"
     ]);
     grunt.registerTask("build-dev", [ 
         "ts"
@@ -61,9 +62,12 @@ module.exports = function (grunt) {
                 env: {
                     server_url: "http://localhost/test",
                     server_database_url: "mongodb://localhost/grafika-test",
-                    server_superSecret: "ABCD",
-                    server_mailer_service: "postman",
-                    client_sessionSecret: "123"
+                    server_superSecret: "123",
+                    client_sessionSecret: "abc",
+                    server_mailer_service: "postmark",
+                    server_mailer_smtp: "smtp.postmarkapp.com",
+                    server_mailer_port: "2525",
+                    server_mailer_from: "grafika@bingzer.com"
                 }
             },
             all: ['server-test/**/*.js']

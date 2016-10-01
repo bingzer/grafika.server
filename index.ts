@@ -15,6 +15,8 @@ import * as routeConfig from './server/configs/routes';
 import * as passportConfig from './server/configs/passport';
 import * as adminConfig from './server/configs/admin';
 
+let onInitializeFunction: Function;
+
 const app = express();
 
 export const server = app.listen(process.env.PORT || 3000, () => {
@@ -49,6 +51,10 @@ export const server = app.listen(process.env.PORT || 3000, () => {
         .catch((err) => {
             winston.error('Server [FAILED]');
             winston.error(err);
+        })
+        .finally(() => {
+            if (onInitializeFunction)
+                onInitializeFunction();
         });
 });
 
@@ -73,4 +79,8 @@ function initialize(app) : q.Promise<any> {
 
 
     return defer.promise;
+}
+
+export function onInitialized(done: Function) {
+    onInitializeFunction = done;
 }

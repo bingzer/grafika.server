@@ -7,7 +7,6 @@ const aws = new AwsUsers();
 
 export function get(req: express.Request | any, res: express.Response, next: express.NextFunction) {
     let userId = req.params._id;
-    let sameUser = (req.user && req.user._id.toString() == userId);
     let isAdmin = isAdministrator(req.user);
 
     User.findById(userId, (err, user) => {
@@ -16,7 +15,7 @@ export function get(req: express.Request | any, res: express.Response, next: exp
 
         user = user.sanitize();
         
-        if (!sameUser && !isAdmin)
+        if (req.user._id.toString() !== user._id && !isAdmin)
             delete user.email;
             
         res.send(user);

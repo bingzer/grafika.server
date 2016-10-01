@@ -169,7 +169,7 @@ export function sanitize(user: IUser | any) : any | IUser {
     return user;
 }
 
-export function checkAvailability(user : IUser | any) : q.IPromise<{}> {
+export function checkAvailability(user : IUser | any) : q.Promise<{}> {
     let deferred = q.defer();
     let query = {
         username: user.username,
@@ -217,7 +217,7 @@ export function ensureAdminExists() : ng.IPromise<IUser> {
 };
 
 export function randomUsername(){
-    return 'user-' + (("000000" + (Math.random()*Math.pow(36,6) << 0).toString(36)).slice(-6));
+    return 'user-' + (("0000000" + (Math.random()*Math.pow(36,7) << 0).toString(36)).slice(-7));
 }
 
 export { User };

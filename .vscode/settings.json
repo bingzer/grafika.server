@@ -34,8 +34,10 @@
         
         "server/*/**.js": true,
         "client/app/**.js": true,
-        "client/assets/": true,
+        "client/assets/": true
     },
 
-    "typescript.tsdk": "node_modules/typescript/lib"
+    "typescript.tsdk": "node_modules/typescript/lib",
+    "editor.tabSize": 4,
+    "editor.insertSpaces": true
 }

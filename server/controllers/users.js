@@ -4,7 +4,6 @@ var user_1 = require("../models/user");
 var aws = new aws_1.AwsUsers();
 function get(req, res, next) {
     var userId = req.params._id;
-    var sameUser = (req.user && req.user._id.toString() == userId);
     var isAdmin = user_1.isAdministrator(req.user);
     user_1.User.findById(userId, function (err, user) {
         if (!user)
@@ -12,7 +11,7 @@ function get(req, res, next) {
         if (err)
             return next(err);
         user = user.sanitize();
-        if (!sameUser && !isAdmin)
+        if (req.user._id.toString() !== user._id && !isAdmin)
             delete user.email;
         res.send(user);
     });
