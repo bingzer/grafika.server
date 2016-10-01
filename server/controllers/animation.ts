@@ -14,7 +14,7 @@ export function search(req: express.Request, res: express.Response, next: expres
         let limit = utils.safeParseInt(req.query.limit) < 0 ? 25 : utils.safeParseInt(req.query.limit);
         let skip = utils.safeParseInt(req.query.skip) < 0 ? 0 : utils.safeParseInt(req.query.skip);
         
-        Animation.find(query).sort(sort).limit(limit).skip(skip).exec((err, result) => {
+        Animation.find(query, { frames: 0 }).sort(sort).limit(limit).skip(skip).exec((err, result) => {
             if (err) return next(err);
             res.json(result);
         });
@@ -57,6 +57,15 @@ export function submitRating(req: express.Request, res: express.Response, next: 
     });
 }
 
+export function commentForMobile(req: express.Request, res: express.Response, next: express.NextFunction) {
+    Animation.findById(req.params._id, { frames: 0 }, (err, anim) => {
+        if (err) return next(err);
+        if (!anim) return next(404);
+
+        let url = `/assets/comment.html?url=http://grafika.bingzer.com/animations/${anim._id}&title=${anim.name}&shortname=grafika-app&identifier=${anim._id}`;
+        return res.redirect(url);
+    });
+}
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 function createQuery(req): any{

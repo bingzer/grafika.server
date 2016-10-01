@@ -171,7 +171,8 @@ export function initialize(app): q.Promise<any> {
         app.post('/api/animations/:_id/frames', useSessionOrJwt, useAnimAccess);
         app.post('/api/animations/:_id/view', animationController.incrementViewCount);
         app.post('/api/animations/:_id/rating/:rating', animationController.submitRating);
-        
+        app.get('/api/animations/:_id/comments', animationController.commentForMobile);
+
         // --------------- Sync Stuffs -------------------------//
         app.post('/api/animations/sync', useSessionOrJwt, syncController.sync);
         app.post('/api/animations/sync/update', useSessionOrJwt, syncController.syncUpdate);

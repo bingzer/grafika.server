@@ -7,7 +7,7 @@ function search(req, res, next) {
         var query = createQuery(req);
         var limit = utils.safeParseInt(req.query.limit) < 0 ? 25 : utils.safeParseInt(req.query.limit);
         var skip = utils.safeParseInt(req.query.skip) < 0 ? 0 : utils.safeParseInt(req.query.skip);
-        animation_1.Animation.find(query).sort(sort).limit(limit).skip(skip).exec(function (err, result) {
+        animation_1.Animation.find(query, { frames: 0 }).sort(sort).limit(limit).skip(skip).exec(function (err, result) {
             if (err)
                 return next(err);
             res.json(result);
@@ -58,6 +58,17 @@ function submitRating(req, res, next) {
     });
 }
 exports.submitRating = submitRating;
+function commentForMobile(req, res, next) {
+    animation_1.Animation.findById(req.params._id, { frames: 0 }, function (err, anim) {
+        if (err)
+            return next(err);
+        if (!anim)
+            return next(404);
+        var url = "/assets/comment.html?url=http://grafika.bingzer.com/animations/" + anim._id + "&title=" + anim.name + "&shortname=grafika-app&identifier=" + anim._id;
+        return res.redirect(url);
+    });
+}
+exports.commentForMobile = commentForMobile;
 function createQuery(req) {
     if (req.query.term) {
         return { $text: { $search: req.query.term } };
