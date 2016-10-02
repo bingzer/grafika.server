@@ -6,6 +6,7 @@ import * as utils from '../libs/utils';
 
 import { Animation, IAnimation } from "../models/animation";
 import { AwsAnimation, AwsResources } from '../libs/aws';
+import { generateDisqusToken } from '../models/user';
 
 export function search(req: express.Request, res: express.Response, next: express.NextFunction) {
     if (req.query.term) {
@@ -57,12 +58,16 @@ export function submitRating(req: express.Request, res: express.Response, next: 
     });
 }
 
-export function commentForMobile(req: express.Request, res: express.Response, next: express.NextFunction) {
+export function commentForMobile(req: express.Request | any, res: express.Response, next: express.NextFunction) {
+    if (!req.user) return next(401);
+    let disqusToken = generateDisqusToken(req.user);
+
     Animation.findById(req.params._id, { frames: 0 }, (err, anim) => {
         if (err) return next(err);
         if (!anim) return next(404);
 
-        let url = `/app/content/comment.html?url=http://grafika.bingzer.com/animations/${anim._id}&title=${anim.name}&shortname=grafika-app&identifier=${anim._id}`;
+        let queryString = `url=http://grafika.bingzer.com/animations/${anim._id}&title=${anim.name}&shortname=grafika-app&identifier=${anim._id}&pub=${disqusToken.public}&token=${disqusToken.token}`;
+        let url = `/app/content/comment.html?${queryString}`;
         return res.redirect(url);
     });
 }

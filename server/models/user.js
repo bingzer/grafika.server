@@ -95,6 +95,25 @@ function verifyJwtToken(token, callback) {
     jwt.verify(token, SECRET, { ignoreExpiration: true }, callback);
 }
 exports.verifyJwtToken = verifyJwtToken;
+function generateDisqusToken(user) {
+    var disqusData = {
+        id: user._id,
+        username: user.username,
+        email: user.email,
+        avatar: user.prefs.avatar,
+        url: 'http://grafika.bingzer.com/users/' + user._id
+    };
+    var disqusStr = JSON.stringify(disqusData);
+    var timestamp = Math.round(+new Date() / 1000);
+    var message = new Buffer(disqusStr).toString('base64');
+    var result = crypto.HmacSHA1(message + " " + timestamp, config.setting.$auth.$disqusSecret);
+    var hexsig = crypto.enc.Hex.stringify(result);
+    return {
+        public: config.setting.$auth.$disqusId,
+        token: message + " " + hexsig + " " + timestamp
+    };
+}
+exports.generateDisqusToken = generateDisqusToken;
 function sanitize(user) {
     var lean = user;
     if (user.toObject) {

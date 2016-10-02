@@ -157,6 +157,39 @@ export function verifyJwtToken(token: string, callback: (err, user) => void) {
     jwt.verify(token, SECRET, { ignoreExpiration: true }, callback);
 }
 
+export function generateDisqusToken(user: IUser) {
+    let disqusData = {
+        id: user._id,
+        username: user.username,
+        email: user.email,
+        avatar: user.prefs.avatar,
+        url: 'http://grafika.bingzer.com/users/' + user._id
+    };
+
+    let disqusStr = JSON.stringify(disqusData);
+    let timestamp = Math.round(+new Date() / 1000);
+
+    /*
+     * Note that `Buffer` is part of node.js
+     * For pure Javascript or client-side methods of
+     * converting to base64, refer to this link:
+     * http://stackoverflow.com/questions/246801/how-can-you-encode-a-string-to-base64-in-javascript
+     */
+    let message = new Buffer(disqusStr).toString('base64');
+
+    /* 
+     * CryptoJS is required for hashing (included in dir)
+     * https://code.google.com/p/crypto-js/
+     */
+    let result = crypto.HmacSHA1(message + " " + timestamp, config.setting.$auth.$disqusSecret);
+    let hexsig = crypto.enc.Hex.stringify(result);
+
+    return {
+      public: config.setting.$auth.$disqusId,
+      token: message + " " + hexsig + " " + timestamp
+    };
+}
+
 export function sanitize(user: IUser | any) : any | IUser {
     let lean = user;
     if (user.toObject) {

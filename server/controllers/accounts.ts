@@ -1,13 +1,13 @@
 /* global Buffer */
-import * as crypto from "crypto-js"
 import * as express from "express";
 import * as passport from "passport";
 
-import { IUser, User, userQuery, sanitize, generateJwtToken, verifyJwtToken, checkAvailability } from '../models/user';
+import { IUser, User, userQuery, sanitize, generateJwtToken, generateDisqusToken, verifyJwtToken, checkAvailability } from '../models/user';
 import * as mailer from '../libs/mailer';
 import * as config from '../configs/config';
-let jwt            = require('jsonwebtoken');
+import * as utils from '../libs/utils';
 
+let jwt            = require('jsonwebtoken');
 let SECRET         = config.setting.$server.$superSecret;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -95,7 +95,7 @@ export function resetPassword(req: express.Request, res: express.Response, next:
 };
 
 export function disqusToken(req: express.Request | any, res: express.Response, next: express.NextFunction){
-    if (req.isAuthenticated()) res.status(200).send(disqusSignon(req.user));
+    if (req.isAuthenticated()) res.status(200).send(generateDisqusToken(req.user));
     else next(401);
 }
 
@@ -124,39 +124,6 @@ export function providerLogin(req: express.Request | any, res: express.Response,
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
-
-function disqusSignon(user: Grafika.IUser) {
-    let disqusData = {
-        id: user._id,
-        username: user.username,
-        email: user.email,
-        avatar: user.prefs.avatar,
-        url: 'http://grafika.bingzer.com/users/' + user._id
-    };
-
-    let disqusStr = JSON.stringify(disqusData);
-    let timestamp = Math.round(+new Date() / 1000);
-
-    /*
-     * Note that `Buffer` is part of node.js
-     * For pure Javascript or client-side methods of
-     * converting to base64, refer to this link:
-     * http://stackoverflow.com/questions/246801/how-can-you-encode-a-string-to-base64-in-javascript
-     */
-    let message = new Buffer(disqusStr).toString('base64');
-
-    /* 
-     * CryptoJS is required for hashing (included in dir)
-     * https://code.google.com/p/crypto-js/
-     */
-    let result = crypto.HmacSHA1(message + " " + timestamp, config.setting.$auth.$disqusSecret);
-    let hexsig = crypto.enc.Hex.stringify(result);
-
-    return {
-      public: config.setting.$auth.$disqusId,
-      token: message + " " + hexsig + " " + timestamp
-    };
-}
 
 function tryAuthenticate(req: express.Request|any, callback: (err, user?) => void) {
     if (req.isAuthenticated())

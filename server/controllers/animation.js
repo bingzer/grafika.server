@@ -1,6 +1,7 @@
 "use strict";
 var utils = require('../libs/utils');
 var animation_1 = require("../models/animation");
+var user_1 = require('../models/user');
 function search(req, res, next) {
     if (req.query.term) {
         var sort = createSort(req);
@@ -59,12 +60,16 @@ function submitRating(req, res, next) {
 }
 exports.submitRating = submitRating;
 function commentForMobile(req, res, next) {
+    if (!req.user)
+        return next(401);
+    var disqusToken = user_1.generateDisqusToken(req.user);
     animation_1.Animation.findById(req.params._id, { frames: 0 }, function (err, anim) {
         if (err)
             return next(err);
         if (!anim)
             return next(404);
-        var url = "/app/content/comment.html?url=http://grafika.bingzer.com/animations/" + anim._id + "&title=" + anim.name + "&shortname=grafika-app&identifier=" + anim._id;
+        var queryString = "url=http://grafika.bingzer.com/animations/" + anim._id + "&title=" + anim.name + "&shortname=grafika-app&identifier=" + anim._id + "&pub=" + disqusToken.public + "&token=" + disqusToken.token;
+        var url = "/app/content/comment.html?" + queryString;
         return res.redirect(url);
     });
 }

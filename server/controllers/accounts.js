@@ -1,5 +1,4 @@
 "use strict";
-var crypto = require("crypto-js");
 var passport = require("passport");
 var user_1 = require('../models/user');
 var mailer = require('../libs/mailer');
@@ -103,7 +102,7 @@ exports.resetPassword = resetPassword;
 ;
 function disqusToken(req, res, next) {
     if (req.isAuthenticated())
-        res.status(200).send(disqusSignon(req.user));
+        res.status(200).send(user_1.generateDisqusToken(req.user));
     else
         next(401);
 }
@@ -140,24 +139,6 @@ function providerLogin(req, res, next) {
         next(401);
 }
 exports.providerLogin = providerLogin;
-function disqusSignon(user) {
-    var disqusData = {
-        id: user._id,
-        username: user.username,
-        email: user.email,
-        avatar: user.prefs.avatar,
-        url: 'http://grafika.bingzer.com/users/' + user._id
-    };
-    var disqusStr = JSON.stringify(disqusData);
-    var timestamp = Math.round(+new Date() / 1000);
-    var message = new Buffer(disqusStr).toString('base64');
-    var result = crypto.HmacSHA1(message + " " + timestamp, config.setting.$auth.$disqusSecret);
-    var hexsig = crypto.enc.Hex.stringify(result);
-    return {
-        public: config.setting.$auth.$disqusId,
-        token: message + " " + hexsig + " " + timestamp
-    };
-}
 function tryAuthenticate(req, callback) {
     if (req.isAuthenticated())
         return callback(undefined, req.user);
