@@ -15,7 +15,7 @@ export function get(req: express.Request | any, res: express.Response, next: exp
 
         user = user.sanitize();
         
-        if (req.user._id.toString() !== user._id && !isAdmin)
+        if ((req.user && req.user._id.toString() !== user._id.toString()) && !isAdmin)
             delete user.email;
             
         res.send(user);

@@ -11,7 +11,7 @@ function get(req, res, next) {
         if (err)
             return next(err);
         user = user.sanitize();
-        if (req.user._id.toString() !== user._id && !isAdmin)
+        if ((req.user && req.user._id.toString() !== user._id.toString()) && !isAdmin)
             delete user.email;
         res.send(user);
     });

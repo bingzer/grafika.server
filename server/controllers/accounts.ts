@@ -127,10 +127,11 @@ export function providerLogin(req: express.Request | any, res: express.Response,
 
 function disqusSignon(user: Grafika.IUser) {
     let disqusData = {
-        id: user.email,
+        id: user._id,
         username: user.username,
         email: user.email,
-        avatar: user.prefs.avatar
+        avatar: user.prefs.avatar,
+        url: 'http://grafika.bingzer.com/users/' + user._id
     };
 
     let disqusStr = JSON.stringify(disqusData);

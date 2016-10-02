@@ -142,10 +142,11 @@ function providerLogin(req, res, next) {
 exports.providerLogin = providerLogin;
 function disqusSignon(user) {
     var disqusData = {
-        id: user.email,
+        id: user._id,
         username: user.username,
         email: user.email,
-        avatar: user.prefs.avatar
+        avatar: user.prefs.avatar,
+        url: 'http://grafika.bingzer.com/users/' + user._id
     };
     var disqusStr = JSON.stringify(disqusData);
     var timestamp = Math.round(+new Date() / 1000);
