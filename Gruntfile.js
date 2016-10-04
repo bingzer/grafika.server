@@ -58,8 +58,8 @@ module.exports = function (grunt) {
             install: {}
         },
         mochacli: {
-            timeout: 5000,
             options: {
+                timeout: 5000,
                 env: {
                     server_url: "http://localhost/test",
                     server_database_url: "mongodb://localhost/grafika-test",
