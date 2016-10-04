@@ -60,7 +60,7 @@ function submitRating(req, res, next) {
 }
 exports.submitRating = submitRating;
 function commentForMobile(req, res, next) {
-    var disqusToken = (req.user) ? user_1.generateDisqusToken(req.user) : "";
+    var disqusToken = (req.user) ? user_1.generateDisqusToken(req.user) : { public: "", token: "" };
     animation_1.Animation.findById(req.params._id, { frames: 0 }, function (err, anim) {
         if (err)
             return next(err);
