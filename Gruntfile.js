@@ -58,6 +58,7 @@ module.exports = function (grunt) {
             install: {}
         },
         mochacli: {
+            timeout: 5000,
             options: {
                 env: {
                     server_url: "http://localhost/test",
