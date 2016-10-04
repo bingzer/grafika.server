@@ -1,8 +1,8 @@
 module GrafikaApp {
     export class AppConfig {
         appTitle: string = 'Grafika';
-        appVersion: string = '0.9.19-38'; // injected by grunt
-        appBuildTimestamp: string = 'Mon Oct 03 2016 22:26:01 GMT-0400 (Eastern Daylight Time)'; // injected by grunt
+        appVersion: string = '0.9.19-39'; // injected by grunt
+        appBuildTimestamp: string = 'Mon Oct 03 2016 22:33:58 GMT-0400 (Eastern Daylight Time)'; // injected by grunt
         baseUrl: string = ''; // injected by app-controller
         defaultBaseUrl: string = 'https://grafika.herokuapp.com/';  // default url if baseUrl is localhost
         apiBaseUrl: string = 'api/';  // local
