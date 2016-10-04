@@ -99,6 +99,28 @@ describe('model/animation.ts', function(){
 
 			var model = require('../../server/models/animation.js');
 		});
+
+		it('should not update totalFrame to 0 when frame property is empty or undefined', function (done) {
+            delete req.body.frames;
+            req.body.totalFrame = 5;
+
+            assert.equal(5, req.body.totalFrame);
+            assert.isUndefined(req.body.frames);
+
+            next = function(){
+                assert.equal(5, req.body.totalFrame);
+                assert.isUndefined(req.body.frames); // removed
+                done();
+            }
+            mockRestful.mockModel.before = function (verb, callback) {
+                if (verb == 'post'){
+                    callback(req, res, next);
+                }
+            };
+            mockery.registerMock('../libs/restful', mockRestful);
+
+			var model = require('../../server/models/animation.js');
+		});
 	});
 
 	describe("#before('GET')", function() {
@@ -151,7 +173,7 @@ describe('model/animation.ts', function(){
 			var model = require('../../server/models/animation.js');
 		});
         
-		it('should update totalFrame to 0 when frame property is empty or undefined', function (done) {
+		it('should not update totalFrame to 0 when frame property is empty or undefined', function (done) {
             delete req.body.frames;
             req.body.totalFrame = 5;
 
@@ -159,7 +181,7 @@ describe('model/animation.ts', function(){
             assert.isUndefined(req.body.frames);
 
             next = function(){
-                assert.equal(0, req.body.totalFrame);
+                assert.equal(5, req.body.totalFrame);
                 assert.isUndefined(req.body.frames); // removed
                 done();
             }
@@ -172,6 +194,7 @@ describe('model/animation.ts', function(){
 
 			var model = require('../../server/models/animation.js');
 		});
+
 	});
 
 });

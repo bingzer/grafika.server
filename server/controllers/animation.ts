@@ -59,8 +59,7 @@ export function submitRating(req: express.Request, res: express.Response, next: 
 }
 
 export function commentForMobile(req: express.Request | any, res: express.Response, next: express.NextFunction) {
-    if (!req.user) return next(401);
-    let disqusToken = generateDisqusToken(req.user);
+    let disqusToken = (req.user) ? generateDisqusToken(req.user) : { public: "", token: "" };
 
     Animation.findById(req.params._id, { frames: 0 }, (err, anim) => {
         if (err) return next(err);

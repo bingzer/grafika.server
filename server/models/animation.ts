@@ -47,7 +47,7 @@ Animation.before('post', (req, res, next) => {
     if (!req.body.dateModified) req.body.dateModified = now;
     if (!req.body.userId) req.body.userId = req.user._id;
     if (!req.body.author) req.body.author = req.user.prefs.drawingAuthor || req.user.username;
-    req.body.totalFrame = req.body.frames ? req.body.frames.length : 0;
+    req.body.totalFrame = req.body.frames ? req.body.frames.length : req.body.totalFrame;
 
     delete req.body._id;
     
@@ -59,7 +59,7 @@ Animation.before('get', (req, res, next) => {
     next();
 });
 Animation.before('put', (req, res, next) => {
-    req.body.totalFrame = req.body.frames ? req.body.frames.length : 0;
+    req.body.totalFrame = req.body.frames ? req.body.frames.length : req.body.totalFrame;
     delete req.body.frames;
     next();
 });

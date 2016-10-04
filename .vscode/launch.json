@@ -82,7 +82,7 @@
             "request": "launch",
             "program": "${workspaceRoot}/node_modules/mocha/bin/_mocha",
             "stopOnEntry": false,
-            "args": ["server-test/**/admin.test.js"],
+            "args": ["server-test/model/animation.test.js", "--timeout", "5000"],
             "cwd": "${workspaceRoot}",
             "runtimeExecutable": null,
             "env": { "NODE_ENV": "testing"}
