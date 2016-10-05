@@ -20,7 +20,7 @@
             </tr>
             <tr ng-repeat="user in vm.users">
                 <td>
-                    <a href sref="user({_id: user._id})" ng-bind="user._id"></a>
+                    <avatar user-id="{{user._id}}" username="{{user._id}}"></avatar>
                 </td>
                 <td><span ng-bind="user.firstName"></span></td>
                 <td><span ng-bind="user.lastName"></span></td>

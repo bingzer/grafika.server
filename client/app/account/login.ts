@@ -16,7 +16,15 @@ module GrafikaApp {
             let loginProvider = provider;
             this.appCommon.showLoadingModal().then(() => this.authService.login({ username: this.username, password: this.password }, provider))
                 .then((res) => {
-                    if (!loginProvider) this.appCommon.navigateHome();
+                    if (!loginProvider) {
+                        let query = this.appCommon.$location.search();
+                        if (query.url) {
+                            let url = decodeURIComponent(query.url);
+                            this.appCommon.cleanUrlQueries();
+                            this.appCommon.$timeout(() => this.appCommon.navigate(url), 500);
+                        }
+                        else this.appCommon.navigateHome();
+                    }
                     else this.appCommon.toast('Connecting to ' + loginProvider);
                 })
                 .catch((res) => {

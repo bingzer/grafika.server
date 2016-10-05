@@ -30,7 +30,7 @@ function remove(req, res, next) {
 }
 exports.remove = remove;
 function incrementViewCount(req, res, next) {
-    animation_1.Animation.findByIdAndUpdate(req.params._id, { $inc: { views: 1 } }, function (err, anim) {
+    animation_1.Animation.findByIdAndUpdate(req.params._id, { $inc: { views: 1 }, dateModified: Date.now() }, function (err, anim) {
         if (err)
             return next(err);
         if (!anim)
@@ -51,6 +51,7 @@ function submitRating(req, res, next) {
         if (!anim)
             return next(404);
         anim.rating = (anim.rating + rating) / 2;
+        anim.dateModified = Date.now();
         anim.save(function (err, result) {
             if (err)
                 return next(err);

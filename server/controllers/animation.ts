@@ -34,7 +34,7 @@ export function remove(req: express.Request, res: express.Response, next: expres
 }
 
 export function incrementViewCount(req: express.Request, res: express.Response, next: express.NextFunction) {
-    Animation.findByIdAndUpdate(req.params._id, {$inc: { views: 1 }}, (err, anim) => {
+    Animation.findByIdAndUpdate(req.params._id, {$inc: { views: 1 }, dateModified: Date.now()}, (err, anim) => {
         if (err) return next(err);
         if (!anim) return next(404);
         return res.sendStatus(200);
@@ -51,6 +51,7 @@ export function submitRating(req: express.Request, res: express.Response, next: 
         if (!anim) return next(404);
         
         anim.rating = (anim.rating + rating) / 2;
+        anim.dateModified = Date.now();
         anim.save((err, result: Grafika.IAnimation) => {
             if (err) return next(err);
             res.send(201, result.rating);

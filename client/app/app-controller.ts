@@ -25,7 +25,14 @@ module GrafikaApp {
                 if (toState.data && toState.data.roles){
                     let user = authService.getUser();
                     if (!user || !user.hasRoles(toState.data.roles)){
-                        this.appCommon.navigateHome();
+                        if (!authService.isAuthenticated()){
+                            let queryString = encodeURIComponent(this.appCommon.$location.path())
+                            this.appCommon.navigate(`/login`).search('url', queryString);
+                        }
+                        else {
+                            this.appCommon.navigateHome();
+                        }
+                        //this.appCommon.$state.go('login', { url: this.appCommon.$location.path() });
                     }
                 }
                 // -- Page
@@ -46,12 +53,12 @@ module GrafikaApp {
                         this.authService.authenticate().then(() => this.appCommon.navigateHome());
                     else 
                         appCommon.alert('Unknown action or link has expired');
-                    this.cleanUrlQueries();
+                    this.appCommon.cleanUrlQueries();
                 }
                 else if(query.feedback && query.category && query.subject){
                     this.feedback.category = query.category;
                     this.feedback.subject = query.subject;
-                    this.cleanUrlQueries(); 
+                    this.appCommon.cleanUrlQueries(); 
                 }
             }
         }
@@ -116,18 +123,6 @@ module GrafikaApp {
 
         media(media) {
             return this.appCommon.$mdMedia(media);
-        }
-
-        ///////////////////////////////////////////////////////////////////////////////////////////////
-        
-        private cleanUrlQueries(){
-            let keys = this.appCommon.$location.search();
-            let loc = this.appCommon.$location;
-            Object.keys(keys).forEach((key) => {
-               delete loc.search(key, null); 
-            });
-
-            this.appCommon.$location.hash(null);
         }
     }
 }

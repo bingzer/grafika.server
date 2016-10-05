@@ -25,7 +25,13 @@ var GrafikaApp;
                 if (toState.data && toState.data.roles) {
                     var user = authService.getUser();
                     if (!user || !user.hasRoles(toState.data.roles)) {
-                        _this.appCommon.navigateHome();
+                        if (!authService.isAuthenticated()) {
+                            var queryString = encodeURIComponent(_this.appCommon.$location.path());
+                            _this.appCommon.navigate("/login").search('url', queryString);
+                        }
+                        else {
+                            _this.appCommon.navigateHome();
+                        }
                     }
                 }
                 _this.uxService.pageTitle = _this.appCommon.appConfig.appTitle;
@@ -44,12 +50,12 @@ var GrafikaApp;
                         this.authService.authenticate().then(function () { return _this.appCommon.navigateHome(); });
                     else
                         appCommon.alert('Unknown action or link has expired');
-                    this.cleanUrlQueries();
+                    this.appCommon.cleanUrlQueries();
                 }
                 else if (query.feedback && query.category && query.subject) {
                     this.feedback.category = query.category;
                     this.feedback.subject = query.subject;
-                    this.cleanUrlQueries();
+                    this.appCommon.cleanUrlQueries();
                 }
             }
         }
@@ -106,14 +112,6 @@ var GrafikaApp;
         };
         AppController.prototype.media = function (media) {
             return this.appCommon.$mdMedia(media);
-        };
-        AppController.prototype.cleanUrlQueries = function () {
-            var keys = this.appCommon.$location.search();
-            var loc = this.appCommon.$location;
-            Object.keys(keys).forEach(function (key) {
-                delete loc.search(key, null);
-            });
-            this.appCommon.$location.hash(null);
         };
         AppController.$inject = ['appCommon', 'authService', 'apiService', 'uxService', '$rootScope'];
         return AppController;

@@ -93,16 +93,25 @@ module GrafikaApp {
             });
         }
         refreshPage(){
-            this.$location.path(this.$location.path());
+            return this.$location.path(this.$location.path());
         }
         navigateHome(){
-            this.navigate('/');
+            return this.navigate('/');
         }
         navigate(path: string) {
-            this.$location.path(path);
+            return this.$location.path(path);
         }
         randomUid(): string {
             return ("0000" + (Math.random()*Math.pow(36,4) << 0).toString(36)).slice(-4)
+        }
+        cleanUrlQueries(){
+            let keys = this.$location.search();
+            let loc = this.$location;
+            Object.keys(keys).forEach((key) => {
+               delete loc.search(key, null); 
+            });
+
+            this.$location.hash(null);
         }
 
         formatErrorMessage(msg: any): string{

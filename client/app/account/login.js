@@ -18,8 +18,16 @@ var GrafikaApp;
             var loginProvider = provider;
             this.appCommon.showLoadingModal().then(function () { return _this.authService.login({ username: _this.username, password: _this.password }, provider); })
                 .then(function (res) {
-                if (!loginProvider)
-                    _this.appCommon.navigateHome();
+                if (!loginProvider) {
+                    var query = _this.appCommon.$location.search();
+                    if (query.url) {
+                        var url_1 = decodeURIComponent(query.url);
+                        _this.appCommon.cleanUrlQueries();
+                        _this.appCommon.$timeout(function () { return _this.appCommon.navigate(url_1); }, 500);
+                    }
+                    else
+                        _this.appCommon.navigateHome();
+                }
                 else
                     _this.appCommon.toast('Connecting to ' + loginProvider);
             })

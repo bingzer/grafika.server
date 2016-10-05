@@ -73,16 +73,24 @@ var GrafikaApp;
             });
         };
         AppCommon.prototype.refreshPage = function () {
-            this.$location.path(this.$location.path());
+            return this.$location.path(this.$location.path());
         };
         AppCommon.prototype.navigateHome = function () {
-            this.navigate('/');
+            return this.navigate('/');
         };
         AppCommon.prototype.navigate = function (path) {
-            this.$location.path(path);
+            return this.$location.path(path);
         };
         AppCommon.prototype.randomUid = function () {
             return ("0000" + (Math.random() * Math.pow(36, 4) << 0).toString(36)).slice(-4);
+        };
+        AppCommon.prototype.cleanUrlQueries = function () {
+            var keys = this.$location.search();
+            var loc = this.$location;
+            Object.keys(keys).forEach(function (key) {
+                delete loc.search(key, null);
+            });
+            this.$location.hash(null);
         };
         AppCommon.prototype.formatErrorMessage = function (msg) {
             if (msg.errorMessage && msg.errorMessage.length > 0)
