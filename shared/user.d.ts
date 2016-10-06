@@ -9,9 +9,9 @@ declare namespace Grafika {
         dateModified: number;
         active: boolean;
         roles: string[];
-        local: { registered: boolean };
-        google: { displayName: string };
-        facebook: { displayName: string };
+        local?: { registered: boolean };
+        google?: { displayName: string };
+        facebook?: { displayName: string };
 
         prefs: IUserPreference;
     }

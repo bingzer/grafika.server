@@ -15,7 +15,7 @@ var GrafikaApp;
             this.done = false;
             this.title = 'Set Password';
             this.closable = true;
-            this.requireCurrentPassword = authService.getUser().local.registered;
+            this.requireCurrentPassword = (authService.getUser().local ? authService.getUser().local.registered : false);
         }
         PasswordController.prototype.changePassword = function () {
             var _this = this;
