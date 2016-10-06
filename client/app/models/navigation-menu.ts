@@ -21,10 +21,13 @@ module GrafikaApp {
         }
 
         private static Menus = [
+            new NavigationMenu('Grafika Online', undefined, (app) => app.navigate('/') , 'cloud', ['sidenav'], (ux) => ux.isAuthenticated()),
+
             new NavigationMenu('Login', 'login', undefined, 'lock_outline', ['header', 'sidenav'], (ux) => !ux.isAuthenticated()),
             new NavigationMenu('My Animations', 'my-animations', undefined, 'movie', ['header', 'sidenav'], (ux) => ux.isAuthorized('user')),
             new NavigationMenu('Administration', 'admin', undefined, 'assignment_ind', ['header', 'sidenav'], (ux) => ux.isAuthorized('administrator')),
             
+            new NavigationMenu('Profile', 'profile', undefined, 'person', ['sidenav'], (ux) => ux.isAuthenticated()),
             new NavigationMenu('Settings', 'settings', undefined, 'settings', ['sidenav'], (ux) => ux.isAuthenticated()),
             new NavigationMenu('Logout', undefined, (app) => app.confirmLogout(), 'lock_outline', ['sidenav'], (ux) => ux.isAuthenticated()),
         ];

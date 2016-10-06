@@ -14,6 +14,8 @@ var GrafikaApp;
             this.userService = userService;
             this.userService.get(this.authService.getUser()._id).then(function (res) {
                 _this.user = res.data;
+                _this.useGoogleAuth = angular.isDefined(_this.user.google);
+                _this.useFacebookAuth = angular.isDefined(_this.user.facebook);
             });
         }
         ProfileController.prototype.changePassword = function (event) {

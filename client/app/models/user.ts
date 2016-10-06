@@ -9,6 +9,9 @@ module GrafikaApp {
         dateModified: number;
         active: boolean;
         roles: string[];
+        local: { registered: boolean };
+        google: { displayName: string };
+        facebook: { displayName: string };
 
         prefs: Grafika.IUserPreference;
         
@@ -24,6 +27,9 @@ module GrafikaApp {
             this.active = payload.active;
             this.roles = payload.roles;
             this.prefs = payload.prefs;
+            this.local = payload.local;
+            this.google = payload.google;
+            this.facebook = payload.facebook;
         }
 
         getDisplayName(): string {

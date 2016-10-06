@@ -1,5 +1,6 @@
 <div class="md-whiteframe-z2"
-    style="background: linear-gradient(rgba(0, 128, 128, 1), rgba(0, 0, 0, 0.5)), url('{{user.prefs.backdrop}}'); background-size: cover; height: 150px;">
+    style="background: linear-gradient(rgba(0, 128, 128, 1), rgba(0, 0, 0, 0.5)), url('{{user.prefs.backdrop}}'); background-size: cover; height: 150px;"
+    ng-click="app.navigate('/profile')">
     <div layout="row" layout-fill layout-margin layout-align="start center" style="padding-left: 16px">
         <img class="avatar avatar-lg" ng-src="{{'/api/users/' + user._id + '/avatar'}}"/>
         <div layout="column">

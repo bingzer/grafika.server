@@ -24,7 +24,6 @@
                 "server_mailer_port": "2525",
                 "server_mailer_from": "grafika@bingzer.com"
             },
-            "externalConsole": false,
             "sourceMaps": true,
             "outDir": null
         },
@@ -51,7 +50,6 @@
                 "server_mailer_port": "2525",
                 "server_mailer_from": "grafika@bingzer.com"
             },
-            "externalConsole": false,
             "sourceMaps": true,
             "outDir": null
         },
@@ -93,7 +91,7 @@
             "request": "launch",
             "program": "${workspaceRoot}/node_modules/mocha/bin/_mocha",
             "stopOnEntry": false,
-            "args": ["server-test/controllers/animation.test.js", "--timeout", "5000"],
+            "args": ["server-test/model/user.test.js", "--timeout", "5000"],
             "cwd": "${workspaceRoot}",
             "runtimeExecutable": null,
             "env": { "NODE_ENV": "testing"}

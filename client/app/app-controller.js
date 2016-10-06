@@ -38,6 +38,7 @@ var GrafikaApp;
                 if (toState.data && toState.data.pageTitle) {
                     _this.uxService.pageTitle = toState.data.pageTitle;
                 }
+                _this.appCommon.$mdSidenav('left').close();
             });
             var query = appCommon.$location.search();
             if (query) {
@@ -75,6 +76,7 @@ var GrafikaApp;
                 .then(function () {
                 _this.appCommon.toast('Successfully logged out');
                 _this.appCommon.hideLoadingModal();
+                _this.appCommon.$mdSidenav('left').close();
             });
         };
         AppController.prototype.sendFeedback = function () {

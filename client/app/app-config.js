@@ -4,7 +4,7 @@ var GrafikaApp;
         function AppConfig() {
             this.appTitle = 'Grafika';
             this.appVersion = '0.9.19-41';
-            this.appBuildTimestamp = 'Wed Oct 05 2016 18:47:02 GMT-0400 (Eastern Daylight Time)';
+            this.appBuildTimestamp = 'Thu Oct 06 2016 18:25:53 GMT-0400 (Eastern Daylight Time)';
             this.baseUrl = '';
             this.defaultBaseUrl = 'https://grafika.herokuapp.com/';
             this.apiBaseUrl = 'api/';

@@ -59,16 +59,29 @@ describe('model/user.ts', function(){
 		it('should sanitize user data', function(done) {
 			var model = require('../../server/models/user.js');
 			var user = {
-				local: {},
-				facebook: {},
-				google: {},
+				local: {
+					registered: true,
+					password: 'shouldbedeleted'
+				},
+				facebook: {
+					id: 'fb.id',
+					token: 'fb.token',
+					displayName: 'oh heelo'
+				},
+				google: {
+					id: 'fb.id',
+					token: 'fb.token',
+					displayName: 'oh heelo'
+				},
 				activation: {}
 			};
 
 			var sanitizedUser = model.sanitize(user);
-			assert.equal(sanitizedUser.local, undefined);
-			assert.equal(sanitizedUser.facebook, undefined);
-			assert.equal(sanitizedUser.google, undefined);
+			assert.equal(sanitizedUser.local.password, undefined);
+			assert.equal(sanitizedUser.facebook.id, undefined);
+			assert.equal(sanitizedUser.facebook.token, undefined);
+			assert.equal(sanitizedUser.google.id, undefined);
+			assert.equal(sanitizedUser.google.token, undefined);
 			assert.equal(sanitizedUser.activation, undefined);
 			done();
 		});

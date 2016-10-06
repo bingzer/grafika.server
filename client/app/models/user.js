@@ -14,6 +14,9 @@ var GrafikaApp;
             this.active = payload.active;
             this.roles = payload.roles;
             this.prefs = payload.prefs;
+            this.local = payload.local;
+            this.google = payload.google;
+            this.facebook = payload.facebook;
         }
         User.prototype.getDisplayName = function () {
             if (this.firstName && this.lastName)

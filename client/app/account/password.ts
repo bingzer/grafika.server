@@ -15,6 +15,7 @@ module GrafikaApp {
             super(appCommon);
             this.title = 'Set Password';
             this.closable = true;
+            this.requireCurrentPassword = authService.getUser().local.registered;
         }
 
         changePassword() {

@@ -23,9 +23,11 @@ var GrafikaApp;
             return menus;
         };
         NavigationMenu.Menus = [
+            new NavigationMenu('Grafika Online', undefined, function (app) { return app.navigate('/'); }, 'cloud', ['sidenav'], function (ux) { return ux.isAuthenticated(); }),
             new NavigationMenu('Login', 'login', undefined, 'lock_outline', ['header', 'sidenav'], function (ux) { return !ux.isAuthenticated(); }),
             new NavigationMenu('My Animations', 'my-animations', undefined, 'movie', ['header', 'sidenav'], function (ux) { return ux.isAuthorized('user'); }),
             new NavigationMenu('Administration', 'admin', undefined, 'assignment_ind', ['header', 'sidenav'], function (ux) { return ux.isAuthorized('administrator'); }),
+            new NavigationMenu('Profile', 'profile', undefined, 'person', ['sidenav'], function (ux) { return ux.isAuthenticated(); }),
             new NavigationMenu('Settings', 'settings', undefined, 'settings', ['sidenav'], function (ux) { return ux.isAuthenticated(); }),
             new NavigationMenu('Logout', undefined, function (app) { return app.confirmLogout(); }, 'lock_outline', ['sidenav'], function (ux) { return ux.isAuthenticated(); }),
         ];

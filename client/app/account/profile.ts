@@ -2,6 +2,8 @@ module GrafikaApp {
     export class ProfileController extends DialogController {
         user: Grafika.IUser;
         needsUpdate: boolean;
+        useGoogleAuth: boolean;
+        useFacebookAuth: boolean;
 
         public static $inject = ['appCommon', 'authService', 'userService'];
         constructor (appCommon: AppCommon,
@@ -11,6 +13,8 @@ module GrafikaApp {
             super(appCommon);
             this.userService.get(this.authService.getUser()._id).then((res) => {
                 this.user = res.data;
+                this.useGoogleAuth = angular.isDefined(this.user.google);
+                this.useFacebookAuth = angular.isDefined(this.user.facebook);
             });
         }
 

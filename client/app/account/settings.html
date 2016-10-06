@@ -1,6 +1,6 @@
 <form name="settingsForm" class="settings" layout="row" layout-wrap layout-margin flex novalidate>
     <!-- Editing -->
-    <div class="settings-section" flex-gt-md="30" flex-gt-xs="90">
+    <div class="settings-section" flex="100" flex-gt-sm="45">
         <md-toolbar class="panel" layout="column">
             <div class="md-toolbar-tools">
                 <p>Editing</p>
@@ -20,13 +20,13 @@
     </div>
       	
     <!-- playback -->
-    <div class="settings-section" flex-gt-md="30" flex-gt-xs="90">
+    <div class="settings-section" flex="100" flex-gt-sm="45">
         <md-toolbar class="panel" layout="column">
             <div class="md-toolbar-tools">
                 <p>Playback</p>
             </div>
             <md-content class="font-medium" layout-padding>
-                <md-checkbox ng-model="vm.user.prefs.playbackLoop" ng-change="vm.needsUpdate = true">Loop playback</md-checkbox>
+                <md-checkbox ng-model="vm.user.prefs.playbackLoop" ng-change="vm.needsUpdate = true">Loop animation playback</md-checkbox>
             </md-content>
         </md-toolbar>    
     </div>

@@ -119,9 +119,17 @@ function sanitize(user) {
     if (user.toObject) {
         user = user.toObject();
     }
-    delete user.local;
-    delete user.facebook;
-    delete user.google;
+    if (user.local) {
+        delete user.local.password;
+    }
+    if (user.google) {
+        delete user.google.id;
+        delete user.google.token;
+    }
+    if (user.facebook) {
+        delete user.facebook.id;
+        delete user.facebook.token;
+    }
     delete user.activation;
     return user;
 }

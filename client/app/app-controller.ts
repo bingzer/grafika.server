@@ -40,6 +40,8 @@ module GrafikaApp {
                 if (toState.data && toState.data.pageTitle) {
                     this.uxService.pageTitle = toState.data.pageTitle;
                 }
+                
+                this.appCommon.$mdSidenav('left').close();
             });
 
             let query = appCommon.$location.search();
@@ -80,6 +82,7 @@ module GrafikaApp {
                 .then(() => {
                     this.appCommon.toast('Successfully logged out');
                     this.appCommon.hideLoadingModal();
+                    this.appCommon.$mdSidenav('left').close();
                 });
         }
 

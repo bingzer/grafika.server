@@ -2,7 +2,7 @@
 	<ng-include src="'app/users/user-banner.html'" ng-if="vm.user" ng-init="user=vm.user"></ng-include>
 	<form name="profileForm" class="profile" layout="row" layout-wrap layout-margin novalidate flex>
 		<!-- Profile -->
-		<div class="profile-section" flex-gt-md="30" flex-gt-xs="90">
+		<div class="profile-section" flex="100" flex-gt-sm="45" flex-gt-md="30">
 			<md-toolbar class="panel" layout="column">
 				<div class="md-toolbar-tools">
 					<p>Profile</p>
@@ -33,7 +33,7 @@
 			</md-toolbar>   
 		</div>
 		<!-- Profile -->
-		<div class="profile-section" flex-gt-md="30" flex-gt-xs="90">
+		<div class="profile-section" flex="100" flex-gt-sm="45" flex-gt-md="30">
 			<md-toolbar class="panel" layout="column">
 				<div class="md-toolbar-tools">
 					<p>Security</p>
@@ -55,13 +55,14 @@
 						<span flex></span>
 						<md-button type="button" class="md-accent"
 							ng-bind="'Check username'" 
-							ng-click="vm.checkUsernameAvailability()"></md-button>
+							ng-click="vm.checkUsernameAvailability()"
+							aria-label="Check username"></md-button>
 					</div>
 				</md-content>
 			</md-toolbar>   
 		</div>
 		<!-- Connected Accounts -->
-		<div class="profile-section" flex-gt-md="30" flex-gt-xs="90">
+		<div class="profile-section" flex="100" flex-gt-sm="45" flex-gt-md="30">
 			<md-toolbar class="panel" layout="column">
 				<div class="md-toolbar-tools">
 					<p>Connected Accounts</p>
