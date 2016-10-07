@@ -54,7 +54,7 @@ exports.UserSchema.methods.generateActivationHash = function () {
     return exports.UserSchema.methods.generateHash(crypto.lib.WordArray.random(128 / 8));
 };
 exports.UserSchema.methods.validPassword = function (password) {
-    if (!this.local.password)
+    if (!password || !this.local.password)
         return false;
     return bcrypt.compareSync(password, this.local.password);
 };

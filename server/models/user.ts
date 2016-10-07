@@ -104,7 +104,7 @@ UserSchema.methods.generateActivationHash = function() : string{
 }
 // checking if password is valid
 UserSchema.methods.validPassword = function(password: string) : boolean {
-    if (!this.local.password) return false;
+    if (!password || !this.local.password) return false;
     return bcrypt.compareSync(password, this.local.password);
 };
 UserSchema.methods.validActivationHash = function(activationHash: string) : boolean{
