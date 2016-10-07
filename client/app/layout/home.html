@@ -16,14 +16,16 @@
 			<div class="part" flex-gt-sm="30" flex="90" layout-padding>
 				<p>
 					<i class="material-icons">movie_filter</i><br/>
-					<span class="md-headline">Easy to use</span>
+					<span class="md-headline">Animations</span>
 				</p>
 				<p>
-					Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-					Mauris consectetur pharetra mi ac pulvinar. Maecenas sed eros justo. 
-					Etiam nec lacinia.
+					Grafika is another attempt after <a target="_blank" href="https://play.google.com/store/apps/details?id=com.bingzer.android.stickdraw">StickDraw</a> 
+					to create a simple animation maker. The intent is to provide a platform that can be run in almost any browser that supports 
+					<code>&lt;canvas&gt;</code> element.
 				</p>
 				<div layout="row" layout-padding layout-align="center">
+					<a class="btn btn-warning" href="/about">More...</a>
+					<span>&nbsp;</span>
 					<a class="btn btn-default" href="#list">Browse</a>
 				</div>
 			</div>
@@ -96,20 +98,25 @@
 	</div>
 
 	<div id="list" layout-gt-sm="row" layout="column" ng-controller="AnimationListController as vm">
-		<form style="margin-top: 16px; margin-bottom: -24px" layout-gt-sm="column" layout="row" name="filterForm" ng-submit="vm.list()" layout-margin-gt-sm>
-			<md-input-container>
+		<form name="filterForm"  
+			layout-gt-sm="column" 
+			layout="row" layout-wrap
+			layout-padding
+			ng-submit="vm.list()"
+			ng-class="{'md-whiteframe-z2': app.media('xs') || app.media('sm')}">
+			<md-input-container flex-xs="100" flex-sm="55">
 				<label>Search</label>
 				<input type="search" ng-model="vm.paging.term" flex>
 			</md-input-container>
-			<md-input-container>
+			<md-input-container flex-xs="100" flex-sm="35">
 				<label>Sort</label>
 				<md-select ng-model="vm.paging.sort" ng-change="vm.list()">
 					<md-option ng-repeat="sort in vm.animationSorts" ng-value="sort.key" ng-bind="sort.value"></md-option>
 				</md-select>
 			</md-input-container>
-			<span style="margin-top: 2px">
-				<md-button class="md-button md-primary" type="submit">Search</md-button>
-				<md-button class="md-button" type="button" ng-click="vm.reset()">Reset</md-button>
+			<span flex-xs="100" flex-sm="100" layout="row" layout-align-xs="end">
+				<md-button class="md-button md-primary md-raised md-cornered" type="submit">Search</md-button>
+				<md-button class="md-button md-raised md-cornered" type="button" ng-click="vm.reset()">Reset</md-button>
 			</span>
 			
     		<gf-adsense ng-if="app.media('gt-sm')"></gf-adsense>

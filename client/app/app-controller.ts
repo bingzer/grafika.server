@@ -41,7 +41,7 @@ module GrafikaApp {
                     this.uxService.pageTitle = toState.data.pageTitle;
                 }
                 
-                this.appCommon.$mdSidenav('left').close();
+                this.uxService.closeSidenav();
             });
 
             let query = appCommon.$location.search();

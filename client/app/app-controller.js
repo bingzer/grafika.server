@@ -38,7 +38,7 @@ var GrafikaApp;
                 if (toState.data && toState.data.pageTitle) {
                     _this.uxService.pageTitle = toState.data.pageTitle;
                 }
-                _this.appCommon.$mdSidenav('left').close();
+                _this.uxService.closeSidenav();
             });
             var query = appCommon.$location.search();
             if (query) {

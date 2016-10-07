@@ -26,7 +26,16 @@
 			</div>
 		</div>		
 		<div layout="row" layout-align="center" layout-wrap>
-			<div class="part" flex="45" layout-padding>
+			<div class="part" flex-xs="90" flex-sm="45" flex="30" layout-padding>
+				<p>
+					<i class="material-icons">movie</i><br/>
+					<span class="md-headline">Animations</span>
+				</p>
+				<div layout="row" layout-padding layout-align="center">
+					<a class="btn btn-default" ui-sref="about.animation">Read about Animations</a>
+				</div>
+			</div>
+			<div class="part" flex-xs="90" flex-sm="45" flex="30" layout-padding>
 				<p>
 					<i class="material-icons">devices</i><br/>
 					<span class="md-headline">Platforms</span>
@@ -35,8 +44,11 @@
 					As of right now, we're maintaining web and android platform.<br/>
 					iOS is still in the future.
 				</p>
+				<div layout="row" layout-padding layout-align="center">
+					<a class="btn btn-default" ui-sref="about.android">Android</a>
+				</div>
 			</div>
-			<div class="part" flex="45" layout-padding>
+			<div class="part" flex-xs="90" flex-sm="45" flex="30" layout-padding>
 				<p>
 					<i class="material-icons">feedback</i><br/>
 					<span class="md-headline">Feedback</span>
@@ -50,7 +62,9 @@
 				</div>
 			</div>
 		</div>
-		<!-- Main content -->
-		<div class="page-wrap" ui-view></div>
+	</div>
+	<!-- Main content -->
+	<div class="page-wrap" ui-view layout-margin layout-padding class="intro md-whiteframe-z2">
+		<ng-include src="'/app/content/about.grafika.html'"></ng-include>
 	</div>
 </div>
