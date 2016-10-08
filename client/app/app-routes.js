@@ -80,7 +80,8 @@ var GrafikaApp;
                 .state('about', { url: '/about', templateUrl: 'app/content/about.html', data: { pageTitle: 'About Grafika' } })
                 .state('about.animation', { url: '/animation', templateUrl: 'app/content/animation.html', data: { pageTitle: 'Animation' } })
                 .state('about.feedback', { url: '/feedback', templateUrl: 'app/content/feedback.html', data: { pageTitle: 'Feedback' } })
-                .state('about.android', { url: '/android', templateUrl: 'app/content/android.html', data: { pageTitle: 'Feedback' } })
+                .state('about.android', { url: '/android', templateUrl: 'app/content/android.html', data: { pageTitle: 'Android App' } })
+                .state('stickdraw', { url: '/stickdraw', templateUrl: 'app/content/stickdraw.html', data: { pageTitle: 'Stickdraw (Goodbye!)' } })
                 .state('help', { url: '/help', templateUrl: 'app/content/help.html', data: { pageTitle: 'Help' } })
                 .state('privacy', { url: '/privacy', templateUrl: 'app/content/privacy.html', data: { pageTitle: 'Privacy' } })
                 .state('eula', { url: '/eula', templateUrl: 'app/content/eula.html', data: { pageTitle: 'EULA' } });
