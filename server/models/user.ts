@@ -161,7 +161,7 @@ export function generateDisqusToken(user: IUser) {
     let disqusData = {
         id: user._id,
         username: user.username,
-        email: user.email,
+        // email: user.email, 
         avatar: user.prefs.avatar,
         url: 'http://grafika.bingzer.com/users/' + user._id
     };
