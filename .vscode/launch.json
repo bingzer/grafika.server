@@ -80,7 +80,7 @@
             "request": "launch",
             "program": "${workspaceRoot}/node_modules/mocha/bin/_mocha",
             "stopOnEntry": false,
-            "args": ["server-test/**/**.*.js", "--timeout", "5000"],
+            "args": ["server-test/**/**.*.js", "--timeout", "10000"],
             "cwd": "${workspaceRoot}",
             "runtimeExecutable": null,
             "env": { "NODE_ENV": "testing"}
@@ -91,7 +91,7 @@
             "request": "launch",
             "program": "${workspaceRoot}/node_modules/mocha/bin/_mocha",
             "stopOnEntry": false,
-            "args": ["server-test/model/user.test.js", "--timeout", "5000"],
+            "args": ["server-test/controllers/users.test.js", "--timeout", "10000"],
             "cwd": "${workspaceRoot}",
             "runtimeExecutable": null,
             "env": { "NODE_ENV": "testing"}

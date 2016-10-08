@@ -73,6 +73,35 @@ describe("controllers/users.ts", function (){
             model.get(request, response);
         });
 
+        it("should return a user with email deleted (anonymous called)", function (done){
+            var userReturned = { _id: "userId", email: "user@example.com", sanitize: function(){ return this } };
+            var userRequested = { _id: "userIdx", email: "userx@example.com", sanitize: function(){ return this } };
+			var schema = {
+                User: {
+                    findById: function (userId, callback) {
+                        assert.equal("userId", userId);
+                        callback(undefined, userReturned);
+                    },
+                },
+                isAdministrator: function(){ return false; }
+            };
+            var response = {
+                send: function (result){
+                    assert.equal("userId", result._id);
+                    assert.isUndefined(result.email);
+                    done();
+                }
+            };
+            var request = {
+                params: { _id: "userId" }
+            }
+
+			mockery.registerMock('../models/user', schema);
+
+            var model = require("../../server/controllers/users.js");
+            model.get(request, response);
+        });
+
         it("should return a user with email (because an admin requested it)", function (done){
             var userReturned = { _id: "userId", email: "user@example.com", sanitize: function(){ return this } };
             var userRequested = { _id: "userIdx", email: "userx@example.com", sanitize: function(){ return this } };
