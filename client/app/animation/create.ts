@@ -3,7 +3,7 @@ module GrafikaApp {
     export class AnimationCreateController extends DialogController {
         name: string;
         width: number = 800;
-        height: number = 400;
+        height: number = 450;
         isPublic: boolean;
         orientations: string[] = ['Landscape', 'Portrait'];
         orientation: string = 'Landscape';
@@ -15,6 +15,8 @@ module GrafikaApp {
             private animationService: AnimationService){
             super(appCommon);
             this.isPublic = this.authService.getUser().prefs.drawingIsPublic;
+            this.width = this.appCommon.appConfig.defaultAnimationWidth;
+            this.height = this.appCommon.appConfig.defaultAnimationHeight;
         }
 
         create() {

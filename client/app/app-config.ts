@@ -11,7 +11,7 @@ module GrafikaApp {
         contentBaseUrl: string = 'https://github.com/bingzer/grafika/';
         fetchSize: number = 10;
         defaultAnimationWidth: number = 800;
-        defaultAnimationHeight: number = 400;
+        defaultAnimationHeight: number = 450;
         animationSorts: any = [
             { key: '-dateModified', value: 'Newest' },
             { key: '-views', value: 'Views' },

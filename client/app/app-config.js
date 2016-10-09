@@ -13,7 +13,7 @@ var GrafikaApp;
             this.contentBaseUrl = 'https://github.com/bingzer/grafika/';
             this.fetchSize = 10;
             this.defaultAnimationWidth = 800;
-            this.defaultAnimationHeight = 400;
+            this.defaultAnimationHeight = 450;
             this.animationSorts = [
                 { key: '-dateModified', value: 'Newest' },
                 { key: '-views', value: 'Views' },

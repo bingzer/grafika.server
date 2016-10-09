@@ -12,10 +12,12 @@ var GrafikaApp;
             this.authService = authService;
             this.animationService = animationService;
             this.width = 800;
-            this.height = 400;
+            this.height = 450;
             this.orientations = ['Landscape', 'Portrait'];
             this.orientation = 'Landscape';
             this.isPublic = this.authService.getUser().prefs.drawingIsPublic;
+            this.width = this.appCommon.appConfig.defaultAnimationWidth;
+            this.height = this.appCommon.appConfig.defaultAnimationHeight;
         }
         AnimationCreateController.prototype.create = function () {
             var _this = this;
