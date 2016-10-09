@@ -17,7 +17,7 @@ var mailTransporter = nodemailer.createTransport({
 exports.mailTransporter = mailTransporter;
 function sendVerificationEmail(user) {
     var deferred = $q.defer();
-    var url = config.setting.$server.$url + '?action=verify&hash=' + encodeURIComponent(user.activation.hash) + '&user=' + encodeURIComponent(user.email);
+    var url = config.setting.$server.$url + 'r?action=verify&hash=' + encodeURIComponent(user.activation.hash) + '&user=' + encodeURIComponent(user.email);
     var opts = { title: 'Please activate your account', user: user.email, link: url, privacyUrl: config.setting.$server.$url + 'privacy', homeUrl: config.setting.$server.$url };
     var promises = $q.allSettled([
         readTemplate('verification-template.txt', opts),
@@ -48,7 +48,7 @@ function sendVerificationEmail(user) {
 exports.sendVerificationEmail = sendVerificationEmail;
 function sendResetEmail(user) {
     var deferred = $q.defer();
-    var url = config.setting.$server.$url + '?action=reset-pwd&hash=' + encodeURIComponent(user.activation.hash) + '&user=' + encodeURIComponent(user.email);
+    var url = config.setting.$server.$url + 'r?action=reset-pwd&hash=' + encodeURIComponent(user.activation.hash) + '&user=' + encodeURIComponent(user.email);
     var opts = { title: 'Grafika: Password Reset', user: user.email, link: url, privacyUrl: config.setting.$server.$url + 'privacy', homeUrl: config.setting.$server.$url };
     var promises = $q.allSettled([
         readTemplate('resetpwd-template.txt', opts),

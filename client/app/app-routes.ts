@@ -88,6 +88,10 @@ module GrafikaApp {
 					controller: 'UserController',
 					controllerAs: 'vm'
 				})
+				.state('r', {
+					url: '/r',
+					templateProvider: (appCommon: AppCommon) => appCommon.navigateHome()
+				})
 				// --- static content ---//
 				.state('about', { url: '/about', templateUrl: 'app/content/about.html', data: { pageTitle: 'About Grafika' } })
 				.state('about.animation', { url: '/animation', templateUrl: 'app/content/animation.html', data: { pageTitle: 'Animation' } })
