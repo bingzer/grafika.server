@@ -1,10 +1,10 @@
 class Grafika implements Grafika.IGrafika {
-    private version: string;
-    private animation: Grafika.IAnimation = <Grafika.IAnimation> {};
-    private frame: Grafika.IFrame;
-    private selectedGraphics: Grafika.IGraphic[] = [];
-    private isMovingGraphics: boolean = false;
+    version: string;
+    animation: Grafika.IAnimation = <Grafika.IAnimation> {};
+    frame: Grafika.IFrame;
+    selectedGraphics: Grafika.IGraphic[] = [];
     private currentGraphic: Grafika.IGraphic;
+    private isMovingGraphics: boolean = false;
     private animator: number;
     private options: Grafika.IOption = {
         backgroundColor: '#ffffff',
@@ -106,7 +106,13 @@ class Grafika implements Grafika.IGrafika {
         this.canvas.setAttribute('height', "" + this.animation.height);
 		this.setFrames(this.animation.frames);
     }
-    saveAnimation(){
+    saveAnimation(anim?: Grafika.IAnimation){
+        if (anim){
+            let tempFrames = this.animation.frames;
+            this.animation = anim;
+            this.animation.frames = tempFrames;
+        }
+
 	    this.animation.totalFrame = this.animation.frames.length;
 		this.animation.modified = false;
 		this.animation.dateModified = Date.now();
@@ -220,7 +226,7 @@ class Grafika implements Grafika.IGrafika {
             
             if (!found) temp.push(graphics[i]);
         }
-        graphics = temp;
+        this.frame.layers[0].graphics = temp;
         this.selectedGraphics = [];
         this.refresh();
     }
@@ -565,7 +571,7 @@ class Grafika implements Grafika.IGrafika {
 
 namespace Grafika {
     export const Plugins:Grafika.IPluginFunction[] = [];
-    export const VERSION = '0.11.3';
+    export const VERSION = '0.12.2';
 
     export const MODE_NONE = 'none', 
                  MODE_PAINT = 'paint', 
@@ -594,7 +600,7 @@ namespace Grafika {
 
         getAnimation(): Grafika.IAnimation;
         setAnimation(animation: Grafika.IAnimation);
-        saveAnimation();
+        saveAnimation(animation?: Grafika.IAnimation);
 
         play();
         pause();

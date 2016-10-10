@@ -91,7 +91,12 @@ var Grafika = (function () {
         this.canvas.setAttribute('height', "" + this.animation.height);
         this.setFrames(this.animation.frames);
     };
-    Grafika.prototype.saveAnimation = function () {
+    Grafika.prototype.saveAnimation = function (anim) {
+        if (anim) {
+            var tempFrames = this.animation.frames;
+            this.animation = anim;
+            this.animation.frames = tempFrames;
+        }
         this.animation.totalFrame = this.animation.frames.length;
         this.animation.modified = false;
         this.animation.dateModified = Date.now();
@@ -203,7 +208,7 @@ var Grafika = (function () {
             if (!found)
                 temp.push(graphics[i]);
         }
-        graphics = temp;
+        this.frame.layers[0].graphics = temp;
         this.selectedGraphics = [];
         this.refresh();
     };
@@ -527,7 +532,7 @@ var Grafika = (function () {
 var Grafika;
 (function (Grafika) {
     Grafika.Plugins = [];
-    Grafika.VERSION = '0.11.3';
+    Grafika.VERSION = '0.12.2';
     Grafika.MODE_NONE = 'none', Grafika.MODE_PAINT = 'paint', Grafika.MODE_MOVE = 'move', Grafika.MODE_SELECT = 'select', Grafika.MODE_DELETE = 'delete';
     (function (DrawingMode) {
         DrawingMode[DrawingMode["None"] = 0] = "None";

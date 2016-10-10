@@ -14,7 +14,7 @@ module.exports = function (grunt) {
     grunt.registerTask("build-dev", [ 
         "ts"
     ]);
-    grunt.registerTask("default", ["clean", "string-replace", "ts", "uglify:my_target", "qunit:all"])
+    grunt.registerTask("default", ["clean", "string-replace:version", "ts", "uglify:my_target", "qunit:all",  "string-replace:portable"])
     
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
@@ -74,7 +74,8 @@ module.exports = function (grunt) {
                             'grafika.js',
                             'grafika.extensions.js',
                             'grafika.android.js',
-                            'grafika.android.core.min.js'
+                            'grafika.android.core.min.js',
+                            'grafika.portable.html'
                         ],
                         dest: '../grafika.android/app/src/main/assets/'
                     }
@@ -86,7 +87,7 @@ module.exports = function (grunt) {
         },
 		// update version from package.json
 		'string-replace': {
-			inline: {
+			version: {
 				files: {
 					'src/grafika.ts': 'src/grafika.ts',
 				},
@@ -100,7 +101,22 @@ module.exports = function (grunt) {
 						}
 					]
 				}
-			}
+			},
+			portable: {
+				files: {
+					'dist/grafika.portable.html': 'src/grafika.portable.html',
+				},
+				options: {
+					replacements: [
+					// place files inline example
+                    // export const VERSION = "1.0.0"
+						{
+							pattern: /\/\/@import: grafika.min.js/g,
+							replacement: grunt.file.read('dist/grafika.min.js')
+						}
+					]
+				}
+			},
 		}
     });
 

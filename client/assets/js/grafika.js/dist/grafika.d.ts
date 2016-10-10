@@ -1,10 +1,10 @@
 declare class Grafika implements Grafika.IGrafika {
-    private version;
-    private animation;
-    private frame;
-    private selectedGraphics;
-    private isMovingGraphics;
+    version: string;
+    animation: Grafika.IAnimation;
+    frame: Grafika.IFrame;
+    selectedGraphics: Grafika.IGraphic[];
     private currentGraphic;
+    private isMovingGraphics;
     private animator;
     private options;
     private canvas;
@@ -22,7 +22,7 @@ declare class Grafika implements Grafika.IGrafika {
     destroy(): void;
     getAnimation(): Grafika.IAnimation;
     setAnimation(anim: Grafika.IAnimation): void;
-    saveAnimation(): void;
+    saveAnimation(anim?: Grafika.IAnimation): void;
     play(): void;
     pause(): void;
     isPlaying(): boolean;
@@ -86,7 +86,7 @@ declare namespace Grafika {
         destroy(): any;
         getAnimation(): Grafika.IAnimation;
         setAnimation(animation: Grafika.IAnimation): any;
-        saveAnimation(): any;
+        saveAnimation(animation?: Grafika.IAnimation): any;
         play(): any;
         pause(): any;
         isPlaying(): boolean;

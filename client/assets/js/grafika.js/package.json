@@ -1,6 +1,6 @@
 {
   "name": "grafika-js",
-  "version": "0.11.3",
+  "version": "0.12.2",
   "dependencies": {
     "bower": "^1.7.9",
     "grunt": "^0.4.5",
@@ -12,7 +12,7 @@
     "grunt-contrib-nodeunit": "~0.4.1",
     "grunt-contrib-qunit": "^1.2.0",
     "grunt-contrib-uglify": "~0.5.0",
-    "grunt-string-replace": "^1.2.1",
+    "grunt-string-replace": "^1.3.0",
     "grunt-ts": "*"
   },
   "scripts": {
