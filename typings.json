@@ -28,6 +28,7 @@
     "nodemailer": "registry:dt/nodemailer#1.3.2+20160316155526",
     "passport": "registry:dt/passport#0.2.0+20160317120654",
     "passport-facebook": "registry:dt/passport-facebook#1.0.3+20160316155526",
+    "passport-facebook-token": "registry:dt/passport-facebook-token#0.4.0+20160316155526",
     "passport-google-oauth": "registry:dt/passport-google-oauth#1.0.3+20160619021532",
     "passport-jwt": "registry:dt/passport-jwt#2.0.0+20160330163949",
     "passport-local": "registry:dt/passport-local#0.0.0+20160316155526",

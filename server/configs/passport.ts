@@ -6,7 +6,7 @@ import { IUser, User } from '../models/user';
 import { SignupStrategy } from './passport-signup';
 import { SigninStrategy } from './passport-signin';
 import { GoogleOAuthStrategy, GoogleTokenIdOAuthStrategy } from './passport-google';
-import { FacebookOAuthStrategy } from './passport-facebook';
+import { FacebookOAuthStrategy, FacebookTokenIdOAuthStrategy } from './passport-facebook';
 
 let GoogleTokenStrategy = require('passport-google-id-token');
 
@@ -32,6 +32,7 @@ export function initialize(app){
         passport.use('google', new GoogleOAuthStrategy());
         passport.use('facebook', new FacebookOAuthStrategy());
         passport.use('google-android', new GoogleTokenIdOAuthStrategy());
+        passport.use('facebook-android', new FacebookTokenIdOAuthStrategy());
 
         winston.info('Passport [OK]');
         defer.resolve();

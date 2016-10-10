@@ -24,6 +24,7 @@
 /// <reference path="globals/morgan/index.d.ts" />
 /// <reference path="globals/node/index.d.ts" />
 /// <reference path="globals/nodemailer/index.d.ts" />
+/// <reference path="globals/passport-facebook-token/index.d.ts" />
 /// <reference path="globals/passport-facebook/index.d.ts" />
 /// <reference path="globals/passport-google-oauth/index.d.ts" />
 /// <reference path="globals/passport-jwt/index.d.ts" />

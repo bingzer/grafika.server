@@ -47,6 +47,9 @@ export function authenticate(req: express.Request | any, res: express.Response |
 export function authenticateGoogle(req: express.Request, res: express.Response, next: express.NextFunction){
     passport.authenticate('google-android')(req, res, next);  
 };
+export function authenticateFacebook(req: express.Request, res: express.Response, next: express.NextFunction) {
+    passport.authenticate('facebook-android')(req, res, next);
+}
 
 export function changePassword(req: any, res: any, next: express.NextFunction){
     User.findById(req.user._id, (err, user) => {

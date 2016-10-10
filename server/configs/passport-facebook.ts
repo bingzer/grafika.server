@@ -4,6 +4,8 @@ import { Strategy, IStrategyOption } from 'passport-facebook'
 import { IUser, User, randomUsername } from '../models/user';
 import * as config from './config';
 
+let FacebookTokenStrategy = require('passport-facebook-token');
+
 class Options implements IStrategyOption {
     clientID: string = config.setting.$auth.$facebookId;
     clientSecret: string = config.setting.$auth.$facebookSecret;
@@ -43,4 +45,27 @@ export class FacebookOAuthStrategy extends Strategy {
             });
         });
     }
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+class TokenIdOptions {
+    clientID = config.setting.$auth.$facebookId;
+    clientSecret = config.setting.$auth.$facebookSecret;
+}
+
+export class FacebookTokenIdOAuthStrategy implements passport.Strategy{
+    constructor() {
+        return new FacebookTokenStrategy(new TokenIdOptions(), (parsedToken, refreshToken, profile, done) => {
+            let email = (profile && profile.emails && profile.emails.length > 0) ? profile.emails[0].value : '';
+            User.findOne({ email: email }, (err, user) => {
+                done(null, user);
+            });
+        });
+    }
+    
+    authenticate(req: any, options?: Object): void {
+        throw new Error('FacebookTokenIdOAuthStrategy.authenticate() not implemented');
+    }
+    
 }

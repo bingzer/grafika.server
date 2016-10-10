@@ -7,6 +7,7 @@ var __extends = (this && this.__extends) || function (d, b) {
 var passport_facebook_1 = require('passport-facebook');
 var user_1 = require('../models/user');
 var config = require('./config');
+var FacebookTokenStrategy = require('passport-facebook-token');
 var Options = (function () {
     function Options() {
         this.clientID = config.setting.$auth.$facebookId;
@@ -51,4 +52,26 @@ var FacebookOAuthStrategy = (function (_super) {
     return FacebookOAuthStrategy;
 }(passport_facebook_1.Strategy));
 exports.FacebookOAuthStrategy = FacebookOAuthStrategy;
+var TokenIdOptions = (function () {
+    function TokenIdOptions() {
+        this.clientID = config.setting.$auth.$facebookId;
+        this.clientSecret = config.setting.$auth.$facebookSecret;
+    }
+    return TokenIdOptions;
+}());
+var FacebookTokenIdOAuthStrategy = (function () {
+    function FacebookTokenIdOAuthStrategy() {
+        return new FacebookTokenStrategy(new TokenIdOptions(), function (parsedToken, refreshToken, profile, done) {
+            var email = (profile && profile.emails && profile.emails.length > 0) ? profile.emails[0].value : '';
+            user_1.User.findOne({ email: email }, function (err, user) {
+                done(null, user);
+            });
+        });
+    }
+    FacebookTokenIdOAuthStrategy.prototype.authenticate = function (req, options) {
+        throw new Error('FacebookTokenIdOAuthStrategy.authenticate() not implemented');
+    };
+    return FacebookTokenIdOAuthStrategy;
+}());
+exports.FacebookTokenIdOAuthStrategy = FacebookTokenIdOAuthStrategy;
 //# sourceMappingURL=passport-facebook.js.map

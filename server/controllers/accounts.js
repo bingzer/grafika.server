@@ -54,6 +54,10 @@ function authenticateGoogle(req, res, next) {
 }
 exports.authenticateGoogle = authenticateGoogle;
 ;
+function authenticateFacebook(req, res, next) {
+    passport.authenticate('facebook-android')(req, res, next);
+}
+exports.authenticateFacebook = authenticateFacebook;
 function changePassword(req, res, next) {
     user_1.User.findById(req.user._id, function (err, user) {
         if (user.local.registered && !user.validPassword(req.body.currPwd))
