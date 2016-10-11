@@ -128,7 +128,7 @@ describe("controllers/animation.ts", function (){
         
         it("should sort by newest", function (done) {
             mockAnimation.Animation.sort = function (sort) {
-                assert.equal("-1", sort.modifiedDate);
+                assert.equal("-1", sort.dateModified);
                 assert.equal("-1", sort._id);
                 return mockAnimation.Animation;
             }

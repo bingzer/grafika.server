@@ -85,7 +85,7 @@ function createSort(req) {
     else if (req.query.sort === 'views')
         sort.views = -1;
     else if (req.query.sort === 'newest')
-        sort.modifiedDate = -1;
+        sort.dateModified = -1;
     sort._id = -1;
     return sort;
 }
