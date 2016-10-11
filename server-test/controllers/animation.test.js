@@ -303,12 +303,11 @@ describe("controllers/animation.ts", function (){
     });
     
     describe("#incrementViewCount()", function (){
-        it("should increment view count and update last modified", function (done){
+        it("should increment view count", function (done){
             Date.now = function() { return 100; };
             mockAnimation.Animation.findByIdAndUpdate = function (id, update, callback) {
                 assert.equal("_id", id);
                 assert.equal(1, update.$inc.views);
-                assert.equal(100, update.dateModified);
 
                 callback(undefined, {});
             }
@@ -325,7 +324,7 @@ describe("controllers/animation.ts", function (){
     });
     
     describe("#submitRating()", function (){
-        it("should submit rating and update the dateModified", function (done){
+        it("should submit rating", function (done){
             var animation = {
                 rating: 3,
                 save: function (callback) {
@@ -333,7 +332,6 @@ describe("controllers/animation.ts", function (){
                 }
             };
 
-            Date.now = function() { return 100; };
             mockAnimation.Animation.findById = function (id, fields, callback) {
                 assert.equal("_id", id);
                 assert.equal(0, fields.frames);
