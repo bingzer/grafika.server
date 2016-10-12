@@ -7,7 +7,7 @@
     <md-divider></md-divider>
 
     <div layout="column" layout-margin>
-        <div layout="row">
+        <div layout="row" layout-xs="column">
             <!-- Left -->
             <div layout="column">
                 <div class="md-title">
@@ -21,10 +21,10 @@
             </div>
             <div flex></div>
             <!-- Right -->
-            <div class="text-align-end" layout="column">
-                <avatar user-id="{{vm.animation.userId}}" username="{{vm.animation.author || 'anonymous'}}"></avatar>
-                <rating-stars animation-id="{{vm.animation._id}}" rating="{{vm.animation.rating}}"></rating-stars>
-                <div layout="row" ng-if="vm.canEdit" style="margin-top: 4px">
+            <div layout="column" layout-xs="row" layout-wrap layout-align="end end">
+                <avatar user-id="{{vm.animation.userId}}" username="{{vm.animation.author || 'anonymous'}}" flex-xs="45"></avatar>
+                <rating-stars class="text-align-end" animation-id="{{vm.animation._id}}" rating="{{vm.animation.rating}}" flex-xs="45"></rating-stars>
+                <div layout="row" ng-if="vm.canEdit" style="margin-top: 4px" flex-xs="90" layout-align-xs="center">
                     <div class="btn-group" role="group" aria-label="...">
                         <button type="button" class="font-smaller btn btn-default" ng-click="vm.edit()">Edit</button>
                         <button type="button" class="font-smaller btn btn-default" ng-click="vm.editData()">Properties</button>
