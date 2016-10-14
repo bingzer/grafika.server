@@ -6,13 +6,11 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks("grunt-bower-task");
     grunt.loadNpmTasks("grunt-contrib-uglify");
     grunt.loadNpmTasks("grunt-contrib-cssmin");
-	grunt.loadNpmTasks('grunt-string-replace');
     grunt.loadNpmTasks("grunt-contrib-copy");
     grunt.loadNpmTasks('grunt-typings');
     grunt.loadNpmTasks('grunt-mocha-cli');
     grunt.registerTask("default", [
         "clean", 
-        "string-replace", 
         "typings", 
         "ts", 
         "mochacli"
