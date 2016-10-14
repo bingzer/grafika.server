@@ -40,8 +40,12 @@ Animation.before('post', function (req, res, next) {
     next();
 });
 Animation.before('get', function (req, res, next) {
-    if (req.query && typeof (req.query.removed) === 'undefined')
-        req.query.removed = false;
+    if (req.query) {
+        if (typeof (req.query.removed) == 'undefined')
+            req.query.removed = false;
+        if (typeof (req.query.isPublic) == 'undefined')
+            req.query.isPublic = true;
+    }
     next();
 });
 Animation.before('put', function (req, res, next) {

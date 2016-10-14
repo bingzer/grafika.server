@@ -33,8 +33,8 @@ export function register(req: express.Request, res: express.Response, next: expr
 
 export function logout(req : express.Request, res : express.Response) {
     req.logout();
-    req.session.destroy(() => { 
-        res.redirect('/');
+    req.session.destroy(() => {
+        res.send(200);
     });
 };
 
@@ -120,7 +120,7 @@ export function providerLogin(req: express.Request | any, res: express.Response,
     if (req.isAuthenticated) {
         req.login(req.user, (err) => {
             if (err) return next(err);
-            res.redirect('/?action=authenticate');
+            res.send(201);
         });
     }
     else next(401);

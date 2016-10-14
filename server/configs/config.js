@@ -12,6 +12,7 @@ var Setting = (function () {
         this.server = new Server();
         this.client = new Client();
         this.auth = new Auth();
+        this.content = new Content();
     }
     Setting.prototype.initialize = function (app) {
         var _this = this;
@@ -78,7 +79,30 @@ var Setting = (function () {
         enumerable: true,
         configurable: true
     });
+    Object.defineProperty(Setting.prototype, "$content", {
+        get: function () {
+            return this.content;
+        },
+        enumerable: true,
+        configurable: true
+    });
     return Setting;
+}());
+var Content = (function () {
+    function Content() {
+        this.url = env.content_url;
+    }
+    Content.prototype.validate = function () {
+        ensure.notNullOrEmpty(this.url, "content_url");
+    };
+    Object.defineProperty(Content.prototype, "$url", {
+        get: function () {
+            return this.url;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    return Content;
 }());
 var Server = (function () {
     function Server() {

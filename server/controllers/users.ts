@@ -53,7 +53,7 @@ export function update(req: express.Request | any, res: express.Response, next: 
 export function getAvatar(req: express.Request | any, res: express.Response, next: express.NextFunction) {
     User.findById(req.params._id, (err, user) => {
         if (err) return next(err);
-        if (!user) return res.redirect('/assets/img/ic_user.png');
+        if (!user) return res.redirect('http://grafika.bingzer.com/assets/img/ic_user.png');
         res.redirect(user.prefs.avatar);
     });
 };

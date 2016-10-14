@@ -35,7 +35,7 @@ exports.register = register;
 function logout(req, res) {
     req.logout();
     req.session.destroy(function () {
-        res.redirect('/');
+        res.send(200);
     });
 }
 exports.logout = logout;
@@ -136,7 +136,7 @@ function providerLogin(req, res, next) {
         req.login(req.user, function (err) {
             if (err)
                 return next(err);
-            res.redirect('/?action=authenticate');
+            res.send(201);
         });
     }
     else

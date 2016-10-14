@@ -84,7 +84,7 @@ export const UserSchema = new mongoose.Schema({
         timestamp       : Date
     },
     prefs               : {
-        avatar          : { type: String, default: '/assets/img/ic_user.png' },
+        avatar          : { type: String, default: defaultAvatar },
         backdrop        : { type: String, default: randomlyPickBackdrop },
         drawingIsPublic : { type: Boolean, default: false },
         drawingAuthor   : { type: String },
@@ -267,8 +267,11 @@ export { User };
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 function randomlyPickBackdrop(){
-    const prefix = '/assets/img/backdrops/';
-    let backdropFiles = fs.readdirSync('client/assets/img/backdrops');
-    let backdrop = randomlyPick(backdropFiles); // todo: use file.list()
+    const prefix = config.setting.$content.$url + '/assets/img/backdrops/';
+    let backdrop = randomlyPick(['001.png', '002.png', '003.png', '004.png', '005.png']); // todo: use file.list()
     return prefix + backdrop;
+}
+
+function defaultAvatar(){
+    return config.setting.$content.$url + 'assets/img/ic_user.png';
 }

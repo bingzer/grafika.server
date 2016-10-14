@@ -57,7 +57,7 @@ function getAvatar(req, res, next) {
         if (err)
             return next(err);
         if (!user)
-            return res.redirect('/assets/img/ic_user.png');
+            return res.redirect('http://grafika.bingzer.com/assets/img/ic_user.png');
         res.redirect(user.prefs.avatar);
     });
 }

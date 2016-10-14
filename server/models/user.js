@@ -1,7 +1,6 @@
 "use strict";
 var mongoose = require('mongoose');
 var winston = require('winston');
-var fs = require('fs');
 var q = require('q');
 var config = require('../configs/config');
 var restful = require('../libs/restful');
@@ -39,7 +38,7 @@ exports.UserSchema = new mongoose.Schema({
         timestamp: Date
     },
     prefs: {
-        avatar: { type: String, default: '/assets/img/ic_user.png' },
+        avatar: { type: String, default: defaultAvatar },
         backdrop: { type: String, default: randomlyPickBackdrop },
         drawingIsPublic: { type: Boolean, default: false },
         drawingAuthor: { type: String },
@@ -187,9 +186,11 @@ function randomUsername() {
 }
 exports.randomUsername = randomUsername;
 function randomlyPickBackdrop() {
-    var prefix = '/assets/img/backdrops/';
-    var backdropFiles = fs.readdirSync('client/assets/img/backdrops');
-    var backdrop = utils_1.randomlyPick(backdropFiles);
+    var prefix = config.setting.$content.$url + '/assets/img/backdrops/';
+    var backdrop = utils_1.randomlyPick(['001.png', '002.png', '003.png', '004.png', '005.png']);
     return prefix + backdrop;
+}
+function defaultAvatar() {
+    return config.setting.$content.$url + 'assets/img/ic_user.png';
 }
 //# sourceMappingURL=user.js.map

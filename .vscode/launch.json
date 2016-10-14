@@ -9,7 +9,7 @@
             "stopOnEntry": false,
             "args": [],
             "cwd": "${workspaceRoot}",
-            "preLaunchTask": "build-dev",
+            "preLaunchTask": "build",
             "runtimeExecutable": null,
             "runtimeArgs": [
                 "--nolazy"
@@ -22,7 +22,8 @@
                 "server_mailer_service": "postmark",
                 "server_mailer_smtp": "smtp.postmarkapp.com",
                 "server_mailer_port": "2525",
-                "server_mailer_from": "grafika@bingzer.com"
+                "server_mailer_from": "grafika@bingzer.com",
+                "content_url": "http://localhost:5000/"
             },
             "sourceMaps": true,
             "outDir": null
@@ -35,7 +36,7 @@
             "stopOnEntry": false,
             "args": [],
             "cwd": "${workspaceRoot}",
-            "preLaunchTask": "build-prod",
+            "preLaunchTask": "build",
             "runtimeExecutable": null,
             "runtimeArgs": [
                 "--nolazy"
@@ -48,7 +49,8 @@
                 "server_mailer_service": "postmark",
                 "server_mailer_smtp": "smtp.postmarkapp.com",
                 "server_mailer_port": "2525",
-                "server_mailer_from": "grafika@bingzer.com"
+                "server_mailer_from": "grafika@bingzer.com",
+                "content_url": "http://localhost:5000/"
             },
             "sourceMaps": true,
             "outDir": null

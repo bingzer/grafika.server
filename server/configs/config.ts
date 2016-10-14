@@ -18,6 +18,7 @@ class Setting implements IConfig {
     private server: Server;
 	private client: Client;
 	private auth: Auth;
+	private content: Content;
 
 	constructor() {
 		this.name = 'Grafika Web Server';
@@ -26,6 +27,7 @@ class Setting implements IConfig {
 		this.server = new Server();
 		this.client = new Client();
 		this.auth = new Auth();
+		this.content = new Content();
 	}
 
 	initialize(app): q.Promise<any> {
@@ -79,8 +81,29 @@ class Setting implements IConfig {
 	public get $auth(): Auth {
 		return this.auth;
 	}
+
+	public get $content(): Content {
+		return this.content;
+	}
 	
 
+}
+
+class Content implements IConfig {
+	private url: string;
+
+	constructor(){
+		this.url = env.content_url;
+	}
+
+    public validate() : void {
+		ensure.notNullOrEmpty(this.url, "content_url");
+    }
+
+	public get $url(): string {
+		return this.url;
+	}
+	
 }
 
 /**

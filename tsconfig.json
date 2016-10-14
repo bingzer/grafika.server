@@ -7,11 +7,9 @@
         "allowJs": false
     },
     "exclude": [
-        "bower_components",
         "node_modules",
         "typings/globals",
         "typings/locals",
-        "client/assets",
         "shared"
     ]
 }
