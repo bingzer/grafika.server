@@ -21,7 +21,10 @@ describe("libs/mailer.ts", function (){
                     $mailPort: 123,
                     $mailUser: 'mailUser',
                     $mailPassword: 'mailPassword'
-                }   
+                },
+                $content: {
+                    $url: 'content-url'
+                }
             }
         };
         mockFs = {

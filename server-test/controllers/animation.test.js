@@ -383,7 +383,7 @@ describe("controllers/animation.ts", function (){
             req.params.rating = 4;
             req.user._id = "_userId";
             res.redirect = function (url) {
-                assert.equal("/app/content/comment.html?url=http://grafika.bingzer.com/animations/_id&title=name&shortname=grafika-app&identifier=_id&pub=disqus-public&token=disqus-token-_userId", url);
+                assert.equal("http://localhost:5000/app/content/comment.html?url=http://localhost:5000/animations/_id&title=name&shortname=grafika-app&identifier=_id&pub=disqus-public&token=disqus-token-_userId", url);
                 done();
             }
 

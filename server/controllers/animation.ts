@@ -65,8 +65,8 @@ export function commentForMobile(req: express.Request | any, res: express.Respon
         if (err) return next(err);
         if (!anim) return next(404);
 
-        let queryString = `url=${config.setting.$content.$url}/animations/${anim._id}&title=${anim.name}&shortname=grafika-app&identifier=${anim._id}&pub=${disqusToken.public}&token=${disqusToken.token}`;
-        let url = `${config.setting.$content.$url}/app/content/comment.html?${queryString}`;
+        let queryString = `url=${config.setting.$content.$url}animations/${anim._id}&title=${anim.name}&shortname=grafika-app&identifier=${anim._id}&pub=${disqusToken.public}&token=${disqusToken.token}`;
+        let url = `${config.setting.$content.$url}app/content/comment.html?${queryString}`;
         return res.redirect(url);
     });
 }

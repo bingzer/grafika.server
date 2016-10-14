@@ -67,8 +67,8 @@ function commentForMobile(req, res, next) {
             return next(err);
         if (!anim)
             return next(404);
-        var queryString = "url=" + config.setting.$content.$url + "/animations/" + anim._id + "&title=" + anim.name + "&shortname=grafika-app&identifier=" + anim._id + "&pub=" + disqusToken.public + "&token=" + disqusToken.token;
-        var url = config.setting.$content.$url + "/app/content/comment.html?" + queryString;
+        var queryString = "url=" + config.setting.$content.$url + "animations/" + anim._id + "&title=" + anim.name + "&shortname=grafika-app&identifier=" + anim._id + "&pub=" + disqusToken.public + "&token=" + disqusToken.token;
+        var url = config.setting.$content.$url + "app/content/comment.html?" + queryString;
         return res.redirect(url);
     });
 }
