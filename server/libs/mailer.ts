@@ -23,9 +23,9 @@ export { mailTransporter };
 
 export function sendVerificationEmail(user: IUser) : $q.Promise<{}> {
     let deferred = $q.defer();
-    let url = config.setting.$server.$url + 'r?action=verify&hash=' + encodeURIComponent(user.activation.hash) + '&user=' + encodeURIComponent(user.email);
+    let url = config.setting.$content.$url + 'r?action=verify&hash=' + encodeURIComponent(user.activation.hash) + '&user=' + encodeURIComponent(user.email);
     
-    let opts = { title: 'Please activate your account', user: user.email, link: url, privacyUrl: config.setting.$server.$url + 'privacy', homeUrl: config.setting.$server.$url };
+    let opts = { title: 'Please activate your account', user: user.email, link: url, privacyUrl: config.setting.$content.$url + 'privacy', homeUrl: config.setting.$content.$url };
     let promises = $q.allSettled([
         readTemplate('verification-template.txt', opts), 
         readTemplate('verification-template.html', opts) ]);
@@ -58,9 +58,9 @@ export function sendVerificationEmail(user: IUser) : $q.Promise<{}> {
 
 export function sendResetEmail(user : IUser) : $q.Promise<{}> {
     let deferred = $q.defer();
-    let url = config.setting.$server.$url + 'r?action=reset-pwd&hash=' + encodeURIComponent(user.activation.hash) + '&user=' + encodeURIComponent(user.email);
+    let url = config.setting.$content.$url + 'r?action=reset-pwd&hash=' + encodeURIComponent(user.activation.hash) + '&user=' + encodeURIComponent(user.email);
     
-    let opts = { title: 'Grafika: Password Reset', user: user.email, link: url, privacyUrl: config.setting.$server.$url + 'privacy', homeUrl: config.setting.$server.$url };
+    let opts = { title: 'Grafika: Password Reset', user: user.email, link: url, privacyUrl: config.setting.$content.$url + 'privacy', homeUrl: config.setting.$content.$url };
     let promises = $q.allSettled([
         readTemplate('resetpwd-template.txt', opts), 
         readTemplate('resetpwd-template.html', opts) ]);
