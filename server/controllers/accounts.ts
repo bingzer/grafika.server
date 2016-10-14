@@ -120,7 +120,8 @@ export function providerLogin(req: express.Request | any, res: express.Response,
     if (req.isAuthenticated) {
         req.login(req.user, (err) => {
             if (err) return next(err);
-            res.send(201);
+            let token = generateJwtToken(req.user);
+            res.redirect(config.setting.$content.$url + '?action=authenticate&token=' + token);
         });
     }
     else next(401);

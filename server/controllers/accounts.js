@@ -136,7 +136,8 @@ function providerLogin(req, res, next) {
         req.login(req.user, function (err) {
             if (err)
                 return next(err);
-            res.send(201);
+            var token = user_1.generateJwtToken(req.user);
+            res.redirect(config.setting.$content.$url + '?action=authenticate&token=' + token);
         });
     }
     else

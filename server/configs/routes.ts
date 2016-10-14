@@ -35,7 +35,7 @@ function useSession(req: express.Request, res: express.Response, next: express.N
     if (req.isAuthenticated())
         return next();
     // if they aren't redirect them to the home page
-    else res.send(401);
+    else res.sendStatus(401);
 };
 
 function extractUser(req: any, res: express.Response, next: express.NextFunction) {
