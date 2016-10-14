@@ -1,4 +1,5 @@
 "use strict";
+var config = require('../configs/config');
 var aws_1 = require('../libs/aws');
 var user_1 = require("../models/user");
 var aws = new aws_1.AwsUsers();
@@ -57,7 +58,7 @@ function getAvatar(req, res, next) {
         if (err)
             return next(err);
         if (!user)
-            return res.redirect('http://grafika.bingzer.com/assets/img/ic_user.png');
+            return res.redirect(config.setting.$content.$url + "assets/img/ic_user.png");
         res.redirect(user.prefs.avatar);
     });
 }

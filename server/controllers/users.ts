@@ -1,5 +1,7 @@
 import * as express from "express";
 
+import * as config from '../configs/config';
+
 import { AwsUsers } from '../libs/aws';
 import { IUser, User, sanitize, checkAvailability, isAdministrator } from "../models/user";
 
@@ -53,7 +55,7 @@ export function update(req: express.Request | any, res: express.Response, next: 
 export function getAvatar(req: express.Request | any, res: express.Response, next: express.NextFunction) {
     User.findById(req.params._id, (err, user) => {
         if (err) return next(err);
-        if (!user) return res.redirect('http://grafika.bingzer.com/assets/img/ic_user.png');
+        if (!user) return res.redirect(`${config.setting.$content.$url}assets/img/ic_user.png`);
         res.redirect(user.prefs.avatar);
     });
 };

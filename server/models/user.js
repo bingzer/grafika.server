@@ -99,7 +99,7 @@ function generateDisqusToken(user) {
         id: user._id,
         username: user.username,
         avatar: user.prefs.avatar,
-        url: 'http://grafika.bingzer.com/users/' + user._id
+        url: 'https://grafika.bingzer.com/users/' + user._id
     };
     var disqusStr = JSON.stringify(disqusData);
     var timestamp = Math.round(+new Date() / 1000);
