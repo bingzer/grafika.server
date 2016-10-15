@@ -55,7 +55,12 @@ export function update(req: express.Request | any, res: express.Response, next: 
 export function getAvatar(req: express.Request | any, res: express.Response, next: express.NextFunction) {
     User.findById(req.params._id, (err, user) => {
         if (err) return next(err);
-        if (!user) return res.redirect(`${config.setting.$content.$url}assets/img/ic_user.png`);
+        if (!user || !user.prefs || !user.prefs.avatar) 
+            return res.redirect(`${config.setting.$content.$url}assets/img/ic_user.png`);
+
+        if (user.prefs.avatar.indexOf('/') === 0 && user.prefs.avatar.indexOf('//') !== 0){
+            return res.redirect(`${config.setting.$content.$url}${user.prefs.avatar.substr(1)}`);
+        }
         res.redirect(user.prefs.avatar);
     });
 };
