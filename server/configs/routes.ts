@@ -4,6 +4,7 @@ import * as mongoose from 'mongoose';
 import * as winston from 'winston';
 import * as q from 'q';
 
+import * as serverController    from '../controllers/server';
 import * as accountController   from '../controllers/accounts';
 import * as resourcesController from '../controllers/resources';
 import * as userController      from '../controllers/users';
@@ -140,6 +141,8 @@ export function initialize(app): q.Promise<any> {
     let defer = q.defer();
     setTimeout(() => {
         app.use(extractUser);
+
+        app.get('/', serverController.getInfo);
 
         app.get('/accounts/google', accountController.googleLogin);
         app.get('/accounts/google/callback', accountController.googleCallback, accountController.providerLogin);

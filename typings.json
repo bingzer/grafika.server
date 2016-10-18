@@ -19,7 +19,6 @@
     "grafika": "github:bingzer/grafika.js/dist/grafika.d.ts",
     "grafika.exts": "github:bingzer/grafika.js/dist/grafika.extensions.d.ts",
     "jquery": "registry:dt/jquery#1.10.0+20160704162008",
-    "markdown.js": "file:shared/markdown.js.d.ts",
     "method-override": "registry:dt/method-override#0.0.0+20160317120654",
     "mime": "registry:dt/mime#0.0.0+20160316155526",
     "mongoose": "registry:dt/mongoose#3.8.5+20160629014609",
@@ -34,11 +33,8 @@
     "passport-local": "registry:dt/passport-local#0.0.0+20160316155526",
     "passport-strategy": "registry:dt/passport-strategy#0.2.0+20160316155526",
     "q": "registry:dt/q#0.0.0+20160613154756",
-    "resource": "file:shared/resource.d.ts",
     "serve-static": "registry:dt/serve-static#0.0.0+20160606155157",
-    "suppress-errors": "file:shared/suppress-errors.d.ts",
     "underscore": "registry:dt/underscore#1.7.0+20160720002543",
-    "user": "file:shared/user.d.ts",
     "winston": "registry:dt/winston#0.0.0+20160417152829"
   }
 }

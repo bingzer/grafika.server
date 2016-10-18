@@ -3,6 +3,7 @@ var expressJwt = require('express-jwt');
 var mongoose = require('mongoose');
 var winston = require('winston');
 var q = require('q');
+var serverController = require('../controllers/server');
 var accountController = require('../controllers/accounts');
 var resourcesController = require('../controllers/resources');
 var userController = require('../controllers/users');
@@ -117,6 +118,7 @@ function initialize(app) {
     var defer = q.defer();
     setTimeout(function () {
         app.use(extractUser);
+        app.get('/', serverController.getInfo);
         app.get('/accounts/google', accountController.googleLogin);
         app.get('/accounts/google/callback', accountController.googleCallback, accountController.providerLogin);
         app.get('/accounts/facebook', accountController.facebookLogin);

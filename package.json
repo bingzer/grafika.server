@@ -1,13 +1,13 @@
 {
-  "name": "grafika",
+  "name": "grafika.server",
   "version": "0.9.19-61",
   "engines": {
     "node": "5.2.0"
   },
-  "description": "",
+  "description": "Grafika API server",
   "repository": {
     "type": "git",
-    "url": "https://bingzer.visualstudio.com/DefaultCollection/_git/grafika"
+    "url": "https://github.com/bingzer/grafika.server"
   },
   "scripts": {
     "postinstall": "grunt",
@@ -55,5 +55,8 @@
     "chai-http": "^3.0.0",
     "mocha": "^2.5.3",
     "mockery": "^1.7.0"
+  },
+  "devDependencies": {
+    "grunt-contrib-compress": "^1.3.0"
   }
 }

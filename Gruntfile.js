@@ -1,14 +1,11 @@
 module.exports = function (grunt) {
     grunt.option('force', false);
 
-    grunt.loadNpmTasks('grunt-ts');
     grunt.loadNpmTasks("grunt-contrib-clean");
-    grunt.loadNpmTasks("grunt-bower-task");
-    grunt.loadNpmTasks("grunt-contrib-uglify");
-    grunt.loadNpmTasks("grunt-contrib-cssmin");
-    grunt.loadNpmTasks("grunt-contrib-copy");
+    grunt.loadNpmTasks('grunt-ts');
     grunt.loadNpmTasks('grunt-typings');
     grunt.loadNpmTasks('grunt-mocha-cli');
+    grunt.loadNpmTasks("grunt-contrib-compress");
     grunt.registerTask("default", [
         "clean", 
         "typings", 
@@ -51,6 +48,28 @@ module.exports = function (grunt) {
                 }
             },
             all: ['server-test/**/*.js']
+        },
+        compress: {
+            transport: {
+                options: {
+                    archive: '../transport/grafika.server.zip'
+                },
+                files: [
+                    { 
+                        expand: true,
+                        src: [
+                            '.vscode/**',
+                            'server/**',
+                            'server-test/**',
+                            'typings/**',
+                        ]
+                    },
+                    {
+                        src: [ '*', '.gitignore', '.travis.yml' ],
+                        filter: 'isFile'
+                    }
+                ]
+            }
         }
     });
 }
