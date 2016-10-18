@@ -43,8 +43,6 @@ Animation.before('get', function (req, res, next) {
     if (req.query) {
         if (typeof (req.query.removed) == 'undefined')
             req.query.removed = false;
-        if (typeof (req.query.isPublic) == 'undefined')
-            req.query.isPublic = true;
     }
     next();
 });
