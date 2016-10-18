@@ -44,6 +44,15 @@ function authenticate(req, res, next) {
     tryAuthenticate(req, function (err, user) {
         if (err)
             return next(err);
+        if (req.query.refreshToken) {
+            return user_1.User.findById(user._id, function (err, user) {
+                if (err)
+                    return next(err);
+                if (!user)
+                    return next(404);
+                res.send({ token: user_1.generateJwtToken(user) });
+            });
+        }
         return res.send({ token: user_1.generateJwtToken(user) });
     });
 }

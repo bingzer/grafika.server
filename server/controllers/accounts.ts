@@ -41,6 +41,13 @@ export function logout(req : express.Request, res : express.Response) {
 export function authenticate(req: express.Request | any, res: express.Response | any, next: express.NextFunction){
     tryAuthenticate(req, (err, user) => {
         if (err) return next(err);
+        if (req.query.refreshToken) {
+            return User.findById(user._id, (err, user) => {
+                if (err) return next(err);
+                if (!user) return next(404);
+                res.send({ token: generateJwtToken(user) })
+            })
+        }
         return res.send({token: generateJwtToken(user) });
     });
 };
