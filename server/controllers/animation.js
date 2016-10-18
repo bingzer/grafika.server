@@ -74,10 +74,17 @@ function commentForMobile(req, res, next) {
 }
 exports.commentForMobile = commentForMobile;
 function createQuery(req) {
+    var qObject = { isPublic: true };
     if (req.query.term) {
-        return { $text: { $search: req.query.term } };
+        qObject.$text = { $search: req.query.term };
     }
-    return {};
+    if (req.query.isPublic) {
+        if (req.query.isPublic == "true")
+            qObject.isPublic = true;
+        if (req.query.isPublic == "false")
+            qObject.isPublic = false;
+    }
+    return qObject;
 }
 function createSort(req) {
     var sort = {};

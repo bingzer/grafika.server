@@ -72,11 +72,22 @@ export function commentForMobile(req: express.Request | any, res: express.Respon
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-function createQuery(req): any{
+function createQuery(req): any {
+    let qObject: any = { isPublic: true };
     if (req.query.term) {
-        return { $text : { $search: req.query.term } };
+        qObject.$text = { $search: req.query.term };
     }
-    return {};
+    
+    if (req.query.isPublic) {
+        if (req.query.isPublic == "true")
+            qObject.isPublic = true;
+        if (req.query.isPublic == "false")
+            qObject.isPublic = false;
+    }
+
+    //qObject.userId = req.query.userId;
+
+    return qObject;
 }
 
 function createSort(req): any{
