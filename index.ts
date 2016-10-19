@@ -53,15 +53,11 @@ function initialize(app) : q.Promise<any> {
     setTimeout(() => {
         app.use(bodyParser.urlencoded({ extended: true }));
         app.use(bodyParser.json({ limit: '5mb'}));
-        app.use(cookieParser());
         app.use(methodOverride());
         app.use(morgan('dev'));
         app.use(cors());
-
-        app.use(session({ secret: config.setting.$client.$sessionSecret, name: 'grafika.session', resave: true, saveUninitialized: true })); // session secret    
+    
         app.use(passport.initialize());
-        app.use(passport.session()); // persistent login sessions
-
         winston.info('Middlewares [OK]');
         defer.resolve();
     }, 100);

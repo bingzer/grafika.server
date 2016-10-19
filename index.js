@@ -1,7 +1,5 @@
 "use strict";
 var express = require('express');
-var session = require('express-session');
-var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var morgan = require('morgan');
 var methodOverride = require('method-override');
@@ -47,13 +45,10 @@ function initialize(app) {
     setTimeout(function () {
         app.use(bodyParser.urlencoded({ extended: true }));
         app.use(bodyParser.json({ limit: '5mb' }));
-        app.use(cookieParser());
         app.use(methodOverride());
         app.use(morgan('dev'));
         app.use(cors());
-        app.use(session({ secret: config.setting.$client.$sessionSecret, name: 'grafika.session', resave: true, saveUninitialized: true }));
         app.use(passport.initialize());
-        app.use(passport.session());
         winston.info('Middlewares [OK]');
         defer.resolve();
     }, 100);
