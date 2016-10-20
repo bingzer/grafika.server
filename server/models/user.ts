@@ -233,7 +233,7 @@ export function userQuery(username: string) : any {
     return { $or:[{ 'email': name }, { 'username': name }] };
 }
 
-export function ensureAdminExists() : ng.IPromise<IUser> {
+export function ensureAdminExists() : q.IPromise<IUser> {
     let defer = q.defer<IUser>();
 
 	User.findOne(userQuery(GRAFIKA_ADMIN), (err, user) => {
