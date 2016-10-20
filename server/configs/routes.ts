@@ -164,6 +164,7 @@ export function initialize(app): q.Promise<any> {
         
         // ---------------- Animation -----------------------------//
         app.get('/animations', animationController.search);
+        app.get('/animations/random', animationController.getRandomAnimation);
         app.post('/animations', useSessionOrJwt); // create
         app.get('/animations/:_id', useAnimAccess); // view
         app.put('/animations/:_id', useSessionOrJwt, useAnimAccess); // update

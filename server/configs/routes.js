@@ -136,6 +136,7 @@ function initialize(app) {
         app.post('/accounts/pwd', useSessionOrJwt, accountController.changePassword);
         app.post('/accounts/username-check', useSessionOrJwt, accountController.checkUsernameAvailability);
         app.get('/animations', animationController.search);
+        app.get('/animations/random', animationController.getRandomAnimation);
         app.post('/animations', useSessionOrJwt);
         app.get('/animations/:_id', useAnimAccess);
         app.put('/animations/:_id', useSessionOrJwt, useAnimAccess);

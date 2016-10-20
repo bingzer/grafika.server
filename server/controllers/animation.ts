@@ -70,6 +70,20 @@ export function commentForMobile(req: express.Request | any, res: express.Respon
         return res.redirect(url);
     });
 }
+
+export function getRandomAnimation(req: express.Request, res: express.Response, next: express.NextFunction) {
+    let criteria = { removed: false, isPublic: true, $where: "this.frames.length > 2" };
+    Animation.find(criteria).lean().count((err, count) => {
+        if (err) return next(err);
+
+        let random = Math.floor(Math.random() * count);
+        Animation.findOne(criteria).select('+frames').skip(random).lean().exec((err, result) => {
+            if (err) return next(err);
+
+            res.send(result); 
+        });
+    });
+}
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 function createQuery(req): any {
