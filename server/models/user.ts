@@ -267,7 +267,7 @@ export { User };
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 function randomlyPickBackdrop(){
-    const prefix = config.setting.$content.$url + '/assets/img/backdrops/';
+    const prefix = config.setting.$content.$url + 'assets/img/backdrops/';
     let backdrop = randomlyPick(['001.png', '002.png', '003.png', '004.png', '005.png']); // todo: use file.list()
     return prefix + backdrop;
 }
