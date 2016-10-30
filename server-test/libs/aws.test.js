@@ -18,6 +18,9 @@ describe("libs/aws.ts", function (){
                     $awsSecret: 'awsSecret',
                     $awsBucket: 'awsBucket',
                     $awsUrl: 'awsUrl/'
+                },
+                $content: {
+                    
                 }
             }
         };
@@ -212,13 +215,15 @@ describe("libs/aws.ts", function (){
                 mockery.registerMock('../configs/config', mockConfig);
                 mockery.registerMock('aws-sdk', mockAwsSdk);
 
+                // config.setting.$content.$url + 'assets/img/placeholder.png'
                 mockConfig.setting.$auth.$awsBucket = 'fake';
+                mockConfig.setting.$content.$url = 'http://fake.com/';
 
                 var model = require("../../server/libs/aws.js");
                 var awsResource = new model.AwsResources();
 
                 var url = awsResource.getResourceUrl('animId', 'resourceId');
-                assert.equal('/assets/img/placeholder.png', url);
+                assert.equal('http://fake.com/assets/img/placeholder.png', url);
                 done();
             });
         });
