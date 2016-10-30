@@ -1,6 +1,6 @@
 {
   "name": "grafika.server",
-  "version": "0.9.19-70",
+  "version": "0.9.19-71",
   "engines": {
     "node": "5.2.0"
   },
