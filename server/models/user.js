@@ -186,7 +186,7 @@ function randomUsername() {
 }
 exports.randomUsername = randomUsername;
 function randomlyPickBackdrop() {
-    var prefix = config.setting.$content.$url + '/assets/img/backdrops/';
+    var prefix = config.setting.$content.$url + 'assets/img/backdrops/';
     var backdrop = utils_1.randomlyPick(['001.png', '002.png', '003.png', '004.png', '005.png']);
     return prefix + backdrop;
 }
