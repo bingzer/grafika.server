@@ -2,7 +2,7 @@
   "name": "grafika.server",
   "version": "0.9.19-73",
   "engines": {
-    "node": "5.2.0"
+    "node": "6.1.0"
   },
   "description": "Grafika API server",
   "repository": {
