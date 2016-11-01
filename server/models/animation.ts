@@ -1,6 +1,8 @@
 import * as mongoose from 'mongoose';
 import * as winston from 'winston';
 
+import * as frames from '../libs/frame-utils';
+
 import restful = require('../libs/restful');
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -33,7 +35,7 @@ export const AnimationSchema = new mongoose.Schema({
     userId       : { type: String, required: true },
 
     totalFrame   : { type: Number, default: 0 },
-    frames       : { type: [], select: false }
+    frames       : { type: {}, select: false }
 });
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -51,7 +53,12 @@ Animation.before('post', (req, res, next) => {
 
     delete req.body._id;
     
-    next();
+    frames.serializeFrames(req.body.frames, (err, result) => {
+        if (err) return next(err);
+        if (result)
+            req.body.frames = result;
+        next();
+    });
 });
 Animation.before('get', (req, res, next) => {
     if (req.query) {
@@ -73,14 +80,26 @@ Animation.route('frames', {
         if (req.method === 'GET') {
             Animation.db.collections.animations.findOne({ _id: new mongoose.Types.ObjectId(req.params.id) }, { frames: 1}, (err, result) =>{
                 if (err) return next(err);
-                if (!result) return next(400);
-                res.send(result.frames);
+                frames.deserializeFrames(result.frames, (err, result) => {
+                    if (err) return next(err);
+
+                    res.set('Content-Type', 'application/json');
+                    res.send(result);
+                });
             });
         }
         else if (req.method == 'POST') {
-            Animation.db.collections.animations.findOneAndUpdate({_id: new mongoose.Types.ObjectId(req.params.id) }, { $set: { 'frames': req.body} }, (err) => {
+            // update total frames
+            Animation.findByIdAndUpdate(req.params.id, { totalFrame: req.body.length });
+
+            frames.serializeFrames(req.body, (err, result) => {
                 if (err) return next(err);
-                res.sendStatus(201);
+                if (!result) return next(400);
+
+                Animation.db.collections.animations.findOneAndUpdate({_id: new mongoose.Types.ObjectId(req.params.id) }, { $set: { 'frames': result } }, (err) => {
+                    if (err) return next(err);
+                    res.sendStatus(201);
+                });
             });
         }
         else next(400);

@@ -1,6 +1,7 @@
 "use strict";
 var mongoose = require('mongoose');
 var winston = require('winston');
+var frames = require('../libs/frame-utils');
 var restful = require('../libs/restful');
 exports.AnimationSchema = new mongoose.Schema({
     localId: { type: String },
@@ -20,7 +21,7 @@ exports.AnimationSchema = new mongoose.Schema({
     author: String,
     userId: { type: String, required: true },
     totalFrame: { type: Number, default: 0 },
-    frames: { type: [], select: false }
+    frames: { type: {}, select: false }
 });
 var Animation = restful.model('animations', exports.AnimationSchema);
 exports.Animation = Animation;
@@ -37,7 +38,13 @@ Animation.before('post', function (req, res, next) {
         req.body.author = req.user.prefs.drawingAuthor || req.user.username;
     req.body.totalFrame = req.body.frames ? req.body.frames.length : req.body.totalFrame;
     delete req.body._id;
-    next();
+    frames.serializeFrames(req.body.frames, function (err, result) {
+        if (err)
+            return next(err);
+        if (result)
+            req.body.frames = result;
+        next();
+    });
 });
 Animation.before('get', function (req, res, next) {
     if (req.query) {
@@ -58,16 +65,26 @@ Animation.route('frames', {
             Animation.db.collections.animations.findOne({ _id: new mongoose.Types.ObjectId(req.params.id) }, { frames: 1 }, function (err, result) {
                 if (err)
                     return next(err);
-                if (!result)
-                    return next(400);
-                res.send(result.frames);
+                frames.deserializeFrames(result.frames, function (err, result) {
+                    if (err)
+                        return next(err);
+                    res.set('Content-Type', 'application/json');
+                    res.send(result);
+                });
             });
         }
         else if (req.method == 'POST') {
-            Animation.db.collections.animations.findOneAndUpdate({ _id: new mongoose.Types.ObjectId(req.params.id) }, { $set: { 'frames': req.body } }, function (err) {
+            Animation.findByIdAndUpdate(req.params.id, { totalFrame: req.body.length });
+            frames.serializeFrames(req.body, function (err, result) {
                 if (err)
                     return next(err);
-                res.sendStatus(201);
+                if (!result)
+                    return next(400);
+                Animation.db.collections.animations.findOneAndUpdate({ _id: new mongoose.Types.ObjectId(req.params.id) }, { $set: { 'frames': result } }, function (err) {
+                    if (err)
+                        return next(err);
+                    res.sendStatus(201);
+                });
             });
         }
         else

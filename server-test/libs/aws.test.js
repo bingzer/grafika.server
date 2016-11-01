@@ -17,6 +17,7 @@ describe("libs/aws.ts", function (){
                     $awsId: 'awsId',
                     $awsSecret: 'awsSecret',
                     $awsBucket: 'awsBucket',
+                    $awsFolder: 'awsFolder',
                     $awsUrl: 'awsUrl/'
                 },
                 $content: {
@@ -44,7 +45,7 @@ describe("libs/aws.ts", function (){
                 mockAwsSdk.getSignedUrl = function(name, params, callback) {
                     assert.equal('putObject', name);
                     assert.equal('awsBucket', params.Bucket);
-                    assert.equal('grafika/users/_id/imageType', params.Key);
+                    assert.equal('awsFolder/users/_id/imageType', params.Key);
                     assert.equal(600, params.Expires);
                     assert.equal('', params.ContentMD5);
                     assert.equal('mime', params.ContentType);
@@ -70,7 +71,7 @@ describe("libs/aws.ts", function (){
                 mockAwsSdk.getSignedUrl = function(name, params, callback) {
                     assert.equal('putObject', name);
                     assert.equal('awsBucket', params.Bucket);
-                    assert.equal('grafika/users/_id/imageType', params.Key);
+                    assert.equal('awsFolder/users/_id/imageType', params.Key);
                     assert.equal(600, params.Expires);
                     assert.equal('', params.ContentMD5);
                     assert.equal('mime', params.ContentType);
@@ -99,7 +100,7 @@ describe("libs/aws.ts", function (){
                 mockAwsSdk.deleteObject = function(params, callback) {
                     deleteObjectCalled = true;
                     assert.equal('awsBucket', params.Bucket);
-                    assert.equal('grafika/users/_id/avatar', params.Key);
+                    assert.equal('awsFolder/users/_id/avatar', params.Key);
                     callback(undefined, 'OK');
                 }
 
@@ -121,7 +122,7 @@ describe("libs/aws.ts", function (){
                 mockAwsSdk.deleteObject = function(params, callback) {
                     deleteObjectCalled = true;
                     assert.equal('awsBucket', params.Bucket);
-                    assert.equal('grafika/users/_id/avatar', params.Key);
+                    assert.equal('awsFolder/users/_id/avatar', params.Key);
                     callback("Error");
                 }
 
@@ -149,7 +150,7 @@ describe("libs/aws.ts", function (){
                 mockAwsSdk.getSignedUrl = function(name, params, callback) {
                     assert.equal('putObject', name);
                     assert.equal('awsBucket', params.Bucket);
-                    assert.equal('grafika/animations/animationId/resourceId', params.Key);
+                    assert.equal('awsFolder/animations/animationId/resourceId', params.Key);
                     assert.equal(600, params.Expires);
                     assert.equal('', params.ContentMD5);
                     assert.equal('resourceMime', params.ContentType);
@@ -175,7 +176,7 @@ describe("libs/aws.ts", function (){
                 mockAwsSdk.getSignedUrl = function(name, params, callback) {
                     assert.equal('putObject', name);
                     assert.equal('awsBucket', params.Bucket);
-                    assert.equal('grafika/animations/animationId/resourceId', params.Key);
+                    assert.equal('awsFolder/animations/animationId/resourceId', params.Key);
                     assert.equal(600, params.Expires);
                     assert.equal('', params.ContentMD5);
                     assert.equal('resourceMime', params.ContentType);
@@ -207,7 +208,7 @@ describe("libs/aws.ts", function (){
                 var awsResource = new model.AwsResources();
 
                 var url = awsResource.getResourceUrl('animId', 'resourceId');
-                assert.equal('awsUrl/awsBucket/grafika/animations/animId/resourceId', url);
+                assert.equal('awsUrl/awsBucket/awsFolder/animations/animId/resourceId', url);
                 done();
             });
 
@@ -232,7 +233,7 @@ describe("libs/aws.ts", function (){
             it("should delete the resource from AWS S3", function (done){
                 mockAwsSdk.deleteObject = function(params, callback) {
                     assert.equal('awsBucket', params.Bucket);
-                    assert.equal('grafika/animations/animationId/resourceId', params.Key);
+                    assert.equal('awsFolder/animations/animationId/resourceId', params.Key);
                     callback(undefined, 'OK');
                 }
 
@@ -251,7 +252,7 @@ describe("libs/aws.ts", function (){
             it("should NOT delete the resource from AWS S3 and returns Error", function (done){
                 mockAwsSdk.deleteObject = function(params, callback) {
                     assert.equal('awsBucket', params.Bucket);
-                    assert.equal('grafika/animations/animationId/resourceId', params.Key);
+                    assert.equal('awsFolder/animations/animationId/resourceId', params.Key);
                     callback('Error');
                 }
 
@@ -277,7 +278,7 @@ describe("libs/aws.ts", function (){
             it("should delete the animation from AWS S3", function (done){
                 mockAwsSdk.listObjects = function(params, callback) {
                     assert.equal('awsBucket', params.Bucket);
-                    assert.equal('grafika/animations/animationId', params.Prefix);
+                    assert.equal('awsFolder/animations/animationId', params.Prefix);
                     callback(undefined, { Contents: [
                         { key: 'key1' },
                         { key: 'key2' },
@@ -304,7 +305,7 @@ describe("libs/aws.ts", function (){
             it("should NOT delete the animation from AWS S3 and returns error", function (done){
                 mockAwsSdk.listObjects = function(params, callback) {
                     assert.equal('awsBucket', params.Bucket);
-                    assert.equal('grafika/animations/animationId', params.Prefix);
+                    assert.equal('awsFolder/animations/animationId', params.Prefix);
                     callback('Error');
                 }
                 mockAwsSdk.deleteObjects = function(params, callback) {

@@ -50,8 +50,9 @@ function initialize(app) : q.Promise<any> {
     let defer = q.defer();
 
     setTimeout(() => {
-        app.use(bodyParser.urlencoded({ extended: true }));
-        app.use(bodyParser.json({ limit: '5mb'}));
+        app.use(unless(/animations\/.+\/frames/g, bodyParser.urlencoded({ extended: true })));
+        app.use(unless(/animations\/.+\/frames/g, bodyParser.json({ limit: '5mb'})));
+        app.use('/animations/:id/frames', bodyParser.text({type: '*/*', limit: '5mb'}));
         app.use(methodOverride());
         app.use(morgan('dev'));
         app.use(cors());
@@ -68,3 +69,13 @@ function initialize(app) : q.Promise<any> {
 export function onInitialized(done: Function) {
     onInitializeFunction = done;
 }
+
+let unless = (path, middleware) => {
+    return function(req, res, next) {
+        if (req.path.match(path)) {
+            return next();
+        } else {
+            return middleware(req, res, next);
+        }
+    };
+};

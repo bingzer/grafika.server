@@ -31,7 +31,7 @@ export class AwsUsers extends AwsHelper {
 		let s3 = new aws.S3({ accessKeyId: config.setting.$auth.$awsId, secretAccessKey: config.setting.$auth.$awsSecret });
 		let s3_params = {
 			Bucket: config.setting.$auth.$awsBucket,
-			Key: 'grafika/users/' + user._id + '/' + imageType,
+			Key: `${config.setting.$auth.$awsFolder}/users/${user._id}/${imageType}`,
 			Expires: 600,
 			ContentMD5: '',
 			ContentType: mime,
@@ -53,7 +53,7 @@ export class AwsUsers extends AwsHelper {
 		
 		this.create().deleteObject({
 				Bucket: config.setting.$auth.$awsBucket,
-				Key: 'grafika/users/' + user._id + '/' + imageType
+				Key: `${config.setting.$auth.$awsFolder}/users/${user._id}/${imageType}`
 			}, function (err, data){
 				if (err) deferred.reject(err);
 				else deferred.resolve(data);
@@ -75,7 +75,7 @@ export class AwsResources extends AwsHelper {
 		// get signedurl from s3
 		let s3_params = {
 			Bucket: config.setting.$auth.$awsBucket,
-			Key: 'grafika/animations/' + resource.animationId + '/' + resource._id,
+			Key: `${config.setting.$auth.$awsFolder}/animations/${resource.animationId}/${resource._id}`,
 			Expires: 600,
 			ContentMD5: '',
 			ContentType: resource.mime,
@@ -91,8 +91,8 @@ export class AwsResources extends AwsHelper {
 	/** Returns the resource url */
 	getResourceUrl (animId: string, resourceId: string): string{
 		if (config.setting.$auth.$awsBucket === 'fake')
-			return config.setting.$content.$url + 'assets/img/placeholder.png';
-		return config.setting.$auth.$awsUrl + config.setting.$auth.$awsBucket + '/grafika/animations/' + animId + "/" + resourceId;
+			return `${config.setting.$content.$url}assets/img/placeholder.png`;
+		return `${config.setting.$auth.$awsUrl}${config.setting.$auth.$awsBucket}/${config.setting.$auth.$awsFolder}/animations/${animId}/${resourceId}`;
 	}
 	
 	/** Delete resource */
@@ -100,7 +100,7 @@ export class AwsResources extends AwsHelper {
 		let deferred = $q.defer();
 		this.create().deleteObject({
 				Bucket: config.setting.$auth.$awsBucket,
-				Key: 'grafika/animations/' + animId + '/' + resourceId
+				Key: `${config.setting.$auth.$awsFolder}/animations/${animId}/${resourceId}`
 			}, function (err, data){
 				if (err) deferred.reject(err);
 				else deferred.resolve(data);
@@ -118,7 +118,7 @@ export class AwsAnimation extends AwsHelper {
 		
 		let params = {
 			Bucket: config.setting.$auth.$awsBucket,
-			Prefix: 'grafika/animations/' + animId
+			Prefix: `${config.setting.$auth.$awsFolder}/animations/${animId}`
 		};
 		this.create().listObjects(params, (err, data) => {
 			if (err) return deferred.reject(err);			

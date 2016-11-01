@@ -29,7 +29,7 @@ var AwsUsers = (function (_super) {
         var s3 = new aws.S3({ accessKeyId: config.setting.$auth.$awsId, secretAccessKey: config.setting.$auth.$awsSecret });
         var s3_params = {
             Bucket: config.setting.$auth.$awsBucket,
-            Key: 'grafika/users/' + user._id + '/' + imageType,
+            Key: config.setting.$auth.$awsFolder + "/users/" + user._id + "/" + imageType,
             Expires: 600,
             ContentMD5: '',
             ContentType: mime,
@@ -49,7 +49,7 @@ var AwsUsers = (function (_super) {
             imageType = 'avatar';
         this.create().deleteObject({
             Bucket: config.setting.$auth.$awsBucket,
-            Key: 'grafika/users/' + user._id + '/' + imageType
+            Key: config.setting.$auth.$awsFolder + "/users/" + user._id + "/" + imageType
         }, function (err, data) {
             if (err)
                 deferred.reject(err);
@@ -70,7 +70,7 @@ var AwsResources = (function (_super) {
         var deferred = $q.defer();
         var s3_params = {
             Bucket: config.setting.$auth.$awsBucket,
-            Key: 'grafika/animations/' + resource.animationId + '/' + resource._id,
+            Key: config.setting.$auth.$awsFolder + "/animations/" + resource.animationId + "/" + resource._id,
             Expires: 600,
             ContentMD5: '',
             ContentType: resource.mime,
@@ -86,14 +86,14 @@ var AwsResources = (function (_super) {
     };
     AwsResources.prototype.getResourceUrl = function (animId, resourceId) {
         if (config.setting.$auth.$awsBucket === 'fake')
-            return config.setting.$content.$url + 'assets/img/placeholder.png';
-        return config.setting.$auth.$awsUrl + config.setting.$auth.$awsBucket + '/grafika/animations/' + animId + "/" + resourceId;
+            return config.setting.$content.$url + "assets/img/placeholder.png";
+        return "" + config.setting.$auth.$awsUrl + config.setting.$auth.$awsBucket + "/" + config.setting.$auth.$awsFolder + "/animations/" + animId + "/" + resourceId;
     };
     AwsResources.prototype.deleteResource = function (animId, resourceId) {
         var deferred = $q.defer();
         this.create().deleteObject({
             Bucket: config.setting.$auth.$awsBucket,
-            Key: 'grafika/animations/' + animId + '/' + resourceId
+            Key: config.setting.$auth.$awsFolder + "/animations/" + animId + "/" + resourceId
         }, function (err, data) {
             if (err)
                 deferred.reject(err);
@@ -115,7 +115,7 @@ var AwsAnimation = (function (_super) {
         var deferred = $q.defer();
         var params = {
             Bucket: config.setting.$auth.$awsBucket,
-            Prefix: 'grafika/animations/' + animId
+            Prefix: config.setting.$auth.$awsFolder + "/animations/" + animId
         };
         this.create().listObjects(params, function (err, data) {
             if (err)

@@ -215,6 +215,7 @@ class Client implements IConfig {
 class Auth implements IConfig {
 	private awsUrl: string = 'https://s3.amazonaws.com/';
 	private awsBucket: string;
+	private awsFolder: string;
 	private awsId: string;
 	private awsSecret: string;
 
@@ -252,6 +253,7 @@ class Auth implements IConfig {
 
     public validate() : void {
 		ensure.notNullOrEmpty(this.awsBucket, "auth_aws_bucket");
+		ensure.notNullOrEmpty(this.awsFolder, "auth_aws_folder");
 		ensure.notNullOrEmpty(this.awsId, "auth_aws_id");
 		ensure.notNullOrEmpty(this.awsSecret, "auth_aws_secret");
 
@@ -272,6 +274,10 @@ class Auth implements IConfig {
 	public get $awsBucket(): string {
 		return this.awsBucket;
 	}
+
+	public get $awsFolder(): string {
+		return this.awsFolder;
+	}	
 
 	public get $awsId(): string {
 		return this.awsId;

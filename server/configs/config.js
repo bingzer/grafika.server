@@ -235,6 +235,7 @@ var Auth = (function () {
     }
     Auth.prototype.validate = function () {
         ensure.notNullOrEmpty(this.awsBucket, "auth_aws_bucket");
+        ensure.notNullOrEmpty(this.awsFolder, "auth_aws_folder");
         ensure.notNullOrEmpty(this.awsId, "auth_aws_id");
         ensure.notNullOrEmpty(this.awsSecret, "auth_aws_secret");
         ensure.notNullOrEmpty(this.googleId, "env.auth_google_id");
@@ -254,6 +255,13 @@ var Auth = (function () {
     Object.defineProperty(Auth.prototype, "$awsBucket", {
         get: function () {
             return this.awsBucket;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Auth.prototype, "$awsFolder", {
+        get: function () {
+            return this.awsFolder;
         },
         enumerable: true,
         configurable: true

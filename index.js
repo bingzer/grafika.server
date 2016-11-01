@@ -43,8 +43,9 @@ exports.server = app.listen(process.env.PORT || 3000, function () {
 function initialize(app) {
     var defer = q.defer();
     setTimeout(function () {
-        app.use(bodyParser.urlencoded({ extended: true }));
-        app.use(bodyParser.json({ limit: '5mb' }));
+        app.use(unless(/animations\/.+\/frames/g, bodyParser.urlencoded({ extended: true })));
+        app.use(unless(/animations\/.+\/frames/g, bodyParser.json({ limit: '5mb' })));
+        app.use('/animations/:id/frames', bodyParser.text({ type: '*/*', limit: '5mb' }));
         app.use(methodOverride());
         app.use(morgan('dev'));
         app.use(cors());
@@ -58,4 +59,14 @@ function onInitialized(done) {
     onInitializeFunction = done;
 }
 exports.onInitialized = onInitialized;
+var unless = function (path, middleware) {
+    return function (req, res, next) {
+        if (req.path.match(path)) {
+            return next();
+        }
+        else {
+            return middleware(req, res, next);
+        }
+    };
+};
 //# sourceMappingURL=index.js.map
