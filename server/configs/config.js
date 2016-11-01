@@ -222,6 +222,7 @@ var Auth = (function () {
         this.awsBucket = env.auth_aws_bucket;
         this.awsId = env.auth_aws_id;
         this.awsSecret = env.auth_aws_secret;
+        this.awsFolder = env.auth_aws_folder;
         this.googleId = env.auth_google_id;
         this.googleSecret = env.auth_google_secret;
         this.googleCallbackUrl = env.server_url + 'accounts/google/callback';
