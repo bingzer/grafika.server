@@ -58,11 +58,10 @@ Animation.route('frames', {
     handler: function (req, res, next) {
         if (req.method == 'POST') {
             Animation.findByIdAndUpdate(req.params.id, { totalFrame: req.body.length });
-            var buffer = Buffer.from(req.body);
             zlib.deflate(Buffer.from(req.body), function (err, result) {
                 if (err)
                     return next(err);
-                Animation.findOneAndUpdate({ _id: req.params.id }, { $set: { 'frames': result } }).lean()
+                Animation.findOneAndUpdate({ _id: req.params.id }, { $set: { 'frames': result.toString('base64') } }).lean()
                     .exec(function (err, result) {
                     if (err)
                         next(err);

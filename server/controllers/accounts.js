@@ -34,9 +34,7 @@ exports.register = register;
 ;
 function logout(req, res) {
     req.logout();
-    req.session.destroy(function () {
-        res.send(200);
-    });
+    res.send(200);
 }
 exports.logout = logout;
 ;
