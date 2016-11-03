@@ -5,7 +5,6 @@
 /// <reference path="globals/crypto-js/index.d.ts" />
 /// <reference path="globals/express-jwt/index.d.ts" />
 /// <reference path="globals/express-serve-static-core/index.d.ts" />
-/// <reference path="globals/express-session/index.d.ts" />
 /// <reference path="globals/express-unless/index.d.ts" />
 /// <reference path="globals/express/index.d.ts" />
 /// <reference path="globals/fs-extra/index.d.ts" />
