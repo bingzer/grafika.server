@@ -1,5 +1,6 @@
 "use strict";
 var express = require('express');
+var compression = require('compression');
 var bodyParser = require('body-parser');
 var morgan = require('morgan');
 var methodOverride = require('method-override');
@@ -43,9 +44,10 @@ exports.server = app.listen(process.env.PORT || 3000, function () {
 function initialize(app) {
     var defer = q.defer();
     setTimeout(function () {
+        app.use(compression());
         app.use(unless(/animations\/.+\/frames/g, bodyParser.urlencoded({ extended: true })));
         app.use(unless(/animations\/.+\/frames/g, bodyParser.json({ limit: '5mb' })));
-        app.use('/animations/:id/frames', bodyParser.text({ type: '*/*', limit: '5mb' }));
+        app.use('/animations/:id/frames', bodyParser.raw({ type: '*/*', limit: '5mb' }));
         app.use(methodOverride());
         app.use(morgan('dev'));
         app.use(cors());

@@ -1,7 +1,7 @@
 import * as mongoose from 'mongoose';
+import * as express from 'express';
 import * as winston from 'winston';
-
-import * as frames from '../libs/frame-utils';
+import * as zlib from 'zlib';
 
 import restful = require('../libs/restful');
 
@@ -43,22 +43,16 @@ export const AnimationSchema = new mongoose.Schema({
 let Animation = <restful.IModel<IAnimation>> restful.model('animations', AnimationSchema);
 Animation.methods(['get', 'put', 'post']);
 Animation.before('post', (req, res, next) => {
+    // no id allowed!
+    delete req.body._id;
     // check for date time
     let now = Date.now();
     if (!req.body.dateCreated) req.body.dateCreated = now;
     if (!req.body.dateModified) req.body.dateModified = now;
     if (!req.body.userId) req.body.userId = req.user._id;
     if (!req.body.author) req.body.author = req.user.prefs.drawingAuthor || req.user.username;
-    req.body.totalFrame = req.body.frames ? req.body.frames.length : req.body.totalFrame;
 
-    delete req.body._id;
-    
-    frames.serializeFrames(req.body.frames, (err, result) => {
-        if (err) return next(err);
-        if (result)
-            req.body.frames = result;
-        next();
-    });
+    next();
 });
 Animation.before('get', (req, res, next) => {
     if (req.query) {
@@ -73,33 +67,45 @@ Animation.before('put', (req, res, next) => {
     delete req.body.frames;
     next();
 });
+
 // -- Frames
+const AnimationCollection = Animation.db.collections.animations;
+
 Animation.route('frames', {
     detail: true,
-    handler: (req, res, next) => {
-        if (req.method === 'GET') {
-            Animation.db.collections.animations.findOne({ _id: new mongoose.Types.ObjectId(req.params.id) }, { frames: 1}, (err, result) =>{
-                if (err) return next(err);
-                frames.deserializeFrames(result.frames, (err, result) => {
-                    if (err) return next(err);
-
-                    res.set('Content-Type', 'application/json');
-                    res.send(result);
-                });
-            });
-        }
-        else if (req.method == 'POST') {
+    handler: (req: express.Request, res: express.Response, next: express.NextFunction) => {
+        if (req.method == 'POST') {
             // update total frames
             Animation.findByIdAndUpdate(req.params.id, { totalFrame: req.body.length });
 
-            frames.serializeFrames(req.body, (err, result) => {
+            let buffer = Buffer.from(req.body);
+            zlib.deflate(Buffer.from(req.body), (err, result) => {
                 if (err) return next(err);
-                if (!result) return next(400);
+                Animation.findOneAndUpdate({ _id: req.params.id }, { $set: { 'frames': result } }).lean()
+                    .exec((err, result) => {
+                        if (err) next(err);
+                        else res.sendStatus(201);
+                    });
+            });
+        }
+        else if (req.method === 'GET') {
+            AnimationCollection.findOne({ _id: new mongoose.Types.ObjectId(req.params.id) }, { frames: 1 }, (err, result) =>{
+                if (err) return next(err);
 
-                Animation.db.collections.animations.findOneAndUpdate({_id: new mongoose.Types.ObjectId(req.params.id) }, { $set: { 'frames': result } }, (err) => {
-                    if (err) return next(err);
-                    res.sendStatus(201);
-                });
+                res.header('Content-Type', 'application/json');
+                if (!result.frames) {
+                    res.send();
+                }
+                else if (req.acceptsEncodings('deflate')) {
+                    res.writeHead(200, {'Content-Encoding': 'deflate'})
+                    res.end(Buffer.from(result.frames, "base64"));
+                }
+                else {
+                    zlib.inflate(Buffer.from(result.frames, "base64"), (err, result) => {
+                        if (err) next(err);
+                        else res.send(result.toString());
+                    });
+                }
             });
         }
         else next(400);

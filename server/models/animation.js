@@ -1,7 +1,7 @@
 "use strict";
 var mongoose = require('mongoose');
 var winston = require('winston');
-var frames = require('../libs/frame-utils');
+var zlib = require('zlib');
 var restful = require('../libs/restful');
 exports.AnimationSchema = new mongoose.Schema({
     localId: { type: String },
@@ -27,6 +27,7 @@ var Animation = restful.model('animations', exports.AnimationSchema);
 exports.Animation = Animation;
 Animation.methods(['get', 'put', 'post']);
 Animation.before('post', function (req, res, next) {
+    delete req.body._id;
     var now = Date.now();
     if (!req.body.dateCreated)
         req.body.dateCreated = now;
@@ -36,15 +37,7 @@ Animation.before('post', function (req, res, next) {
         req.body.userId = req.user._id;
     if (!req.body.author)
         req.body.author = req.user.prefs.drawingAuthor || req.user.username;
-    req.body.totalFrame = req.body.frames ? req.body.frames.length : req.body.totalFrame;
-    delete req.body._id;
-    frames.serializeFrames(req.body.frames, function (err, result) {
-        if (err)
-            return next(err);
-        if (result)
-            req.body.frames = result;
-        next();
-    });
+    next();
 });
 Animation.before('get', function (req, res, next) {
     if (req.query) {
@@ -58,33 +51,45 @@ Animation.before('put', function (req, res, next) {
     delete req.body.frames;
     next();
 });
+var AnimationCollection = Animation.db.collections.animations;
 Animation.route('frames', {
     detail: true,
     handler: function (req, res, next) {
-        if (req.method === 'GET') {
-            Animation.db.collections.animations.findOne({ _id: new mongoose.Types.ObjectId(req.params.id) }, { frames: 1 }, function (err, result) {
+        if (req.method == 'POST') {
+            Animation.findByIdAndUpdate(req.params.id, { totalFrame: req.body.length });
+            var buffer = Buffer.from(req.body);
+            zlib.deflate(Buffer.from(req.body), function (err, result) {
                 if (err)
                     return next(err);
-                frames.deserializeFrames(result.frames, function (err, result) {
+                Animation.findOneAndUpdate({ _id: req.params.id }, { $set: { 'frames': result } }).lean()
+                    .exec(function (err, result) {
                     if (err)
-                        return next(err);
-                    res.set('Content-Type', 'application/json');
-                    res.send(result);
+                        next(err);
+                    else
+                        res.sendStatus(201);
                 });
             });
         }
-        else if (req.method == 'POST') {
-            Animation.findByIdAndUpdate(req.params.id, { totalFrame: req.body.length });
-            frames.serializeFrames(req.body, function (err, result) {
+        else if (req.method === 'GET') {
+            AnimationCollection.findOne({ _id: new mongoose.Types.ObjectId(req.params.id) }, { frames: 1 }, function (err, result) {
                 if (err)
                     return next(err);
-                if (!result)
-                    return next(400);
-                Animation.db.collections.animations.findOneAndUpdate({ _id: new mongoose.Types.ObjectId(req.params.id) }, { $set: { 'frames': result } }, function (err) {
-                    if (err)
-                        return next(err);
-                    res.sendStatus(201);
-                });
+                res.header('Content-Type', 'application/json');
+                if (!result.frames) {
+                    res.send();
+                }
+                else if (req.acceptsEncodings('deflate')) {
+                    res.writeHead(200, { 'Content-Encoding': 'deflate' });
+                    res.end(Buffer.from(result.frames, "base64"));
+                }
+                else {
+                    zlib.inflate(Buffer.from(result.frames, "base64"), function (err, result) {
+                        if (err)
+                            next(err);
+                        else
+                            res.send(result.toString());
+                    });
+                }
             });
         }
         else

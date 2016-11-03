@@ -74,12 +74,12 @@ function commentForMobile(req, res, next) {
 }
 exports.commentForMobile = commentForMobile;
 function getRandomAnimation(req, res, next) {
-    var criteria = { removed: false, isPublic: true, $where: "this.frames.length > 2" };
+    var criteria = { removed: false, isPublic: true, $where: "this.frames.length > 5" };
     animation_1.Animation.find(criteria).lean().count(function (err, count) {
         if (err)
             return next(err);
         var random = Math.floor(Math.random() * count);
-        animation_1.Animation.findOne(criteria).select('+frames').skip(random).lean().exec(function (err, result) {
+        animation_1.Animation.findOne(criteria).skip(random).lean().exec(function (err, result) {
             if (err)
                 return next(err);
             res.send(result);

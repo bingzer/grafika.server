@@ -2,12 +2,12 @@
   "globalDependencies": {
     "aws-sdk": "registry:dt/aws-sdk#0.0.0+20160709061101",
     "body-parser": "registry:dt/body-parser#0.0.0+20160619023215",
+    "compression": "registry:dt/compression#0.0.0+20160501162003",
     "cors": "registry:dt/cors#0.0.0+20160708202709",
     "crypto-js": "registry:dt/crypto-js#3.1.4+20160708041433",
     "express": "registry:dt/express#4.0.0+20160708185218",
     "express-jwt": "registry:dt/express-jwt#0.0.0+20160629014920",
     "express-serve-static-core": "registry:dt/express-serve-static-core#4.0.0+20160711183608",
-    "express-session": "registry:dt/express-session#0.0.0+20160331200931",
     "express-unless": "registry:dt/express-unless#0.0.0+20160317120654",
     "fs-extra": "registry:dt/fs-extra#0.0.0+20160517121359",
     "grafika": "github:bingzer/grafika.js/dist/grafika.d.ts",

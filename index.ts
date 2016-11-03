@@ -1,5 +1,5 @@
 import * as express from 'express';
-import * as session from 'express-session';
+import * as compression from 'compression'
 import * as bodyParser from 'body-parser';
 import * as morgan from 'morgan';
 import * as methodOverride from 'method-override';
@@ -50,9 +50,12 @@ function initialize(app) : q.Promise<any> {
     let defer = q.defer();
 
     setTimeout(() => {
+        app.use(compression());
         app.use(unless(/animations\/.+\/frames/g, bodyParser.urlencoded({ extended: true })));
         app.use(unless(/animations\/.+\/frames/g, bodyParser.json({ limit: '5mb'})));
-        app.use('/animations/:id/frames', bodyParser.text({type: '*/*', limit: '5mb'}));
+        
+        app.use('/animations/:id/frames', bodyParser.raw({type: '*/*', limit: '5mb'}));
+
         app.use(methodOverride());
         app.use(morgan('dev'));
         app.use(cors());

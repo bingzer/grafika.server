@@ -1,5 +1,6 @@
 /// <reference path="globals/aws-sdk/index.d.ts" />
 /// <reference path="globals/body-parser/index.d.ts" />
+/// <reference path="globals/compression/index.d.ts" />
 /// <reference path="globals/cors/index.d.ts" />
 /// <reference path="globals/crypto-js/index.d.ts" />
 /// <reference path="globals/express-jwt/index.d.ts" />
