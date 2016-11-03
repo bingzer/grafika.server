@@ -33,9 +33,7 @@ export function register(req: express.Request, res: express.Response, next: expr
 
 export function logout(req : express.Request, res : express.Response) {
     req.logout();
-    req.session.destroy(() => {
-        res.send(200);
-    });
+    res.send(200);
 };
 
 export function authenticate(req: express.Request | any, res: express.Response | any, next: express.NextFunction){
