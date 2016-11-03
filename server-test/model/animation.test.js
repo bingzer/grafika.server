@@ -63,7 +63,7 @@ describe('model/animation.ts', function(){
                 assert.equal(10, req.body.dateCreated);
                 assert.equal(10, req.body.dateModified);
                 assert.equal("drawingAuthor", req.body.author);
-                assert.equal(1, req.body.totalFrame);
+                assert.equal(0, req.body.totalFrame);  // do not have any frames
                 done();
             };
 
@@ -86,7 +86,7 @@ describe('model/animation.ts', function(){
                 assert.equal(10, req.body.dateCreated);
                 assert.equal(10, req.body.dateModified);
                 assert.equal("username", req.body.author);
-                assert.equal(1, req.body.totalFrame);
+                assert.equal(0, req.body.totalFrame);
                 done();
             };
 

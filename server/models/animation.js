@@ -37,6 +37,8 @@ Animation.before('post', function (req, res, next) {
         req.body.userId = req.user._id;
     if (!req.body.author)
         req.body.author = req.user.prefs.drawingAuthor || req.user.username;
+    if (!req.body.totalFrame)
+        req.body.totalFrame = 0;
     next();
 });
 Animation.before('get', function (req, res, next) {
@@ -51,7 +53,6 @@ Animation.before('put', function (req, res, next) {
     delete req.body.frames;
     next();
 });
-var AnimationCollection = Animation.db.collections.animations;
 Animation.route('frames', {
     detail: true,
     handler: function (req, res, next) {
@@ -71,7 +72,7 @@ Animation.route('frames', {
             });
         }
         else if (req.method === 'GET') {
-            AnimationCollection.findOne({ _id: new mongoose.Types.ObjectId(req.params.id) }, { frames: 1 }, function (err, result) {
+            Animation.db.collections.animations.findOne({ _id: new mongoose.Types.ObjectId(req.params.id) }, { frames: 1 }, function (err, result) {
                 if (err)
                     return next(err);
                 res.header('Content-Type', 'application/json');
