@@ -23,8 +23,7 @@
                 "server_mailer_smtp": "smtp.postmarkapp.com",
                 "server_mailer_port": "2525",
                 "server_mailer_from": "grafika@bingzer.com",
-                "content_url": "http://localhost:5000/",
-                "server_database_url": "mongodb://localhost/heroku_9nh8448f"
+                "content_url": "http://localhost:5000/"
             },
             "sourceMaps": true,
             "outDir": null
