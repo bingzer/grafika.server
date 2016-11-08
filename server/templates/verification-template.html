@@ -5,49 +5,68 @@
   <title>{{email.title}}</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 </head>
-<body style="font-family: Arial, sans-serif;">
+<body style="font-family: 'Open Sans',sans-serif;">
 <td bgcolor="#ffffff" style="padding: 40px 30px 40px 30px;">
-  <table cellpadding="0" cellspacing="0" width="100%" style="border-collapse: collapse; border: 1px solid #008080">
+  <table cellpadding="0" cellspacing="0" width="100%" style="border-collapse: collapse; border: 0px solid #008080; max-width: 800px">
     <tr style="background-color: #008080">
-      <th colspan="3" height="64" style="padding: 8px">
+      <th colspan="3" height="124" style="padding: 8px">
         <img src="https://s3.amazonaws.com/bingzer/grafika/logo.png" alt="Grafika logo"/>
       </th>
     </tr>
     <tr>
       <td colspan="3">
-        <div style="margin: 16px; margin-bottom: 56px">
-          <p>
+          <div style="margin-bottom: 16px">
+          </div>
+          
+          <div style="background-color: #e9f8e9; padding: 16px; margin-bottom: 16px">
             Hi {{email.user}}, <br/><br/>
-            thank you for verifying your email account.<br/>
-            Next step is to create your password so that you can start using the app!<br/>
-          </p>
-          <p>
-            Click the link below to navigate to the Grafika's web site to create your password:<br/>
-            <a href="{{email.link}}">Verify my account</a>
-          </p>
-          <p>
-            <br/><br/>
-            Thanks,<br/><br/><br/>
-            Grafika Team
-          </p>
-        </div>
+            We can't wait to have you on board. But first, We need to verify your email so you can start using the app<br/><br/>
+            <center>
+              <div>
+                <!--[if mso]>
+                  <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="{{email.link}}" style="height:40px;v-text-anchor:middle;width:200px;" arcsize="10%" stroke="f" fillcolor="#33a8eb">
+                  <w:anchorlock/>
+                <center>
+                <![endif]-->
+                <a href="{{email.link}}" style="background-color:#33a8eb;border-radius:4px;color:#ffffff;display:inline-block;font-family:sans-serif;font-size:13px;font-weight:bold;line-height:40px;text-align:center;text-decoration:none;width:200px;-webkit-text-size-adjust:none;">Verify my email</a>
+                <!--[if mso]>
+                  </center>
+                  </v:roundrect>
+                <![endif]-->
+              </div>
+              <div style="font-size: smaller">
+                You'll be prompted with an option to set your password
+              </div>
+            </center>
+          </div>
+          
+          <div style="background-color: #e9f8e9; padding: 16px; margin-bottom: 16px">
+            After your email has been verified you'll be able:
+            <ul style="background-color: #e9f8e9">
+              <li>Set your password</li>
+              <li>Publish and sync your animations</li>
+              <li>Leave comments</li>
+              <li>Many more...</li>
+            </ul>
+          </div>
+
+          
+          <div style="margin-bottom: 64px">
+            Thanks,
+          </div>
+
       </td>
     </tr>
-    <tr style="background-color: #008080; margin-top: 48px">
-      <td>
-        <div style="margin: 16px; font-size: small; font-weight: 300">
-            <a style="color: #ffffff;" href="{{email.privacyUrl}}">Privacy</a>
-        </div>
-      </td>
-      <td>
-        <div style="color: #ffffff; margin: 16px; font-size: small; font-weight: 300; text-align: center">
-            <a style="color: #ffffff;" href="{{email.homeUrl}}">Grafika</a>
-        </div>
-      </td>
-      <td>
-        <div style="color: #ffffff; margin: 16px; font-size: small; font-weight: 300; text-align: right;">
-            <a style="color: #ffffff; text-align: right" href="mailto:grafika@bingzer.com">Grafika Team</a>
-        </div>
+    <tr style="border-top: 1px solid #c0c0c0">
+      <td colspan="2">
+        <center>
+          <div style="margin-top: 4px; font-size: small; font-weight: 300; font-family: 'Open Sans',sans-serif; font-weight: 700; color: #c0c0c0">
+              <a style="color: #c0c0c0; text-decoration: none" href="{{email.homeUrl}}">{{email.homeUrl}}</a>&nbsp;•&nbsp;
+              <a style="color:  #c0c0c0; text-decoration: none; text-align: right" href="mailto:grafika@bingzer.com">@Grafika</a>
+              <br/>
+              <a style="color: #c0c0c0; text-decoration: none" href="{{email.privacyUrl}}">Privacy Policy</a>
+          </div>
+        </center>
       </td>
     </tr>
   </table>

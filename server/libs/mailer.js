@@ -15,6 +15,41 @@ var mailTransporter = nodemailer.createTransport({
     }
 });
 exports.mailTransporter = mailTransporter;
+function sendAnimationCommentEmail(animation, user, comment) {
+    var deferred = $q.defer();
+    var url = config.setting.$content.$url + 'animations/' + animation._id;
+    var thumbnail = config.setting.$server.$url + 'animations/' + animation._id + '/thumbnail';
+    var opts = {
+        title: 'New comment on ' + animation.name, user: user.email, link: url, privacyUrl: config.setting.$content.$url + 'privacy', homeUrl: config.setting.$content.$url,
+        name: animation.name, comment: comment.text, thumbnailUrl: thumbnail
+    };
+    var promises = $q.allSettled([
+        readTemplate('animation-comment.txt', opts),
+        readTemplate('animation-comment.html', opts)]);
+    promises.then(function (results) {
+        if (results[0].state === 'rejected' || results[1].state === 'rejected')
+            return deferred.reject("fail");
+        var mailOptions = {
+            from: config.setting.$server.$mailFrom,
+            to: user.email,
+            subject: opts.title,
+            text: results[0].value,
+            html: results[1].value
+        };
+        mailTransporter.sendMail(mailOptions, function (error, info) {
+            if (error) {
+                winston.error("Unable to sent message", error);
+                deferred.reject(error);
+            }
+            else {
+                winston.info('Message sent: ' + info.response);
+                deferred.resolve();
+            }
+        });
+    });
+    return deferred.promise;
+}
+exports.sendAnimationCommentEmail = sendAnimationCommentEmail;
 function sendVerificationEmail(user) {
     var deferred = $q.defer();
     var url = config.setting.$content.$url + 'r?action=verify&hash=' + encodeURIComponent(user.activation.hash) + '&user=' + encodeURIComponent(user.email);
@@ -87,16 +122,15 @@ function readTemplate(templateName, opts) {
             deferred.reject(err);
         }
         else {
-            if (opts.title)
-                data = data.replace(/{{email.title}}/gi, opts.title);
-            if (opts.user)
-                data = data.replace(/{{email.user}}/gi, opts.user);
-            if (opts.link)
-                data = data.replace(/{{email.link}}/gi, opts.link);
-            if (opts.privacyUrl)
-                data = data.replace(/{{email.privacyUrl}}/gi, opts.privacyUrl);
-            if (opts.homeUrl)
-                data = data.replace(/{{email.homeUrl}}/gi, opts.homeUrl);
+            var keys = Object.keys(opts);
+            for (var i = 0; i < keys.length; i++) {
+                var key = keys[i];
+                var value = opts[key];
+                if (value) {
+                    var pattern = new RegExp('{{email.' + key + '}}', 'gi');
+                    data = data.replace(pattern, value);
+                }
+            }
             deferred.resolve(data);
             winston.info("Template [OK]");
         }

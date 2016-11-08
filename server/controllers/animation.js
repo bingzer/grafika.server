@@ -2,7 +2,9 @@
 var config = require('../configs/config');
 var utils = require('../libs/utils');
 var animation_1 = require("../models/animation");
-var user_1 = require('../models/user');
+var user_1 = require("../models/user");
+var user_2 = require('../models/user');
+var mailer_1 = require('../libs/mailer');
 function search(req, res, next) {
     if (req.query.term) {
         var sort = createSort(req);
@@ -60,19 +62,6 @@ function submitRating(req, res, next) {
     });
 }
 exports.submitRating = submitRating;
-function commentForMobile(req, res, next) {
-    var disqusToken = (req.user) ? user_1.generateDisqusToken(req.user) : { public: "", token: "" };
-    animation_1.Animation.findById(req.params._id, { frames: 0 }, function (err, anim) {
-        if (err)
-            return next(err);
-        if (!anim)
-            return next(404);
-        var queryString = "url=" + config.setting.$content.$url + "animations/" + anim._id + "&title=" + anim.name + "&shortname=grafika-app&identifier=" + anim._id + "&pub=" + disqusToken.public + "&token=" + disqusToken.token;
-        var url = config.setting.$content.$url + "app/content/comment.html?" + queryString;
-        return res.redirect(url);
-    });
-}
-exports.commentForMobile = commentForMobile;
 function getRandomAnimation(req, res, next) {
     var criteria = { removed: false, isPublic: true, $where: "this.frames.length > 5" };
     animation_1.Animation.find(criteria).lean().count(function (err, count) {
@@ -87,6 +76,35 @@ function getRandomAnimation(req, res, next) {
     });
 }
 exports.getRandomAnimation = getRandomAnimation;
+function postComment(req, res, next) {
+    animation_1.Animation.findById(req.params._id, function (err, anim) {
+        if (err)
+            return next(err);
+        if (!anim)
+            return next(404);
+        user_1.User.findById(anim.userId, function (err, user) {
+            if (user.subscriptions.emailAnimationComment) {
+                mailer_1.sendAnimationCommentEmail(anim, user, req.body)
+                    .then(function () { return res.sendStatus(201); })
+                    .catch(function (err) { return next(err); });
+            }
+        });
+    });
+}
+exports.postComment = postComment;
+function commentForMobile(req, res, next) {
+    var disqusToken = (req.user) ? user_2.generateDisqusToken(req.user) : { public: "", token: "" };
+    animation_1.Animation.findById(req.params._id, { frames: 0 }, function (err, anim) {
+        if (err)
+            return next(err);
+        if (!anim)
+            return next(404);
+        var queryString = "url=" + config.setting.$content.$url + "animations/" + anim._id + "&title=" + anim.name + "&shortname=grafika-app&identifier=" + anim._id + "&pub=" + disqusToken.public + "&token=" + disqusToken.token;
+        var url = config.setting.$content.$url + "app/content/comment.html?" + queryString;
+        return res.redirect(url);
+    });
+}
+exports.commentForMobile = commentForMobile;
 function createQuery(req) {
     var qObject = { isPublic: true };
     if (req.query.term) {

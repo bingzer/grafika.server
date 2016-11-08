@@ -1,0 +1,10 @@
+Hi {{email.user}}, 
+Somebody left a comment about your animation.
+
+Copy and paste the link below to the your browser's address bar to the Grafika's web site to navigate to your animation:
+{{email.link}}
+
+
+Thanks,
+
+Grafika Team

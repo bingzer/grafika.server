@@ -173,7 +173,10 @@ export function initialize(app): q.Promise<any> {
         app.post('/animations/:_id/frames', useSessionOrJwt, useAnimAccess);
         app.post('/animations/:_id/view', animationController.incrementViewCount);
         app.post('/animations/:_id/rating/:rating', animationController.submitRating);
+
+        // --------------- Sync Stuffs -------------------------//
         app.get('/animations/:_id/comments', animationController.commentForMobile);
+        app.post('/animations/:_id/comments', animationController.postComment);
 
         // --------------- Sync Stuffs -------------------------//
         app.post('/animations/sync', useSessionOrJwt, syncController.sync);
