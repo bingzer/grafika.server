@@ -146,7 +146,7 @@ function initialize(app) {
         app.post('/animations/:_id/view', animationController.incrementViewCount);
         app.post('/animations/:_id/rating/:rating', animationController.submitRating);
         app.get('/animations/:_id/comments', animationController.commentForMobile);
-        app.post('/animations/:_id/comments', animationController.postComment);
+        app.post('/animations/:_id/comments', useSessionOrJwt, animationController.postComment);
         app.post('/animations/sync', useSessionOrJwt, syncController.sync);
         app.post('/animations/sync/update', useSessionOrJwt, syncController.syncUpdate);
         app.get('/users/:_id', userController.get);

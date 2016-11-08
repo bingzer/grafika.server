@@ -176,7 +176,7 @@ export function initialize(app): q.Promise<any> {
 
         // --------------- Sync Stuffs -------------------------//
         app.get('/animations/:_id/comments', animationController.commentForMobile);
-        app.post('/animations/:_id/comments', animationController.postComment);
+        app.post('/animations/:_id/comments', useSessionOrJwt, animationController.postComment);
 
         // --------------- Sync Stuffs -------------------------//
         app.post('/animations/sync', useSessionOrJwt, syncController.sync);
