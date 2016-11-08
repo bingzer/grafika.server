@@ -386,7 +386,7 @@ describe("controllers/animation.ts", function (){
             req.params.rating = 4;
             req.user._id = "_userId";
             res.redirect = function (url) {
-                assert.equal("http://localhost:5000/app/content/comment.html?url=http://localhost:5000/animations/_id&title=name&shortname=grafika-app&identifier=_id&pub=disqus-public&token=disqus-token-_userId", url);
+                assert.equal("http://localhost:5000/app/content/comment.html?url=http://localhost:5000/animations/_id&title=name&shortname=grafika-app&identifier=_id&pub=disqus-public&disqusToken=disqus-token-_userId&postUrl=http://localhost:3000/animations/_id/comments&jwtToken=jwtToken", url);
                 done();
             }
 
