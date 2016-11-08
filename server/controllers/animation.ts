@@ -5,9 +5,8 @@ import * as config from '../configs/config';
 import * as utils from '../libs/utils';
 
 import { Animation, IAnimation } from "../models/animation";
-import { User } from "../models/user";
 import { AwsAnimation, AwsResources } from '../libs/aws';
-import { generateDisqusToken } from '../models/user';
+import { User, generateJwtToken, generateDisqusToken } from '../models/user';
 import { sendAnimationCommentEmail } from '../libs/mailer';
 
 export function search(req: express.Request, res: express.Response, next: express.NextFunction) {
@@ -92,12 +91,14 @@ export function postComment(req: express.Request | any, res: express.Response, n
 
 export function commentForMobile(req: express.Request | any, res: express.Response, next: express.NextFunction) {
     let disqusToken = (req.user) ? generateDisqusToken(req.user) : { public: "", token: "" };
+    let jwtToken = (req.user) ? generateJwtToken(req.user) : "";
 
     Animation.findById(req.params._id, { frames: 0 }, (err, anim) => {
         if (err) return next(err);
         if (!anim) return next(404);
-
-        let queryString = `url=${config.setting.$content.$url}animations/${anim._id}&title=${anim.name}&shortname=grafika-app&identifier=${anim._id}&pub=${disqusToken.public}&token=${disqusToken.token}`;
+        
+        let postUrl = `${config.setting.$server.$url}animations/${anim._id}/comments`;
+        let queryString = `url=${config.setting.$content.$url}animations/${anim._id}&title=${anim.name}&shortname=grafika-app&identifier=${anim._id}&pub=${disqusToken.public}&disqusToken=${disqusToken.token}&postUrl=${postUrl}&jwtToken=${jwtToken}`;
         let url = `${config.setting.$content.$url}app/content/comment.html?${queryString}`;
         return res.redirect(url);
     });

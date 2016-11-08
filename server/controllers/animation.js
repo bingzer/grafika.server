@@ -2,8 +2,7 @@
 var config = require('../configs/config');
 var utils = require('../libs/utils');
 var animation_1 = require("../models/animation");
-var user_1 = require("../models/user");
-var user_2 = require('../models/user');
+var user_1 = require('../models/user');
 var mailer_1 = require('../libs/mailer');
 function search(req, res, next) {
     if (req.query.term) {
@@ -93,13 +92,15 @@ function postComment(req, res, next) {
 }
 exports.postComment = postComment;
 function commentForMobile(req, res, next) {
-    var disqusToken = (req.user) ? user_2.generateDisqusToken(req.user) : { public: "", token: "" };
+    var disqusToken = (req.user) ? user_1.generateDisqusToken(req.user) : { public: "", token: "" };
+    var jwtToken = (req.user) ? user_1.generateJwtToken(req.user) : "";
     animation_1.Animation.findById(req.params._id, { frames: 0 }, function (err, anim) {
         if (err)
             return next(err);
         if (!anim)
             return next(404);
-        var queryString = "url=" + config.setting.$content.$url + "animations/" + anim._id + "&title=" + anim.name + "&shortname=grafika-app&identifier=" + anim._id + "&pub=" + disqusToken.public + "&token=" + disqusToken.token;
+        var postUrl = config.setting.$server.$url + "animations/" + anim._id + "/comments";
+        var queryString = "url=" + config.setting.$content.$url + "animations/" + anim._id + "&title=" + anim.name + "&shortname=grafika-app&identifier=" + anim._id + "&pub=" + disqusToken.public + "&disqusToken=" + disqusToken.token + "&postUrl=" + postUrl + "&jwtToken=" + jwtToken;
         var url = config.setting.$content.$url + "app/content/comment.html?" + queryString;
         return res.redirect(url);
     });

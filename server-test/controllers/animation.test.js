@@ -362,16 +362,19 @@ describe("controllers/animation.ts", function (){
                 }
             };
 
-            var mockDisqusToken = {
+            var mockUser = {
                 generateDisqusToken: function(user){
                     return {
                         token: 'disqus-token-' + user._id,
                         public: 'disqus-public'
                     };
+                },
+                generateJwtToken: function(user){
+                    return "jwtToken";
                 }
             };
 
-            mockery.registerMock('../models/user', mockDisqusToken);
+            mockery.registerMock('../models/user', mockUser);
             
             mockAnimation.Animation.findById = function (id, fields, callback) {
                 assert.equal("_id", id);

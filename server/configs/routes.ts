@@ -1,5 +1,6 @@
 import * as express from 'express';
 import * as expressJwt from 'express-jwt';
+import * as cors from 'cors';
 import * as mongoose from 'mongoose';
 import * as winston from 'winston';
 import * as q from 'q';
