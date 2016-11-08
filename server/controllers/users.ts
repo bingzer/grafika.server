@@ -41,7 +41,7 @@ export function update(req: express.Request | any, res: express.Response, next: 
             user.prefs.playbackLoop = req.body.prefs.playbackLoop;
         if (req.body.prefs.drawingTimer) user.prefs.drawingTimer = req.body.prefs.drawingTimer;
         if (typeof(req.body.prefs.drawingIsPublic) !== 'undefined')
-            user.prefs.drawingIsPublic = req.body.prefs.drawingIsPublic;
+            user.prefs.drawingIsPublic = req.body.prefs.drawingIsPublic; 
     }
     if (req.body.subscriptions){
         user.subscriptions = {};
