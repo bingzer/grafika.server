@@ -21,6 +21,46 @@ export { mailTransporter };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+export function sendAnimationCommentEmail(animation: Grafika.IAnimation, user: Grafika.IUser, comment: { text: string, id: string, user?: string }) : $q.Promise<any> {
+    let deferred = $q.defer();
+    let url = config.setting.$content.$url + 'animations/' + animation._id;
+    let thumbnail = config.setting.$server.$url + 'animations/' + animation._id + '/thumbnail';
+    
+    let opts = { 
+        title: 'New comment on ' + animation.name, user: user.email, link: url, privacyUrl: config.setting.$content.$url + 'privacy', homeUrl: config.setting.$content.$url,
+        name: animation.name, comment: comment.text, thumbnailUrl: thumbnail
+    };
+    let promises = $q.allSettled([
+        readTemplate('animation-comment.txt', opts), 
+        readTemplate('animation-comment.html', opts) ]);
+    promises.then((results) => {
+        if (results[0].state === 'rejected' || results[1].state === 'rejected')
+            return deferred.reject("fail");
+        // setup e-mail data with unicode symbols
+        let mailOptions = {
+            from: config.setting.$server.$mailFrom, // sender address
+            to: user.email, // list of receivers
+            subject: opts.title, // Subject line
+            text: results[0].value,
+            html: results[1].value
+        };    
+        // send mail with defined transport object
+        mailTransporter.sendMail(mailOptions, (error, info) =>{
+            if (error) {
+                winston.error("Unable to sent message", error);
+                deferred.reject(error);
+            }
+            else {
+                winston.info('Message sent: ' + info.response);
+                deferred.resolve();
+            }
+        });
+    });
+    
+    return deferred.promise;
+}
+
+
 export function sendVerificationEmail(user: IUser) : $q.Promise<{}> {
     let deferred = $q.defer();
     let url = config.setting.$content.$url + 'r?action=verify&hash=' + encodeURIComponent(user.activation.hash) + '&user=' + encodeURIComponent(user.email);
@@ -105,11 +145,17 @@ function readTemplate(templateName, opts) : $q.Promise<{}>{
             deferred.reject(err);
         }
         else {
-            if (opts.title) data = data.replace(/{{email.title}}/gi, opts.title);
-            if (opts.user) data = data.replace(/{{email.user}}/gi, opts.user);
-            if (opts.link) data = data.replace(/{{email.link}}/gi, opts.link);
-            if (opts.privacyUrl) data = data.replace(/{{email.privacyUrl}}/gi, opts.privacyUrl);
-            if (opts.homeUrl) data = data.replace(/{{email.homeUrl}}/gi, opts.homeUrl);
+            let keys = Object.keys(opts);
+            for (let i = 0; i < keys.length; i++) {
+                let key = keys[i];
+                let value = opts[key];
+
+                if (value) {
+                    let pattern = new RegExp('{{email.' + key + '}}', 'gi');
+                    data = data.replace(pattern, value);
+                }
+            }
+
             deferred.resolve(data);
             winston.info("Template [OK]");
         }

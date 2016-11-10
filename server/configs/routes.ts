@@ -1,5 +1,6 @@
 import * as express from 'express';
 import * as expressJwt from 'express-jwt';
+import * as cors from 'cors';
 import * as mongoose from 'mongoose';
 import * as winston from 'winston';
 import * as q from 'q';
@@ -173,7 +174,10 @@ export function initialize(app): q.Promise<any> {
         app.post('/animations/:_id/frames', useSessionOrJwt, useAnimAccess);
         app.post('/animations/:_id/view', animationController.incrementViewCount);
         app.post('/animations/:_id/rating/:rating', animationController.submitRating);
+
+        // --------------- Sync Stuffs -------------------------//
         app.get('/animations/:_id/comments', animationController.commentForMobile);
+        app.post('/animations/:_id/comments', useSessionOrJwt, animationController.postComment);
 
         // --------------- Sync Stuffs -------------------------//
         app.post('/animations/sync', useSessionOrJwt, syncController.sync);

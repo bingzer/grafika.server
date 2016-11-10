@@ -37,9 +37,18 @@ export function update(req: express.Request | any, res: express.Response, next: 
         user.prefs = {};
         if (req.body.prefs.avatar) user.prefs.avatar = req.body.prefs.avatar;
         if (req.body.prefs.backdrop) user.prefs.backdrop = req.body.prefs.backdrop;
-        if (req.body.prefs.playbackLoop) user.prefs.playbackLoop = req.body.prefs.playbackLoop;
+        if (typeof(req.body.prefs.playbackLoop) !== 'undefined') 
+            user.prefs.playbackLoop = req.body.prefs.playbackLoop;
         if (req.body.prefs.drawingTimer) user.prefs.drawingTimer = req.body.prefs.drawingTimer;
-        if (req.body.prefs.drawingIsPublic) user.prefs.drawingIsPublic = req.body.prefs.drawingIsPublic;
+        if (typeof(req.body.prefs.drawingIsPublic) !== 'undefined')
+            user.prefs.drawingIsPublic = req.body.prefs.drawingIsPublic; 
+    }
+    if (req.body.subscriptions){
+        user.subscriptions = {};
+        if (typeof(req.body.subscriptions.emailAnimationComment) !== 'undefined') 
+            user.subscriptions.emailAnimationComment = req.body.subscriptions.emailAnimationComment;
+        if (typeof(req.body.subscriptions.emailAnimationRating) !== 'undefined') 
+            user.subscriptions.emailAnimationRating = req.body.subscriptions.emailAnimationRating;
     }
     
     checkAvailability(user).then(() => {

@@ -19,12 +19,10 @@
                 "server_url": "http://localhost:3000/",
                 "server_superSecret": "123",
                 "client_sessionSecret": "abc",
-                "server_mailer_service": "postmark",
-                "server_mailer_smtp": "smtp.postmarkapp.com",
+                "server_mailer_from": "grafika-dev@bingzer.com",
+                "server_mailer_service": "mailtrap",
                 "server_mailer_port": "2525",
-                "server_mailer_from": "grafika@bingzer.com",
-                "content_url": "http://localhost:5000/",
-                "server_database_url": "mongodb://localhost/heroku_9nh8448f"
+                "content_url": "http://localhost:5000/"
             },
             "sourceMaps": true,
             "outDir": null
@@ -104,7 +102,7 @@
             "request": "launch",
             "program": "${workspaceRoot}/node_modules/mocha/bin/_mocha",
             "stopOnEntry": false,
-            "args": ["server-test/model/animation.test.js", "--timeout", "10000"],
+            "args": ["server-test/controllers/animation.test.js", "--timeout", "10000"],
             "cwd": "${workspaceRoot}",
             "runtimeExecutable": null,
             "env": {

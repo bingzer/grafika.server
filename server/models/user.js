@@ -44,6 +44,10 @@ exports.UserSchema = new mongoose.Schema({
         drawingAuthor: { type: String },
         drawingTimer: { type: Number, default: 1000 },
         playbackLoop: { type: Boolean, default: false }
+    },
+    subscriptions: {
+        emailAnimationComment: { type: Boolean, default: true },
+        emailAnimationRating: { type: Boolean, default: true }
     }
 });
 exports.UserSchema.methods.generateHash = function (password) {

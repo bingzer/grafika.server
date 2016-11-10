@@ -23,6 +23,8 @@ export interface IUser extends mongoose.Document, Grafika.IUser {
     facebook: IFacebook;
     google: IGoogle;
 
+    subscriptions: ISubscription;
+
     generateHash(password: string): string;
     generateActivationHash(): string;
     validPassword(password: string): boolean;
@@ -54,6 +56,11 @@ export interface IFacebook extends IAccount {
 export interface IGoogle extends IAccount {
     token: string;
     displayName: string;
+}
+
+export interface ISubscription {
+    emailAnimationComment: boolean,
+    emailAnimationRating: boolean
 }
 
 export const UserSchema = new mongoose.Schema({
@@ -90,6 +97,10 @@ export const UserSchema = new mongoose.Schema({
         drawingAuthor   : { type: String },
         drawingTimer    : { type: Number, default: 1000 },
         playbackLoop    : { type: Boolean, default: false }
+    },
+    subscriptions       : {
+        emailAnimationComment : { type: Boolean, default: true },
+        emailAnimationRating  : { type: Boolean, default: true }
     }
 });
 
