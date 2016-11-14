@@ -34,7 +34,7 @@
     "grunt-contrib-copy": "*",
     "grunt-mocha-cli": "^2.1.0",
     "grunt-string-replace": "^1.2.1",
-    "grunt-ts": "*",
+    "grunt-ts": "^5.5.1",
     "grunt-typings": "^0.1.5",
     "method-override": "*",
     "mocha": "^2.5.3",
