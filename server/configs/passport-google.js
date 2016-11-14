@@ -24,15 +24,7 @@ var GoogleOAuthStrategy = (function (_super) {
                 if (err)
                     return done(err, null);
                 if (!user) {
-                    user = new user_1.User();
-                    user.firstName = profile.name.givenName;
-                    user.lastName = profile.name.familyName;
-                    user.email = profile.emails[0].value;
-                    user.username = user_1.randomUsername();
-                    user.dateCreated = Date.now();
-                    user.dateModified = Date.now();
-                    user.active = true;
-                    user.roles.push('user');
+                    user = createNewUser(profile);
                 }
                 user.google.id = profile.id;
                 user.google.displayName = profile.displayName;
@@ -60,8 +52,18 @@ var GoogleTokenIdOAuthStrategy = (function () {
     function GoogleTokenIdOAuthStrategy() {
         return new GoogleTokenStrategy(new TokenIdOptions(), function (parsedToken, googleId, done) {
             var email = parsedToken.payload.email;
+            var profile = parsedToken.payload;
             user_1.User.findOne({ email: email }, function (err, user) {
-                done(null, user);
+                if (!user) {
+                    user = createNewUser(profile);
+                    user.save(function (err) {
+                        if (err)
+                            done(err);
+                        return done(null, user);
+                    });
+                }
+                else
+                    done(null, user);
             });
         });
     }
@@ -71,4 +73,16 @@ var GoogleTokenIdOAuthStrategy = (function () {
     return GoogleTokenIdOAuthStrategy;
 }());
 exports.GoogleTokenIdOAuthStrategy = GoogleTokenIdOAuthStrategy;
+function createNewUser(profile) {
+    var user = new user_1.User();
+    user.firstName = (profile && profile.name ? profile.name.givenName : "");
+    user.lastName = (profile && profile.name ? profile.name.familyName : "");
+    user.email = profile.emails[0].value;
+    user.username = user_1.randomUsername();
+    user.dateCreated = Date.now();
+    user.dateModified = Date.now();
+    user.active = true;
+    user.roles.push('user');
+    return user;
+}
 //# sourceMappingURL=passport-google.js.map

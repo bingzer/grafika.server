@@ -21,15 +21,7 @@ export class FacebookOAuthStrategy extends Strategy {
                 if (err) return done(err, null);
                 // does not exists
                 if (!user) {
-                    user = new User();
-                    user.firstName    = profile.name.givenName;
-                    user.lastName     = profile.name.familyName;
-                    user.email        = profile.emails[0].value;
-                    user.username     = randomUsername();
-                    user.dateCreated  = Date.now();
-                    user.dateModified = Date.now();
-                    user.active       = true;
-                    user.roles.push('user');
+                    user = createNewUser(profile);
                 }
                 // exists and update
                 user.facebook.id           = profile.id;
@@ -59,7 +51,14 @@ export class FacebookTokenIdOAuthStrategy implements passport.Strategy{
         return new FacebookTokenStrategy(new TokenIdOptions(), (parsedToken, refreshToken, profile, done) => {
             let email = (profile && profile.emails && profile.emails.length > 0) ? profile.emails[0].value : '';
             User.findOne({ email: email }, (err, user) => {
-                done(null, user);
+                if (!user){
+                    user = createNewUser(profile);
+                    user.save((err) => {
+                        if (err) done(err);
+                        return done(null, user);
+                    })
+                }
+                else done(null, user);
             });
         });
     }
@@ -68,4 +67,20 @@ export class FacebookTokenIdOAuthStrategy implements passport.Strategy{
         throw new Error('FacebookTokenIdOAuthStrategy.authenticate() not implemented');
     }
     
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+function createNewUser(profile): IUser {
+    let user = new User();
+    user.firstName    = (profile && profile.name ? profile.name.givenName : "");
+    user.lastName     = (profile && profile.name ? profile.name.familyName : "");
+    user.email        = profile.emails[0].value;
+    user.username     = randomUsername();
+    user.dateCreated  = Date.now();
+    user.dateModified = Date.now();
+    user.active       = true;
+    user.roles.push('user');
+
+    return user;
 }
