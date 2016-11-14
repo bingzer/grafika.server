@@ -33,7 +33,6 @@ var GoogleOAuthStrategy = (function (_super) {
                     user.dateCreated = Date.now();
                     user.dateModified = Date.now();
                     user.active = true;
-                    user.roles.push('user');
                 }
                 // exists and update
                 user.google.id = profile.id;
@@ -70,14 +69,13 @@ var GoogleTokenIdOAuthStrategy = (function () {
                     return done(err);
                 if (!user) {
                     user = new user_1.User();
-                    user.firstName = payload.givenName;
-                    user.lastName = payload.familyName;
+                    user.firstName = payload.given_name;
+                    user.lastName = payload.family_name;
                     user.email = email;
                     user.username = user_1.randomUsername();
                     user.dateCreated = Date.now();
                     user.dateModified = Date.now();
                     user.active = true;
-                    user.roles.push('user');
                 }
                 // exists and update
                 user.google.displayName = payload.name;

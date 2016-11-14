@@ -27,7 +27,6 @@ export class GoogleOAuthStrategy extends OAuth2Strategy {
                     user.dateCreated  = Date.now();
                     user.dateModified = Date.now();
                     user.active       = true;
-                    user.roles.push('user');
                 }
                 // exists and update
                 user.google.id             = profile.id;
@@ -62,14 +61,13 @@ export class GoogleTokenIdOAuthStrategy implements passport.Strategy{
 
                 if (!user) {
                     user = new User();
-                    user.firstName    = payload.givenName;
-                    user.lastName     = payload.familyName;
+                    user.firstName    = payload.given_name;
+                    user.lastName     = payload.family_name;
                     user.email        = email;
                     user.username     = randomUsername();
                     user.dateCreated  = Date.now();
                     user.dateModified = Date.now();
                     user.active       = true;
-                    user.roles.push('user');
                 }
                 // exists and update
                 user.google.displayName    = payload.name;
