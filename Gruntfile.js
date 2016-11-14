@@ -1,5 +1,5 @@
 module.exports = function (grunt) {
-    grunt.option('force', false);
+    grunt.option('force', true);
 
     grunt.loadNpmTasks("grunt-contrib-clean");
     grunt.loadNpmTasks('grunt-ts');
