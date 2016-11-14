@@ -25,6 +25,7 @@ function createSignedUrl(req, res, next) {
     }).catch(next);
 }
 exports.createSignedUrl = createSignedUrl;
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 function getThumbnail(req, res, next) {
     var animId = req.params.animationId;
     res.redirect(aws.getResourceUrl(animId, "thumbnail"));

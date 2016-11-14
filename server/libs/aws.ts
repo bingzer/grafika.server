@@ -6,14 +6,19 @@ import * as config from '../configs/config';
 
 ////////////////////////////////////////////////////////////////////////////////
 
-interface S3Extensions extends aws.S3 {
-	listObjects(params: any, callback: (err: Error, data: any) => void): void;
-	deleteObjects(params: any, callback: (err: Error, data: any) => void): void;
-}
-
 class AwsHelper {
-	create(): S3Extensions {
-		return <S3Extensions> new aws.S3({ accessKeyId: config.setting.$auth.$awsId, secretAccessKey: config.setting.$auth.$awsSecret });
+
+	constructor() {
+		aws.config.update({
+			credentials: {
+				accessKeyId: config.setting.$auth.$awsId,
+				secretAccessKey: config.setting.$auth.$awsSecret
+			} 
+		});
+	}
+
+	create(): aws.S3 {
+		return new aws.S3();
 	}
 }
 
@@ -28,7 +33,6 @@ export class AwsUsers extends AwsHelper {
 		if (!mime) mime = 'image/png';
 		
 		// get signedurl from s3
-		let s3 = new aws.S3({ accessKeyId: config.setting.$auth.$awsId, secretAccessKey: config.setting.$auth.$awsSecret });
 		let s3_params = {
 			Bucket: config.setting.$auth.$awsBucket,
 			Key: `${config.setting.$auth.$awsFolder}/users/${user._id}/${imageType}`,

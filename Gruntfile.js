@@ -1,5 +1,5 @@
 module.exports = function (grunt) {
-    grunt.option('force', false);
+    grunt.option('force', true);
 
     grunt.loadNpmTasks("grunt-contrib-clean");
     grunt.loadNpmTasks('grunt-ts');
@@ -25,8 +25,13 @@ module.exports = function (grunt) {
             "server/*.js.map",
         ],
         ts: {
+            options: {
+                'compiler': './node_modules/typescript/bin/tsc'
+            },
             default: {
-                tsconfig: true
+                tsconfig: {
+                    passThrough : true
+                }
             }
         },
         typings: {

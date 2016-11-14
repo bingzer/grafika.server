@@ -1,6 +1,6 @@
 {
   "name": "grafika.server",
-  "version": "0.11.1-3",
+  "version": "0.11.2-3",
   "engines": {
     "node": "6.1.0"
   },
@@ -16,7 +16,8 @@
   },
   "license": "UNLICENSED",
   "dependencies": {
-    "aws-sdk": "^2.4.7",
+    "@types/node": "^6.0.46",
+    "aws-sdk": "^2.6.9",
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "*",
     "chai": "^3.5.0",
@@ -34,7 +35,7 @@
     "grunt-contrib-copy": "*",
     "grunt-mocha-cli": "^2.1.0",
     "grunt-string-replace": "^1.2.1",
-    "grunt-ts": "*",
+    "grunt-ts": "^5.4.0",
     "grunt-typings": "^0.1.5",
     "method-override": "*",
     "mocha": "^2.5.3",
@@ -52,6 +53,7 @@
     "passport-oauth2-jwt-bearer": "^0.1.1",
     "path": "^0.12.7",
     "q": "^1.4.1",
+    "typescript": "2.0.9",
     "typings": "^1.3.1",
     "underscore": "*",
     "winston": "*"

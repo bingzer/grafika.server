@@ -104,6 +104,9 @@ var Content = (function () {
     });
     return Content;
 }());
+/**
+ * The server configuration
+ */
 var Server = (function () {
     function Server() {
         this.version = pkg.version;
@@ -200,6 +203,9 @@ var Server = (function () {
     });
     return Server;
 }());
+/**
+ * Client configuration
+ */
 var Client = (function () {
     function Client() {
         this.sessionSecret = env.client_sessionSecret;
@@ -216,6 +222,9 @@ var Client = (function () {
     });
     return Client;
 }());
+/**
+ * Auth configuration
+ */
 var Auth = (function () {
     function Auth() {
         this.awsUrl = 'https://s3.amazonaws.com/';
@@ -353,6 +362,7 @@ var Auth = (function () {
     });
     return Auth;
 }());
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 var setting = new Setting();
 exports.setting = setting;
 //# sourceMappingURL=config.js.map

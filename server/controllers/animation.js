@@ -75,6 +75,7 @@ function getRandomAnimation(req, res, next) {
     });
 }
 exports.getRandomAnimation = getRandomAnimation;
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 function postComment(req, res, next) {
     animation_1.Animation.findById(req.params._id, function (err, anim) {
         if (err)
@@ -106,6 +107,7 @@ function commentForMobile(req, res, next) {
     });
 }
 exports.commentForMobile = commentForMobile;
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 function createQuery(req) {
     var qObject = { isPublic: true };
     if (req.query.term) {
@@ -117,6 +119,7 @@ function createQuery(req) {
         if (req.query.isPublic == "false")
             qObject.isPublic = false;
     }
+    //qObject.userId = req.query.userId;
     return qObject;
 }
 function createSort(req) {

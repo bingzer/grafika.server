@@ -7,11 +7,18 @@ var __extends = (this && this.__extends) || function (d, b) {
 var $q = require('q');
 var aws = require('aws-sdk');
 var config = require('../configs/config');
+////////////////////////////////////////////////////////////////////////////////
 var AwsHelper = (function () {
     function AwsHelper() {
+        aws.config.update({
+            credentials: {
+                accessKeyId: config.setting.$auth.$awsId,
+                secretAccessKey: config.setting.$auth.$awsSecret
+            }
+        });
     }
     AwsHelper.prototype.create = function () {
-        return new aws.S3({ accessKeyId: config.setting.$auth.$awsId, secretAccessKey: config.setting.$auth.$awsSecret });
+        return new aws.S3();
     };
     return AwsHelper;
 }());
@@ -20,13 +27,16 @@ var AwsUsers = (function (_super) {
     function AwsUsers() {
         _super.apply(this, arguments);
     }
+    /**
+     * Creates signed url
+     */
     AwsUsers.prototype.createSignedUrl = function (user, imageType, mime) {
         var deferred = $q.defer();
         if (!imageType)
             imageType = 'avatar';
         if (!mime)
             mime = 'image/png';
-        var s3 = new aws.S3({ accessKeyId: config.setting.$auth.$awsId, secretAccessKey: config.setting.$auth.$awsSecret });
+        // get signedurl from s3
         var s3_params = {
             Bucket: config.setting.$auth.$awsBucket,
             Key: config.setting.$auth.$awsFolder + "/users/" + user._id + "/" + imageType,
@@ -43,6 +53,9 @@ var AwsUsers = (function (_super) {
         });
         return deferred.promise;
     };
+    /**
+     * Delete profile image (Avatar)
+     * */
     AwsUsers.prototype.deleteAvatar = function (user, imageType) {
         var deferred = $q.defer();
         if (!imageType)
@@ -66,8 +79,13 @@ var AwsResources = (function (_super) {
     function AwsResources() {
         _super.apply(this, arguments);
     }
+    /**
+     * Create SignedUrl for resources
+     *
+     * */
     AwsResources.prototype.createSignedUrl = function (resource) {
         var deferred = $q.defer();
+        // get signedurl from s3
         var s3_params = {
             Bucket: config.setting.$auth.$awsBucket,
             Key: config.setting.$auth.$awsFolder + "/animations/" + resource.animationId + "/" + resource._id,
@@ -84,11 +102,13 @@ var AwsResources = (function (_super) {
         });
         return deferred.promise;
     };
+    /** Returns the resource url */
     AwsResources.prototype.getResourceUrl = function (animId, resourceId) {
         if (config.setting.$auth.$awsBucket === 'fake')
             return config.setting.$content.$url + "assets/img/placeholder.png";
         return "" + config.setting.$auth.$awsUrl + config.setting.$auth.$awsBucket + "/" + config.setting.$auth.$awsFolder + "/animations/" + animId + "/" + resourceId;
     };
+    /** Delete resource */
     AwsResources.prototype.deleteResource = function (animId, resourceId) {
         var deferred = $q.defer();
         this.create().deleteObject({
@@ -110,6 +130,9 @@ var AwsAnimation = (function (_super) {
     function AwsAnimation() {
         _super.apply(this, arguments);
     }
+    /**
+     * Delete animation and all resources under
+     */
     AwsAnimation.prototype.deleteAnimation = function (animId) {
         var _this = this;
         var deferred = $q.defer();

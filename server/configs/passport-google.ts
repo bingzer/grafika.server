@@ -27,7 +27,6 @@ export class GoogleOAuthStrategy extends OAuth2Strategy {
                     user.dateCreated  = Date.now();
                     user.dateModified = Date.now();
                     user.active       = true;
-                    user.roles.push('user');
                 }
                 // exists and update
                 user.google.id             = profile.id;
@@ -37,7 +36,7 @@ export class GoogleOAuthStrategy extends OAuth2Strategy {
                 user.prefs.drawingAuthor   = user.username;
                 // save the user
                 user.save((err) => {
-                    if (err) done(err);
+                    if (err) return done(err);
                     return done(null, user);
                 });
             });
@@ -54,9 +53,31 @@ class TokenIdOptions {
 export class GoogleTokenIdOAuthStrategy implements passport.Strategy{
     constructor() {
         return new GoogleTokenStrategy(new TokenIdOptions(), (parsedToken, googleId, done) => {
-            let email = parsedToken.payload.email;
+            let payload = parsedToken.payload;
+            let email = payload.email;
+
             User.findOne({ email: email }, (err, user) => {
-                done(null, user);
+                if (err) return done(err);
+
+                if (!user) {
+                    user = new User();
+                    user.firstName    = payload.given_name;
+                    user.lastName     = payload.family_name;
+                    user.email        = email;
+                    user.username     = randomUsername();
+                    user.dateCreated  = Date.now();
+                    user.dateModified = Date.now();
+                    user.active       = true;
+                }
+                // exists and update
+                user.google.displayName    = payload.name;
+                user.prefs.avatar          = payload.picture;
+                user.prefs.drawingAuthor   = user.username;
+
+                user.save((err) => {
+                    if (err) return done(err);
+                    return done(null, user);
+                });
             });
         });
     }

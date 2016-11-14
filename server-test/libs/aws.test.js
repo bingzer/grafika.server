@@ -27,8 +27,12 @@ describe("libs/aws.ts", function (){
         };
         mockAwsSdk = {
             S3: function(opt) {
-                assert.equal('awsId', opt.accessKeyId);
-                assert.equal('awsSecret', opt.secretAccessKey);
+            },
+            config: {
+                update: function (opts) {
+                    assert.equal('awsId', opts.credentials.accessKeyId);
+                    assert.equal('awsSecret', opts.credentials.secretAccessKey);
+                }
             }
         };
 	});

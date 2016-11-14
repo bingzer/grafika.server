@@ -8,6 +8,7 @@ var passport_signin_1 = require('./passport-signin');
 var passport_google_1 = require('./passport-google');
 var passport_facebook_1 = require('./passport-facebook');
 var GoogleTokenStrategy = require('passport-google-id-token');
+////////////////////////////////////////////////////////////////////////////////
 passport.serializeUser(function (user, done) {
     done(null, user._id);
 });
@@ -19,6 +20,7 @@ passport.deserializeUser(function (id, done) {
 function initialize(app) {
     var defer = q.defer();
     setTimeout(function () {
+        // -- strategies
         passport.use('local-signup', new passport_signup_1.SignupStrategy());
         passport.use('local-login', new passport_signin_1.SigninStrategy());
         passport.use('google', new passport_google_1.GoogleOAuthStrategy());

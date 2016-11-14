@@ -23,6 +23,7 @@ var GoogleOAuthStrategy = (function (_super) {
             user_1.User.findOne({ email: profile.emails[0].value }, function (err, user) {
                 if (err)
                     return done(err, null);
+                // does not exists
                 if (!user) {
                     user = new user_1.User();
                     user.firstName = profile.name.givenName;
@@ -32,16 +33,17 @@ var GoogleOAuthStrategy = (function (_super) {
                     user.dateCreated = Date.now();
                     user.dateModified = Date.now();
                     user.active = true;
-                    user.roles.push('user');
                 }
+                // exists and update
                 user.google.id = profile.id;
                 user.google.displayName = profile.displayName;
                 user.google.token = accessToken;
                 user.prefs.avatar = profile.photos && profile.photos.length > 0 ? profile.photos[0].value : null;
                 user.prefs.drawingAuthor = user.username;
+                // save the user
                 user.save(function (err) {
                     if (err)
-                        done(err);
+                        return done(err);
                     return done(null, user);
                 });
             });
@@ -50,6 +52,7 @@ var GoogleOAuthStrategy = (function (_super) {
     return GoogleOAuthStrategy;
 }(passport_google_oauth_1.OAuth2Strategy));
 exports.GoogleOAuthStrategy = GoogleOAuthStrategy;
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 var TokenIdOptions = (function () {
     function TokenIdOptions() {
         this.clientID = config.setting.$auth.$googleId;
@@ -59,9 +62,30 @@ var TokenIdOptions = (function () {
 var GoogleTokenIdOAuthStrategy = (function () {
     function GoogleTokenIdOAuthStrategy() {
         return new GoogleTokenStrategy(new TokenIdOptions(), function (parsedToken, googleId, done) {
-            var email = parsedToken.payload.email;
+            var payload = parsedToken.payload;
+            var email = payload.email;
             user_1.User.findOne({ email: email }, function (err, user) {
-                done(null, user);
+                if (err)
+                    return done(err);
+                if (!user) {
+                    user = new user_1.User();
+                    user.firstName = payload.given_name;
+                    user.lastName = payload.family_name;
+                    user.email = email;
+                    user.username = user_1.randomUsername();
+                    user.dateCreated = Date.now();
+                    user.dateModified = Date.now();
+                    user.active = true;
+                }
+                // exists and update
+                user.google.displayName = payload.name;
+                user.prefs.avatar = payload.picture;
+                user.prefs.drawingAuthor = user.username;
+                user.save(function (err) {
+                    if (err)
+                        return done(err);
+                    return done(null, user);
+                });
             });
         });
     }
