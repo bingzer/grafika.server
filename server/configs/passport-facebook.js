@@ -25,6 +25,7 @@ var FacebookOAuthStrategy = (function (_super) {
             user_1.User.findOne({ email: profile.emails[0].value }, function (err, user) {
                 if (err)
                     return done(err, null);
+                // does not exists
                 if (!user) {
                     user = new user_1.User();
                     user.firstName = profile.name.givenName;
@@ -36,11 +37,13 @@ var FacebookOAuthStrategy = (function (_super) {
                     user.active = true;
                     user.roles.push('user');
                 }
+                // exists and update
                 user.facebook.id = profile.id;
                 user.facebook.displayName = profile.displayName;
                 user.facebook.token = accessToken;
                 user.prefs.avatar = profile.photos && profile.photos.length > 0 ? profile.photos[0].value : null;
                 user.prefs.drawingAuthor = user.username;
+                // save the user
                 user.save(function (err) {
                     if (err)
                         done(err);
@@ -52,6 +55,7 @@ var FacebookOAuthStrategy = (function (_super) {
     return FacebookOAuthStrategy;
 }(passport_facebook_1.Strategy));
 exports.FacebookOAuthStrategy = FacebookOAuthStrategy;
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 var TokenIdOptions = (function () {
     function TokenIdOptions() {
         this.clientID = config.setting.$auth.$facebookId;

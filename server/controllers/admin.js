@@ -94,6 +94,7 @@ function activateUser(req, res, next) {
 }
 exports.activateUser = activateUser;
 ;
+////////////////////////////////////////////////////////////////////////////////////////////////////
 function createUserSort(req) {
     var sort = {};
     if (req.query.sort === 'username')
@@ -105,6 +106,7 @@ function createUserSort(req) {
 }
 function createQuery(req) {
     var q = {};
+    // search
     if (req.query.term) {
         if (req.query.term.indexOf('{') > -1) {
             q = JSON.parse(req.query.term);
@@ -128,6 +130,7 @@ function createAnimationSort(req) {
 function getServerInfo() {
     var HIDDEN = '*******';
     var serverConfig = JSON.parse(JSON.stringify(config.setting));
+    // hide all important values
     serverConfig.client.sessionSecret = HIDDEN;
     serverConfig.server.superSecret = HIDDEN;
     serverConfig.server.databaseUrl = HIDDEN;

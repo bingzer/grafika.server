@@ -23,11 +23,14 @@ exports.AnimationSchema = new mongoose.Schema({
     totalFrame: { type: Number, default: 0 },
     frames: { type: {}, select: false }
 });
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 var Animation = restful.model('animations', exports.AnimationSchema);
 exports.Animation = Animation;
 Animation.methods(['get', 'put', 'post']);
 Animation.before('post', function (req, res, next) {
+    // no id allowed!
     delete req.body._id;
+    // check for date time
     var now = Date.now();
     if (!req.body.dateCreated)
         req.body.dateCreated = now;
@@ -53,10 +56,12 @@ Animation.before('put', function (req, res, next) {
     delete req.body.frames;
     next();
 });
+// -- Frames
 Animation.route('frames', {
     detail: true,
     handler: function (req, res, next) {
         if (req.method == 'POST') {
+            // update total frames
             Animation.findByIdAndUpdate(req.params.id, { totalFrame: req.body.length });
             zlib.deflate(Buffer.from(req.body), function (err, result) {
                 if (err)
@@ -96,12 +101,14 @@ Animation.route('frames', {
             next(400);
     }
 });
+// -- Resources
 Animation.route('resources', {
     detail: true,
     handler: function (req, res, next) {
         next();
     }
 });
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 exports.AnimationSchema.index({ name: "text", description: "text", author: "text" }, { name: 'AnimationTextIndex', weights: { name: 10, description: 4, author: 2 } });
 Animation.ensureIndexes(function (err) {
     if (err)
@@ -109,4 +116,5 @@ Animation.ensureIndexes(function (err) {
     else
         winston.info('   AnimationTextIndex [OK]');
 });
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //# sourceMappingURL=animation.js.map

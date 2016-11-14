@@ -14,7 +14,9 @@ var contentController = require('../controllers/content');
 var config = require('../configs/config');
 var animation_1 = require('../models/animation');
 var user_1 = require('../models/user');
+//////////////////////////////////////////////////////////////////////////////////////////////////
 var SECRET = config.setting.$server.$superSecret;
+/** find token from Http Request. Header/Query, etc... */
 function findToken(req) {
     if (req.headers['authorization'] && req.headers['authorization'].split(' ')[0] === 'Bearer')
         return req.headers['authorization'].split(' ')[1];
@@ -24,7 +26,9 @@ function findToken(req) {
         return req.cookies.token;
     return null;
 }
+/** Make sure is logged in via session */
 function useSession(req, res, next) {
+    // if user is authenticated in the session, carry on 
     if (req.isAuthenticated())
         return next();
     else
@@ -37,16 +41,19 @@ function extractUser(req, res, next) {
     else
         next();
 }
+/** Authenticate using jwt token */
 function useJwt(req, res, next) {
     return expressJwt({ secret: SECRET, getToken: findToken })(req, res, next);
 }
 ;
+/** Authenticate using jwt token only if it's not authenticated yet */
 function useSessionOrJwt(req, res, next) {
     if (!req.isAuthenticated())
         return expressJwt({ secret: SECRET, getToken: findToken })(req, res, next);
     else
         next();
 }
+/** Check animation access */
 function useAnimAccess(req, res, next) {
     var animId = new mongoose.Types.ObjectId(req.params._id || req.params.animationId);
     var userId = (req.user && req.user._id) ? new mongoose.Types.ObjectId(req.user._id) : undefined;
@@ -66,7 +73,11 @@ function useAnimAccess(req, res, next) {
         if (err)
             return next(err);
         if (result) {
+            // Enforce for READ-ONLY access
+            // only that user and an administrator can do PUT/POST/DELETE
+            // others can only GET 
             if (req.method != 'GET') {
+                // comapre the user id
                 if (!userId || result.userId.toString() !== userId.toString() && !isAdmin) {
                     return next(401);
                 }
@@ -74,7 +85,7 @@ function useAnimAccess(req, res, next) {
             return next();
         }
         else
-            return next(401);
+            return next(401); // not authorized
     });
 }
 function useAdminAccess(req, res, next) {
@@ -116,6 +127,7 @@ function handleErrors(err, req, res, next) {
     else
         next();
 }
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 function initialize(app) {
     var defer = q.defer();
     setTimeout(function () {
@@ -135,24 +147,29 @@ function initialize(app) {
         app.post('/accounts/pwd/reset', accountController.resetPassword);
         app.post('/accounts/pwd', useSessionOrJwt, accountController.changePassword);
         app.post('/accounts/username-check', useSessionOrJwt, accountController.checkUsernameAvailability);
+        // ---------------- Animation -----------------------------//
         app.get('/animations', animationController.search);
         app.get('/animations/random', animationController.getRandomAnimation);
-        app.post('/animations', useSessionOrJwt);
-        app.get('/animations/:_id', useAnimAccess);
-        app.put('/animations/:_id', useSessionOrJwt, useAnimAccess);
-        app.delete('/animations/:_id', useSessionOrJwt, useAnimAccess, animationController.remove);
-        app.get('/animations/:_id/frames', useAnimAccess);
+        app.post('/animations', useSessionOrJwt); // create
+        app.get('/animations/:_id', useAnimAccess); // view
+        app.put('/animations/:_id', useSessionOrJwt, useAnimAccess); // update
+        app.delete('/animations/:_id', useSessionOrJwt, useAnimAccess, animationController.remove); // delete
+        app.get('/animations/:_id/frames', useAnimAccess); // get frames
         app.post('/animations/:_id/frames', useSessionOrJwt, useAnimAccess);
         app.post('/animations/:_id/view', animationController.incrementViewCount);
         app.post('/animations/:_id/rating/:rating', animationController.submitRating);
+        // --------------- Sync Stuffs -------------------------//
         app.get('/animations/:_id/comments', animationController.commentForMobile);
         app.post('/animations/:_id/comments', useSessionOrJwt, animationController.postComment);
+        // --------------- Sync Stuffs -------------------------//
         app.post('/animations/sync', useSessionOrJwt, syncController.sync);
         app.post('/animations/sync/update', useSessionOrJwt, syncController.syncUpdate);
+        // ---------------- Users -----------------------------//
         app.get('/users/:_id', userController.get);
         app.put('/users/:_id', useSessionOrJwt, userController.update);
         app.get('/users/:_id/avatar', userController.getAvatar);
         app.post('/users/:_id/avatar', useSessionOrJwt, userController.createAvatarSignedUrl);
+        // ------------------ Admin ---------------------//
         app.get('/admin', useSessionOrJwt, useAdminAccess, adminController.get);
         app.get('/admin/users', useSessionOrJwt, useAdminAccess, adminController.listUsers);
         app.get('/admin/animations', useSessionOrJwt, useAdminAccess, adminController.listAnimations);
@@ -160,11 +177,15 @@ function initialize(app) {
         app.post('/admin/users/:_id/reset-pwd', useSessionOrJwt, useAdminAccess, adminController.sendResetEmail);
         app.post('/admin/users/:_id/inactivate', useSessionOrJwt, useAdminAccess, adminController.inactivateUser);
         app.post('/admin/users/:_id/activate', useSessionOrJwt, useAdminAccess, adminController.activateUser);
-        app.get('/animations/:animationId/thumbnail', resourcesController.getThumbnail);
+        // ---------------- Thumbnail -----------------------------//
+        app.get('/animations/:animationId/thumbnail', /* extractUser, useAnimAccess, */ resourcesController.getThumbnail);
         app.post('/animations/:animationId/thumbnail', useSessionOrJwt, useAnimAccess, resourcesController.createThumbnailSignedUrl);
+        // --------------- Restful Registration -------------------------//
         user_1.User.register(app, '/users');
         animation_1.Animation.register(app, '/animations');
+        // ---------------- Content -----------------------------//
         app.post('/content/feedback', contentController.feedback);
+        // --------------- Error handlers -------------------------//
         app.use(function (req, res, next) { return next(404); });
         app.use(handleErrors);
         winston.info('Routes [OK]');

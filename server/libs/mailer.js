@@ -15,6 +15,7 @@ var mailTransporter = nodemailer.createTransport({
     }
 });
 exports.mailTransporter = mailTransporter;
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 function sendAnimationCommentEmail(animation, user, comment) {
     var deferred = $q.defer();
     var url = config.setting.$content.$url + 'animations/' + animation._id;
@@ -29,6 +30,7 @@ function sendAnimationCommentEmail(animation, user, comment) {
     promises.then(function (results) {
         if (results[0].state === 'rejected' || results[1].state === 'rejected')
             return deferred.reject("fail");
+        // setup e-mail data with unicode symbols
         var mailOptions = {
             from: config.setting.$server.$mailFrom,
             to: user.email,
@@ -36,6 +38,7 @@ function sendAnimationCommentEmail(animation, user, comment) {
             text: results[0].value,
             html: results[1].value
         };
+        // send mail with defined transport object
         mailTransporter.sendMail(mailOptions, function (error, info) {
             if (error) {
                 winston.error("Unable to sent message", error);
@@ -60,6 +63,7 @@ function sendVerificationEmail(user) {
     promises.then(function (results) {
         if (results[0].state === 'rejected' || results[1].state === 'rejected')
             return deferred.reject("fail");
+        // setup e-mail data with unicode symbols
         var mailOptions = {
             from: config.setting.$server.$mailFrom,
             to: user.email,
@@ -67,6 +71,7 @@ function sendVerificationEmail(user) {
             text: results[0].value,
             html: results[1].value
         };
+        // send mail with defined transport object
         mailTransporter.sendMail(mailOptions, function (error, info) {
             if (error) {
                 winston.error("Unable to sent message", error);
@@ -91,6 +96,7 @@ function sendResetEmail(user) {
     promises.then(function (results) {
         if (results[0].state === 'rejected' || results[1].state === 'rejected')
             return deferred.reject('fail');
+        // setup e-mail data with unicode symbols
         var mailOptions = {
             from: config.setting.$server.$mailFrom,
             to: user.email,
@@ -98,6 +104,7 @@ function sendResetEmail(user) {
             text: results[0].value,
             html: results[1].value
         };
+        // send mail with defined transport object
         mailTransporter.sendMail(mailOptions, function (error, info) {
             if (error) {
                 winston.error("Unable to sent message", error);
@@ -112,6 +119,7 @@ function sendResetEmail(user) {
     return deferred.promise;
 }
 exports.sendResetEmail = sendResetEmail;
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 function readTemplate(templateName, opts) {
     var deferred = $q.defer();
     var file = path.resolve('server/templates/' + templateName);

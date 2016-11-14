@@ -8,6 +8,7 @@ function feedback(req, res, next) {
         '<strong>Feedback :</strong><br/>' + req.body.content + '<br/>' +
         '<strong>Username :</strong><br/>' + (req.user ? req.user.username : 'anonymous') + '<br/>' +
         '<strong>Email    :</strong><br/>' + (req.user ? req.user.email : 'anonymous') + '<br/>';
+    // setup e-mail data with unicode symbols
     var mailOptions = {
         from: config.setting.$server.$mailFrom,
         to: config.setting.$server.$mailFrom,

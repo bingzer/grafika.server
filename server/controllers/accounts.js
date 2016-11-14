@@ -5,6 +5,7 @@ var mailer = require('../libs/mailer');
 var config = require('../configs/config');
 var jwt = require('jsonwebtoken');
 var SECRET = config.setting.$server.$superSecret;
+////////////////////////////////////////////////////////////////////////////////////////////////
 function login(req, res, next) {
     passport.authenticate('local-login', function (err, user, info) {
         if (err)
@@ -88,6 +89,8 @@ function resetPassword(req, res, next) {
     var userInfo = req.body;
     user_1.User.findOne(user_1.userQuery(userInfo.email), function (err, user) {
         if (!err && user) {
+            // check for timestamp see if it's still valid (less than 5 minutes)
+            // before sending another email
             if (user.activation.hash && user.validActivationTimestamp()) {
                 next('Reset email has already been sent. To resend please redo the step in 5 minutes');
             }
@@ -151,6 +154,7 @@ function providerLogin(req, res, next) {
         next(401);
 }
 exports.providerLogin = providerLogin;
+////////////////////////////////////////////////////////////////////////////////////////////////
 function tryAuthenticate(req, callback) {
     if (req.isAuthenticated())
         return callback(undefined, req.user);

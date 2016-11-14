@@ -2,10 +2,14 @@
     "compileOnSave": true,
     "compilerOptions": {
         "target": "es5",
-        "emitDecoratorMetadata": true,
         "sourceMap": true,
         "allowJs": false
     },
+    "lib": [
+        "es5",
+        "es2015.promise",
+        "dom"
+    ],
     "exclude": [
         "node_modules",
         "bower_components",

@@ -1,5 +1,9 @@
 "use strict";
 var _ = require('underscore');
+/*
+ * The last handler to be called in the chain of middleware
+ * This figures out what response format it should be in and sends it
+ */
 exports.last = function (req, res, next) {
     if (res.locals.bundle) {
         if (req.body.format === 'js') {
@@ -15,6 +19,7 @@ exports.last = function (req, res, next) {
     res.send();
 };
 exports.schema = function (req, res, next) {
+    // We can mount a model to multiple apps, so we need to get the base url from the request url
     var baseuri = req.url.split('/');
     baseuri = baseuri.slice(0, baseuri.length - 1).join('/');
     var detailuri = baseuri + '/:id';
@@ -47,6 +52,10 @@ exports.getDetail = function (req, res, next) {
         next();
     });
 };
+/**
+ * Generates a handler that returns the object at @param pathName
+ * where pathName is the path to an objectId field
+ */
 exports.getPath = function (pathName) {
     return function (req, res, next) {
         req.quer = req.quer.populate(pathName);
@@ -65,9 +74,11 @@ exports.post = function (req, res, next) {
     });
 };
 exports.put = function (req, res, next) {
+    // Remove immutable ObjectId from update attributes to prevent request failure
     if (req.body._id && req.body._id === req.params.id) {
         delete req.body._id;
     }
+    // Update in 1 atomic operation on the database if not specified otherwise
     if (this.shouldUseAtomicUpdate) {
         req.quer.findOneAndUpdate({}, req.body, this.update_options, function (err, newObj) {
             if (err) {
@@ -83,6 +94,7 @@ exports.put = function (req, res, next) {
         });
     }
     else {
+        // Preform the update in two operations allowing mongoose to fire its schema update hook
         req.quer.findOne({ "_id": req.params.id }, function (err, docToUpdate) {
             if (err) {
                 exports.respond(res, 500, err);
@@ -101,6 +113,7 @@ exports.put = function (req, res, next) {
     }
 };
 exports.delete = function (req, res, next) {
+    // Delete in 1 atomic operation on the database if not specified otherwise
     if (this.shouldUseAtomicUpdate) {
         req.quer.findOneAndRemove({}, this.delete_options, function (err, obj) {
             if (err) {
@@ -111,6 +124,7 @@ exports.delete = function (req, res, next) {
         });
     }
     else {
+        // Preform the remove in two steps allowing mongoose to fire its schema update hook
         req.quer.findOne({ "_id": req.params.id }, function (err, docToRemove) {
             if (err) {
                 exports.respond(res, 500, err);
@@ -127,6 +141,8 @@ exports.delete = function (req, res, next) {
         });
     }
 };
+// I'm going to leave these here because it might be nice to have standardized
+// error messages for common failures
 exports.objectNotFound = function () {
     return {
         status: 404,
@@ -163,6 +179,13 @@ exports.badRequest = function (errobj) {
         errors: errobj || "Your request was invalid"
     };
 };
+/**
+ * Takes a response, error, success statusCode and success payload
+ *
+ * If there is an error, it returns a 400 with the error as the payload
+ * If there is no error, it returns statusCode with the specified payload
+ *
+ */
 exports.respondOrErr = function (res, errStatusCode, err, statusCode, content) {
     if (err) {
         exports.respond(res, errStatusCode, err);

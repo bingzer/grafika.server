@@ -6,6 +6,7 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 var passport_local_1 = require('passport-local');
 var user_1 = require('../models/user');
+////////////////////////////////////////////////////////////////////////////////
 var Options = (function () {
     function Options() {
         this.usernameField = 'username';
@@ -19,15 +20,18 @@ var SigninStrategy = (function (_super) {
     function SigninStrategy() {
         _super.call(this, new Options(), function (req, username, password, done) {
             user_1.User.findOne({ email: username }, function (err, user) {
+                // if there are any errors, return the error before anything else
                 if (err)
                     return done(err);
+                // if no user is found, return the message
                 if (!user || !user.validPassword(password))
-                    return done('Username or password does not match');
+                    return done('Username or password does not match'); // req.flash is the way to set flashdata using connect-flash
                 if (!user.active) {
                     if (user.activation.hash && user.validActivationTimestamp())
                         return done('Please verify your account first');
                     return done('Your account is not active');
                 }
+                // all is well, return successful user
                 return done(null, user);
             });
         });

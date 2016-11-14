@@ -25,8 +25,13 @@ module.exports = function (grunt) {
             "server/*.js.map",
         ],
         ts: {
+            options: {
+                'compiler': './node_modules/typescript/bin/tsc'
+            },
             default: {
-                tsconfig: true
+                tsconfig: {
+                    passThrough : true
+                }
             }
         },
         typings: {

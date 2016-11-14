@@ -2,7 +2,8 @@
 var _ = require('underscore');
 var mongoose = require('mongoose'), Model = mongoose.Model, handlers = require('./handlers');
 exports = module.exports = model;
-var methods = ['get', 'post', 'put', 'delete'], endpoints = ['get', 'post', 'put', 'delete', 'getDetail'], defaultroutes = ['schema'], lookup = {
+var methods = ['get', 'post', 'put', 'delete'], // All HTTP methods, PATCH not currently supported
+endpoints = ['get', 'post', 'put', 'delete', 'getDetail'], defaultroutes = ['schema'], lookup = {
     'get': 'index',
     'getDetail': 'show',
     'put': 'updated',
@@ -26,9 +27,11 @@ var methods = ['get', 'post', 'put', 'delete'], endpoints = ['get', 'post', 'put
     'regex': function (val, query) {
         var regParts = val.match(/^\/(.*?)\/([gim]*)$/);
         if (regParts) {
+            // the parsed pattern had delimiters and modifiers. handle them.
             val = new RegExp(regParts[1], regParts[2]);
         }
         else {
+            // we got pattern string without delimiters
             val = new RegExp(val);
         }
         return query.regex(val);
@@ -48,6 +51,10 @@ var methods = ['get', 'post', 'put', 'delete'], endpoints = ['get', 'post', 'put
         shouldUseAtomicUpdate: false
     };
 };
+/**
+ * Returns the model associated with the given name or
+ * registers the model with mongoose
+ */
 function model() {
     var result = mongoose.model.apply(mongoose, arguments), default_properties = defaults();
     if (1 === arguments.length)
@@ -107,6 +114,9 @@ Model.template = function (templatePath) {
     this.templateRoot = templatePath;
     return this;
 };
+/**
+ * Adds the default routes for the HTTP methods and one to get the schema
+ */
 Model.addDefaultRoutes = function () {
     if (this.shouldIncludeSchema) {
         this.route('schema', handlers.schema);
@@ -117,6 +127,7 @@ Model.addSchemaRoutes = function () {
     var self = this;
     this.schema.eachPath(function (pathName, schemaType) {
         if (pathName.indexOf('_id') === -1 && schemaType.instance === 'ObjectID') {
+            // Right now, getting nested models is the only operation supported
             ['get'].forEach(function (method) {
                 self.route(pathName, method, {
                     handler: handlers[method + 'Path'].call(self, pathName),
@@ -126,8 +137,18 @@ Model.addSchemaRoutes = function () {
         }
     });
 };
+/**
+ * Adds an internal route for a path and method or methods to a function
+ *
+ * @param {String|Object} path: absolute path (including method) or object of routes
+ * @param {String|Function} method: the method to route to or the handler function
+ * @param {Function} fn: The handler function
+ * @return {Model} for chaining
+ * @api public
+ */
 Model.route = function (path, method, fn) {
-    var route = getRoute(this.routes, path), meths = methods, lastPath = path.substr(path.lastIndexOf('.') + 1);
+    var route = getRoute(this.routes, path), meths = methods, // Default to all methods
+    lastPath = path.substr(path.lastIndexOf('.') + 1);
     if (2 === arguments.length) {
         fn = method;
         if (!fn.methods && endpoints.indexOf(lastPath) > -1) {
@@ -160,6 +181,16 @@ Model.after = function (path, method, fn) {
     }
     return this.route.apply(this, arguments);
 };
+/**
+ * Registers all of the routes in routeObj to the given app
+ *
+ * TODO(baugarten): refactor to make less ugly
+ *
+ * if (isEndpoint(routeObj, path)) { handleRegistration(app, prefix, path, routeObj); }
+ * else {
+ *   for (var key in routeObj) { recurse }
+ * }
+ */
 Model.registerRoutes = function (app, prefix, path, routeObj) {
     var self = this;
     for (var key in routeObj) {
@@ -168,6 +199,10 @@ Model.registerRoutes = function (app, prefix, path, routeObj) {
             var routehandlers = _.isArray(route.handler) ? route.handler : [route.handler];
             routehandlers = _.map(routehandlers, function (handler) { return handler.bind(self); });
             var detailGet = !route.detail && !path && key === 'get', handlerlist = route.before.concat([preprocess.bind(self)], routehandlers, route.after, [handlers.last]);
+            /**
+             * TODO(baugarten): Add an enum type-thing to specify detail route, detail optional or list
+             * aka prettify this
+             */
             if (route.detail) {
                 app[key](prefix + '/:id([0-9a-fA-F]{0,24})' + path, handlerlist);
             }
@@ -183,13 +218,73 @@ Model.registerRoutes = function (app, prefix, path, routeObj) {
         }
     }
 };
+/**
+ * Registers this model to the given app
+ *
+ * This includes registering endpoints for all the methods desired
+ * in the model definition
+ *
+ */
 Model.register = function (app, url) {
     this.addDefaultRoutes();
     app.getDetail = app.get;
     this.registerRoutes(app, url, '', this.routes);
 };
+// Will I still support handle()? I think maybe for default routes it might be nice, but
+// exposed via model.get, model.post, etc.
+/*Model.prototype.handle = function(route, filters, data, callback) {
+  if (arguments.length === 3) {
+    callback = data;
+    data = {};
+  } else if (arguments.length === 2) {
+    callback = filters;
+    filters = [];
+    data = {};
+  }
+  route = route.replace(/\//g, /\./);
+  data.format = 'js';
+  var req = {
+    url: route,
+    filters: filters,
+    body: data,
+    format: 'js',
+  }
+  var res = {
+    writeHeader: function() { },
+    write: function(ret) { callback(ret); },
+    send: function() {},
+  };
+  this.send(route.split(/\./), req, res);
+}
+
+Model.prototype.send = function(routes, req, res, next) {
+  var handler = this.routes;
+  req.quer = this.filter(req.filters, req.body, req.query, this.Model.find({}));
+  req.templatePath = this.template(routes, req.filters);
+  routes.forEach(function(route) {
+    if (route in handler) handler = handler[route];
+    else if (!('all' in handler)) {
+      handlers.respond(res, 404, handlers.respond404());
+      handlers.last(req, res);
+    }
+  });
+  if ('all' in handler) handler = handler.all;
+
+  if ('function' === typeof handler) {
+    return handler.call(this, req, res, next);
+  }
+
+  handlers.respond(res, 404, handlers.respond404());
+  handlers.last(req, res);
+}*/
+/**
+ * Returns a query filtered by the data in the request
+ * Looks in req.body and req.query to get the filterable data
+ * Filters the query based on functions in valid_filters
+ */
 Model.filter = function (req, quer) {
-    var detail = false;
+    var detail = false; // detail route
+    // filter by id
     if (req.params.id) {
         quer = this.findById(req.params.id);
         detail = true;
@@ -241,6 +336,12 @@ function resolveTemplate(req) {
     }
     return tmplName;
 }
+/**
+ * Merges a route with another function object
+ * fn.before is called after the old before
+ * fn.after is called before the old after
+ * If fn.handler is specified, then route.handler is overwritten
+ */
 function merge(route, fn) {
     if (!route)
         return fn;
@@ -296,6 +397,7 @@ function contains(arr, key) {
 }
 ;
 function coerceData(filter_func, data) {
+    // Assume data is a string
     if (data && data.toLowerCase && data.toLowerCase() === 'true') {
         return true;
     }
@@ -315,6 +417,7 @@ function filterable(props, subfilters) {
                 return props[key](coerceData(key, val), quer);
             }
             var field = key.split('__'), filter_func = field[1] || 'equals', data = coerceData(filter_func, val);
+            // Turn data into array for $in and $nin clause
             if (filter_func === 'in' || filter_func === 'nin') {
                 data = data.split(',');
             }
