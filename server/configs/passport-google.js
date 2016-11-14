@@ -44,7 +44,7 @@ var GoogleOAuthStrategy = (function (_super) {
                 // save the user
                 user.save(function (err) {
                     if (err)
-                        done(err);
+                        return done(err);
                     return done(null, user);
                 });
             });
@@ -83,7 +83,11 @@ var GoogleTokenIdOAuthStrategy = (function () {
                 user.google.displayName = payload.name;
                 user.prefs.avatar = payload.picture;
                 user.prefs.drawingAuthor = user.username;
-                done(null, user);
+                user.save(function (err) {
+                    if (err)
+                        return done(err);
+                    return done(null, user);
+                });
             });
         });
     }

@@ -37,7 +37,7 @@ export class GoogleOAuthStrategy extends OAuth2Strategy {
                 user.prefs.drawingAuthor   = user.username;
                 // save the user
                 user.save((err) => {
-                    if (err) done(err);
+                    if (err) return done(err);
                     return done(null, user);
                 });
             });
@@ -76,7 +76,10 @@ export class GoogleTokenIdOAuthStrategy implements passport.Strategy{
                 user.prefs.avatar          = payload.picture;
                 user.prefs.drawingAuthor   = user.username;
 
-                done(null, user);
+                user.save((err) => {
+                    if (err) return done(err);
+                    return done(null, user);
+                });
             });
         });
     }
