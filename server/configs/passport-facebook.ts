@@ -29,7 +29,6 @@ export class FacebookOAuthStrategy extends Strategy {
                     user.dateCreated  = Date.now();
                     user.dateModified = Date.now();
                     user.active       = true;
-                    user.roles.push('user');
                 }
                 // exists and update
                 user.facebook.id           = profile.id;
@@ -59,7 +58,28 @@ export class FacebookTokenIdOAuthStrategy implements passport.Strategy{
         return new FacebookTokenStrategy(new TokenIdOptions(), (parsedToken, refreshToken, profile, done) => {
             let email = (profile && profile.emails && profile.emails.length > 0) ? profile.emails[0].value : '';
             User.findOne({ email: email }, (err, user) => {
-                done(null, user);
+                if (err) return done(err, null);
+                // does not exists
+                if (!user) {
+                    user = new User();
+                    user.firstName    = profile.name.givenName;
+                    user.lastName     = profile.name.familyName;
+                    user.email        = profile.emails[0].value;
+                    user.username     = randomUsername();
+                    user.dateCreated  = Date.now();
+                    user.dateModified = Date.now();
+                    user.active       = true;
+                }
+                // exists and update
+                user.facebook.id           = profile.id;
+                user.facebook.displayName  = profile.displayName;
+                user.prefs.avatar          = profile.photos && profile.photos.length > 0 ? profile.photos[0].value : null;
+                user.prefs.drawingAuthor   = user.username;
+                // save the user
+                user.save((err) => {
+                    if (err) done(err);
+                    return done(null, user);
+                });
             });
         });
     }
