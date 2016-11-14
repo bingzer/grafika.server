@@ -17,7 +17,7 @@
   "license": "UNLICENSED",
   "dependencies": {
     "@types/node": "^6.0.46",
-    "aws-sdk": "^2.6.9",
+    "aws-sdk": "^2.7.0",
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "*",
     "chai": "^3.5.0",
