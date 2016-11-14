@@ -35,7 +35,6 @@ var FacebookOAuthStrategy = (function (_super) {
                     user.dateCreated = Date.now();
                     user.dateModified = Date.now();
                     user.active = true;
-                    user.roles.push('user');
                 }
                 // exists and update
                 user.facebook.id = profile.id;
@@ -68,7 +67,30 @@ var FacebookTokenIdOAuthStrategy = (function () {
         return new FacebookTokenStrategy(new TokenIdOptions(), function (parsedToken, refreshToken, profile, done) {
             var email = (profile && profile.emails && profile.emails.length > 0) ? profile.emails[0].value : '';
             user_1.User.findOne({ email: email }, function (err, user) {
-                done(null, user);
+                if (err)
+                    return done(err, null);
+                // does not exists
+                if (!user) {
+                    user = new user_1.User();
+                    user.firstName = profile.name.givenName;
+                    user.lastName = profile.name.familyName;
+                    user.email = profile.emails[0].value;
+                    user.username = user_1.randomUsername();
+                    user.dateCreated = Date.now();
+                    user.dateModified = Date.now();
+                    user.active = true;
+                }
+                // exists and update
+                user.facebook.id = profile.id;
+                user.facebook.displayName = profile.displayName;
+                user.prefs.avatar = profile.photos && profile.photos.length > 0 ? profile.photos[0].value : null;
+                user.prefs.drawingAuthor = user.username;
+                // save the user
+                user.save(function (err) {
+                    if (err)
+                        done(err);
+                    return done(null, user);
+                });
             });
         });
     }
