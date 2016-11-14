@@ -63,8 +63,26 @@ var TokenIdOptions = (function () {
 var GoogleTokenIdOAuthStrategy = (function () {
     function GoogleTokenIdOAuthStrategy() {
         return new GoogleTokenStrategy(new TokenIdOptions(), function (parsedToken, googleId, done) {
-            var email = parsedToken.payload.email;
+            var payload = parsedToken.payload;
+            var email = payload.email;
             user_1.User.findOne({ email: email }, function (err, user) {
+                if (err)
+                    return done(err);
+                if (!user) {
+                    user = new user_1.User();
+                    user.firstName = payload.givenName;
+                    user.lastName = payload.familyName;
+                    user.email = email;
+                    user.username = user_1.randomUsername();
+                    user.dateCreated = Date.now();
+                    user.dateModified = Date.now();
+                    user.active = true;
+                    user.roles.push('user');
+                }
+                // exists and update
+                user.google.displayName = payload.name;
+                user.prefs.avatar = payload.picture;
+                user.prefs.drawingAuthor = user.username;
                 done(null, user);
             });
         });
