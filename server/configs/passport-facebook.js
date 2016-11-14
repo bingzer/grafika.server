@@ -26,15 +26,7 @@ var FacebookOAuthStrategy = (function (_super) {
                 if (err)
                     return done(err, null);
                 if (!user) {
-                    user = new user_1.User();
-                    user.firstName = profile.name.givenName;
-                    user.lastName = profile.name.familyName;
-                    user.email = profile.emails[0].value;
-                    user.username = user_1.randomUsername();
-                    user.dateCreated = Date.now();
-                    user.dateModified = Date.now();
-                    user.active = true;
-                    user.roles.push('user');
+                    user = createNewUser(profile);
                 }
                 user.facebook.id = profile.id;
                 user.facebook.displayName = profile.displayName;
@@ -64,7 +56,16 @@ var FacebookTokenIdOAuthStrategy = (function () {
         return new FacebookTokenStrategy(new TokenIdOptions(), function (parsedToken, refreshToken, profile, done) {
             var email = (profile && profile.emails && profile.emails.length > 0) ? profile.emails[0].value : '';
             user_1.User.findOne({ email: email }, function (err, user) {
-                done(null, user);
+                if (!user) {
+                    user = createNewUser(profile);
+                    user.save(function (err) {
+                        if (err)
+                            done(err);
+                        return done(null, user);
+                    });
+                }
+                else
+                    done(null, user);
             });
         });
     }
@@ -74,4 +75,16 @@ var FacebookTokenIdOAuthStrategy = (function () {
     return FacebookTokenIdOAuthStrategy;
 }());
 exports.FacebookTokenIdOAuthStrategy = FacebookTokenIdOAuthStrategy;
+function createNewUser(profile) {
+    var user = new user_1.User();
+    user.firstName = (profile && profile.name ? profile.name.givenName : "");
+    user.lastName = (profile && profile.name ? profile.name.familyName : "");
+    user.email = profile.emails[0].value;
+    user.username = user_1.randomUsername();
+    user.dateCreated = Date.now();
+    user.dateModified = Date.now();
+    user.active = true;
+    user.roles.push('user');
+    return user;
+}
 //# sourceMappingURL=passport-facebook.js.map
