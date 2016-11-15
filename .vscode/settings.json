@@ -63,8 +63,8 @@
 
         "*.js.map": true
     },
-
-    "typescript.tsdk": "node_modules/typescript/lib",
+    
+    "typescript.tsdk": "./node_modules/typescript/lib",
     "editor.tabSize": 4,
     "editor.insertSpaces": true
 }
