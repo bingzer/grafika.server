@@ -34,14 +34,13 @@ var FacebookOAuthStrategy = (function (_super) {
                     user.username = user_1.randomUsername();
                     user.dateCreated = Date.now();
                     user.dateModified = Date.now();
-                    user.active = true;
+                    user.prefs.avatar = profile.photos && profile.photos.length > 0 ? profile.photos[0].value : null;
                 }
                 // exists and update
                 user.facebook.id = profile.id;
                 user.facebook.displayName = profile.displayName;
-                user.facebook.token = accessToken;
-                user.prefs.avatar = profile.photos && profile.photos.length > 0 ? profile.photos[0].value : null;
                 user.prefs.drawingAuthor = user.username;
+                user.active = true;
                 // save the user
                 user.save(function (err) {
                     if (err)
@@ -79,12 +78,13 @@ var FacebookTokenIdOAuthStrategy = (function () {
                     user.dateCreated = Date.now();
                     user.dateModified = Date.now();
                     user.active = true;
+                    user.prefs.avatar = profile.photos && profile.photos.length > 0 ? profile.photos[0].value : null;
                 }
                 // exists and update
                 user.facebook.id = profile.id;
                 user.facebook.displayName = profile.displayName;
-                user.prefs.avatar = profile.photos && profile.photos.length > 0 ? profile.photos[0].value : null;
                 user.prefs.drawingAuthor = user.username;
+                user.active = true;
                 // save the user
                 user.save(function (err) {
                     if (err)

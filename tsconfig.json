@@ -3,7 +3,10 @@
     "compilerOptions": {
         "target": "es5",
         "sourceMap": true,
-        "allowJs": false
+        "allowJs": false,
+        "types": [
+            "node"
+        ]
     },
     "lib": [
         "es5",
