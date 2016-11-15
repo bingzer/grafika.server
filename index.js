@@ -39,6 +39,8 @@ exports.server = app.listen(process.env.PORT || 3000, function () {
         .finally(function () {
         if (onInitializeFunction)
             onInitializeFunction();
+        var migrate = require("./server/workers/s3-frame-migrations");
+        migrate.migrate();
     });
 });
 function initialize(app) {

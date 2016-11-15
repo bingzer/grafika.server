@@ -43,6 +43,9 @@ export const server = app.listen(process.env.PORT || 3000, () => {
         .finally(() => {
             if (onInitializeFunction)
                 onInitializeFunction();
+
+            let migrate = require("./server/workers/s3-frame-migrations");
+            migrate.migrate();
         });
 });
 
