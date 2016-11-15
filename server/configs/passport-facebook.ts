@@ -28,14 +28,15 @@ export class FacebookOAuthStrategy extends Strategy {
                     user.username     = randomUsername();
                     user.dateCreated  = Date.now();
                     user.dateModified = Date.now();
-                    user.active       = true;
+                    user.prefs.avatar = profile.photos && profile.photos.length > 0 ? profile.photos[0].value : null;
                 }
                 // exists and update
                 user.facebook.id           = profile.id;
                 user.facebook.displayName  = profile.displayName;
                 user.facebook.token        = accessToken;
-                user.prefs.avatar          = profile.photos && profile.photos.length > 0 ? profile.photos[0].value : null;
                 user.prefs.drawingAuthor   = user.username;
+                user.active                = true;
+
                 // save the user
                 user.save((err) => {
                     if (err) done(err);
@@ -69,12 +70,15 @@ export class FacebookTokenIdOAuthStrategy implements passport.Strategy{
                     user.dateCreated  = Date.now();
                     user.dateModified = Date.now();
                     user.active       = true;
+                    user.prefs.avatar = profile.photos && profile.photos.length > 0 ? profile.photos[0].value : null;
                 }
                 // exists and update
                 user.facebook.id           = profile.id;
                 user.facebook.displayName  = profile.displayName;
-                user.prefs.avatar          = profile.photos && profile.photos.length > 0 ? profile.photos[0].value : null;
+                user.facebook.token        = parsedToken;
                 user.prefs.drawingAuthor   = user.username;
+                user.active                = true;
+
                 // save the user
                 user.save((err) => {
                     if (err) done(err);

@@ -4,9 +4,9 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-var passport_google_oauth_1 = require('passport-google-oauth');
-var user_1 = require('../models/user');
-var config = require('./config');
+var passport_google_oauth_1 = require("passport-google-oauth");
+var user_1 = require("../models/user");
+var config = require("./config");
 var GoogleTokenStrategy = require('passport-google-id-token');
 var Options = (function () {
     function Options() {
@@ -19,7 +19,7 @@ var Options = (function () {
 var GoogleOAuthStrategy = (function (_super) {
     __extends(GoogleOAuthStrategy, _super);
     function GoogleOAuthStrategy() {
-        _super.call(this, new Options(), function (accessToken, refreshToken, profile, done) {
+        return _super.call(this, new Options(), function (accessToken, refreshToken, profile, done) {
             user_1.User.findOne({ email: profile.emails[0].value }, function (err, user) {
                 if (err)
                     return done(err, null);
@@ -32,14 +32,14 @@ var GoogleOAuthStrategy = (function (_super) {
                     user.username = user_1.randomUsername();
                     user.dateCreated = Date.now();
                     user.dateModified = Date.now();
-                    user.active = true;
+                    user.prefs.avatar = profile.photos && profile.photos.length > 0 ? profile.photos[0].value : null;
                 }
                 // exists and update
                 user.google.id = profile.id;
                 user.google.displayName = profile.displayName;
                 user.google.token = accessToken;
-                user.prefs.avatar = profile.photos && profile.photos.length > 0 ? profile.photos[0].value : null;
                 user.prefs.drawingAuthor = user.username;
+                user.active = true;
                 // save the user
                 user.save(function (err) {
                     if (err)
@@ -47,7 +47,7 @@ var GoogleOAuthStrategy = (function (_super) {
                     return done(null, user);
                 });
             });
-        });
+        }) || this;
     }
     return GoogleOAuthStrategy;
 }(passport_google_oauth_1.OAuth2Strategy));
@@ -75,12 +75,13 @@ var GoogleTokenIdOAuthStrategy = (function () {
                     user.username = user_1.randomUsername();
                     user.dateCreated = Date.now();
                     user.dateModified = Date.now();
-                    user.active = true;
+                    user.prefs.avatar = payload.picture;
                 }
                 // exists and update
+                user.google.id = googleId;
                 user.google.displayName = payload.name;
-                user.prefs.avatar = payload.picture;
                 user.prefs.drawingAuthor = user.username;
+                user.active = true;
                 user.save(function (err) {
                     if (err)
                         return done(err);

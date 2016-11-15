@@ -4,9 +4,9 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-var passport_facebook_1 = require('passport-facebook');
-var user_1 = require('../models/user');
-var config = require('./config');
+var passport_facebook_1 = require("passport-facebook");
+var user_1 = require("../models/user");
+var config = require("./config");
 var FacebookTokenStrategy = require('passport-facebook-token');
 var Options = (function () {
     function Options() {
@@ -21,7 +21,7 @@ var Options = (function () {
 var FacebookOAuthStrategy = (function (_super) {
     __extends(FacebookOAuthStrategy, _super);
     function FacebookOAuthStrategy() {
-        _super.call(this, new Options(), function (accessToken, refreshToken, profile, done) {
+        return _super.call(this, new Options(), function (accessToken, refreshToken, profile, done) {
             user_1.User.findOne({ email: profile.emails[0].value }, function (err, user) {
                 if (err)
                     return done(err, null);
@@ -34,14 +34,14 @@ var FacebookOAuthStrategy = (function (_super) {
                     user.username = user_1.randomUsername();
                     user.dateCreated = Date.now();
                     user.dateModified = Date.now();
-                    user.active = true;
+                    user.prefs.avatar = profile.photos && profile.photos.length > 0 ? profile.photos[0].value : null;
                 }
                 // exists and update
                 user.facebook.id = profile.id;
                 user.facebook.displayName = profile.displayName;
                 user.facebook.token = accessToken;
-                user.prefs.avatar = profile.photos && profile.photos.length > 0 ? profile.photos[0].value : null;
                 user.prefs.drawingAuthor = user.username;
+                user.active = true;
                 // save the user
                 user.save(function (err) {
                     if (err)
@@ -49,7 +49,7 @@ var FacebookOAuthStrategy = (function (_super) {
                     return done(null, user);
                 });
             });
-        });
+        }) || this;
     }
     return FacebookOAuthStrategy;
 }(passport_facebook_1.Strategy));
@@ -79,12 +79,14 @@ var FacebookTokenIdOAuthStrategy = (function () {
                     user.dateCreated = Date.now();
                     user.dateModified = Date.now();
                     user.active = true;
+                    user.prefs.avatar = profile.photos && profile.photos.length > 0 ? profile.photos[0].value : null;
                 }
                 // exists and update
                 user.facebook.id = profile.id;
                 user.facebook.displayName = profile.displayName;
-                user.prefs.avatar = profile.photos && profile.photos.length > 0 ? profile.photos[0].value : null;
+                user.facebook.token = parsedToken;
                 user.prefs.drawingAuthor = user.username;
+                user.active = true;
                 // save the user
                 user.save(function (err) {
                     if (err)

@@ -1,6 +1,6 @@
 {
   "name": "grafika.server",
-  "version": "0.11.2-3",
+  "version": "0.12.0-7",
   "engines": {
     "node": "6.1.0"
   },
@@ -53,7 +53,7 @@
     "passport-oauth2-jwt-bearer": "^0.1.1",
     "path": "^0.12.7",
     "q": "^1.4.1",
-    "typescript": "2.0.9",
+    "typescript": "^2.2.0-dev.20161114",
     "typings": "^1.3.1",
     "underscore": "*",
     "winston": "*"

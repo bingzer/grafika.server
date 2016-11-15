@@ -1,8 +1,8 @@
 "use strict";
-var mongoose = require('mongoose');
-var winston = require('winston');
-var zlib = require('zlib');
-var restful = require('../libs/restful');
+var mongoose = require("mongoose");
+var winston = require("winston");
+var zlib = require("zlib");
+var restful = require("../libs/restful");
 exports.AnimationSchema = new mongoose.Schema({
     localId: { type: String },
     type: { type: String, required: true, default: 'animation' },
@@ -116,5 +116,4 @@ Animation.ensureIndexes(function (err) {
     else
         winston.info('   AnimationTextIndex [OK]');
 });
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //# sourceMappingURL=animation.js.map

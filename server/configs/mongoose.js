@@ -1,8 +1,8 @@
 "use strict";
-var winston = require('winston');
-var mongoose = require('mongoose');
-var q = require('q');
-var config = require('../configs/config');
+var winston = require("winston");
+var mongoose = require("mongoose");
+var q = require("q");
+var config = require("../configs/config");
 function initialize(app) {
     var defer = q.defer();
     winston.debug('Connecting to MongoDB');

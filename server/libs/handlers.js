@@ -1,5 +1,5 @@
 "use strict";
-var _ = require('underscore');
+var _ = require("underscore");
 /*
  * The last handler to be called in the chain of middleware
  * This figures out what response format it should be in and sends it
