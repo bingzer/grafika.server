@@ -33,6 +33,7 @@ export class FacebookOAuthStrategy extends Strategy {
                 // exists and update
                 user.facebook.id           = profile.id;
                 user.facebook.displayName  = profile.displayName;
+                user.facebook.token        = accessToken;
                 user.prefs.drawingAuthor   = user.username;
                 user.active                = true;
 
@@ -74,6 +75,7 @@ export class FacebookTokenIdOAuthStrategy implements passport.Strategy{
                 // exists and update
                 user.facebook.id           = profile.id;
                 user.facebook.displayName  = profile.displayName;
+                user.facebook.token        = parsedToken;
                 user.prefs.drawingAuthor   = user.username;
                 user.active                = true;
 

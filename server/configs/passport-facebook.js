@@ -39,6 +39,7 @@ var FacebookOAuthStrategy = (function (_super) {
                 // exists and update
                 user.facebook.id = profile.id;
                 user.facebook.displayName = profile.displayName;
+                user.facebook.token = accessToken;
                 user.prefs.drawingAuthor = user.username;
                 user.active = true;
                 // save the user
@@ -83,6 +84,7 @@ var FacebookTokenIdOAuthStrategy = (function () {
                 // exists and update
                 user.facebook.id = profile.id;
                 user.facebook.displayName = profile.displayName;
+                user.facebook.token = parsedToken;
                 user.prefs.drawingAuthor = user.username;
                 user.active = true;
                 // save the user
