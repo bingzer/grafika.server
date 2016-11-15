@@ -2,7 +2,10 @@ import * as $q from 'q';
 import { IAnimation } from '../models/animation';
 import { IUser } from '../models/user';
 import * as aws from 'aws-sdk';
+import * as express from 'express';
+import * as request from 'request';
 import * as config from '../configs/config';
+import * as zlib from 'zlib';
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -145,4 +148,61 @@ export class AwsAnimation extends AwsHelper {
 		});
 		return deferred.promise;
 	}
+}
+
+export class AwsFrames extends AwsHelper {
+
+	postFrames(animation: IAnimation | string, req: express.Request, res: express.Response, next: express.NextFunction) {
+		this.generatePOSTUrl(animation, (err, signedUrl) => {
+            zlib.deflate(Buffer.from(req.body), (err, result: Buffer) => {
+                if (err) return next(err);
+				let xreq = request.put(signedUrl.signedUrl, { body: result });
+				xreq.setHeader("Content-Type", "application/json");
+				xreq.setHeader("Content-Encoding", "deflate");
+				xreq.pipe(res, { end: true });
+            });
+		});
+	}
+
+	getFrames(animation: IAnimation | string, req: express.Request, res: express.Response, next: express.NextFunction) {
+		this.generateGETUrl(animation, (err, signedUrl) => {
+			res.header('Content-Type', 'application/json');
+			res.header('Content-Encoding', 'deflate');
+			request(signedUrl.signedUrl).pipe(res);
+		});
+	}
+
+	generatePOSTUrl(animation: IAnimation | string, callback: (err: Error, signedUrl: Grafika.ISignedUrl) => void) {
+		let animationId = (<IAnimation>animation)._id ? (<IAnimation>animation)._id : animation;
+		let s3_params = {
+			Bucket: config.setting.$auth.$awsBucket,
+			Key: `${config.setting.$auth.$awsFolder}/animations/${animationId}/frames`,
+			Expires: 600,
+			ContentMD5: '',
+			ContentType: 'application/json',
+			ContentEncoding: 'deflate',
+			ACL: 'authenticated-read'
+		};
+
+		this.create().getSignedUrl("putObject", s3_params, (err, url: string) => {
+			callback(err, { signedUrl: url, mime: 'application/json' });
+		});
+	}
+
+	/**
+	 * Generate GET Url for the specified URL
+	 */
+	generateGETUrl(animation: IAnimation | string, callback: (err: Error, signedUrl: Grafika.ISignedUrl) => void) {
+		let animationId = (<IAnimation>animation)._id ? (<IAnimation>animation)._id : animation; 
+		let s3_params = {
+			Bucket: config.setting.$auth.$awsBucket,
+			Key: `${config.setting.$auth.$awsFolder}/animations/${animationId}/frames`,
+			Expires: 600
+		};
+
+		this.create().getSignedUrl("getObject", s3_params, (err, url: string) => {
+			callback(err, { signedUrl: url, mime: 'application/json' });
+		});
+	}
+
 }

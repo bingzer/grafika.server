@@ -23,6 +23,7 @@
 /// <reference path="globals/passport-strategy/index.d.ts" />
 /// <reference path="globals/passport/index.d.ts" />
 /// <reference path="globals/q/index.d.ts" />
+/// <reference path="globals/request/index.d.ts" />
 /// <reference path="globals/serve-static/index.d.ts" />
 /// <reference path="globals/underscore/index.d.ts" />
 /// <reference path="globals/winston/index.d.ts" />
