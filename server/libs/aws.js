@@ -4,9 +4,9 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-var $q = require('q');
-var aws = require('aws-sdk');
-var config = require('../configs/config');
+var $q = require("q");
+var aws = require("aws-sdk");
+var config = require("../configs/config");
 ////////////////////////////////////////////////////////////////////////////////
 var AwsHelper = (function () {
     function AwsHelper() {
@@ -25,7 +25,7 @@ var AwsHelper = (function () {
 var AwsUsers = (function (_super) {
     __extends(AwsUsers, _super);
     function AwsUsers() {
-        _super.apply(this, arguments);
+        return _super.apply(this, arguments) || this;
     }
     /**
      * Creates signed url
@@ -77,7 +77,7 @@ exports.AwsUsers = AwsUsers;
 var AwsResources = (function (_super) {
     __extends(AwsResources, _super);
     function AwsResources() {
-        _super.apply(this, arguments);
+        return _super.apply(this, arguments) || this;
     }
     /**
      * Create SignedUrl for resources
@@ -128,7 +128,7 @@ exports.AwsResources = AwsResources;
 var AwsAnimation = (function (_super) {
     __extends(AwsAnimation, _super);
     function AwsAnimation() {
-        _super.apply(this, arguments);
+        return _super.apply(this, arguments) || this;
     }
     /**
      * Delete animation and all resources under

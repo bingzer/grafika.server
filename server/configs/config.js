@@ -1,7 +1,7 @@
 "use strict";
-var winston = require('winston');
-var q = require('q');
-var ensure = require('../libs/ensure');
+var winston = require("winston");
+var q = require("q");
+var ensure = require("../libs/ensure");
 var pkg = require('../../package.json');
 var env = process.env;
 var Setting = (function () {

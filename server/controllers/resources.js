@@ -1,7 +1,7 @@
 "use strict";
-var mongoose = require('mongoose');
-var aws_1 = require('../libs/aws');
-var resource_1 = require('../models/resource');
+var mongoose = require("mongoose");
+var aws_1 = require("../libs/aws");
+var resource_1 = require("../models/resource");
 var aws = new aws_1.AwsResources();
 function get(req, res, next) {
     var animId = req.params.animationId;

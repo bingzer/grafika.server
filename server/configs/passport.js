@@ -1,12 +1,12 @@
 "use strict";
-var passport = require('passport');
-var winston = require('winston');
-var q = require('q');
-var user_1 = require('../models/user');
-var passport_signup_1 = require('./passport-signup');
-var passport_signin_1 = require('./passport-signin');
-var passport_google_1 = require('./passport-google');
-var passport_facebook_1 = require('./passport-facebook');
+var passport = require("passport");
+var winston = require("winston");
+var q = require("q");
+var user_1 = require("../models/user");
+var passport_signup_1 = require("./passport-signup");
+var passport_signin_1 = require("./passport-signin");
+var passport_google_1 = require("./passport-google");
+var passport_facebook_1 = require("./passport-facebook");
 var GoogleTokenStrategy = require('passport-google-id-token');
 ////////////////////////////////////////////////////////////////////////////////
 passport.serializeUser(function (user, done) {
