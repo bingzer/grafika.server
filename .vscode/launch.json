@@ -28,6 +28,22 @@
             "outDir": null
         },
         {
+            "name": "S3-frame-migration",
+            "type": "node",
+            "request": "launch",
+            "program": "${workspaceRoot}/server/workers/s3-frame-migrations.js",
+            "stopOnEntry": false,
+            "args": [],
+            "cwd": "${workspaceRoot}",
+            "preLaunchTask": "build",
+            "runtimeExecutable": null,
+            "runtimeArgs": [
+                "--nolazy"
+            ],
+            "sourceMaps": true,
+            "outDir": null
+        },
+        {
             "name": "Launch Prod",
             "type": "node",
             "request": "launch",

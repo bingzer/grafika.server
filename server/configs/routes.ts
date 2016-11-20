@@ -140,82 +140,76 @@ function handleErrors(err: any, req: express.Request, res: express.Response, nex
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-export function initialize(app): q.Promise<any> {
-    let defer = q.defer();
-    setTimeout(() => {
-        app.use(extractUser);
+export function initialize(app) {
+    app.use(extractUser);
 
-        app.get('/', serverController.getInfo);
+    app.get('/', serverController.getInfo);
 
-        app.get('/accounts/google', accountController.googleLogin);
-        app.get('/accounts/google/callback', accountController.googleCallback, accountController.providerLogin);
-        app.get('/accounts/facebook', accountController.facebookLogin);
-        app.get('/accounts/facebook/callback', accountController.facebookCallback, accountController.providerLogin);
-        app.get('/accounts/disqus', useSessionOrJwt, accountController.disqusToken);
-        
-        app.post('/accounts', accountController.login)
-        app.post('/accounts/logout', accountController.logout);
-        app.post('/accounts/authenticate', accountController.authenticate);
-        app.post('/accounts/authenticate/google', accountController.authenticateGoogle, accountController.authenticate);
-        app.post('/accounts/authenticate/facebook', accountController.authenticateFacebook, accountController.authenticate);
-        app.post('/accounts/register', accountController.register);
-        app.post('/accounts/pwd/reset', accountController.resetPassword);
-        app.post('/accounts/pwd', useSessionOrJwt, accountController.changePassword);
-        app.post('/accounts/username-check', useSessionOrJwt, accountController.checkUsernameAvailability)
-        
-        // ---------------- Animation -----------------------------//
-        app.get('/animations', animationController.search);
-        app.get('/animations/random', animationController.getRandomAnimation);
-        app.post('/animations', useSessionOrJwt); // create
-        app.get('/animations/:_id', useAnimAccess); // view
-        app.put('/animations/:_id', useSessionOrJwt, useAnimAccess); // update
-        app.delete('/animations/:_id', useSessionOrJwt, useAnimAccess, animationController.remove); // delete
-        app.get('/animations/:_id/frames', useAnimAccess); // get frames
-        app.post('/animations/:_id/frames', useSessionOrJwt, useAnimAccess);
-        app.post('/animations/:_id/view', animationController.incrementViewCount);
-        app.post('/animations/:_id/rating/:rating', animationController.submitRating);
+    app.get('/accounts/google', accountController.googleLogin);
+    app.get('/accounts/google/callback', accountController.googleCallback, accountController.providerLogin);
+    app.get('/accounts/facebook', accountController.facebookLogin);
+    app.get('/accounts/facebook/callback', accountController.facebookCallback, accountController.providerLogin);
+    app.get('/accounts/disqus', useSessionOrJwt, accountController.disqusToken);
+    
+    app.post('/accounts', accountController.login)
+    app.post('/accounts/logout', accountController.logout);
+    app.post('/accounts/authenticate', accountController.authenticate);
+    app.post('/accounts/authenticate/google', accountController.authenticateGoogle, accountController.authenticate);
+    app.post('/accounts/authenticate/facebook', accountController.authenticateFacebook, accountController.authenticate);
+    app.post('/accounts/register', accountController.register);
+    app.post('/accounts/pwd/reset', accountController.resetPassword);
+    app.post('/accounts/pwd', useSessionOrJwt, accountController.changePassword);
+    app.post('/accounts/username-check', useSessionOrJwt, accountController.checkUsernameAvailability)
+    
+    // ---------------- Animation -----------------------------//
+    app.get('/animations', animationController.search);
+    app.get('/animations/random', animationController.getRandomAnimation);
+    app.post('/animations', useSessionOrJwt); // create
+    app.get('/animations/:_id', useAnimAccess); // view
+    app.put('/animations/:_id', useSessionOrJwt, useAnimAccess); // update
+    app.delete('/animations/:_id', useSessionOrJwt, useAnimAccess, animationController.remove); // delete
+    app.get('/animations/:_id/frames', useAnimAccess); // get frames
+    app.post('/animations/:_id/frames', useSessionOrJwt, useAnimAccess);
+    app.post('/animations/:_id/view', animationController.incrementViewCount);
+    app.post('/animations/:_id/rating/:rating', animationController.submitRating);
 
-        // --------------- Sync Stuffs -------------------------//
-        app.get('/animations/:_id/comments', animationController.commentForMobile);
-        app.post('/animations/:_id/comments', useSessionOrJwt, animationController.postComment);
+    // --------------- Sync Stuffs -------------------------//
+    app.get('/animations/:_id/comments', animationController.commentForMobile);
+    app.post('/animations/:_id/comments', useSessionOrJwt, animationController.postComment);
 
-        // --------------- Sync Stuffs -------------------------//
-        app.post('/animations/sync', useSessionOrJwt, syncController.sync);
-        app.post('/animations/sync/update', useSessionOrJwt, syncController.syncUpdate);
+    // --------------- Sync Stuffs -------------------------//
+    app.post('/animations/sync', useSessionOrJwt, syncController.sync);
+    app.post('/animations/sync/update', useSessionOrJwt, syncController.syncUpdate);
 
-        // ---------------- Users -----------------------------//
-        app.get('/users/:_id', userController.get);
-        app.put('/users/:_id', useSessionOrJwt, userController.update);
-        app.get('/users/:_id/avatar', userController.getAvatar);
-        app.post('/users/:_id/avatar', useSessionOrJwt, userController.createAvatarSignedUrl);
-        
-        // ------------------ Admin ---------------------//
-        app.get('/admin', useSessionOrJwt, useAdminAccess, adminController.get);
-        app.get('/admin/users', useSessionOrJwt, useAdminAccess, adminController.listUsers);
-        app.get('/admin/animations', useSessionOrJwt, useAdminAccess, adminController.listAnimations);
-        app.post('/admin/users/:_id/reverify', useSessionOrJwt, useAdminAccess, adminController.sendVerificationEmail);
-        app.post('/admin/users/:_id/reset-pwd', useSessionOrJwt, useAdminAccess, adminController.sendResetEmail);
-        app.post('/admin/users/:_id/inactivate', useSessionOrJwt, useAdminAccess, adminController.inactivateUser);
-        app.post('/admin/users/:_id/activate', useSessionOrJwt, useAdminAccess, adminController.activateUser);
+    // ---------------- Users -----------------------------//
+    app.get('/users/:_id', userController.get);
+    app.put('/users/:_id', useSessionOrJwt, userController.update);
+    app.get('/users/:_id/avatar', userController.getAvatar);
+    app.post('/users/:_id/avatar', useSessionOrJwt, userController.createAvatarSignedUrl);
+    
+    // ------------------ Admin ---------------------//
+    app.get('/admin', useSessionOrJwt, useAdminAccess, adminController.get);
+    app.get('/admin/users', useSessionOrJwt, useAdminAccess, adminController.listUsers);
+    app.get('/admin/animations', useSessionOrJwt, useAdminAccess, adminController.listAnimations);
+    app.post('/admin/users/:_id/reverify', useSessionOrJwt, useAdminAccess, adminController.sendVerificationEmail);
+    app.post('/admin/users/:_id/reset-pwd', useSessionOrJwt, useAdminAccess, adminController.sendResetEmail);
+    app.post('/admin/users/:_id/inactivate', useSessionOrJwt, useAdminAccess, adminController.inactivateUser);
+    app.post('/admin/users/:_id/activate', useSessionOrJwt, useAdminAccess, adminController.activateUser);
 
-        // ---------------- Thumbnail -----------------------------//
-        app.get('/animations/:animationId/thumbnail', /* extractUser, useAnimAccess, */ resourcesController.getThumbnail);
-        app.post('/animations/:animationId/thumbnail', useSessionOrJwt, useAnimAccess, resourcesController.createThumbnailSignedUrl);
-        
-        // --------------- Restful Registration -------------------------//
-        User.register(app, '/users');
-        Animation.register(app, '/animations');
+    // ---------------- Thumbnail -----------------------------//
+    app.get('/animations/:animationId/thumbnail', /* extractUser, useAnimAccess, */ resourcesController.getThumbnail);
+    app.post('/animations/:animationId/thumbnail', useSessionOrJwt, useAnimAccess, resourcesController.createThumbnailSignedUrl);
+    
+    // --------------- Restful Registration -------------------------//
+    User.register(app, '/users');
+    Animation.register(app, '/animations');
 
-        // ---------------- Content -----------------------------//
-        app.post('/content/feedback', contentController.feedback)
+    // ---------------- Content -----------------------------//
+    app.post('/content/feedback', contentController.feedback)
 
-        // --------------- Error handlers -------------------------//
-        app.use((req, res, next) => next(404));
-        app.use(handleErrors);
+    // --------------- Error handlers -------------------------//
+    app.use((req, res, next) => next(404));
+    app.use(handleErrors);
 
-        winston.info('Routes [OK]');
-        defer.resolve();
-    }, 100);
-
-    return defer.promise;
+    winston.info('Routes [OK]');
 }

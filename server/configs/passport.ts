@@ -23,20 +23,13 @@ passport.deserializeUser((id, done) => {
 });
 
 export function initialize(app){
-    let defer = q.defer();
-    
-    setTimeout(() => {
-        // -- strategies
-        passport.use('local-signup', new SignupStrategy());
-        passport.use('local-login', new SigninStrategy());
-        passport.use('google', new GoogleOAuthStrategy());
-        passport.use('facebook', new FacebookOAuthStrategy());
-        passport.use('google-android', new GoogleTokenIdOAuthStrategy());
-        passport.use('facebook-android', new FacebookTokenIdOAuthStrategy());
+    // -- strategies
+    passport.use('local-signup', new SignupStrategy());
+    passport.use('local-login', new SigninStrategy());
+    passport.use('google', new GoogleOAuthStrategy());
+    passport.use('facebook', new FacebookOAuthStrategy());
+    passport.use('google-android', new GoogleTokenIdOAuthStrategy());
+    passport.use('facebook-android', new FacebookTokenIdOAuthStrategy());
 
-        winston.info('Passport [OK]');
-        defer.resolve();
-    }, 100);
-
-    return defer.promise;
+    winston.info('Passport [OK]');
 }

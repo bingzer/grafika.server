@@ -12,7 +12,6 @@ import * as config from './server/configs/config'
 import * as mongooseConfig from './server/configs/mongoose';
 import * as routeConfig from './server/configs/routes';
 import * as passportConfig from './server/configs/passport';
-import * as adminConfig from './server/configs/admin';
 
 let onInitializeFunction: Function;
 
@@ -24,53 +23,32 @@ export const server = app.listen(process.env.PORT || 3000, () => {
 	winston.info('Grafika Api is starting at port ' + server.address().port);
 	winston.info('   URL address : ' + config.setting.$server.$url + ' (' + server.address().address + ')');
     
-    initialize(app)
-        .then(() => config.setting.initialize(app))
-        .then(() => routeConfig.initialize(app))
-        .then(() => mongooseConfig.initialize(app))
-        .then(() => passportConfig.initialize(app))
-        .then(() => adminConfig.initialize(app))
-        .then(() => {
-        })
-        .then(() => {
-            winston.info('Server [OK]');
-            winston.info('Server is now ready taking requests');
-        })
-        .catch((err) => {
-            winston.error('Server [FAILED]');
-            winston.error(err);
-        })
-        .finally(() => {
-            if (onInitializeFunction)
-                onInitializeFunction();
-
-            let migrate = require("./server/workers/s3-frame-migrations");
-            migrate.migrate();
-        });
+    initialize(app);
+    config.setting.initialize();
+    routeConfig.initialize(app);
+    mongooseConfig.initialize();
+    passportConfig.initialize(app);
+    
+    winston.info('Server [OK]');
+    winston.info('Server is now ready taking requests');
+    if (onInitializeFunction)
+        onInitializeFunction();
 });
 
-function initialize(app) : q.Promise<any> {
-    let defer = q.defer();
+function initialize(app) {
+    app.use(cors());
+    app.use(compression());
 
-    setTimeout(() => {
-        app.use(cors());
-        app.use(compression());
-
-        app.use(unless(/animations\/.+\/frames/g, bodyParser.urlencoded({ extended: true })));
-        app.use(unless(/animations\/.+\/frames/g, bodyParser.json({ limit: '5mb'})));
-        
-        app.use('/animations/:id/frames', bodyParser.raw({type: '*/*', limit: '5mb'}));
-
-        app.use(methodOverride());
-        app.use(morgan('dev'));
+    app.use(unless(/animations\/.+\/frames/g, bodyParser.urlencoded({ extended: true })));
+    app.use(unless(/animations\/.+\/frames/g, bodyParser.json({ limit: '5mb'})));
     
-        app.use(passport.initialize());
-        winston.info('Middlewares [OK]');
-        defer.resolve();
-    }, 100);
+    app.use('/animations/:id/frames', bodyParser.raw({type: '*/*', limit: '5mb'}));
 
+    app.use(methodOverride());
+    app.use(morgan('dev'));
 
-    return defer.promise;
+    app.use(passport.initialize());
+    winston.info('Middlewares [OK]');
 }
 
 export function onInitialized(done: Function) {

@@ -3,12 +3,17 @@ import { AwsFrames } from "../libs/aws"
 import * as winston from "winston";
 import * as zlib from "zlib";
 import * as request from "request";
+import * as mongooseConfig from '../configs/mongoose';
 
 const awsFrames = new AwsFrames();
+const failedToMigrate = [];
+
+let count = 0;
+let length = 0;
 
 export function migrate() {
     Animation.find({ frames: { $exists: true }}, (err, results) => {
-        let length = results.length;
+        length = results.length;
         //length = 10;
         for(let i = 0; i < length; i++){
             migrateAnimation(results[i]);
@@ -23,6 +28,10 @@ function migrateAnimation(animation: IAnimation) {
     Animation.findById(animation._id, { frames: 1 }).lean().exec((err, res: any) => {
         let frames = res.frames;
         awsFrames.generatePOSTUrl(animation, (err, signedUrl) => {
+            if (err) {
+                failedToMigrate.push(animation);
+            }
+
             // let buffer: Buffer = zlib.deflateSync(Buffer.from(frames));
             // let xreq = request.put(signedUrl.signedUrl);
             // xreq.on("request", (clientReq) => {
@@ -43,9 +52,22 @@ function migrateAnimation(animation: IAnimation) {
             xreq.on("data", (data) => {
                 winston.info(animation._id + " data: " + data.toString());
             });
+            xreq.on("error", (err) => {
+                failedToMigrate.push(animation);
+                winston.error(animation._id + " error", err);
+            })
             xreq.on("complete", (data) => {
+                count++;
+                let completed = "[" + Math.floor((count / length) * 100) + "%]"; 
                 winston.info(animation._id + " complete: " + data.toString());
             });
         });
     });
 }
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+winston.info("This is a job to migrate all frame data from mongodb to AWS");
+
+mongooseConfig.initialize();
+migrate();

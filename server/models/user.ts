@@ -149,7 +149,9 @@ let User = <restful.IModel<IUser>> restful.model('users', UserSchema);
 User.ensureIndexes((err) => {
     if (err)
         winston.error(err);
-    else winston.info('   UserTextIndex [OK]');
+    else {
+        winston.info('UserTextIndex [OK]');
+    }
 });
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -244,7 +246,7 @@ export function userQuery(username: string) : any {
     return { $or:[{ 'email': name }, { 'username': name }] };
 }
 
-export function ensureAdminExists() : q.IPromise<IUser> {
+export function ensureAdminExists() : q.Promise<IUser> {
     let defer = q.defer<IUser>();
 
 	User.findOne(userQuery(GRAFIKA_ADMIN), (err, user) => {
@@ -286,3 +288,7 @@ function randomlyPickBackdrop(){
 function defaultAvatar(){
     return config.setting.$content.$url + 'assets/img/ic_user.png';
 }
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+ensureAdminExists().then(() => winston.info('Admin Accounts [OK]')).catch((err) => winston.error('Admin Accounts [ERROR]', err));

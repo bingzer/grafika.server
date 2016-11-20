@@ -1,6 +1,5 @@
 "use strict";
 var winston = require("winston");
-var q = require("q");
 var ensure = require("../libs/ensure");
 var pkg = require('../../package.json');
 var env = process.env;
@@ -14,21 +13,14 @@ var Setting = (function () {
         this.auth = new Auth();
         this.content = new Content();
     }
-    Setting.prototype.initialize = function (app) {
-        var _this = this;
-        var defer = q.defer();
-        setTimeout(function () {
-            try {
-                _this.validate();
-                winston.info('Settings [OK]');
-                defer.resolve();
-            }
-            catch (e) {
-                winston.error('Settings [FAILED]');
-                defer.reject(e);
-            }
-        }, 100);
-        return defer.promise;
+    Setting.prototype.initialize = function () {
+        try {
+            this.validate();
+            winston.info('Settings [OK]');
+        }
+        catch (e) {
+            winston.error('Settings [FAILED]');
+        }
     };
     Setting.prototype.validate = function () {
         ensure.notNullOrEmpty(this.name);
