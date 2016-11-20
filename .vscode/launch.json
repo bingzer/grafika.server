@@ -28,6 +28,25 @@
             "outDir": null
         },
         {
+            "name": "S3-frame-migration",
+            "type": "node",
+            "request": "launch",
+            "program": "${workspaceRoot}/server/workers/s3-frame-migrations.js",
+            "stopOnEntry": false,
+            "args": [],
+            "cwd": "${workspaceRoot}",
+            "preLaunchTask": "build",
+            "runtimeExecutable": null,
+            "runtimeArgs": [
+                "--nolazy"
+            ],
+            "env": {
+                "NODE_ENV": "development"
+            },
+            "sourceMaps": true,
+            "outDir": null
+        },
+        {
             "name": "Launch Prod",
             "type": "node",
             "request": "launch",
@@ -102,7 +121,7 @@
             "request": "launch",
             "program": "${workspaceRoot}/node_modules/mocha/bin/_mocha",
             "stopOnEntry": false,
-            "args": ["server-test/libs/aws.test.js", "--timeout", "10000"],
+            "args": ["server-test/model/user.test.js", "--timeout", "10000"],
             "cwd": "${workspaceRoot}",
             "runtimeExecutable": null,
             "env": {

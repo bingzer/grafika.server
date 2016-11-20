@@ -2,6 +2,7 @@ import * as mongoose from 'mongoose';
 import * as express from 'express';
 import * as winston from 'winston';
 import * as zlib from 'zlib';
+import { AwsFrames } from '../libs/aws'
 
 import restful = require('../libs/restful');
 
@@ -74,36 +75,45 @@ Animation.route('frames', {
     detail: true,
     handler: (req: express.Request, res: express.Response, next: express.NextFunction) => {
         if (req.method == 'POST') {
+            let animationId = <string> req.params.id;
             // update total frames
-            Animation.findByIdAndUpdate(req.params.id, { totalFrame: req.body.length });
-            
-            zlib.deflate(Buffer.from(req.body), (err, result: Buffer) => {
-                if (err) return next(err);
-                Animation.findOneAndUpdate({ _id: req.params.id }, { $set: { 'frames': result.toString('base64') } }).lean()
-                    .exec((err, result) => {
-                        if (err) next(err);
-                        else res.sendStatus(201);
-                    });
-            });
+            Animation.findByIdAndUpdate(animationId, { totalFrame: req.body.length });
+
+            let awsFrames = new AwsFrames();
+            awsFrames.postFrames(animationId, req, res, next);
+            // zlib.deflate(Buffer.from(req.body), (err, result: Buffer) => {
+            //     if (err) return next(err);
+            //     Animation.findOneAndUpdate({ _id: req.params.id }, { $set: { 'frames': result.toString('base64') } }).lean()
+            //         .exec((err, result) => {
+            //             if (err) next(err);
+            //             else res.sendStatus(201);
+            //         });
+            // });
+
+
         }
         else if (req.method === 'GET') {
-            Animation.db.collections.animations.findOne({ _id: new mongoose.Types.ObjectId(req.params.id) }, { frames: 1 }, (err, result) =>{
+            let animationId = <string> req.params.id;
+            Animation.db.collections.animations.findOne({ _id: new mongoose.Types.ObjectId(animationId) }, { frames: 1 }, (err, result) =>{
                 if (err) return next(err);
+                
+                let awsFrames = new AwsFrames();
+                awsFrames.getFrames(animationId, req, res, next);
 
-                res.header('Content-Type', 'application/json');
-                if (!result.frames) {
-                    res.send();
-                }
-                else if (req.acceptsEncodings('deflate')) {
-                    res.writeHead(200, {'Content-Encoding': 'deflate'})
-                    res.end(Buffer.from(result.frames, "base64"));
-                }
-                else {
-                    zlib.inflate(Buffer.from(result.frames, "base64"), (err, result) => {
-                        if (err) next(err);
-                        else res.send(result.toString());
-                    });
-                }
+                // res.header('Content-Type', 'application/json');
+                // if (!result.frames) {
+                //     res.send();
+                // }
+                // else if (req.acceptsEncodings('deflate')) {
+                //     res.writeHead(200, {'Content-Encoding': 'deflate'})
+                //     res.end(Buffer.from(result.frames, "base64"));
+                // }
+                // else {
+                //     zlib.inflate(Buffer.from(result.frames, "base64"), (err, result) => {
+                //         if (err) next(err);
+                //         else res.send(result.toString());
+                //     });
+                // }
             });
         }
         else next(400);
@@ -123,7 +133,7 @@ AnimationSchema.index({ name: "text", description: "text", author: "text" }, { n
 Animation.ensureIndexes((err) => {
     if (err) 
         winston.error(err);
-    else winston.info('   AnimationTextIndex [OK]');
+    else winston.info('AnimationTextIndex [OK]');
 });
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -30,23 +30,15 @@ class Setting implements IConfig {
 		this.content = new Content();
 	}
 
-	initialize(app): q.Promise<any> {
-		let defer = q.defer();
+	initialize() {
+		try {
+			this.validate();
 
-		setTimeout(() => {
-			try {
-				this.validate();
-
-				winston.info('Settings [OK]');
-				defer.resolve();
-			}
-			catch (e) {
-				winston.error('Settings [FAILED]');
-				defer.reject(e);
-			}
-		}, 100);
-
-		return defer.promise;
+			winston.info('Settings [OK]');
+		}
+		catch (e) {
+			winston.error('Settings [FAILED]');
+		}
 	}
 
     validate() : void {

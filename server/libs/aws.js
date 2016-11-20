@@ -6,7 +6,9 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 var $q = require("q");
 var aws = require("aws-sdk");
+var request = require("request");
 var config = require("../configs/config");
+var zlib = require("zlib");
 ////////////////////////////////////////////////////////////////////////////////
 var AwsHelper = (function () {
     function AwsHelper() {
@@ -164,4 +166,60 @@ var AwsAnimation = (function (_super) {
     return AwsAnimation;
 }(AwsHelper));
 exports.AwsAnimation = AwsAnimation;
+var AwsFrames = (function (_super) {
+    __extends(AwsFrames, _super);
+    function AwsFrames() {
+        return _super.apply(this, arguments) || this;
+    }
+    AwsFrames.prototype.postFrames = function (animation, req, res, next) {
+        this.generatePOSTUrl(animation, function (err, signedUrl) {
+            zlib.deflate(Buffer.from(req.body), function (err, result) {
+                if (err)
+                    return next(err);
+                var xreq = request.put(signedUrl.signedUrl, { body: result });
+                xreq.setHeader("Content-Type", "application/json");
+                xreq.setHeader("Content-Encoding", "deflate");
+                xreq.pipe(res, { end: true });
+            });
+        });
+    };
+    AwsFrames.prototype.getFrames = function (animation, req, res, next) {
+        this.generateGETUrl(animation, function (err, signedUrl) {
+            res.header('Content-Type', 'application/json');
+            res.header('Content-Encoding', 'deflate');
+            request(signedUrl.signedUrl).pipe(res);
+        });
+    };
+    AwsFrames.prototype.generatePOSTUrl = function (animation, callback) {
+        var animationId = animation._id ? animation._id : animation;
+        var s3_params = {
+            Bucket: config.setting.$auth.$awsBucket,
+            Key: config.setting.$auth.$awsFolder + "/animations/" + animationId + "/frames",
+            Expires: 600,
+            ContentMD5: '',
+            ContentType: 'application/json',
+            ContentEncoding: 'deflate',
+            ACL: 'authenticated-read'
+        };
+        this.create().getSignedUrl("putObject", s3_params, function (err, url) {
+            callback(err, { signedUrl: url, mime: 'application/json' });
+        });
+    };
+    /**
+     * Generate GET Url for the specified URL
+     */
+    AwsFrames.prototype.generateGETUrl = function (animation, callback) {
+        var animationId = animation._id ? animation._id : animation;
+        var s3_params = {
+            Bucket: config.setting.$auth.$awsBucket,
+            Key: config.setting.$auth.$awsFolder + "/animations/" + animationId + "/frames",
+            Expires: 600
+        };
+        this.create().getSignedUrl("getObject", s3_params, function (err, url) {
+            callback(err, { signedUrl: url, mime: 'application/json' });
+        });
+    };
+    return AwsFrames;
+}(AwsHelper));
+exports.AwsFrames = AwsFrames;
 //# sourceMappingURL=aws.js.map
