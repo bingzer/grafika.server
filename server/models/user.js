@@ -92,6 +92,9 @@ User.ensureIndexes(function (err) {
         winston.error(err);
     else {
         winston.info('UserTextIndex [OK]');
+        ensureAdminExists()
+            .then(function () { return winston.info('Admin Accounts [OK]'); })
+            .catch(function (err) { return winston.error('Admin Accounts [ERROR]', err); });
     }
 });
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -220,6 +223,4 @@ function randomlyPickBackdrop() {
 function defaultAvatar() {
     return config.setting.$content.$url + 'assets/img/ic_user.png';
 }
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-ensureAdminExists().then(function () { return winston.info('Admin Accounts [OK]'); }).catch(function (err) { return winston.error('Admin Accounts [ERROR]', err); });
 //# sourceMappingURL=user.js.map

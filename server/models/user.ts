@@ -151,6 +151,9 @@ User.ensureIndexes((err) => {
         winston.error(err);
     else {
         winston.info('UserTextIndex [OK]');
+        ensureAdminExists()
+            .then(() => winston.info('Admin Accounts [OK]'))
+            .catch((err) => winston.error('Admin Accounts [ERROR]', err));
     }
 });
 
@@ -288,7 +291,3 @@ function randomlyPickBackdrop(){
 function defaultAvatar(){
     return config.setting.$content.$url + 'assets/img/ic_user.png';
 }
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-ensureAdminExists().then(() => winston.info('Admin Accounts [OK]')).catch((err) => winston.error('Admin Accounts [ERROR]', err));
