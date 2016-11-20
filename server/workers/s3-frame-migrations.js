@@ -51,14 +51,20 @@ function migrateAnimation(animation) {
             });
             xreq.on("complete", function (data) {
                 count++;
-                var completed = "[" + Math.floor((count / length) * 100) + "%]";
-                winston.info(animation._id + " complete: " + data.toString());
+                var completed = "[" + Math.floor((count / length) * 100) + "%] ";
+                winston.info(completed + animation._id + " complete: " + data.toString());
             });
         });
     });
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 winston.info("This is a job to migrate all frame data from mongodb to AWS");
+winston.info("Environment needed:");
+winston.info("* server_database_url");
+winston.info("* auth_aws_bucket");
+winston.info("* auth_aws_folder");
+winston.info("* auth_aws_id");
+winston.info("* auth_aws_secret");
 mongooseConfig.initialize();
 migrate();
 //# sourceMappingURL=s3-frame-migrations.js.map

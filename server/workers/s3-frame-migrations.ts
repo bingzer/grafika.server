@@ -3,6 +3,7 @@ import { AwsFrames } from "../libs/aws"
 import * as winston from "winston";
 import * as zlib from "zlib";
 import * as request from "request";
+
 import * as mongooseConfig from '../configs/mongoose';
 
 const awsFrames = new AwsFrames();
@@ -58,8 +59,8 @@ function migrateAnimation(animation: IAnimation) {
             })
             xreq.on("complete", (data) => {
                 count++;
-                let completed = "[" + Math.floor((count / length) * 100) + "%]"; 
-                winston.info(animation._id + " complete: " + data.toString());
+                let completed = "[" + Math.floor((count / length) * 100) + "%] "; 
+                winston.info(completed + animation._id + " complete: " + data.toString());
             });
         });
     });
@@ -68,6 +69,12 @@ function migrateAnimation(animation: IAnimation) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 winston.info("This is a job to migrate all frame data from mongodb to AWS");
+winston.info("Environment needed:");
+winston.info("* server_database_url");
+winston.info("* auth_aws_bucket");
+winston.info("* auth_aws_folder");
+winston.info("* auth_aws_id");
+winston.info("* auth_aws_secret");
 
 mongooseConfig.initialize();
 migrate();
