@@ -9,6 +9,7 @@
     "express-jwt": "registry:dt/express-jwt#0.0.0+20160629014920",
     "express-serve-static-core": "registry:dt/express-serve-static-core#4.0.0+20160711183608",
     "express-unless": "registry:dt/express-unless#0.0.0+20160317120654",
+    "form-data": "registry:dt/form-data#0.0.0+20160724024111",
     "fs-extra": "registry:dt/fs-extra#0.0.0+20160517121359",
     "grafika": "github:bingzer/grafika.js/dist/grafika.d.ts",
     "grafika.exts": "github:bingzer/grafika.js/dist/grafika.extensions.d.ts",
