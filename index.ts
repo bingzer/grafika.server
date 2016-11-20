@@ -53,12 +53,13 @@ function initialize(app) : q.Promise<any> {
     let defer = q.defer();
 
     setTimeout(() => {
-        app.use(cors({ methods: ["POST", "PUT", "GET", "OPTIONS", "DELETE" ] }));
+        app.use(cors());
         app.use(compression());
+
         app.use(unless(/animations\/.+\/frames/g, bodyParser.urlencoded({ extended: true })));
         app.use(unless(/animations\/.+\/frames/g, bodyParser.json({ limit: '5mb'})));
         
-        app.use('/animations/:id/frames', cors(), bodyParser.raw({type: '*/*', limit: '5mb'}));
+        app.use('/animations/:id/frames', bodyParser.raw({type: '*/*', limit: '5mb'}));
 
         app.use(methodOverride());
         app.use(morgan('dev'));
