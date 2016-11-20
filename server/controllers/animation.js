@@ -62,7 +62,7 @@ function submitRating(req, res, next) {
 }
 exports.submitRating = submitRating;
 function getRandomAnimation(req, res, next) {
-    var criteria = { removed: false, isPublic: true, $where: "this.frames.length > 5" };
+    var criteria = { removed: false, isPublic: true, $where: "this.totalFrame > 5" };
     animation_1.Animation.find(criteria).lean().count(function (err, count) {
         if (err)
             return next(err);
