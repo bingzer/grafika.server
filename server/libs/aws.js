@@ -186,8 +186,21 @@ var AwsFrames = (function (_super) {
     AwsFrames.prototype.getFrames = function (animation, req, res, next) {
         this.generateGETUrl(animation, function (err, signedUrl) {
             res.header('Content-Type', 'application/json');
-            res.header('Content-Encoding', 'deflate');
-            request(signedUrl.signedUrl).pipe(res);
+            if (req.acceptsEncodings("deflate")) {
+                res.header('Content-Encoding', 'deflate');
+                request(signedUrl.signedUrl).pipe(res);
+            }
+            else {
+                request(signedUrl.signedUrl, { encoding: null }, function (err, incoming, body) {
+                    if (err)
+                        return next(err);
+                    zlib.inflate(body, function (err, result) {
+                        if (err)
+                            return next(err);
+                        res.send(result);
+                    });
+                });
+            }
         });
     };
     AwsFrames.prototype.generatePOSTUrl = function (animation, callback) {
