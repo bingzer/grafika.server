@@ -1,7 +1,7 @@
 "use strict";
 var mongoose = require("mongoose");
 var winston = require("winston");
-var zlib = require("zlib");
+var aws_1 = require("../libs/aws");
 var restful = require("../libs/restful");
 exports.AnimationSchema = new mongoose.Schema({
     localId: { type: String },
@@ -61,40 +61,33 @@ Animation.route('frames', {
     detail: true,
     handler: function (req, res, next) {
         if (req.method == 'POST') {
+            var animationId = req.params.id;
             // update total frames
-            Animation.findByIdAndUpdate(req.params.id, { totalFrame: req.body.length });
-            zlib.deflate(Buffer.from(req.body), function (err, result) {
-                if (err)
-                    return next(err);
-                Animation.findOneAndUpdate({ _id: req.params.id }, { $set: { 'frames': result.toString('base64') } }).lean()
-                    .exec(function (err, result) {
-                    if (err)
-                        next(err);
-                    else
-                        res.sendStatus(201);
-                });
-            });
+            Animation.findByIdAndUpdate(animationId, { totalFrame: req.body.length });
+            var awsFrames = new aws_1.AwsFrames();
+            awsFrames.postFrames(animationId, req, res, next);
         }
         else if (req.method === 'GET') {
-            Animation.db.collections.animations.findOne({ _id: new mongoose.Types.ObjectId(req.params.id) }, { frames: 1 }, function (err, result) {
+            var animationId_1 = req.params.id;
+            Animation.db.collections.animations.findOne({ _id: new mongoose.Types.ObjectId(animationId_1) }, { frames: 1 }, function (err, result) {
                 if (err)
                     return next(err);
-                res.header('Content-Type', 'application/json');
-                if (!result.frames) {
-                    res.send();
-                }
-                else if (req.acceptsEncodings('deflate')) {
-                    res.writeHead(200, { 'Content-Encoding': 'deflate' });
-                    res.end(Buffer.from(result.frames, "base64"));
-                }
-                else {
-                    zlib.inflate(Buffer.from(result.frames, "base64"), function (err, result) {
-                        if (err)
-                            next(err);
-                        else
-                            res.send(result.toString());
-                    });
-                }
+                var awsFrames = new aws_1.AwsFrames();
+                awsFrames.getFrames(animationId_1, req, res, next);
+                // res.header('Content-Type', 'application/json');
+                // if (!result.frames) {
+                //     res.send();
+                // }
+                // else if (req.acceptsEncodings('deflate')) {
+                //     res.writeHead(200, {'Content-Encoding': 'deflate'})
+                //     res.end(Buffer.from(result.frames, "base64"));
+                // }
+                // else {
+                //     zlib.inflate(Buffer.from(result.frames, "base64"), (err, result) => {
+                //         if (err) next(err);
+                //         else res.send(result.toString());
+                //     });
+                // }
             });
         }
         else
@@ -114,6 +107,6 @@ Animation.ensureIndexes(function (err) {
     if (err)
         winston.error(err);
     else
-        winston.info('   AnimationTextIndex [OK]');
+        winston.info('AnimationTextIndex [OK]');
 });
 //# sourceMappingURL=animation.js.map

@@ -60,7 +60,7 @@ export function submitRating(req: express.Request, res: express.Response, next: 
 }
 
 export function getRandomAnimation(req: express.Request, res: express.Response, next: express.NextFunction) {
-    let criteria = { removed: false, isPublic: true, $where: "this.frames.length > 5" };
+    let criteria = { removed: false, isPublic: true, $where: "this.totalFrame > 5" };
     Animation.find(criteria).lean().count((err, count) => {
         if (err) return next(err);
 

@@ -90,8 +90,12 @@ exports.User = User;
 User.ensureIndexes(function (err) {
     if (err)
         winston.error(err);
-    else
-        winston.info('   UserTextIndex [OK]');
+    else {
+        winston.info('UserTextIndex [OK]');
+        ensureAdminExists()
+            .then(function () { return winston.info('Admin Accounts [OK]'); })
+            .catch(function (err) { return winston.error('Admin Accounts [ERROR]', err); });
+    }
 });
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 function generateJwtToken(user) {
