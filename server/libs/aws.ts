@@ -167,8 +167,20 @@ export class AwsFrames extends AwsHelper {
 	getFrames(animation: IAnimation | string, req: express.Request, res: express.Response, next: express.NextFunction) {
 		this.generateGETUrl(animation, (err, signedUrl) => {
 			res.header('Content-Type', 'application/json');
-			res.header('Content-Encoding', 'deflate');
-			request(signedUrl.signedUrl).pipe(res);
+
+			if (req.acceptsEncodings("deflate")) {
+				res.header('Content-Encoding', 'deflate');
+				request(signedUrl.signedUrl).pipe(res);
+			}
+			else {
+				request(signedUrl.signedUrl, { encoding: null }, (err, incoming, body) => {
+					if (err) return next(err);
+					zlib.inflate(body, (err, result) => {
+						if (err) return next(err);
+						res.send(result);
+					});
+				});
+			}
 		});
 	}
 
