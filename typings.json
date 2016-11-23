@@ -12,6 +12,7 @@
     "form-data": "registry:dt/form-data#0.0.0+20160724024111",
     "fs-extra": "registry:dt/fs-extra#0.0.0+20160517121359",
     "grafika": "github:bingzer/grafika.js/dist/grafika.d.ts",
+    "grafika.interfaces": "github:bingzer/grafika.js/dist/grafika.interfaces.d.ts",
     "grafika.exts": "github:bingzer/grafika.js/dist/grafika.extensions.d.ts",
     "method-override": "registry:dt/method-override#0.0.0+20160317120654",
     "mime": "registry:dt/mime#0.0.0+20160316155526",

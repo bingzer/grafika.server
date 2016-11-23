@@ -21,7 +21,14 @@ exports.AnimationSchema = new mongoose.Schema({
     author: String,
     userId: { type: String, required: true },
     totalFrame: { type: Number, default: 0 },
-    frames: { type: {}, select: false }
+    // frames       : { type: {}, select: false }
+    client: {
+        type: {
+            name: { type: String, default: "generic" },
+            version: { type: String, default: "unknown" },
+            browser: { type: String, default: "unknown" }
+        }
+    }
 });
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 var Animation = restful.model('animations', exports.AnimationSchema);
