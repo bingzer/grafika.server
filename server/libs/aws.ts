@@ -76,21 +76,21 @@ export class AwsResources extends AwsHelper {
 	 * Create SignedUrl for resources 
 	 * 
 	 * */
-	createSignedUrl(resource: Grafika.IResource): $q.Promise<Grafika.ISignedUrl>{
+	createSignedUrl(animationId: string, mime: string, resource: Grafika.IResource): $q.Promise<Grafika.ISignedUrl>{
 		let deferred = $q.defer<Grafika.ISignedUrl>();
 		
 		// get signedurl from s3
 		let s3_params = {
 			Bucket: config.setting.$auth.$awsBucket,
-			Key: `${config.setting.$auth.$awsFolder}/animations/${resource.animationId}/${resource._id}`,
+			Key: `${config.setting.$auth.$awsFolder}/animations/${animationId}/${resource.id}`,
 			Expires: 600,
 			ContentMD5: '',
-			ContentType: resource.mime,
+			ContentType: mime,
 			ACL: 'public-read'
 		};
 		this.create().getSignedUrl('putObject', s3_params, (err, data) => {
 			if (err) deferred.reject(err);
-			else deferred.resolve({ signedUrl: data, mime: resource.mime });
+			else deferred.resolve({ signedUrl: data, mime: mime });
 		});
 		return deferred.promise;
 	}

@@ -170,7 +170,7 @@ describe("libs/aws.ts", function (){
                 awsResource.create = function() {
                     return mockAwsSdk;
                 };
-                awsResource.createSignedUrl({_id: 'resourceId', animationId: 'animationId', mime: 'resourceMime'}).then(function (result) {
+                awsResource.createSignedUrl("animationId", "resourceMime", {id: 'resourceId'}).then(function (result) {
                     assert.equal('signed-url', result.signedUrl);
                     assert.equal('resourceMime', result.mime);
                     done();
@@ -196,7 +196,7 @@ describe("libs/aws.ts", function (){
                 awsResource.create = function() {
                     return mockAwsSdk;
                 };
-                awsResource.createSignedUrl({_id: 'resourceId', animationId: 'animationId', mime: 'resourceMime'}).catch(function (result) {
+                awsResource.createSignedUrl("animationId", "resourceMime", {id: 'resourceId'}).catch(function (result) {
                     assert.equal('Error', result);
                     done();
                 });

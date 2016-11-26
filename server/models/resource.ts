@@ -1,15 +1,26 @@
 
 
 export class Resource implements Grafika.IResource {
-    _id: any | string;
-    animationId: string;
-    mime: string;
+    id: any | string;
+    type: string;
 
     constructor(resource?: Resource | any) {
         if (resource) {
-            this._id = resource._id;
-            this.animationId = resource.animationId;
-            this.mime = resource.mime;
+            this.id = resource._id;
+            this.type = resource.type;
         }
+    }
+}
+
+export class Thumbnail extends Resource {
+    mime: string = "image/png";
+    animationId: string;
+
+    constructor(animationId: string) {
+        super();
+        this.id = "thumbnail";
+        this.type = "thumbnail";
+        this.mime = "image/png";
+        this.animationId = animationId;
     }
 }
