@@ -85,22 +85,22 @@ var AwsResources = (function (_super) {
      * Create SignedUrl for resources
      *
      * */
-    AwsResources.prototype.createSignedUrl = function (resource) {
+    AwsResources.prototype.createSignedUrl = function (animationId, mime, resource) {
         var deferred = $q.defer();
         // get signedurl from s3
         var s3_params = {
             Bucket: config.setting.$auth.$awsBucket,
-            Key: config.setting.$auth.$awsFolder + "/animations/" + resource.animationId + "/" + resource._id,
+            Key: config.setting.$auth.$awsFolder + "/animations/" + animationId + "/" + resource.id,
             Expires: 600,
             ContentMD5: '',
-            ContentType: resource.mime,
+            ContentType: mime,
             ACL: 'public-read'
         };
         this.create().getSignedUrl('putObject', s3_params, function (err, data) {
             if (err)
                 deferred.reject(err);
             else
-                deferred.resolve({ signedUrl: data, mime: resource.mime });
+                deferred.resolve({ signedUrl: data, mime: mime });
         });
         return deferred.promise;
     };
@@ -186,7 +186,7 @@ var AwsFrames = (function (_super) {
     AwsFrames.prototype.getFrames = function (animation, req, res, next) {
         this.generateGETUrl(animation, function (err, signedUrl) {
             res.header('Content-Type', 'application/json');
-            if (req.acceptsEncodings("deflate")) {
+            if (req.acceptsEncodings("deflate") && !req.header("X-inflate-frames")) {
                 res.header('Content-Encoding', 'deflate');
                 request(signedUrl.signedUrl).pipe(res);
             }

@@ -1,5 +1,4 @@
 "use strict";
-var mongoose = require("mongoose");
 var aws_1 = require("../libs/aws");
 var resource_1 = require("../models/resource");
 var aws = new aws_1.AwsResources();
@@ -18,9 +17,8 @@ function del(req, res, next) {
 }
 exports.del = del;
 function createSignedUrl(req, res, next) {
-    var animId = new mongoose.Types.ObjectId(req.params.animationId);
-    var resource = new resource_1.Resource({ _id: req.body._id, mime: req.body.mime, animationId: animId });
-    return aws.createSignedUrl(resource).then(function (signedUrl) {
+    var resource = new resource_1.Resource({ _id: req.body._id });
+    return aws.createSignedUrl(req.params.animationId, req.body.mime, resource).then(function (signedUrl) {
         res.send(signedUrl);
     }).catch(next);
 }
@@ -32,9 +30,8 @@ function getThumbnail(req, res, next) {
 }
 exports.getThumbnail = getThumbnail;
 function createThumbnailSignedUrl(req, res, next) {
-    var animId = new mongoose.Types.ObjectId(req.params.animationId);
-    var resource = new resource_1.Resource({ _id: 'thumbnail', mime: 'image/png', animationId: animId });
-    aws.createSignedUrl(resource).then(function (signedUrl) {
+    var thumbnail = new resource_1.Thumbnail(req.params.animationId);
+    aws.createSignedUrl(thumbnail.animationId, thumbnail.mime, thumbnail).then(function (signedUrl) {
         res.send(signedUrl);
     }).catch(next);
 }
