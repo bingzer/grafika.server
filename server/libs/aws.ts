@@ -168,7 +168,7 @@ export class AwsFrames extends AwsHelper {
 		this.generateGETUrl(animation, (err, signedUrl) => {
 			res.header('Content-Type', 'application/json');
 
-			if (req.acceptsEncodings("deflate")) {
+			if (req.acceptsEncodings("deflate") && !req.header("X-inflate-frames")) {
 				res.header('Content-Encoding', 'deflate');
 				request(signedUrl.signedUrl).pipe(res);
 			}

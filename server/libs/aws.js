@@ -186,7 +186,7 @@ var AwsFrames = (function (_super) {
     AwsFrames.prototype.getFrames = function (animation, req, res, next) {
         this.generateGETUrl(animation, function (err, signedUrl) {
             res.header('Content-Type', 'application/json');
-            if (req.acceptsEncodings("deflate")) {
+            if (req.acceptsEncodings("deflate") && !req.header("X-inflate-frames")) {
                 res.header('Content-Encoding', 'deflate');
                 request(signedUrl.signedUrl).pipe(res);
             }
