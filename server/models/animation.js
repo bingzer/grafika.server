@@ -21,13 +21,17 @@ exports.AnimationSchema = new mongoose.Schema({
     author: String,
     userId: { type: String, required: true },
     totalFrame: { type: Number, default: 0 },
+    resources: [{
+            id: { type: String, required: true },
+            type: { type: String, required: true },
+            url: String,
+            mime: String
+        }],
     // frames       : { type: {}, select: false }
     client: {
-        type: {
-            name: { type: String, default: "generic" },
-            version: { type: String, default: "unknown" },
-            browser: { type: String, default: "unknown" }
-        }
+        name: { type: String, default: "generic" },
+        version: { type: String, default: "unknown" },
+        browser: { type: String, default: "unknown" }
     }
 });
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
