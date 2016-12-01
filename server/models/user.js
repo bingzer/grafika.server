@@ -1,10 +1,10 @@
 "use strict";
-var mongoose = require("mongoose");
-var winston = require("winston");
-var q = require("q");
-var config = require("../configs/config");
-var restful = require("../libs/restful");
-var utils_1 = require("../libs/utils");
+var mongoose = require('mongoose');
+var winston = require('winston');
+var q = require('q');
+var config = require('../configs/config');
+var restful = require('../libs/restful');
+var utils_1 = require('../libs/utils');
 var bcrypt = require('bcrypt-nodejs');
 var crypto = require('crypto-js');
 var jwt = require('jsonwebtoken');

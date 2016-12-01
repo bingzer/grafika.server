@@ -4,8 +4,8 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-var passport_local_1 = require("passport-local");
-var user_1 = require("../models/user");
+var passport_local_1 = require('passport-local');
+var user_1 = require('../models/user');
 ////////////////////////////////////////////////////////////////////////////////
 var Options = (function () {
     function Options() {
@@ -18,7 +18,7 @@ var Options = (function () {
 var SigninStrategy = (function (_super) {
     __extends(SigninStrategy, _super);
     function SigninStrategy() {
-        return _super.call(this, new Options(), function (req, username, password, done) {
+        _super.call(this, new Options(), function (req, username, password, done) {
             user_1.User.findOne({ email: username }, function (err, user) {
                 // if there are any errors, return the error before anything else
                 if (err)
@@ -34,7 +34,7 @@ var SigninStrategy = (function (_super) {
                 // all is well, return successful user
                 return done(null, user);
             });
-        }) || this;
+        });
     }
     return SigninStrategy;
 }(passport_local_1.Strategy));

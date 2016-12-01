@@ -17,13 +17,12 @@ exports.Resource = Resource;
 var Thumbnail = (function (_super) {
     __extends(Thumbnail, _super);
     function Thumbnail(animationId) {
-        var _this = _super.call(this) || this;
-        _this.mime = "image/png";
-        _this.id = "thumbnail";
-        _this.type = "thumbnail";
-        _this.mime = "image/png";
-        _this.animationId = animationId;
-        return _this;
+        _super.call(this);
+        this.mime = "image/png";
+        this.id = "thumbnail";
+        this.type = "thumbnail";
+        this.mime = "image/png";
+        this.animationId = animationId;
     }
     return Thumbnail;
 }(Resource));

@@ -4,11 +4,11 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-var _ = require("underscore");
-var q = require("q");
-var winston = require("winston");
-var sync_1 = require("../models/sync");
-var animation_1 = require("../models/animation");
+var _ = require('underscore');
+var q = require('q');
+var winston = require('winston');
+var sync_1 = require('../models/sync');
+var animation_1 = require('../models/animation');
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 var Synchronizer = (function () {
     function Synchronizer(user, localSync) {
@@ -73,7 +73,7 @@ var InternalSyncProcess = (function () {
 var Preparation = (function (_super) {
     __extends(Preparation, _super);
     function Preparation(user, syncResult) {
-        return _super.call(this, user, syncResult) || this;
+        _super.call(this, user, syncResult);
     }
     Preparation.prototype.executeSync = function (localSync, serverSync) {
         log("Preparation");
@@ -114,7 +114,7 @@ var Preparation = (function (_super) {
 var Modification = (function (_super) {
     __extends(Modification, _super);
     function Modification(user, syncResult) {
-        return _super.call(this, user, syncResult) || this;
+        _super.call(this, user, syncResult);
     }
     Modification.prototype.executeSync = function (localSync, serverSync) {
         log("Modification");
@@ -137,7 +137,7 @@ var Modification = (function (_super) {
 var Deletion = (function (_super) {
     __extends(Deletion, _super);
     function Deletion(user, syncResult) {
-        return _super.call(this, user, syncResult) || this;
+        _super.call(this, user, syncResult);
     }
     Deletion.prototype.executeSync = function (localSync, serverSync) {
         log("Deletion");
@@ -169,7 +169,7 @@ var Deletion = (function (_super) {
 var Addition = (function (_super) {
     __extends(Addition, _super);
     function Addition(user, syncResult) {
-        return _super.call(this, user, syncResult) || this;
+        _super.call(this, user, syncResult);
     }
     Addition.prototype.executeSync = function (localSync, serverSync) {
         log("Addition");
@@ -223,7 +223,7 @@ var Addition = (function (_super) {
 var Finalization = (function (_super) {
     __extends(Finalization, _super);
     function Finalization(user, syncResult) {
-        return _super.call(this, user, syncResult) || this;
+        _super.call(this, user, syncResult);
     }
     Finalization.prototype.executeSync = function (localSync, serverSync) {
         log("Finalization");
@@ -234,7 +234,7 @@ var Finalization = (function (_super) {
 var FinalizationForUpdate = (function (_super) {
     __extends(FinalizationForUpdate, _super);
     function FinalizationForUpdate(user, syncResult) {
-        return _super.call(this, user, syncResult) || this;
+        _super.call(this, user, syncResult);
     }
     FinalizationForUpdate.prototype.sync = function (localSync, serverSync) {
         var defer = q.defer();
@@ -252,7 +252,6 @@ var FinalizationForUpdate = (function (_super) {
     return FinalizationForUpdate;
 }(Finalization));
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-var SyncAction;
 (function (SyncAction) {
     /**
      * Nothing to be done
@@ -282,7 +281,8 @@ var SyncAction;
      * Server needs to delete the animation
      */
     SyncAction[SyncAction["ServerDelete"] = 6] = "ServerDelete";
-})(SyncAction = exports.SyncAction || (exports.SyncAction = {}));
+})(exports.SyncAction || (exports.SyncAction = {}));
+var SyncAction = exports.SyncAction;
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 var SyncEvent = (function () {
     function SyncEvent(action, animationId, localId) {

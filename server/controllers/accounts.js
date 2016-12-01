@@ -1,8 +1,8 @@
 "use strict";
 var passport = require("passport");
-var user_1 = require("../models/user");
-var mailer = require("../libs/mailer");
-var config = require("../configs/config");
+var user_1 = require('../models/user');
+var mailer = require('../libs/mailer');
+var config = require('../configs/config');
 var jwt = require('jsonwebtoken');
 var SECRET = config.setting.$server.$superSecret;
 ////////////////////////////////////////////////////////////////////////////////////////////////
