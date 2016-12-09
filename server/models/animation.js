@@ -1,8 +1,8 @@
 "use strict";
-var mongoose = require('mongoose');
-var winston = require('winston');
-var aws_1 = require('../libs/aws');
-var restful = require('../libs/restful');
+var mongoose = require("mongoose");
+var winston = require("winston");
+var aws_1 = require("../libs/aws");
+var restful = require("../libs/restful");
 exports.AnimationSchema = new mongoose.Schema({
     localId: { type: String },
     type: { type: String, required: true, default: 'animation' },
@@ -57,8 +57,15 @@ Animation.before('post', function (req, res, next) {
 });
 Animation.before('get', function (req, res, next) {
     if (req.query) {
-        if (typeof (req.query.removed) == 'undefined')
+        if (typeof (req.query.removed) === 'undefined')
             req.query.removed = false;
+        // do this default selection only when ID is not specified
+        if (typeof (req.query._id) === 'undefined') {
+            if (typeof (req.query.type) === 'undefined')
+                req.query.type = 'animation';
+            if (typeof (req.query.totalFrame === 'undefined'))
+                req.query.totalFrame = { $gt: 0 };
+        }
     }
     next();
 });
@@ -120,5 +127,4 @@ Animation.ensureIndexes(function (err) {
     else
         winston.info('AnimationTextIndex [OK]');
 });
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //# sourceMappingURL=animation.js.map

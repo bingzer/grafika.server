@@ -1,10 +1,10 @@
 "use strict";
-var nodemailer = require('nodemailer');
-var winston = require('winston');
-var fs = require('fs-extra');
-var path = require('path');
-var $q = require('q');
-var config = require('../configs/config');
+var nodemailer = require("nodemailer");
+var winston = require("winston");
+var fs = require("fs-extra");
+var path = require("path");
+var $q = require("q");
+var config = require("../configs/config");
 var mailTransporter = nodemailer.createTransport({
     name: config.setting.$server.$mailService,
     host: config.setting.$server.$mailSmtp,
@@ -26,7 +26,8 @@ function sendAnimationCommentEmail(animation, user, comment) {
     };
     var promises = $q.allSettled([
         readTemplate('animation-comment.txt', opts),
-        readTemplate('animation-comment.html', opts)]);
+        readTemplate('animation-comment.html', opts)
+    ]);
     promises.then(function (results) {
         if (results[0].state === 'rejected' || results[1].state === 'rejected')
             return deferred.reject("fail");
@@ -59,7 +60,8 @@ function sendVerificationEmail(user) {
     var opts = { title: 'Please activate your account', user: user.email, link: url, privacyUrl: config.setting.$content.$url + 'privacy', homeUrl: config.setting.$content.$url };
     var promises = $q.allSettled([
         readTemplate('verification-template.txt', opts),
-        readTemplate('verification-template.html', opts)]);
+        readTemplate('verification-template.html', opts)
+    ]);
     promises.then(function (results) {
         if (results[0].state === 'rejected' || results[1].state === 'rejected')
             return deferred.reject("fail");
@@ -92,7 +94,8 @@ function sendResetEmail(user) {
     var opts = { title: 'Grafika: Password Reset', user: user.email, link: url, privacyUrl: config.setting.$content.$url + 'privacy', homeUrl: config.setting.$content.$url };
     var promises = $q.allSettled([
         readTemplate('resetpwd-template.txt', opts),
-        readTemplate('resetpwd-template.html', opts)]);
+        readTemplate('resetpwd-template.html', opts)
+    ]);
     promises.then(function (results) {
         if (results[0].state === 'rejected' || results[1].state === 'rejected')
             return deferred.reject('fail');
