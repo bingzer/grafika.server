@@ -34,7 +34,6 @@ export class AwsUsers extends AwsHelper {
 		let deferred = $q.defer<Grafika.ISignedUrl>();
 		if (!imageType) imageType = 'avatar';
 		if (!mime) mime = 'image/png';
-		
 		// get signedurl from s3
 		let s3_params = {
 			Bucket: config.setting.$auth.$awsBucket,

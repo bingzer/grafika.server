@@ -21,13 +21,17 @@ exports.AnimationSchema = new mongoose.Schema({
     author: String,
     userId: { type: String, required: true },
     totalFrame: { type: Number, default: 0 },
+    resources: [{
+            id: { type: String, required: true },
+            type: { type: String, required: true },
+            url: String,
+            mime: String
+        }],
     // frames       : { type: {}, select: false }
     client: {
-        type: {
-            name: { type: String, default: "generic" },
-            version: { type: String, default: "unknown" },
-            browser: { type: String, default: "unknown" }
-        }
+        name: { type: String, default: "generic" },
+        version: { type: String, default: "unknown" },
+        browser: { type: String, default: "unknown" }
     }
 });
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -53,8 +57,15 @@ Animation.before('post', function (req, res, next) {
 });
 Animation.before('get', function (req, res, next) {
     if (req.query) {
-        if (typeof (req.query.removed) == 'undefined')
+        if (typeof (req.query.removed) === 'undefined')
             req.query.removed = false;
+        // do this default selection only when ID is not specified
+        if (typeof (req.query._id) === 'undefined') {
+            if (typeof (req.query.type) === 'undefined')
+                req.query.type = 'animation';
+            if (typeof (req.query.totalFrame === 'undefined'))
+                req.query.totalFrame = { $gt: 0 };
+        }
     }
     next();
 });

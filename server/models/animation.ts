@@ -13,37 +13,42 @@ export interface IAnimation extends Grafika.IAnimation, mongoose.Document {
 }
 
 export const AnimationSchema = new mongoose.Schema({
-    localId      : { type: String },
+    localId         : { type: String },
 
-    type         : { type: String, required: true, default: 'animation' },
-    name         : { type: String, required: true },
-    description  : String,
+    type            : { type: String, required: true, default: 'animation' },
+    name            : { type: String, required: true },
+    description     : String,
 
-    timer        : Number,
-    width        : { type: Number, required: true },
-    height       : { type: Number, required: true },
+    timer           : Number,
+    width           : { type: Number, required: true },
+    height          : { type: Number, required: true },
 
-    dateCreated  : { type: Number, required: true },
-    dateModified : { type: Number, required: true },
+    dateCreated     : { type: Number, required: true },
+    dateModified    : { type: Number, required: true },
 
-    views        : { type: Number, default: 0 },
-    rating       : { type: Number, default: 2.5 },
-    category     : String,
-    removed      : { type: Boolean, required: true, default: false },
+    views           : { type: Number, default: 0 },
+    rating          : { type: Number, default: 2.5 },
+    category        : String,
+    removed         : { type: Boolean, required: true, default: false },
 
-    isPublic     : { type: Boolean, default: false },
-    author       : String,
-    userId       : { type: String, required: true },
+    isPublic        : { type: Boolean, default: false },
+    author          : String,
+    userId          : { type: String, required: true },
 
-    totalFrame   : { type: Number, default: 0 },
+    totalFrame      : { type: Number, default: 0 },
+    resources       : [{
+        id          : { type: String, required: true },
+        type        : { type: String, required: true },
+        url         : String,
+        mime        : String
+    }],
     // frames       : { type: {}, select: false }
 
-    client       : { 
-                    type: {
-                        name:    { type: String, default: "generic" },
-                        version: { type: String, default: "unknown" },
-                        browser: { type: String, default: "unknown" }                           
-                    }}
+    client          : {
+        name        : { type: String, default: "generic" },
+        version     : { type: String, default: "unknown" },
+        browser     : { type: String, default: "unknown" }
+    }
 });
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -65,8 +70,13 @@ Animation.before('post', (req, res, next) => {
 });
 Animation.before('get', (req, res, next) => {
     if (req.query) {
-        if (typeof(req.query.removed) == 'undefined')
+        if (typeof(req.query.removed) === 'undefined')
             req.query.removed = false;
+        // do this default selection only when ID is not specified
+        if (typeof(req.query._id) === 'undefined') {
+            if (typeof(req.query.type) === 'undefined') req.query.type = 'animation';
+            if (typeof(req.query.totalFrame === 'undefined')) req.query.totalFrame = { $gt: 0 };
+        }
     }
 
     next();

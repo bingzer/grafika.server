@@ -265,7 +265,7 @@ class FinalizationForUpdate extends Finalization {
         // handles all delete
         let serverDeleteEvents = _.filter(this.syncResult.events, (event) => event.action == SyncAction.ServerDelete);
         let serverDeleteIds = _.map(serverDeleteEvents, (event) => event.animationId);
-        Animation.remove( { _id: { $in: serverDeleteIds }}, (err) => {
+        Animation.update( { _id: { $in: serverDeleteIds }}, { removed: true }, { multi: true }, (err) => {
             if (err) defer.reject(err);
             else defer.resolve();
         });

@@ -241,7 +241,7 @@ var FinalizationForUpdate = (function (_super) {
         // handles all delete
         var serverDeleteEvents = _.filter(this.syncResult.events, function (event) { return event.action == SyncAction.ServerDelete; });
         var serverDeleteIds = _.map(serverDeleteEvents, function (event) { return event.animationId; });
-        animation_1.Animation.remove({ _id: { $in: serverDeleteIds } }, function (err) {
+        animation_1.Animation.update({ _id: { $in: serverDeleteIds } }, { removed: true }, { multi: true }, function (err) {
             if (err)
                 defer.reject(err);
             else

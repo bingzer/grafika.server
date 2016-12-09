@@ -1,6 +1,6 @@
 {
   "name": "grafika.server",
-  "version": "0.13.0-3",
+  "version": "0.14.1-0",
   "engines": {
     "node": "6.1.0"
   },
@@ -54,7 +54,7 @@
     "path": "^0.12.7",
     "q": "^1.4.1",
     "request": "^2.78.0",
-    "typescript": "^2.2.0-dev.20161114",
+    "typescript": "^2.0.10",
     "typings": "^1.3.1",
     "underscore": "*",
     "winston": "*"
