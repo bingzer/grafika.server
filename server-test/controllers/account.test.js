@@ -28,6 +28,9 @@ describe("controllers/account.ts", function (){
             var schema = {
                 generateJwtToken: function (user) {
                     return "signed-jwt";
+                },
+                updateLastSeen: function (user) {
+                    // do nothing
                 }
             };
             var response = {
