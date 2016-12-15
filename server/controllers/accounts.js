@@ -15,6 +15,7 @@ function login(req, res, next) {
         req.login(user, function (err) {
             if (err)
                 return next(err);
+            user_1.updateLastSeen(user);
             return res.send({ token: user_1.generateJwtToken(user) });
         });
     })(req, res, next);
