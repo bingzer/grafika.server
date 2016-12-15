@@ -19,6 +19,7 @@ export function login(req: express.Request, res: express.Response, next: express
             if (!user) return next(400);
             req.login(user, function (err){
                 if (err) return next(err);
+                updateLastSeen(user);
                 return res.send({ token: generateJwtToken(user) }); 
             });
         })(req, res, next);
