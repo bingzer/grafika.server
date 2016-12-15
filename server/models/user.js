@@ -1,10 +1,10 @@
 "use strict";
-var mongoose = require("mongoose");
-var winston = require("winston");
-var q = require("q");
-var config = require("../configs/config");
-var restful = require("../libs/restful");
-var utils_1 = require("../libs/utils");
+var mongoose = require('mongoose');
+var winston = require('winston');
+var q = require('q');
+var config = require('../configs/config');
+var restful = require('../libs/restful');
+var utils_1 = require('../libs/utils');
 var bcrypt = require('bcrypt-nodejs');
 var crypto = require('crypto-js');
 var jwt = require('jsonwebtoken');
@@ -44,6 +44,9 @@ exports.UserSchema = new mongoose.Schema({
         drawingAuthor: { type: String },
         drawingTimer: { type: Number, default: 1000 },
         playbackLoop: { type: Boolean, default: false }
+    },
+    stats: {
+        dateLastSeen: { type: Number }
     },
     subscriptions: {
         emailAnimationComment: { type: Boolean, default: true },
@@ -98,6 +101,11 @@ User.ensureIndexes(function (err) {
     }
 });
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+function updateLastSeen(userOrUserId) {
+    var userId = userOrUserId._id || userOrUserId;
+    User.update({ _id: new mongoose.Types.ObjectId(userId) }, { "stats.dateLastSeen": Date.now() }).exec();
+}
+exports.updateLastSeen = updateLastSeen;
 function generateJwtToken(user) {
     return jwt.sign(sanitize(user), SECRET, {
         expiresIn: '24h' // expires in 24 hours
@@ -156,6 +164,9 @@ function sanitize(user) {
     if (user.facebook) {
         delete user.facebook.id;
         delete user.facebook.token;
+    }
+    if (user.stats) {
+        delete user.stats;
     }
     delete user.activation;
     return user;

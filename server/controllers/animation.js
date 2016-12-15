@@ -1,9 +1,9 @@
 "use strict";
-var config = require("../configs/config");
-var utils = require("../libs/utils");
+var config = require('../configs/config');
+var utils = require('../libs/utils');
 var animation_1 = require("../models/animation");
-var user_1 = require("../models/user");
-var mailer_1 = require("../libs/mailer");
+var user_1 = require('../models/user');
+var mailer_1 = require('../libs/mailer');
 function search(req, res, next) {
     if (req.query.term) {
         var sort = createSort(req);
