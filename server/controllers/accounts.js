@@ -41,6 +41,10 @@ exports.logout = logout;
 ;
 function authenticate(req, res, next) {
     tryAuthenticate(req, function (err, user) {
+        function sendUserJwtToken() {
+            user_1.updateLastSeen(user);
+            res.send({ token: user_1.generateJwtToken(user) });
+        }
         if (err)
             return next(err);
         if (req.query.refreshToken) {
@@ -49,10 +53,10 @@ function authenticate(req, res, next) {
                     return next(err);
                 if (!user)
                     return next(404);
-                res.send({ token: user_1.generateJwtToken(user) });
+                sendUserJwtToken();
             });
         }
-        return res.send({ token: user_1.generateJwtToken(user) });
+        return sendUserJwtToken();
     });
 }
 exports.authenticate = authenticate;

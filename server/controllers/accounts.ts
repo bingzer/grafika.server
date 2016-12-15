@@ -2,7 +2,8 @@
 import * as express from "express";
 import * as passport from "passport";
 
-import { IUser, User, userQuery, sanitize, generateJwtToken, generateDisqusToken, verifyJwtToken, checkAvailability } from '../models/user';
+import { IUser, User, userQuery, sanitize, updateLastSeen, generateJwtToken, generateDisqusToken, verifyJwtToken, checkAvailability } 
+        from '../models/user';
 import * as mailer from '../libs/mailer';
 import * as config from '../configs/config';
 import * as utils from '../libs/utils';
@@ -38,15 +39,20 @@ export function logout(req : express.Request, res : express.Response) {
 
 export function authenticate(req: express.Request | any, res: express.Response | any, next: express.NextFunction){
     tryAuthenticate(req, (err, user) => {
+        function sendUserJwtToken() {
+            updateLastSeen(user);
+            res.send({ token: generateJwtToken(user) });
+        }
+
         if (err) return next(err);
         if (req.query.refreshToken) {
             return User.findById(user._id, (err, user) => {
                 if (err) return next(err);
                 if (!user) return next(404);
-                res.send({ token: generateJwtToken(user) })
+                sendUserJwtToken();
             })
         }
-        return res.send({token: generateJwtToken(user) });
+        return sendUserJwtToken();
     });
 };
 export function authenticateGoogle(req: express.Request, res: express.Response, next: express.NextFunction){

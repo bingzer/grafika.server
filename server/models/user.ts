@@ -98,6 +98,9 @@ export const UserSchema = new mongoose.Schema({
         drawingTimer    : { type: Number, default: 1000 },
         playbackLoop    : { type: Boolean, default: false }
     },
+    stats               : {
+        dateLastSeen    : { type: Number }
+    },
     subscriptions       : {
         emailAnimationComment : { type: Boolean, default: true },
         emailAnimationRating  : { type: Boolean, default: true }
@@ -133,6 +136,7 @@ UserSchema.methods.sanitize = function(): IUser {
 UserSchema.methods.isAdministrator = function(): boolean {
     return isAdministrator(this);
 };
+
 UserSchema.index(
     { email: 'text', firstName: 'text', lastName: 'text', username: 'text' }, 
     { 
@@ -158,6 +162,11 @@ User.ensureIndexes((err) => {
 });
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+export function updateLastSeen(userOrUserId: IUser | string): void {
+    let userId = (<IUser>userOrUserId)._id || userOrUserId;
+    User.update({ _id: new mongoose.Types.ObjectId(userId)}, { "stats.dateLastSeen": Date.now() }).exec();
+}
 
 export function generateJwtToken(user: IUser | any) : string {
     return jwt.sign(sanitize(user), SECRET, {
@@ -221,6 +230,9 @@ export function sanitize(user: IUser | any) : any | IUser {
     if (user.facebook) {
         delete user.facebook.id;
         delete user.facebook.token;
+    }
+    if (user.stats) {
+        delete user.stats;
     }
     delete user.activation;
     
