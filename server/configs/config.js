@@ -111,6 +111,7 @@ var Server = (function () {
         this.mailUser = env.server_mailer_user;
         this.mailPassword = env.server_mailer_password;
         this.mailFrom = env.server_mailer_from;
+        this.requestLimit = env.server_request_limit || "10mb";
     }
     Server.prototype.validate = function () {
         ensure.notNullOrEmpty(this.version, "version");
@@ -122,6 +123,7 @@ var Server = (function () {
         ensure.notNullOrEmpty(this.mailPort, "server_mailer_port");
         ensure.notNullOrEmpty(this.mailUser, "server_mailer_username");
         ensure.notNullOrEmpty(this.mailPassword, "server_mailer_from");
+        ensure.notNullOrEmpty(this.requestLimit, "server_request_limit");
     };
     Object.defineProperty(Server.prototype, "$version", {
         get: function () {
@@ -189,6 +191,16 @@ var Server = (function () {
     Object.defineProperty(Server.prototype, "$mailFrom", {
         get: function () {
             return this.mailFrom;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Server.prototype, "$requestLimit", {
+        get: function () {
+            return this.requestLimit;
+        },
+        set: function (value) {
+            this.requestLimit = value;
         },
         enumerable: true,
         configurable: true
