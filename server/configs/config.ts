@@ -112,6 +112,7 @@ class Server implements IConfig {
     private mailUser: string;
     private mailPassword: string;
     private mailFrom: string;
+	private requestLimit: string;
 
     constructor() {
         this.version = pkg.version;
@@ -124,6 +125,7 @@ class Server implements IConfig {
         this.mailUser = env.server_mailer_user;
         this.mailPassword = env.server_mailer_password;
         this.mailFrom = env.server_mailer_from;
+		this.requestLimit = env.server_request_limit || "10mb";
     }
 
     public validate() : void {
@@ -136,6 +138,7 @@ class Server implements IConfig {
 		ensure.notNullOrEmpty(this.mailPort, "server_mailer_port");
 		ensure.notNullOrEmpty(this.mailUser, "server_mailer_username");
 		ensure.notNullOrEmpty(this.mailPassword, "server_mailer_from");
+		ensure.notNullOrEmpty(this.requestLimit, "server_request_limit");
     }
 
 	public get $version(): string {
@@ -177,7 +180,15 @@ class Server implements IConfig {
 
 	public get $mailFrom(): string {
 		return this.mailFrom;
-	}	
+	}
+
+	public get $requestLimit(): string {
+		return this.requestLimit;
+	}
+
+	public set $requestLimit(value: string) {
+		this.requestLimit = value;
+	}
 	
 }
 
