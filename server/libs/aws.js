@@ -4,11 +4,11 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-var $q = require('q');
-var aws = require('aws-sdk');
-var request = require('request');
-var config = require('../configs/config');
-var zlib = require('zlib');
+var $q = require("q");
+var aws = require("aws-sdk");
+var request = require("request");
+var config = require("../configs/config");
+var zlib = require("zlib");
 ////////////////////////////////////////////////////////////////////////////////
 var AwsHelper = (function () {
     function AwsHelper() {
@@ -27,7 +27,7 @@ var AwsHelper = (function () {
 var AwsUsers = (function (_super) {
     __extends(AwsUsers, _super);
     function AwsUsers() {
-        _super.apply(this, arguments);
+        return _super.apply(this, arguments) || this;
     }
     /**
      * Creates signed url
@@ -79,7 +79,7 @@ exports.AwsUsers = AwsUsers;
 var AwsResources = (function (_super) {
     __extends(AwsResources, _super);
     function AwsResources() {
-        _super.apply(this, arguments);
+        return _super.apply(this, arguments) || this;
     }
     /**
      * Create SignedUrl for resources
@@ -130,7 +130,7 @@ exports.AwsResources = AwsResources;
 var AwsAnimation = (function (_super) {
     __extends(AwsAnimation, _super);
     function AwsAnimation() {
-        _super.apply(this, arguments);
+        return _super.apply(this, arguments) || this;
     }
     /**
      * Delete animation and all resources under
@@ -169,18 +169,25 @@ exports.AwsAnimation = AwsAnimation;
 var AwsFrames = (function (_super) {
     __extends(AwsFrames, _super);
     function AwsFrames() {
-        _super.apply(this, arguments);
+        return _super.apply(this, arguments) || this;
     }
     AwsFrames.prototype.postFrames = function (animation, req, res, next) {
+        var _this = this;
         this.generatePOSTUrl(animation, function (err, signedUrl) {
-            zlib.deflate(Buffer.from(req.body), function (err, result) {
-                if (err)
-                    return next(err);
-                var xreq = request.put(signedUrl.signedUrl, { body: result });
-                xreq.setHeader("Content-Type", "application/json");
-                xreq.setHeader("Content-Encoding", "deflate");
-                xreq.pipe(res, { end: true });
-            });
+            if (req.header('Content-Encoding') === 'deflate') {
+                var xreq = request.put(signedUrl.signedUrl);
+                xreq.on("request", _this.sanitizeClientRequest);
+                req.pipe(xreq).pipe(res, { end: true });
+            }
+            else {
+                zlib.deflate(Buffer.from(req.body), function (err, result) {
+                    if (err)
+                        return next(err);
+                    var xreq = request.put(signedUrl.signedUrl, { body: result });
+                    xreq.on("request", _this.sanitizeClientRequest);
+                    xreq.pipe(res, { end: true });
+                });
+            }
         });
     };
     AwsFrames.prototype.getFrames = function (animation, req, res, next) {
@@ -231,6 +238,12 @@ var AwsFrames = (function (_super) {
         this.create().getSignedUrl("getObject", s3_params, function (err, url) {
             callback(err, { signedUrl: url, mime: 'application/json' });
         });
+    };
+    AwsFrames.prototype.sanitizeClientRequest = function (clientRequest) {
+        clientRequest.setHeader("Content-Type", "application/json");
+        clientRequest.setHeader("Content-Encoding", "deflate");
+        clientRequest.removeHeader("Authorization");
+        clientRequest.removeHeader("Transfer-Encoding");
     };
     return AwsFrames;
 }(AwsHelper));

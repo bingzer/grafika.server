@@ -1,6 +1,6 @@
 "use strict";
-var animation_1 = require('./animation');
-var q = require('q');
+var animation_1 = require("./animation");
+var q = require("q");
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 var ServerSync = (function () {
     function ServerSync(userId) {

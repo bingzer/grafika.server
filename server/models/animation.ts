@@ -94,7 +94,8 @@ Animation.route('frames', {
         if (req.method == 'POST') {
             let animationId = <string> req.params.id;
             // update total frames
-            Animation.findByIdAndUpdate(animationId, { totalFrame: req.body.length });
+            if (req.header("Content-Encoding") !== "deflate")
+                Animation.findByIdAndUpdate(animationId, { totalFrame: req.body.length });
 
             let awsFrames = new AwsFrames();
             awsFrames.postFrames(animationId, req, res, next);

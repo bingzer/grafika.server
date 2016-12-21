@@ -1,5 +1,5 @@
 "use strict";
-var _ = require('underscore');
+var _ = require("underscore");
 var mongoose = require('mongoose'), Model = mongoose.Model, handlers = require('./handlers');
 exports = module.exports = model;
 var methods = ['get', 'post', 'put', 'delete'], // All HTTP methods, PATCH not currently supported

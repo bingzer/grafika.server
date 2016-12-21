@@ -153,13 +153,22 @@ export class AwsFrames extends AwsHelper {
 
 	postFrames(animation: IAnimation | string, req: express.Request, res: express.Response, next: express.NextFunction) {
 		this.generatePOSTUrl(animation, (err, signedUrl) => {
-            zlib.deflate(Buffer.from(req.body), (err, result: Buffer) => {
-                if (err) return next(err);
-				let xreq = request.put(signedUrl.signedUrl, { body: result });
-				xreq.setHeader("Content-Type", "application/json");
-				xreq.setHeader("Content-Encoding", "deflate");
-				xreq.pipe(res, { end: true });
-            });
+
+			if (req.header('Content-Encoding') === 'deflate') {
+				let xreq = request.put(signedUrl.signedUrl);
+				xreq.on("request", this.sanitizeClientRequest);
+				req.pipe(xreq).pipe(res, { end: true });
+			}
+			else {
+				zlib.deflate(Buffer.from(req.body), (err, result: Buffer) => {
+					if (err) return next(err);
+
+					let xreq = request.put(signedUrl.signedUrl, { body: result });
+					xreq.on("request", this.sanitizeClientRequest);
+					xreq.pipe(res, { end: true });
+				});
+
+			}
 		});
 	}
 
@@ -216,4 +225,10 @@ export class AwsFrames extends AwsHelper {
 		});
 	}
 
+	private sanitizeClientRequest(clientRequest){
+		clientRequest.setHeader("Content-Type", "application/json");
+		clientRequest.setHeader("Content-Encoding", "deflate");
+		clientRequest.removeHeader("Authorization");
+		clientRequest.removeHeader("Transfer-Encoding");
+	}
 }

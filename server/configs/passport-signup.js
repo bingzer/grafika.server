@@ -4,9 +4,9 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-var passport_local_1 = require('passport-local');
-var user_1 = require('../models/user');
-var mailer = require('../libs/mailer');
+var passport_local_1 = require("passport-local");
+var user_1 = require("../models/user");
+var mailer = require("../libs/mailer");
 ////////////////////////////////////////////////////////////////////////////////
 var Options = (function () {
     function Options() {
@@ -19,7 +19,7 @@ var Options = (function () {
 var SignupStrategy = (function (_super) {
     __extends(SignupStrategy, _super);
     function SignupStrategy() {
-        _super.call(this, new Options(), function (req, username, password, done) {
+        return _super.call(this, new Options(), function (req, username, password, done) {
             // find a user whose email is the same as the forms email
             // we are checking to see if the user trying to login already exists
             user_1.User.findOne({ email: username }, function (err, user) {
@@ -95,7 +95,7 @@ var SignupStrategy = (function (_super) {
                     });
                 }
             });
-        });
+        }) || this;
     }
     return SignupStrategy;
 }(passport_local_1.Strategy));

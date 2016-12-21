@@ -1,8 +1,8 @@
 "use strict";
-var mongoose = require('mongoose');
-var winston = require('winston');
-var aws_1 = require('../libs/aws');
-var restful = require('../libs/restful');
+var mongoose = require("mongoose");
+var winston = require("winston");
+var aws_1 = require("../libs/aws");
+var restful = require("../libs/restful");
 exports.AnimationSchema = new mongoose.Schema({
     localId: { type: String },
     type: { type: String, required: true, default: 'animation' },
@@ -81,7 +81,8 @@ Animation.route('frames', {
         if (req.method == 'POST') {
             var animationId = req.params.id;
             // update total frames
-            Animation.findByIdAndUpdate(animationId, { totalFrame: req.body.length });
+            if (req.header("Content-Encoding") !== "deflate")
+                Animation.findByIdAndUpdate(animationId, { totalFrame: req.body.length });
             var awsFrames = new aws_1.AwsFrames();
             awsFrames.postFrames(animationId, req, res, next);
         }
@@ -127,5 +128,4 @@ Animation.ensureIndexes(function (err) {
     else
         winston.info('AnimationTextIndex [OK]');
 });
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //# sourceMappingURL=animation.js.map
