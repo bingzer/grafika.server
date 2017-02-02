@@ -114,7 +114,7 @@ function seo(req, res, next) {
     var animationId = req.params._id;
     var isCrawler = /bot|facebookexternalhit[0-9]|Twitterbot|Pinterest|Google.*snippet/i.test(req.header("user-agent"));
     if (!isCrawler)
-        res.redirect(config.setting.$content.$url + animationId);
+        res.redirect(config.setting.$content.$url + "animations/" + animationId);
     else if (isCrawler) {
         animation_1.Animation.findById(animationId, function (err, anim) {
             fs.readFile(path.resolve('server/templates/animation-seo.html'), 'utf-8', function (err, data) {

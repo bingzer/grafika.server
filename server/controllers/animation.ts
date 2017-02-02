@@ -112,7 +112,7 @@ export function seo(req: express.Request, res: express.Response, next: express.N
     let isCrawler = /bot|facebookexternalhit[0-9]|Twitterbot|Pinterest|Google.*snippet/i.test(req.header("user-agent"));
 
     if (!isCrawler)
-        res.redirect(config.setting.$content.$url + animationId);
+        res.redirect(`${config.setting.$content.$url}animations/${animationId}`);
     else if (isCrawler) {
         Animation.findById(animationId, (err, anim) => {
             fs.readFile(path.resolve('server/templates/animation-seo.html'), 'utf-8', (err, data) => {
