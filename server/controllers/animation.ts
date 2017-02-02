@@ -1,5 +1,7 @@
 import * as express from "express";
 import * as q from 'q';
+import * as fs from 'fs-extra';
+import * as path from 'path';
 
 import * as config from '../configs/config';
 import * as utils from '../libs/utils';
@@ -103,6 +105,28 @@ export function commentForMobile(req: express.Request | any, res: express.Respon
         return res.redirect(url);
     });
 }
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+export function seo(req: express.Request, res: express.Response, next: express.NextFunction) {
+    let animationId: string = req.params._id;
+    let isCrawler = /bot|facebookexternalhit[0-9]|Twitterbot|Pinterest|Google.*snippet/i.test(req.header("user-agent"));
+
+    if (!isCrawler)
+        res.redirect(config.setting.$content.$url + animationId);
+    else if (isCrawler) {
+        Animation.findById(animationId, (err, anim) => {
+            fs.readFile(path.resolve('server/templates/animation-seo.html'), 'utf-8', (err, data) => {
+                if (err) return next(err);
+                data = data.replace('{{url}}', `${config.setting.$content.$url}animations/${anim._id}`);
+                data = data.replace('{{title}}', `${anim.name}`);
+                data = data.replace('{{description}}', `${anim.description}`);
+                data = data.replace('{{image}}', `${config.setting.$server.$url}animations/${anim.id}/thumbnail`);
+                res.contentType('text/html').send(data);
+            });
+        });
+    } 
+}
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 function createQuery(req): any {

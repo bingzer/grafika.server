@@ -395,4 +395,62 @@ describe("controllers/animation.ts", function (){
         });
     });
     
+    describe("#seo()", function (){
+        var animation = {
+            _id: '_id',
+            name: 'name',
+            rating: 3
+        };
+        it("should return seo content", function (done){
+            mockAnimation.Animation.findById = function (id, callback) {
+                assert.equal("_id", id);
+                callback(undefined, animation);
+            }
+
+            req.params._id = "_id";
+            req.params.rating = 4;
+            req.user._id = "_userId";
+            req.header = function() {
+                return "facebot";
+            }
+
+            res.contentType = function (type){
+                assert.equal('text/html', type);
+                return res;
+            }
+            res.send = function(data){
+                var x = data;
+                done();
+            };
+
+            var model = require("../../server/controllers/animation.js");
+            model.seo(req, res, next);
+        });
+        it("should redirect", function (done){            
+            mockAnimation.Animation.findById = function (id, callback) {
+                assert.equal("_id", id);
+                callback(undefined, animation);
+            }
+
+            req.params._id = "_id";
+            req.params.rating = 4;
+            req.user._id = "_userId";
+            req.header = function() {
+                return "netscape";
+            }
+
+            res.contentType = function (type){
+                fail();
+            }
+            res.send = function(data){
+                fail();
+            };
+            res.redirect = function(url){
+                done();
+            };
+
+            var model = require("../../server/controllers/animation.js");
+            model.seo(req, res, next);
+        });
+    });
 });

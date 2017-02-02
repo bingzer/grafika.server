@@ -14,7 +14,7 @@ exports.AnimationSchema = new mongoose.Schema({
     dateCreated: { type: Number, required: true },
     dateModified: { type: Number, required: true },
     views: { type: Number, default: 0 },
-    rating: { type: Number, default: 2.5 },
+    rating: { type: Number, default: 5 },
     category: String,
     removed: { type: Boolean, required: true, default: false },
     isPublic: { type: Boolean, default: false },

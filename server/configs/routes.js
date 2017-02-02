@@ -155,6 +155,7 @@ function initialize(app) {
     app.post('/animations/:_id/frames', useSessionOrJwt, useAnimAccess);
     app.post('/animations/:_id/view', animationController.incrementViewCount);
     app.post('/animations/:_id/rating/:rating', animationController.submitRating);
+    app.get('/animations/:_id/seo', animationController.seo);
     // --------------- Sync Stuffs -------------------------//
     app.get('/animations/:_id/comments', animationController.commentForMobile);
     app.post('/animations/:_id/comments', useSessionOrJwt, animationController.postComment);

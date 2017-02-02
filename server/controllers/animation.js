@@ -1,4 +1,6 @@
 "use strict";
+var fs = require("fs-extra");
+var path = require("path");
 var config = require("../configs/config");
 var utils = require("../libs/utils");
 var animation_1 = require("../models/animation");
@@ -107,6 +109,27 @@ function commentForMobile(req, res, next) {
     });
 }
 exports.commentForMobile = commentForMobile;
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+function seo(req, res, next) {
+    var animationId = req.params._id;
+    var isCrawler = /bot|facebookexternalhit[0-9]|Twitterbot|Pinterest|Google.*snippet/i.test(req.header("user-agent"));
+    if (!isCrawler)
+        res.redirect(config.setting.$content.$url + animationId);
+    else if (isCrawler) {
+        animation_1.Animation.findById(animationId, function (err, anim) {
+            fs.readFile(path.resolve('server/templates/animation-seo.html'), 'utf-8', function (err, data) {
+                if (err)
+                    return next(err);
+                data = data.replace('{{url}}', config.setting.$content.$url + "animations/" + anim._id);
+                data = data.replace('{{title}}', "" + anim.name);
+                data = data.replace('{{description}}', "" + anim.description);
+                data = data.replace('{{image}}', config.setting.$server.$url + "animations/" + anim.id + "/thumbnail");
+                res.contentType('text/html').send(data);
+            });
+        });
+    }
+}
+exports.seo = seo;
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 function createQuery(req) {
     var qObject = { isPublic: true };
