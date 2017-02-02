@@ -1,7 +1,7 @@
 "use strict";
-var config = require('../configs/config');
-var winston = require('winston');
-var mailer_1 = require('../libs/mailer');
+var config = require("../configs/config");
+var winston = require("winston");
+var mailer_1 = require("../libs/mailer");
 function feedback(req, res, next) {
     var content = '<strong>Subject  :</strong><br/>' + req.body.subject + '<br/>' +
         '<strong>Category :</strong><br/>' + req.body.category + '<br/>' +

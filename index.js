@@ -1,16 +1,16 @@
 "use strict";
-var express = require('express');
-var compression = require('compression');
-var bodyParser = require('body-parser');
-var morgan = require('morgan');
-var methodOverride = require('method-override');
-var winston = require('winston');
-var passport = require('passport');
-var cors = require('cors');
-var config = require('./server/configs/config');
-var mongooseConfig = require('./server/configs/mongoose');
-var routeConfig = require('./server/configs/routes');
-var passportConfig = require('./server/configs/passport');
+var express = require("express");
+var compression = require("compression");
+var bodyParser = require("body-parser");
+var morgan = require("morgan");
+var methodOverride = require("method-override");
+var winston = require("winston");
+var passport = require("passport");
+var cors = require("cors");
+var config = require("./server/configs/config");
+var mongooseConfig = require("./server/configs/mongoose");
+var routeConfig = require("./server/configs/routes");
+var passportConfig = require("./server/configs/passport");
 var onInitializeFunction;
 var app = express();
 exports.server = app.listen(process.env.PORT || 3000, function () {
@@ -33,7 +33,7 @@ function initialize(app) {
     app.use(compression());
     app.use(unless(/animations\/.+\/frames/g, bodyParser.urlencoded({ extended: true })));
     app.use(unless(/animations\/.+\/frames/g, bodyParser.json({ limit: config.setting.$server.$requestLimit })));
-    app.use('/animations/:id/frames', bodyParser.raw({ type: '*/*', limit: config.setting.$server.$requestLimit }));
+    app.use('/animations/:id/frames', bodyParseRaw);
     app.use(methodOverride());
     app.use(morgan('dev'));
     app.use(passport.initialize());
@@ -52,5 +52,10 @@ var unless = function (path, middleware) {
             return middleware(req, res, next);
         }
     };
+};
+var bodyParseRaw = function (req, res, next) {
+    if (req.header("Content-Encoding") === "deflate")
+        return next();
+    return bodyParser.raw({ type: '*/*', limit: config.setting.$server.$requestLimit })(req, res, next);
 };
 //# sourceMappingURL=index.js.map

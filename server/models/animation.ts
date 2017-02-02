@@ -27,7 +27,7 @@ export const AnimationSchema = new mongoose.Schema({
     dateModified    : { type: Number, required: true },
 
     views           : { type: Number, default: 0 },
-    rating          : { type: Number, default: 2.5 },
+    rating          : { type: Number, default: 5 },
     category        : String,
     removed         : { type: Boolean, required: true, default: false },
 
@@ -94,7 +94,8 @@ Animation.route('frames', {
         if (req.method == 'POST') {
             let animationId = <string> req.params.id;
             // update total frames
-            Animation.findByIdAndUpdate(animationId, { totalFrame: req.body.length });
+            if (req.header("Content-Encoding") !== "deflate")
+                Animation.findByIdAndUpdate(animationId, { totalFrame: req.body.length });
 
             let awsFrames = new AwsFrames();
             awsFrames.postFrames(animationId, req, res, next);

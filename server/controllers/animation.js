@@ -1,9 +1,11 @@
 "use strict";
-var config = require('../configs/config');
-var utils = require('../libs/utils');
+var fs = require("fs-extra");
+var path = require("path");
+var config = require("../configs/config");
+var utils = require("../libs/utils");
 var animation_1 = require("../models/animation");
-var user_1 = require('../models/user');
-var mailer_1 = require('../libs/mailer');
+var user_1 = require("../models/user");
+var mailer_1 = require("../libs/mailer");
 function search(req, res, next) {
     if (req.query.term) {
         var sort = createSort(req);
@@ -107,6 +109,28 @@ function commentForMobile(req, res, next) {
     });
 }
 exports.commentForMobile = commentForMobile;
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+function seo(req, res, next) {
+    var animationId = req.params._id;
+    var isCrawler = /bot|facebookexternalhit|Twitterbot|Pinterest|Google.*snippet/i.test(req.header("user-agent"));
+    if (!isCrawler)
+        res.redirect(config.setting.$content.$url + "animations/" + animationId);
+    else if (isCrawler) {
+        animation_1.Animation.findById(animationId, function (err, anim) {
+            fs.readFile(path.resolve('server/templates/animation-seo.html'), 'utf-8', function (err, data) {
+                if (err)
+                    return next(err);
+                data = data.replace('{{url}}', config.setting.$server.$url + "animations/" + anim._id + "/seo");
+                data = data.replace('{{title}}', "" + anim.name);
+                data = data.replace('{{description}}', anim.description + " - Grafika Animation");
+                data = data.replace('{{image}}', config.setting.$server.$url + "animations/" + anim.id + "/thumbnail");
+                data = data.replace('{{fbAppId}}', "" + config.setting.$auth.$facebookId);
+                res.contentType('text/html').send(data);
+            });
+        });
+    }
+}
+exports.seo = seo;
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 function createQuery(req) {
     var qObject = { isPublic: true };

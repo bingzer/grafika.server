@@ -121,7 +121,7 @@
             "request": "launch",
             "program": "${workspaceRoot}/node_modules/mocha/bin/_mocha",
             "stopOnEntry": false,
-            "args": ["server-test/model/user.test.js", "--timeout", "10000"],
+            "args": ["server-test/controllers/animation.test.js", "--timeout", "10000"],
             "cwd": "${workspaceRoot}",
             "runtimeExecutable": null,
             "env": {

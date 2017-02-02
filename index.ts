@@ -42,7 +42,7 @@ function initialize(app) {
     app.use(unless(/animations\/.+\/frames/g, bodyParser.urlencoded({ extended: true })));
     app.use(unless(/animations\/.+\/frames/g, bodyParser.json({ limit: config.setting.$server.$requestLimit })));
     
-    app.use('/animations/:id/frames', bodyParser.raw({type: '*/*', limit: config.setting.$server.$requestLimit }));
+    app.use('/animations/:id/frames', bodyParseRaw);
 
     app.use(methodOverride());
     app.use(morgan('dev'));
@@ -64,3 +64,9 @@ let unless = (path, middleware) => {
         }
     };
 };
+
+let bodyParseRaw = (req: express.Request, res: express.Response, next: express.NextFunction) => {
+    if (req.header("Content-Encoding") === "deflate")
+        return next();
+    return bodyParser.raw({type: '*/*', limit: config.setting.$server.$requestLimit })(req, res, next);
+}
