@@ -120,7 +120,7 @@ function seo(req, res, next) {
             fs.readFile(path.resolve('server/templates/animation-seo.html'), 'utf-8', function (err, data) {
                 if (err)
                     return next(err);
-                data = data.replace('{{url}}', config.setting.$content.$url + "animations/" + anim._id);
+                data = data.replace('{{url}}', config.setting.$server.$url + "animations/" + anim._id + "/seo");
                 data = data.replace('{{title}}', "" + anim.name);
                 data = data.replace('{{description}}', "" + anim.description);
                 data = data.replace('{{image}}', config.setting.$server.$url + "animations/" + anim.id + "/thumbnail");
