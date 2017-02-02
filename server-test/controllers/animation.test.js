@@ -411,7 +411,7 @@ describe("controllers/animation.ts", function (){
             req.params.rating = 4;
             req.user._id = "_userId";
             req.header = function() {
-                return "facebookexternalhit/1.1 (+http://www.facebook.com/externalhit_uatext.php)";
+                return "facebookexternalhit";
             }
 
             res.contentType = function (type){
