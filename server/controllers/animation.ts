@@ -109,7 +109,7 @@ export function commentForMobile(req: express.Request | any, res: express.Respon
 
 export function seo(req: express.Request, res: express.Response, next: express.NextFunction) {
     let animationId: string = req.params._id;
-    let isCrawler = /bot|facebookexternalhit[0-9]|Twitterbot|Pinterest|Google.*snippet/i.test(req.header("user-agent"));
+    let isCrawler = /bot|facebookexternalhit\/[0-9]|Twitterbot|Pinterest|Google.*snippet/i.test(req.header("user-agent"));
 
     if (!isCrawler)
         res.redirect(`${config.setting.$content.$url}animations/${animationId}`);
