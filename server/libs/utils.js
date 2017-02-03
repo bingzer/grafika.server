@@ -11,4 +11,16 @@ function randomlyPick(any) {
     return any[randomIndex];
 }
 exports.randomlyPick = randomlyPick;
+function replaceCharacters(any, find, replace) {
+    if (!any)
+        return any;
+    if (typeof (find) === 'string')
+        find = [find];
+    var data;
+    for (var i = 0; i < find.length; i++) {
+        data = any.replace(new RegExp(find[i], 'g'), replace);
+    }
+    return data;
+}
+exports.replaceCharacters = replaceCharacters;
 //# sourceMappingURL=utils.js.map
