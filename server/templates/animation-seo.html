@@ -1,7 +1,7 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" prefix="og:http://ogp.me/ns#">
 <head>
-	<title ng-bind="app.uxService.pageTitle">Grafika</title>
+	<title>{{title}}</title>
 	<meta charset="utf-8"/>
 	<meta name="description" content="Grafika - Super simple animation maker for web and Android"/>
 	<meta name="keyword" content="grafika,animation,animation maker,animation creator"/>
@@ -25,17 +25,18 @@
     <meta property="og:title" content="{{title}}"/>
     <meta property="og:description" content="{{description}}"/>
     <meta property="og:image" content="{{image}}"/>
+    <meta property="og:image:url" content="{{image}}"/>
     <meta property="og:image:type" content="image/png"/>
     <meta property="og:image:width" content="{{imageWidth}}"/>
     <meta property="og:image:height" content="{{imageHeight}}"/>
 	<meta property="fb:app_id" content="{{fbAppId}}"/>
 	<!-- twitter -->
-    <meta property="twitter:card" content="summary_large_image"/>
-    <meta property="twitter:site" content="@grafikaapp"/>
-    <meta property="twitter:site:id" content="791028721138401281"/>
-    <meta property="twitter:title" content="{{title}}"/>
-    <meta property="twitter:description" content="{{description}}"/>
-    <meta property="twitter:image" content="{{image}}"/>
+    <meta name="twitter:card" content="summary_large_image"/>
+    <meta name="twitter:site" content="@grafikaapp"/>
+    <meta name="twitter:site:id" content="791028721138401281"/>
+    <meta name="twitter:title" content="{{title}}"/>
+    <meta name="twitter:description" content="{{description}}"/>
+    <meta name="twitter:image" content="{{image}}"/>
 
 </head>
 <body>

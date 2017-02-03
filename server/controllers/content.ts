@@ -3,6 +3,7 @@ import * as config from '../configs/config';
 import * as winston from 'winston';
 
 import { mailTransporter } from '../libs/mailer';
+import { Animation, IAnimation } from "../models/animation";
 
 
 export function feedback(req: express.Request | any, res: express.Response, next: express.NextFunction) {    
@@ -28,4 +29,34 @@ export function feedback(req: express.Request | any, res: express.Response, next
 			res.sendStatus(201);
 		}
     });
+}
+
+export function buildSitemap(req: express.Request | any, res: express.Response, next: express.NextFunction){
+	Animation.find({ isPublic : true }).limit(100).sort({ views : -1}).exec((err, anims) => {
+		if (err) return next(err);
+
+		let xml = '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
+
+		for (let i = 0; i < anims.length; i++){
+			xml += createUrlElement(anims[i]);
+		}
+
+		xml += '</urlset>';
+
+		res.contentType('application/xml');
+		res.send(xml);
+	});
+}
+
+
+//////////////////////////////////////////////////////////////////////
+
+function createUrlElement(anim: IAnimation): string {
+	let xml = '<url>';
+
+	xml += `<loc>${config.setting.$server.$url}animations/${anim._id}/seo</loc>`;
+	xml += '<changefreq>weekly</changefreq>';
+
+	xml += '</url>';
+	return xml;
 }

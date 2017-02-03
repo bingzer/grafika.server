@@ -200,6 +200,9 @@ export function initialize(app) {
     // ---------------- Thumbnail -----------------------------//
     app.get('/animations/:animationId/thumbnail', /* extractUser, useAnimAccess, */ resourcesController.getThumbnail);
     app.post('/animations/:animationId/thumbnail', useSessionOrJwt, useAnimAccess, resourcesController.createThumbnailSignedUrl);
+
+    // --------------- SiteMap -------------------------//
+    app.get('/sitemap.xml', contentController.buildSitemap)
     
     // --------------- Restful Registration -------------------------//
     User.register(app, '/users');

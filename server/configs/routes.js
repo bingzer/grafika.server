@@ -178,6 +178,8 @@ function initialize(app) {
     // ---------------- Thumbnail -----------------------------//
     app.get('/animations/:animationId/thumbnail', /* extractUser, useAnimAccess, */ resourcesController.getThumbnail);
     app.post('/animations/:animationId/thumbnail', useSessionOrJwt, useAnimAccess, resourcesController.createThumbnailSignedUrl);
+    // --------------- SiteMap -------------------------//
+    app.get('/sitemap.xml', contentController.buildSitemap);
     // --------------- Restful Registration -------------------------//
     user_1.User.register(app, '/users');
     animation_1.Animation.register(app, '/animations');
