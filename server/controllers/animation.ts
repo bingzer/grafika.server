@@ -117,11 +117,16 @@ export function seo(req: express.Request, res: express.Response, next: express.N
         Animation.findById(animationId, (err, anim) => {
             fs.readFile(path.resolve('server/templates/animation-seo.html'), 'utf-8', (err, data) => {
                 if (err) return next(err);
-                data = data.replace('{{url}}', `${config.setting.$server.$url}animations/${anim._id}/seo`);
-                data = data.replace('{{title}}', `${anim.name}`);
-                data = data.replace('{{description}}', `${anim.description} - Grafika Animation`);
-                data = data.replace('{{image}}', `${config.setting.$server.$url}animations/${anim.id}/thumbnail`);
-                data = data.replace('{{fbAppId}}', `${config.setting.$auth.$facebookId}`);
+                let animName = utils.replaceCharacters(anim.name, ['\'', '\"'], '');
+                let animDescription = utils.replaceCharacters(anim.description, ['\'', '\"'], '');
+
+                data = utils.replaceCharacters(data, '{{url}}', `${config.setting.$server.$url}animations/${anim._id}/seo`);
+                data = utils.replaceCharacters(data, '{{title}}', `${animName}`);
+                data = utils.replaceCharacters(data, '{{description}}', `${animDescription || animName } - Grafika Animation`);
+                data = utils.replaceCharacters(data, '{{image}}', `${config.setting.$server.$url}animations/${anim._id}/thumbnail`);
+                data = utils.replaceCharacters(data, '{{fbAppId}}', `${config.setting.$auth.$facebookId}`);
+                data = utils.replaceCharacters(data, '{{imageWidth}}', `${anim.width || 800}`);
+                data = utils.replaceCharacters(data, '{{imageHeight}}', `${anim.height || 400}`);
                 res.contentType('text/html').send(data);
             });
         });
