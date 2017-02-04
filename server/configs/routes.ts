@@ -201,8 +201,9 @@ export function initialize(app) {
     app.get('/animations/:animationId/thumbnail', /* extractUser, useAnimAccess, */ resourcesController.getThumbnail);
     app.post('/animations/:animationId/thumbnail', useSessionOrJwt, useAnimAccess, resourcesController.createThumbnailSignedUrl);
 
-    // --------------- SiteMap -------------------------//
-    app.get('/sitemap.xml', contentController.buildSitemap)
+    // --------------- SiteMap + Other stuffs -------------------------//
+    app.get('/sitemap.xml', contentController.buildSitemap);
+    app.get('/google1d0b302936ffea82.html', contentController.getGoogleSiteVerificationFile);
     
     // --------------- Restful Registration -------------------------//
     User.register(app, '/users');

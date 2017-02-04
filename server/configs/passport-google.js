@@ -4,9 +4,9 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-var passport_google_oauth_1 = require("passport-google-oauth");
-var user_1 = require("../models/user");
-var config = require("./config");
+var passport_google_oauth_1 = require('passport-google-oauth');
+var user_1 = require('../models/user');
+var config = require('./config');
 var GoogleTokenStrategy = require('passport-google-id-token');
 var Options = (function () {
     function Options() {
@@ -19,7 +19,7 @@ var Options = (function () {
 var GoogleOAuthStrategy = (function (_super) {
     __extends(GoogleOAuthStrategy, _super);
     function GoogleOAuthStrategy() {
-        return _super.call(this, new Options(), function (accessToken, refreshToken, profile, done) {
+        _super.call(this, new Options(), function (accessToken, refreshToken, profile, done) {
             user_1.User.findOne({ email: profile.emails[0].value }, function (err, user) {
                 if (err)
                     return done(err, null);
@@ -47,7 +47,7 @@ var GoogleOAuthStrategy = (function (_super) {
                     return done(null, user);
                 });
             });
-        }) || this;
+        });
     }
     return GoogleOAuthStrategy;
 }(passport_google_oauth_1.OAuth2Strategy));

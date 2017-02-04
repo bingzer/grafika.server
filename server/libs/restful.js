@@ -1,5 +1,5 @@
 "use strict";
-var mongoose = require("mongoose");
+var mongoose = require('mongoose');
 exports.mongoose = mongoose;
 var _model = require('./model'), handlers = require('./handlers');
 exports.model = _model;

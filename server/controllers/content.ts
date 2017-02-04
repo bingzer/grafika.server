@@ -1,6 +1,7 @@
 import * as express from 'express';
 import * as config from '../configs/config';
 import * as winston from 'winston';
+import * as path from 'path';
 
 import { mailTransporter } from '../libs/mailer';
 import { Animation, IAnimation } from "../models/animation";
@@ -46,6 +47,12 @@ export function buildSitemap(req: express.Request | any, res: express.Response, 
 		res.contentType('application/xml');
 		res.send(xml);
 	});
+}
+
+export function getGoogleSiteVerificationFile(req: express.Request | any, res: express.Response, next: express.NextFunction){
+    let file = path.resolve('server/google1d0b302936ffea82.html');
+	res.contentType("text/html");
+	res.sendFile(file);
 }
 
 

@@ -4,9 +4,9 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-var passport_facebook_1 = require("passport-facebook");
-var user_1 = require("../models/user");
-var config = require("./config");
+var passport_facebook_1 = require('passport-facebook');
+var user_1 = require('../models/user');
+var config = require('./config');
 var FacebookTokenStrategy = require('passport-facebook-token');
 var Options = (function () {
     function Options() {
@@ -21,7 +21,7 @@ var Options = (function () {
 var FacebookOAuthStrategy = (function (_super) {
     __extends(FacebookOAuthStrategy, _super);
     function FacebookOAuthStrategy() {
-        return _super.call(this, new Options(), function (accessToken, refreshToken, profile, done) {
+        _super.call(this, new Options(), function (accessToken, refreshToken, profile, done) {
             user_1.User.findOne({ email: profile.emails[0].value }, function (err, user) {
                 if (err)
                     return done(err, null);
@@ -49,7 +49,7 @@ var FacebookOAuthStrategy = (function (_super) {
                     return done(null, user);
                 });
             });
-        }) || this;
+        });
     }
     return FacebookOAuthStrategy;
 }(passport_facebook_1.Strategy));
