@@ -55,6 +55,11 @@ export function getGoogleSiteVerificationFile(req: express.Request | any, res: e
 	res.sendFile(file);
 }
 
+export function robotsTxt(req: express.Request | any, res: express.Response, next: express.NextFunction){
+    let file = path.resolve('server/robots.txt');
+	res.contentType("text/plain");
+	res.sendFile(file);
+}
 
 //////////////////////////////////////////////////////////////////////
 

@@ -180,6 +180,7 @@ function initialize(app) {
     app.post('/animations/:animationId/thumbnail', useSessionOrJwt, useAnimAccess, resourcesController.createThumbnailSignedUrl);
     // --------------- SiteMap + Other stuffs -------------------------//
     app.get('/sitemap.xml', contentController.buildSitemap);
+    app.get('/robots.txt', contentController.robotsTxt);
     app.get('/google1d0b302936ffea82.html', contentController.getGoogleSiteVerificationFile);
     // --------------- Restful Registration -------------------------//
     user_1.User.register(app, '/users');
