@@ -203,6 +203,7 @@ export function initialize(app) {
 
     // --------------- SiteMap + Other stuffs -------------------------//
     app.get('/sitemap.xml', contentController.buildSitemap);
+    app.get('/robots.txt', contentController.robotsTxt);
     app.get('/google1d0b302936ffea82.html', contentController.getGoogleSiteVerificationFile);
     
     // --------------- Restful Registration -------------------------//

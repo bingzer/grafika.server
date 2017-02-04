@@ -49,6 +49,12 @@ function getGoogleSiteVerificationFile(req, res, next) {
     res.sendFile(file);
 }
 exports.getGoogleSiteVerificationFile = getGoogleSiteVerificationFile;
+function robotsTxt(req, res, next) {
+    var file = path.resolve('server/robots.txt');
+    res.contentType("text/plain");
+    res.sendFile(file);
+}
+exports.robotsTxt = robotsTxt;
 //////////////////////////////////////////////////////////////////////
 function createUrlElement(anim) {
     var xml = '<url>';
