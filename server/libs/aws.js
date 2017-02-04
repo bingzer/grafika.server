@@ -4,11 +4,11 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-var $q = require("q");
-var aws = require("aws-sdk");
-var request = require("request");
-var config = require("../configs/config");
-var zlib = require("zlib");
+var $q = require('q');
+var aws = require('aws-sdk');
+var request = require('request');
+var config = require('../configs/config');
+var zlib = require('zlib');
 ////////////////////////////////////////////////////////////////////////////////
 var AwsHelper = (function () {
     function AwsHelper() {
@@ -27,7 +27,7 @@ var AwsHelper = (function () {
 var AwsUsers = (function (_super) {
     __extends(AwsUsers, _super);
     function AwsUsers() {
-        return _super.apply(this, arguments) || this;
+        _super.apply(this, arguments);
     }
     /**
      * Creates signed url
@@ -79,7 +79,7 @@ exports.AwsUsers = AwsUsers;
 var AwsResources = (function (_super) {
     __extends(AwsResources, _super);
     function AwsResources() {
-        return _super.apply(this, arguments) || this;
+        _super.apply(this, arguments);
     }
     /**
      * Create SignedUrl for resources
@@ -130,7 +130,7 @@ exports.AwsResources = AwsResources;
 var AwsAnimation = (function (_super) {
     __extends(AwsAnimation, _super);
     function AwsAnimation() {
-        return _super.apply(this, arguments) || this;
+        _super.apply(this, arguments);
     }
     /**
      * Delete animation and all resources under
@@ -169,7 +169,7 @@ exports.AwsAnimation = AwsAnimation;
 var AwsFrames = (function (_super) {
     __extends(AwsFrames, _super);
     function AwsFrames() {
-        return _super.apply(this, arguments) || this;
+        _super.apply(this, arguments);
     }
     AwsFrames.prototype.postFrames = function (animation, req, res, next) {
         var _this = this;

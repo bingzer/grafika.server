@@ -1,9 +1,9 @@
 "use strict";
-var mailer = require("../libs/mailer");
-var config = require("../configs/config");
-var utils = require("../libs/utils");
-var animation_1 = require("../models/animation");
-var user_1 = require("../models/user");
+var mailer = require('../libs/mailer');
+var config = require('../configs/config');
+var utils = require('../libs/utils');
+var animation_1 = require('../models/animation');
+var user_1 = require('../models/user');
 var MAX_COUNT = 25;
 function get(req, res, next) {
     return res.json(getServerInfo());

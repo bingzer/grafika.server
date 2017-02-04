@@ -1,7 +1,8 @@
 "use strict";
-var config = require("../configs/config");
-var winston = require("winston");
-var mailer_1 = require("../libs/mailer");
+var config = require('../configs/config');
+var winston = require('winston');
+var path = require('path');
+var mailer_1 = require('../libs/mailer');
 var animation_1 = require("../models/animation");
 function feedback(req, res, next) {
     var content = '<strong>Subject  :</strong><br/>' + req.body.subject + '<br/>' +
@@ -42,6 +43,12 @@ function buildSitemap(req, res, next) {
     });
 }
 exports.buildSitemap = buildSitemap;
+function getGoogleSiteVerificationFile(req, res, next) {
+    var file = path.resolve('server/google1d0b302936ffea82.html');
+    res.contentType("text/html");
+    res.sendFile(file);
+}
+exports.getGoogleSiteVerificationFile = getGoogleSiteVerificationFile;
 //////////////////////////////////////////////////////////////////////
 function createUrlElement(anim) {
     var xml = '<url>';
