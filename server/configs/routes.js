@@ -1,18 +1,18 @@
 "use strict";
-var expressJwt = require('express-jwt');
-var mongoose = require('mongoose');
-var winston = require('winston');
-var serverController = require('../controllers/server');
-var accountController = require('../controllers/accounts');
-var resourcesController = require('../controllers/resources');
-var userController = require('../controllers/users');
-var syncController = require('../controllers/sync');
-var adminController = require('../controllers/admin');
-var animationController = require('../controllers/animation');
-var contentController = require('../controllers/content');
-var config = require('../configs/config');
-var animation_1 = require('../models/animation');
-var user_1 = require('../models/user');
+var expressJwt = require("express-jwt");
+var mongoose = require("mongoose");
+var winston = require("winston");
+var serverController = require("../controllers/server");
+var accountController = require("../controllers/accounts");
+var resourcesController = require("../controllers/resources");
+var userController = require("../controllers/users");
+var syncController = require("../controllers/sync");
+var adminController = require("../controllers/admin");
+var animationController = require("../controllers/animation");
+var contentController = require("../controllers/content");
+var config = require("../configs/config");
+var animation_1 = require("../models/animation");
+var user_1 = require("../models/user");
 //////////////////////////////////////////////////////////////////////////////////////////////////
 var SECRET = config.setting.$server.$superSecret;
 /** find token from Http Request. Header/Query, etc... */
@@ -156,6 +156,7 @@ function initialize(app) {
     app.post('/animations/:_id/view', animationController.incrementViewCount);
     app.post('/animations/:_id/rating/:rating', animationController.submitRating);
     app.get('/animations/:_id/seo', useAnimAccess, animationController.seo);
+    app.get('/animations/:_id/related', useAnimAccess, animationController.findRelatedAnimations);
     // --------------- Sync Stuffs -------------------------//
     app.get('/animations/:_id/comments', animationController.commentForMobile);
     app.post('/animations/:_id/comments', useSessionOrJwt, animationController.postComment);

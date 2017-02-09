@@ -1,11 +1,11 @@
 "use strict";
-var fs = require('fs-extra');
-var path = require('path');
-var config = require('../configs/config');
-var utils = require('../libs/utils');
+var fs = require("fs-extra");
+var path = require("path");
+var config = require("../configs/config");
+var utils = require("../libs/utils");
 var animation_1 = require("../models/animation");
-var user_1 = require('../models/user');
-var mailer_1 = require('../libs/mailer');
+var user_1 = require("../models/user");
+var mailer_1 = require("../libs/mailer");
 function search(req, res, next) {
     if (req.query.term) {
         var sort = createSort(req);
@@ -63,6 +63,27 @@ function submitRating(req, res, next) {
     });
 }
 exports.submitRating = submitRating;
+function findRelatedAnimations(req, res, next) {
+    var sourceAnimationId = req.params._id;
+    var returnCount = parseInt(req.query.count || "5");
+    if (!sourceAnimationId)
+        return next(404);
+    // TODO: use elastic search plugin for this
+    // so we can the real 'related' animations
+    // for now we're getting random animations
+    var criteria = { removed: false, isPublic: true, _id: { $ne: sourceAnimationId } };
+    animation_1.Animation.find(criteria).lean().count(function (err, count) {
+        if (err)
+            return next(err);
+        var random = Math.floor(Math.random() * count);
+        animation_1.Animation.find(criteria).skip(random).limit(returnCount).lean().exec(function (err, results) {
+            if (err)
+                return next(err);
+            res.send(results);
+        });
+    });
+}
+exports.findRelatedAnimations = findRelatedAnimations;
 function getRandomAnimation(req, res, next) {
     var criteria = { removed: false, isPublic: true, $where: "this.totalFrame > 5" };
     animation_1.Animation.find(criteria).lean().count(function (err, count) {
@@ -112,7 +133,7 @@ exports.commentForMobile = commentForMobile;
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 function seo(req, res, next) {
     var animationId = req.params._id;
-    var isCrawler = /bot|facebookexternalhit|Twitterbot|Pinterest|Google.*snippet/i.test(req.header("user-agent"));
+    var isCrawler = /bot|facebookexternalhit|Twitterbot|Pinterest/i.test(req.header("user-agent"));
     if (!isCrawler)
         res.redirect(config.setting.$content.$url + "animations/" + animationId);
     else if (isCrawler) {

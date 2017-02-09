@@ -61,6 +61,28 @@ export function submitRating(req: express.Request, res: express.Response, next: 
     });
 }
 
+export function findRelatedAnimations(req: express.Request, res: express.Response, next: express.NextFunction) {
+    let sourceAnimationId = req.params._id;
+    let returnCount = parseInt(req.query.count || "5");
+
+    if (!sourceAnimationId)
+        return next(404);
+
+    // TODO: use elastic search plugin for this
+    // so we can the real 'related' animations
+    // for now we're getting random animations
+    let criteria = { removed: false, isPublic: true, _id: { $ne: sourceAnimationId }};
+    Animation.find(criteria).lean().count((err, count) => {
+        if (err) return next(err);
+
+        let random = Math.floor(Math.random() * count);
+        Animation.find(criteria).skip(random).limit(returnCount).lean().exec((err, results) => {
+            if (err) return next(err);
+            res.send(results); 
+        });
+    });
+}
+
 export function getRandomAnimation(req: express.Request, res: express.Response, next: express.NextFunction) {
     let criteria = { removed: false, isPublic: true, $where: "this.totalFrame > 5" };
     Animation.find(criteria).lean().count((err, count) => {
