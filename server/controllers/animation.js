@@ -133,7 +133,7 @@ exports.commentForMobile = commentForMobile;
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 function seo(req, res, next) {
     var animationId = req.params._id;
-    var isCrawler = /bot|facebookexternalhit|Twitterbot|Pinterest/i.test(req.header("user-agent"));
+    var isCrawler = /facebookexternalhit|Twitterbot|Pinterest/i.test(req.header("user-agent"));
     if (!isCrawler)
         res.redirect(config.setting.$content.$url + "animations/" + animationId);
     else if (isCrawler) {
