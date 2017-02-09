@@ -1,5 +1,5 @@
 "use strict";
-var config = require('../configs/config');
+var config = require("../configs/config");
 var pkg = require('../../package.json');
 function getInfo(req, res, next) {
     var server = {

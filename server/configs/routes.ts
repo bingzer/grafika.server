@@ -173,6 +173,7 @@ export function initialize(app) {
     app.post('/animations/:_id/view', animationController.incrementViewCount);
     app.post('/animations/:_id/rating/:rating', animationController.submitRating);
     app.get('/animations/:_id/seo', useAnimAccess, animationController.seo);
+    app.get('/animations/:_id/related', useAnimAccess, animationController.findRelatedAnimations);
 
     // --------------- Sync Stuffs -------------------------//
     app.get('/animations/:_id/comments', animationController.commentForMobile);

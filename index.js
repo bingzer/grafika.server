@@ -1,16 +1,16 @@
 "use strict";
-var express = require('express');
-var compression = require('compression');
-var bodyParser = require('body-parser');
-var morgan = require('morgan');
-var methodOverride = require('method-override');
-var winston = require('winston');
-var passport = require('passport');
-var cors = require('cors');
-var config = require('./server/configs/config');
-var mongooseConfig = require('./server/configs/mongoose');
-var routeConfig = require('./server/configs/routes');
-var passportConfig = require('./server/configs/passport');
+var express = require("express");
+var compression = require("compression");
+var bodyParser = require("body-parser");
+var morgan = require("morgan");
+var methodOverride = require("method-override");
+var winston = require("winston");
+var passport = require("passport");
+var cors = require("cors");
+var config = require("./server/configs/config");
+var mongooseConfig = require("./server/configs/mongoose");
+var routeConfig = require("./server/configs/routes");
+var passportConfig = require("./server/configs/passport");
 var onInitializeFunction;
 var app = express();
 exports.server = app.listen(process.env.PORT || 3000, function () {
