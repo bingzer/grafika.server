@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+@model IEnumerable<Grafika.Animations.Animation>
+@{ 
+    var contentUrl = ViewBag.ContentUrl;
+}
+
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    @foreach (var anim in Model)
+    {
+        <sitemap>
+            <loc>@Grafika.Utilities.Utility.CombineUrl(contentUrl, "animations", anim.Id)</loc>
+            <lastmod>@DateTimeOffset.FromUnixTimeMilliseconds(anim.DateModified.Value).ToString("yyyy-MM-ddTHH:mm:ssZ")</lastmod>
+        </sitemap>
+    }
+</sitemapindex>

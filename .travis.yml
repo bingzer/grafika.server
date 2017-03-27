@@ -1,5 +1,8 @@
-language: node_js
-node_js:
-  - "6.1"
-before_script:
-  - npm install grunt-cli -g
+language: csharp
+solution: Grafika.sln
+install:
+  - nuget restore Grafika.sln
+  - nuget install xunit.runners -Version 1.9.2 -OutputDirectory testrunner
+script:
+  - xbuild /p:Configuration=Release Grafika.sln
+  - mono ./testrunner/xunit.runners.1.9.2/tools/xunit.console.clr4.exe ./Tests/Grafika.Test/bin/Release/netcoreapp1.1/Grafika.Test.dll
