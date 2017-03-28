@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Grafika.Services.Emails
 {
-    class TemplatedEmailService : EmailService
+    public class TemplatedEmailService : EmailService
     {
         public ContentConfiguration ContentConfig { get; private set; }
         public ITemplatedRenderingEngine<string> Engine { get; private set; }
@@ -19,7 +19,7 @@ namespace Grafika.Services.Emails
             Engine = Context.ServiceProvider.Get<ITemplatedRenderingEngine<string>>();
         }
 
-        protected TEmailModel CreateModel<TEmailModel>(string to, string subject)
+        public TEmailModel CreateModel<TEmailModel>(string to, string subject)
             where TEmailModel : BaseEmailModel, new()
         {
             return new TEmailModel
@@ -32,7 +32,14 @@ namespace Grafika.Services.Emails
             };
         }
 
-        protected IEmailData CreateEmailData<TEmailModel>(TEmailModel model)
+        public virtual Task SendEmail<TEmailModel>(TEmailModel model)
+            where TEmailModel : BaseEmailModel, new()
+        {
+            var emailData = CreateEmailData(model);
+            return base.SendEmail(emailData);
+        }
+
+        public IEmailData CreateEmailData<TEmailModel>(TEmailModel model)
             where TEmailModel : BaseEmailModel, new()
         {
             var templateName = typeof(TEmailModel).Name;
@@ -41,13 +48,6 @@ namespace Grafika.Services.Emails
                 To = model.Email,
                 Subject = model.Subject
             };
-        }
-
-        protected Task SendEmail<TEmailModel>(TEmailModel model)
-            where TEmailModel : BaseEmailModel, new()
-        {
-            var emailData = CreateEmailData(model);
-            return base.SendEmail(emailData);
         }
     }
 }

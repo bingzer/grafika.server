@@ -50,8 +50,8 @@ namespace Grafika.Test.Services.Emails
                 .Returns(mockServiceProvider.Object)
                 .Verifiable();
 
-            var emailService = new TestingTemplatedEmailService(mockServiceContext.Object);
-            var model = emailService.CreateModelPublic<BaseEmailModel>("user@email.com", "Subject");
+            var emailService = new TemplatedEmailService(mockServiceContext.Object);
+            var model = emailService.CreateModel<BaseEmailModel>("user@email.com", "Subject");
 
             Assert.Equal("Url", model.HomeUrl);
             Assert.Equal("Url/PrivacyPath", model.PrivacyUrl);
@@ -79,8 +79,8 @@ namespace Grafika.Test.Services.Emails
                 .Returns(mockServiceProvider.Object)
                 .Verifiable();
 
-            var emailService = new TestingTemplatedEmailService(mockServiceContext.Object);
-            var model = emailService.CreateEmailDataPublic(new BaseEmailModel());
+            var emailService = new TemplatedEmailService(mockServiceContext.Object);
+            var model = emailService.CreateEmailData(new BaseEmailModel());
 
             Assert.IsType<TemplatedEmailData<BaseEmailModel>>(model);
         }
@@ -110,28 +110,11 @@ namespace Grafika.Test.Services.Emails
             mockServiceContext.Setup(c => c.ServiceProvider)
                 .Returns(mockServiceProvider.Object);
 
-            var emailService = new TestingTemplatedEmailService(mockServiceContext.Object);
+            var emailService = new TemplatedEmailService(mockServiceContext.Object);
             
-            await emailService.SendEmailPublic(new BaseEmailModel { Email = "user@email.com", Sender = "sender@email.com", Subject = "Subject" });
+            await emailService.SendEmail(new BaseEmailModel { Email = "user@email.com", Sender = "sender@email.com", Subject = "Subject" });
 
             mockTransport.VerifyAll();
-        }
-
-        class TestingTemplatedEmailService : TemplatedEmailService
-        {
-
-            public TestingTemplatedEmailService(IServiceContext userContext) : base(userContext)
-            {
-            }
-
-            // -- expose all protected
-
-            public TEmailModel CreateModelPublic<TEmailModel>(string to, string subject)
-                where TEmailModel : BaseEmailModel, new() => CreateModel<TEmailModel>(to, subject);
-            public IEmailData CreateEmailDataPublic<TEmailModel>(TEmailModel model)
-                where TEmailModel : BaseEmailModel, new() => CreateEmailData(model);
-            public Task SendEmailPublic<TEmailModel>(TEmailModel model)
-                where TEmailModel : BaseEmailModel, new() => SendEmail(model);
         }
 
     }
