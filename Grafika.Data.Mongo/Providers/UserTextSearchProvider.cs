@@ -1,12 +1,11 @@
-﻿using Grafika.Services.Providers;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Grafika.Data;
 using System.Threading.Tasks;
 using MongoDB.Driver;
 
 namespace Grafika.Services.Users.Mongo
 {
-    class TextSearchProvider : ITextSearchProvider<User, UserQueryOptions>
+    class UserTextSearchProvider : ITextSearchProvider<User, UserQueryOptions>
     {
         public async Task<IEnumerable<User>> TextSearchAsync(IDataSet<User> dataset, UserQueryOptions options)
         {

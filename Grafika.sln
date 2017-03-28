@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Grafika.Web", "Grafika.Web\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Grafika.Utilities", "Grafika.Utilities\Grafika.Utilities.csproj", "{C12544A1-1321-45E5-940C-BC1E057D0072}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Grafika.Data.Mongo", "Grafika.Data.Mongo\Grafika.Data.Mongo.csproj", "{E687FE6D-1D47-44B8-9475-5810A9C9482E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -53,6 +55,10 @@ Global
 		{C12544A1-1321-45E5-940C-BC1E057D0072}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C12544A1-1321-45E5-940C-BC1E057D0072}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C12544A1-1321-45E5-940C-BC1E057D0072}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E687FE6D-1D47-44B8-9475-5810A9C9482E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E687FE6D-1D47-44B8-9475-5810A9C9482E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E687FE6D-1D47-44B8-9475-5810A9C9482E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E687FE6D-1D47-44B8-9475-5810A9C9482E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

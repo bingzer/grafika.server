@@ -1,8 +1,7 @@
-﻿using Grafika.Data;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Grafika.Services.Providers
+namespace Grafika.Data
 {
     public interface ITextSearchProvider<TEntity, TQueryOptions>
         where TEntity : class, IEntity

@@ -6,8 +6,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using System;
 using Grafika.Utilities;
-using Grafika.Services.Providers;
-using Grafika.Data.Providers;
 
 namespace Grafika.Services.Animations
 {

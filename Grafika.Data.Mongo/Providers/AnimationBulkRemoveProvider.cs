@@ -1,15 +1,13 @@
 ﻿using Grafika.Animations;
-using Grafika.Data;
-using Grafika.Data.Providers;
 using MongoDB.Driver;
 using System.Linq;
 using System.Threading.Tasks;
 using System;
 using System.Collections.Generic;
 
-namespace Grafika.Services.Animations.Mongo
+namespace Grafika.Data.Mongo.Providers
 {
-    public class BulkRemoveProvider : IBulkRemoveProvider<Animation>
+    public class AnimationBulkRemoveProvider : IBulkRemoveProvider<Animation>
     {
         public async Task BulkRemove(IDataSet<Animation> dataset, IEnumerable<string> idsToRemove)
         {

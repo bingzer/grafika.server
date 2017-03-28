@@ -6,8 +6,6 @@ using Grafika.Animations;
 using System.Linq;
 using System.Threading.Tasks;
 using Moq;
-using Grafika.Services.Providers;
-using Grafika.Data.Providers;
 
 namespace Grafika.Test.Services.Animations
 {

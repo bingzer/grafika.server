@@ -2,20 +2,17 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
-using Grafika.Animations;
 using Grafika.Configurations;
-using Grafika.Data.Providers;
+using Grafika.Data.Mongo;
 using Grafika.Services.Accounts;
 using Grafika.Services.Accounts.Stores;
 using Grafika.Services.Accounts.Tokens;
 using Grafika.Services.Admins;
 using Grafika.Services.Animations;
-using Grafika.Services.Animations.Mongo;
 using Grafika.Services.Aws;
 using Grafika.Services.Comments;
 using Grafika.Services.Disqus;
 using Grafika.Services.Emails;
-using Grafika.Services.Providers;
 using Grafika.Services.Syncs;
 using Grafika.Services.Users;
 
@@ -25,8 +22,8 @@ namespace Grafika.Services
     {
         public static void AddGrafika(this IServiceCollection services)
         {
-            // -- Grafika.Data
-            Data.DependencyInjections.AddServices(services);
+            // -- Grafika.Data.MongoDB
+            services.AddMongoDB();
 
             // -- Animations
             services
@@ -34,8 +31,6 @@ namespace Grafika.Services
                 .AddScoped<IAnimationService, AnimationService>()
                 .AddScoped<IAnimationEmailService, AnimationEmailService>()
                 .AddScoped<IAnimationRepository, AnimationRepository>()
-                .AddScoped<ITextSearchProvider<Animation, AnimationQueryOptions>, Animations.Mongo.TextSearchProvider>()
-                .AddScoped<IBulkRemoveProvider<Animation>, BulkRemoveProvider>()
                 .AddSingleton<IAnimationValidator, AnimationValidator>()
                 .AddSingleton<IFrameDataProcessingFactory, FrameDataProcesingFactory>()
             ;
@@ -52,7 +47,6 @@ namespace Grafika.Services
                 .AddScoped<IUserService, UserService>()
                 .AddScoped<IUserRepository, UserRepository>()
                 .AddSingleton<IUserValidator, UserValidator>()
-                .AddScoped<ITextSearchProvider<User, UserQueryOptions>, Users.Mongo.TextSearchProvider>();
                 ;
 
             // -- Accounts

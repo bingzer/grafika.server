@@ -1,13 +1,11 @@
 ﻿using Grafika.Animations;
-using Grafika.Data;
-using Grafika.Services.Providers;
 using MongoDB.Driver;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Grafika.Services.Animations.Mongo
+namespace Grafika.Data.Mongo.Providers
 {
-    class TextSearchProvider : ITextSearchProvider<Animation, AnimationQueryOptions>
+    class AnimationTextSearchProvider : ITextSearchProvider<Animation, AnimationQueryOptions>
     {
         public async Task<IEnumerable<Animation>> TextSearchAsync(IDataSet<Animation> dataset, AnimationQueryOptions options)
         {

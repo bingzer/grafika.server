@@ -1,11 +1,9 @@
 ﻿using Grafika.Data;
-using Grafika.Services.Providers;
 using Grafika.Services.Users;
 using Moq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
