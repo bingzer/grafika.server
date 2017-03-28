@@ -73,6 +73,7 @@ namespace Grafika.Services
             // -- Emails
             services
                 .AddScoped<IEmailService, EmailService>()
+                .AddScoped<ITemplatedEmailService, TemplatedEmailService>()
                 ;
 
             // -- Syncs

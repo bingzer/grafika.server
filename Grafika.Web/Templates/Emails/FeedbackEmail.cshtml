@@ -1,0 +1,21 @@
+﻿@model Grafika.Services.Models.FeedbackEmail
+@{
+    Layout = "_EmailTemplate.cshtml";
+}
+
+<div style="margin-bottom: 16px">
+</div>
+
+<div style="background-color: #e9f8e9; padding: 16px; margin-bottom: 16px">
+    <p> 
+        Hi, <br />
+        New feedback from @Model.FeedbackFrom
+    </p>
+    <p>        
+        Area : @Model.Category <br />
+        Subject : @Model.Subject <br/>
+    </p>
+    <p>
+        @Model.Content
+    </p>
+</div>

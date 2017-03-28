@@ -2,12 +2,12 @@
 {
     public class BaseEmailModel
     {
-        public string Email { get; set; }
-        public string Sender { get; set; }
+        public virtual string Email { get; set; }
+        public virtual string Sender { get; set; }
 
-        public string Subject { get; set; }
+        public virtual string Subject { get; set; }
 
-        public string HomeUrl { get; set; }
-        public string PrivacyUrl { get; set; }
+        public virtual string HomeUrl { get; set; }
+        public virtual string PrivacyUrl { get; set; }
     }
 }
