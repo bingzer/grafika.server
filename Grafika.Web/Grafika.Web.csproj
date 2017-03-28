@@ -3,6 +3,14 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp1.1</TargetFramework>
     <PackageTargetFallback>portable-net45+win8</PackageTargetFallback>
+    <Version>1.0.12</Version>
+    <AssemblyVersion>1.0.10.0</AssemblyVersion>
+    <FileVersion>1.0.10.0</FileVersion>
+    <PackageProjectUrl>https://github.com/bingzer/grafika.server</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/bingzer/grafika.server</RepositoryUrl>
+    <Authors>Grafika Team</Authors>
+    <Company>Bingzer</Company>
+    <Description>RESTful Services for https://grafika.bingzer.com</Description>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="BCrypt.Net-Core" Version="1.1.0" />
