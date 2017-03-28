@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Grafika.Services.Emails
 {
-    public class TemplatedEmailService : EmailService
+    class TemplatedEmailService : EmailService, ITemplatedEmailService
     {
         public ContentConfiguration ContentConfig { get; private set; }
         public ITemplatedRenderingEngine<string> Engine { get; private set; }
