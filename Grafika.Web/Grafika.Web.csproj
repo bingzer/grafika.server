@@ -3,9 +3,9 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp1.1</TargetFramework>
     <PackageTargetFallback>portable-net45+win8</PackageTargetFallback>
-    <Version>1.0.12</Version>
-    <AssemblyVersion>1.0.10.0</AssemblyVersion>
-    <FileVersion>1.0.10.0</FileVersion>
+    <Version>1.0.0.384</Version>
+    <AssemblyVersion>1.0.0.384</AssemblyVersion>
+    <FileVersion>1.0.0.384</FileVersion>
     <PackageProjectUrl>https://github.com/bingzer/grafika.server</PackageProjectUrl>
     <RepositoryUrl>https://github.com/bingzer/grafika.server</RepositoryUrl>
     <Authors>Grafika Team</Authors>
@@ -13,28 +13,28 @@
     <Description>RESTful Services for https://grafika.bingzer.com</Description>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="BCrypt.Net-Core" Version="1.1.0" />
-    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore" Version="1.1.1" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication" Version="1.1.1" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.Facebook" Version="1.1.1" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="1.1.1" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="1.1.1" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity" Version="1.1.1" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="1.1.2" />
-    <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="1.1.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="1.1.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="1.1.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer.Design" Version="1.1.1" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="1.1.1" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.BrowserLink" Version="1.1.0" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="1.1.0" />
+    <PackageReference Include="BCrypt.Net-Core" Version="1.1.0"/>
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.0.0"/>
+    <PackageReference Include="Microsoft.AspNetCore" Version="1.1.1"/>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication" Version="1.1.1"/>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Facebook" Version="1.1.1"/>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="1.1.1"/>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="1.1.1"/>
+    <PackageReference Include="Microsoft.AspNetCore.Identity" Version="1.1.1"/>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="1.1.2"/>
+    <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="1.1.1"/>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="1.1.1"/>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="1.1.1"/>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer.Design" Version="1.1.1"/>
+    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="1.1.1"/>
+    <PackageReference Include="Microsoft.VisualStudio.Web.BrowserLink" Version="1.1.0"/>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="1.1.0"/>
   </ItemGroup>
   <ItemGroup>
-    <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="1.0.0" />
+    <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="1.0.0"/>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Grafika.Services\Grafika.Services.csproj" />
+    <ProjectReference Include="..\Grafika.Services\Grafika.Services.csproj"/>
   </ItemGroup>
 
 </Project>
