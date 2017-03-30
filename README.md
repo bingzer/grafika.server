@@ -1,4 +1,5 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/196cw7xm87ps6qwd?svg=true)](https://ci.appveyor.com/project/bingzer/grafika-server-netcore)
+![VSTS Build](https://bingzer.visualstudio.com/_apis/public/build/definitions/7eb0b535-b64c-45f9-971b-e027411b9b60/21/badge)
 
 
 <<<<<<< HEAD
@@ -23,6 +24,4 @@ If you want to learn more about creating good readme files then refer the follow
 - [Visual Studio Code](https://github.com/Microsoft/vscode)
 - [Chakra Core](https://github.com/Microsoft/ChakraCore)
 =======
-# grafika.server.netcore 
->>>>>>> ff2e91b39c87a6a4c64fbecbc8182fdad6e792e3
  
