@@ -7,6 +7,16 @@ namespace Grafika.Web.Controllers
     public partial class AnimationsController
     {
         [AllowAnonymous]
+        [HttpHead("{animationId}/thumbnail")]
+        public async Task<IActionResult> HasThumbnail(string animationId)
+        {
+            var hasThumbnail = await _service.HasThumbnail(animationId);
+
+            if (hasThumbnail) return Ok();
+            return NotFound();
+        }
+
+        [AllowAnonymous]
         [HttpGet("{animationId}/thumbnail")]
         public async Task<IActionResult> GetThumbnail(string animationId)
         {
