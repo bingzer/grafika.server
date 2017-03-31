@@ -10,6 +10,13 @@ namespace Grafika.Services.Aws
 {
     internal class FrameDataDeflatedProcessingStrategy : IFrameDataProcessingStrategy
     {
+        private readonly IHttpClientFactory _factory;
+
+        public FrameDataDeflatedProcessingStrategy(IHttpClientFactory factory)
+        {
+            _factory = factory;
+        }
+
         public bool AcceptEncoding(string contentEncoding)
         {
             return !"deflate".EqualsIgnoreCase(contentEncoding);
@@ -17,9 +24,8 @@ namespace Grafika.Services.Aws
 
         public async Task<FrameData> ProcessHttpGet(FrameData frameData, string requestUrl)
         {
-            var handler = new HttpClientHandler();
-            handler.AutomaticDecompression = System.Net.DecompressionMethods.None;
-            using (var httpClient = new HttpClient(handler))
+            var handler = new HttpClientHandler { AutomaticDecompression = System.Net.DecompressionMethods.None };
+            using (var httpClient = _factory.CreateHttpClient(handler))
             {
                 var memoryStream = new MemoryStream();
                 var zoutput = new ZOutputStream(memoryStream);

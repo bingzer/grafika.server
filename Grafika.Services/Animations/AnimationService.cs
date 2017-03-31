@@ -98,16 +98,21 @@ namespace Grafika.Services.Animations
             await Repository.Update(animation);
         }
 
-        public Task<string> GetAnimationThumbnailUrl(string animationId)
+        public Task<string> GetThumbnailUrl(string animationId)
         {
             return _resRepo.GetResourceUrl(animationId, "thumbnail");
         }
 
-        public async Task<ISignedUrl> CreateAnimationThumbnailUrl(string animationId)
+        public async Task<ISignedUrl> CreateThumbnail(string animationId)
         {
             var animation = await GetById(animationId);
 
-            return await _resRepo.CreateSignedUrl(animation, new Thumbnail(), ContentTypes.Png);
+            return await _resRepo.CreateSignedUrl(animation, Thumbnail.ResourceId, ContentTypes.Png);
+        }
+
+        public Task<bool> HasThumbnail(string animationId)
+        {
+            return _resRepo.HasResource(animationId, Thumbnail.ResourceId);
         }
 
         protected internal override async Task<Animation> CreateEntityForUpdate(Animation source)

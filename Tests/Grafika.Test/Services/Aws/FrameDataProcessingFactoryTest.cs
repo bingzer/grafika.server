@@ -1,4 +1,5 @@
 ﻿using Grafika.Services.Aws;
+using Moq;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -11,7 +12,16 @@ namespace Grafika.Test.Services.Aws
         [Fact]
         public void TestGetProcessor()
         {
-            var factory = new FrameDataProcesingFactory();
+            var mockServiceProvider = MockHelpers.ServiceProvider;
+            mockServiceProvider.Setup(c => c.GetService(It.Is<Type>(t => t == typeof(FrameDataDeflatedProcessingStrategy))))
+                .Returns(new FrameDataDeflatedProcessingStrategy(null))
+                .Verifiable();
+            mockServiceProvider.Setup(c => c.GetService(It.Is<Type>(t => t == typeof(FrameDataRawProcessingStrategy))))
+                .Returns(new FrameDataRawProcessingStrategy(null))
+                .Verifiable();
+
+            var factory = new FrameDataProcesingFactory(mockServiceProvider.Object);
+
             Assert.IsType<FrameDataRawProcessingStrategy>(factory.GetProcessor("deflate"));
             Assert.IsType<FrameDataRawProcessingStrategy>(factory.GetProcessor("dEFlatE"));
 

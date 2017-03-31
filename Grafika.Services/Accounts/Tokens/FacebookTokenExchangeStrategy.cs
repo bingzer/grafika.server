@@ -9,7 +9,8 @@ namespace Grafika.Services.Accounts.Tokens
     {
         public override string AuthenticationType => OAuthProvider.Facebook.GetName();
 
-        public FacebookTokenExchangeStrategy(IOptions<FacebookOAuthProviderConfiguration> opts) : base(opts)
+        public FacebookTokenExchangeStrategy(IOptions<FacebookOAuthProviderConfiguration> opts, IHttpClientFactory factory) 
+            : base(opts, factory)
         {
         }
 

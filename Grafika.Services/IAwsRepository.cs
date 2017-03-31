@@ -18,9 +18,9 @@ namespace Grafika.Services
 
     public interface IAwsResourceRepository : IAwsRepository
     {
-        Task<ISignedUrl> CreateSignedUrl(Animation animation, IResource resource, string contentType);
+        Task<ISignedUrl> CreateSignedUrl(Animation animation, string resourceId, string contentType);
         Task<string> GetResourceUrl(string animationId, string resourceId);
-        //Task CreateResource(ISignedUrl signedUrl, Stream data);
+        Task<bool> HasResource(string animationId, string resourceId);
     }
 
     public interface IAwsUsersRepository : IAwsRepository

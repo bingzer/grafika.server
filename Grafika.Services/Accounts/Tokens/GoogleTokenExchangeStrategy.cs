@@ -9,8 +9,8 @@ namespace Grafika.Services.Accounts.Tokens
     {
         public override string AuthenticationType => OAuthProvider.Google.GetName();
 
-        public GoogleTokenExchangeStrategy(IOptions<GoogleOAuthProviderConfiguration> opts)
-            : base(opts)
+        public GoogleTokenExchangeStrategy(IOptions<GoogleOAuthProviderConfiguration> opts, IHttpClientFactory factory)
+            : base(opts, factory)
         {
         }
 

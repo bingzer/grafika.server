@@ -25,14 +25,21 @@ namespace Grafika.Services
             // -- Grafika.Data.MongoDB
             services.AddMongoDB();
 
-            // -- Animations
             services
                 .AddSingleton(AppEnvironment.Default)
+                .AddScoped<IHttpClient, HttpClientDecorator>()
+                .AddScoped<IHttpClientFactory, HttpClientFactory>()
+                ;
+
+            // -- Animations
+            services
                 .AddScoped<IAnimationService, AnimationService>()
                 .AddScoped<IAnimationEmailService, AnimationEmailService>()
                 .AddScoped<IAnimationRepository, AnimationRepository>()
                 .AddSingleton<IAnimationValidator, AnimationValidator>()
                 .AddSingleton<IFrameDataProcessingFactory, FrameDataProcesingFactory>()
+                .AddScoped<FrameDataDeflatedProcessingStrategy, FrameDataDeflatedProcessingStrategy>()
+                .AddScoped<FrameDataRawProcessingStrategy, FrameDataRawProcessingStrategy>()
             ;
 
             // -- Aws

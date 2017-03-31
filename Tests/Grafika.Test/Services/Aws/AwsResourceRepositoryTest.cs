@@ -2,6 +2,7 @@
 using Amazon.S3.Model;
 using Grafika.Animations;
 using Grafika.Configurations;
+using Grafika.Services;
 using Grafika.Services.Aws;
 using Moq;
 using System;
@@ -19,11 +20,11 @@ namespace Grafika.Test.Services.Aws
         [InlineData("animationId5", "resourceId3", ContentTypes.Xml)]
         public async void TestCreateSignedUrl(string animationId, string resourceId, string contentType)
         {
-            var resource = new TestingResource { Id = resourceId };
-
             var awsOpts = MockHelpers.Configure<AwsOAuthProviderConfiguration>();
             awsOpts.Object.Value.Bucket = "bucket";
             awsOpts.Object.Value.Folder = "folder";
+
+            var mockFactory = new Mock<IHttpClientFactory>();
 
             var mockClient = new Mock<IAmazonS3>();
             mockClient.Setup(c => c.GetPreSignedURL(It.Is<GetPreSignedUrlRequest>(
@@ -36,8 +37,8 @@ namespace Grafika.Test.Services.Aws
                 .Returns(() => "signed-url")
                 .Verifiable();
 
-            var repo = new AwsResourceRepository(awsOpts.Object, mockClient.Object);
-            var signedUrl = await repo.CreateSignedUrl(new Animation { Id = animationId }, resource, contentType);
+            var repo = new AwsResourceRepository(awsOpts.Object, mockFactory.Object, mockClient.Object);
+            var signedUrl = await repo.CreateSignedUrl(new Animation { Id = animationId }, resourceId, contentType);
 
             Assert.Equal(signedUrl.Url, "signed-url");
             Assert.Equal(signedUrl.ContentType, contentType);
@@ -56,9 +57,10 @@ namespace Grafika.Test.Services.Aws
             awsOpts.Object.Value.Bucket = "bucket";
             awsOpts.Object.Value.Folder = "folder";
             awsOpts.Object.Value.Url = "http://example.com";
+            var mockFactory = new Mock<IHttpClientFactory>();
             var mockClient = new Mock<IAmazonS3>();
 
-            var repo = new AwsResourceRepository(awsOpts.Object, mockClient.Object);
+            var repo = new AwsResourceRepository(awsOpts.Object, mockFactory.Object, mockClient.Object);
             var result = await repo.GetResourceUrl(animationId, resourceId);
 
             Assert.Equal(result, $"http://example.com/bucket/folder/animations/{animationId}/{resourceId}");

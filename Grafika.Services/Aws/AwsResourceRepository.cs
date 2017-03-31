@@ -6,22 +6,26 @@ using Microsoft.Extensions.Options;
 using Grafika.Utilities;
 using Amazon.S3.Model;
 using Amazon.S3;
+using System.Net.Http;
 
 namespace Grafika.Services.Aws
 {
     internal class AwsResourceRepository : AwsRepository, IAwsResourceRepository
     {
-        public AwsResourceRepository(IOptions<AwsOAuthProviderConfiguration> serverOpts, IAmazonS3 client = null)
+        private readonly IHttpClientFactory _httpFactory;
+
+        public AwsResourceRepository(IOptions<AwsOAuthProviderConfiguration> serverOpts, IHttpClientFactory httpFactory, IAmazonS3 client = null)
             : base(serverOpts, client)
         {
+            _httpFactory = httpFactory;
         }
 
-        public Task<ISignedUrl> CreateSignedUrl(Animation animation, IResource resource, string contentType)
+        public Task<ISignedUrl> CreateSignedUrl(Animation animation, string resourceId, string contentType)
         {
             var signedUrlRequest = new GetPreSignedUrlRequest
             {
                 BucketName = Config.Bucket,
-                Key = Utility.CombineUrl(Config.Folder, "animations", animation.Id, resource.Id),
+                Key = Utility.CombineUrl(Config.Folder, "animations", animation.Id, resourceId),
                 Expires = DefaultExpiration,
                 Verb = Amazon.S3.HttpVerb.PUT,
                 ContentType = contentType
@@ -37,6 +41,16 @@ namespace Grafika.Services.Aws
             return Task.FromResult<ISignedUrl>(signedUrl);
         }
 
+        public async Task<bool> HasResource(string animationId, string resourceId)
+        {
+            var resourceUrl = await GetResourceUrl(animationId, resourceId);
+            using (var httpClient = _httpFactory.CreateHttpClient())
+            {
+                var requestMessage = new HttpRequestMessage(HttpMethod.Head, resourceUrl);
+                var response = await httpClient.SendAsync(requestMessage);
+                return response.IsSuccessStatusCode;
+            }
+        }
 
         public Task<string> GetResourceUrl(string animationId, string resourceId)
         {

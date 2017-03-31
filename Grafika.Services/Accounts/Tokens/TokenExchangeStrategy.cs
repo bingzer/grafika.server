@@ -12,14 +12,14 @@ namespace Grafika.Services.Accounts.Tokens
     abstract class TokenExchangeStrategy<TConfig> : ITokenExchangeStrategy
         where TConfig : OAuthProviderConfiguration, new()
     {
-        private readonly HttpClient _backChannel;
+        private readonly IHttpClient _backChannel;
         private readonly Uri _idTokenUrl;
 
         public abstract string AuthenticationType { get; }
 
-        public TokenExchangeStrategy(IOptions<TConfig> opts)
+        public TokenExchangeStrategy(IOptions<TConfig> opts, IHttpClientFactory factory)
         {
-            _backChannel = new HttpClient();
+            _backChannel = factory.CreateHttpClient();
             _idTokenUrl = new Uri(opts.Value.IdTokenUrl);
         }
 

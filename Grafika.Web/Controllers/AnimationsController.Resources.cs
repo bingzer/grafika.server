@@ -10,14 +10,14 @@ namespace Grafika.Web.Controllers
         [HttpGet("{animationId}/thumbnail")]
         public async Task<IActionResult> GetThumbnail(string animationId)
         {
-            var url = await _service.GetAnimationThumbnailUrl(animationId);
+            var url = await _service.GetThumbnailUrl(animationId);
             return Redirect(url);
         }
 
         [HttpPost("{animationId}/thumbnail")]
         public async Task<IActionResult> CreateThumbnailSignedUrl(string animationId)
         {
-            var url = await _service.CreateAnimationThumbnailUrl(animationId);
+            var url = await _service.CreateThumbnail(animationId);
             return Ok(url);
         }
     }

@@ -4,6 +4,8 @@ namespace Grafika.Animations
 {
     public class Thumbnail : IResource
     {
-        public string Id => "thumbnail";
+        public const string ResourceId = "thumbnail";
+
+        public string Id => ResourceId;
     }
 }
