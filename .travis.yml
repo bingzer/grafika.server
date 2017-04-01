@@ -3,3 +3,7 @@ node_js:
   - "6.1"
 before_script:
   - npm install grunt-cli -g
+branches:
+  except:
+    - legacy
+    - experimental
