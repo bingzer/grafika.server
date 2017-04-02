@@ -35,7 +35,7 @@ namespace Grafika.Services.Accounts
             if (user == null)
                 throw new NotFoundExeption();
 
-            var model = CreateModel<AccountVerificationEmail>(user.Email, "Grafika: Password Reset");
+            var model = CreateModel<AccountVerificationEmail>(user.Email, "Grafika: Please verify your email");
             model.Link = Utility.CombineUrl(ContentConfig.Url, $"r?action=verify&hash={Utility.UrlEncode(user.Activation.Hash)}&user={Utility.UrlEncode(user.Email)}");
 
             await SendEmail(model);
