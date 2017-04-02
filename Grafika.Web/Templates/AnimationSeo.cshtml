@@ -1,4 +1,6 @@
-﻿@using Grafika.Configurations;
+﻿<!doctype html>
+<html lang="en" prefix="og:http://ogp.me/ns#">
+@using Grafika.Configurations;
 @using Grafika.Web.Extensions;
 @using Grafika.Utilities;
 @using Microsoft.Extensions.Options;
@@ -6,16 +8,14 @@
 @model Grafika.Animations.Animation
 @inject IOptions<FacebookOAuthProviderConfiguration> facebookOpts
 @inject IOptions<ContentConfiguration> contentOpts
-@{ 
+@{
     var contentConfig = contentOpts.Value;
-    var animationUrl = Utility.CombineUrl(Url.ActionContext.HttpContext.Request.GetServerUrl().ToString(), "animations", Model.Id);
+    var contentUrl = contentConfig.Url;
+    var animationUrl = Utility.CombineUrl(contentUrl, "animations", Model.Id);
     var thumbnailUrl = Utility.CombineUrl(animationUrl, "thumbnail");
-    var userUrl = Utility.CombineUrl(Url.ActionContext.HttpContext.Request.GetServerUrl().ToString(), "users", Model.UserId);
+    var userUrl = Utility.CombineUrl(contentUrl, "users", Model.UserId);
     var description = "Grafika Animation - " + (string.IsNullOrEmpty(Model.Description) ? Model.Name : Model.Description);
 }
-
-<!doctype html>
-<html lang="en" prefix="og:http://ogp.me/ns#">
 <head>
     <title>@Model.Name</title>
     <meta charset="utf-8" />
