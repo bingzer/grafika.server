@@ -3,9 +3,9 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp1.1</TargetFramework>
     <PackageTargetFallback>portable-net45+win8</PackageTargetFallback>
-    <Version>1.0.1.416</Version>
-    <AssemblyVersion>1.0.1.416</AssemblyVersion>
-    <FileVersion>1.0.1.416</FileVersion>
+    <Version>1.0.1.424</Version>
+    <AssemblyVersion>1.0.1.424</AssemblyVersion>
+    <FileVersion>1.0.1.424</FileVersion>
     <PackageProjectUrl>https://github.com/bingzer/grafika.server</PackageProjectUrl>
     <RepositoryUrl>https://github.com/bingzer/grafika.server</RepositoryUrl>
     <Authors>Grafika Team</Authors>
