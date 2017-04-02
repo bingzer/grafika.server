@@ -16,4 +16,4 @@ before_script:
   dotnet restore
 
 script:
-  dotnet build
+  travis-build.sh
