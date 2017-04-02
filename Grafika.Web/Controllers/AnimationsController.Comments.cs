@@ -1,4 +1,5 @@
 ﻿using Grafika.Services;
+using Grafika.Web.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -27,9 +28,11 @@ namespace Grafika.Web.Controllers
         }
 
         [HttpPost("{animationId}/comments")]
-        public async Task<IActionResult> PostComment([FromServices] IAnimationEmailService emailService, string animationId)
+        public async Task<IActionResult> PostComment([FromServices] IAnimationEmailService emailService, 
+            [FromRoute] string animationId, 
+            [FromBody] CommentModel comment)
         {
-            await emailService.SendAnimationCommentEmail(animationId);
+            await emailService.SendAnimationCommentEmail(animationId, comment);
             return Ok();
         }
     }

@@ -45,7 +45,7 @@ namespace Grafika.Web.Controllers
 
             if (string.IsNullOrEmpty(model.FeedbackFrom) && User.Identity is IUserIdentity userIdentity)
                 model.FeedbackFrom = userIdentity.Email;
-            else model.FeedbackFrom = "Anonymous";
+            else model.FeedbackFrom = Grafika.User.Anonymous;
 
             await emailService.SendEmail(model);
             return Ok();

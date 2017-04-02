@@ -32,27 +32,27 @@ namespace Grafika.Test.Services.Animations
             mockAnimService.Setup(c => c.Get(It.IsAny<string>()))
                 .ReturnsAsync((Animation)null)
                 .Verifiable();
-            var mockUserService = new Mock<IUserService>();
+            var mockUserRepo = new Mock<IUserRepository>();
 
             // -- animation not found
-            var service = SetupAnimationEmailService(mockAnimService.Object, mockUserService.Object);
-            await Assert.ThrowsAsync<NotFoundExeption>(() => service.SendAnimationCommentEmail("animationId"));
+            var service = SetupAnimationEmailService(mockAnimService.Object, mockUserRepo.Object);
+            await Assert.ThrowsAsync<NotFoundExeption>(() => service.SendAnimationCommentEmail("animationId", new Comment { Id = "Id", Text = "Text" }));
 
             mockAnimService.VerifyAll();
-            mockUserService.VerifyAll();
+            mockUserRepo.VerifyAll();
 
             // -- user not found
             mockAnimService.Reset();
             mockAnimService.Setup(c => c.Get(It.IsAny<string>()))
                 .ReturnsAsync(new Animation())
                 .Verifiable();
-            mockUserService.Setup(c => c.Get(It.IsAny<string>()))
+            mockUserRepo.Setup(c => c.First(It.IsAny<UserQueryOptions>()))
                 .ReturnsAsync((User)null)
                 .Verifiable();
-            await Assert.ThrowsAsync<NotFoundExeption>(() => service.SendAnimationCommentEmail("animationId"));
+            await Assert.ThrowsAsync<NotFoundExeption>(() => service.SendAnimationCommentEmail("animationId", new Comment { Id = "Id", Text = "Text" }));
 
             mockAnimService.VerifyAll();
-            mockUserService.VerifyAll();
+            mockUserRepo.VerifyAll();
         }
 
         [Fact]
@@ -62,16 +62,16 @@ namespace Grafika.Test.Services.Animations
             mockAnimService.Setup(c => c.Get(It.IsAny<string>()))
                 .ReturnsAsync(new Animation())
                 .Verifiable();
-            var mockUserService = new Mock<IUserService>();
-            mockUserService.Setup(c => c.Get(It.IsAny<string>()))
+            var mockUserRepo = new Mock<IUserRepository>();
+            mockUserRepo.Setup(c => c.First(It.IsAny<UserQueryOptions>()))
                 .ReturnsAsync(new User { Subscriptions = new UserSubscriptions { EmailOnComments = false } })
                 .Verifiable();
 
-            var service = SetupAnimationEmailService(mockAnimService.Object, mockUserService.Object);
-            await service.SendAnimationCommentEmail("animationId");
+            var service = SetupAnimationEmailService(mockAnimService.Object, mockUserRepo.Object);
+            await service.SendAnimationCommentEmail("animationId", new Comment { Id = "Id", Text = "Text" });
 
             mockAnimService.VerifyAll();
-            mockUserService.VerifyAll();
+            mockUserRepo.VerifyAll();
             mockMailTransport.VerifyAll();
         }
 
@@ -82,25 +82,32 @@ namespace Grafika.Test.Services.Animations
             mockAnimService.Setup(c => c.Get(It.IsAny<string>()))
                 .ReturnsAsync(new Animation())
                 .Verifiable();
-            var mockUserService = new Mock<IUserService>();
-            mockUserService.Setup(c => c.Get(It.IsAny<string>()))
+            var mockUserRepo = new Mock<IUserRepository>();
+            mockUserRepo.Setup(c => c.First(It.IsAny<UserQueryOptions>()))
                 .ReturnsAsync(new User { Subscriptions = new UserSubscriptions { EmailOnComments = true }, Email = "user@email.com" })
                 .Verifiable();
+            var mockAwsRepo = new Mock<IAwsResourceRepository>();
+            mockAwsRepo.Setup(c => c.GetResourceUrl(It.Is<string>(str => str == "animationId"), It.Is<string>(str => str == Thumbnail.ResourceId)))
+                .ReturnsAsync("resource-url")
+                .Verifiable();
+
             mockMailTransport.Setup(c => c.SendAsync(It.IsAny<MimeMessage>(), It.IsAny<CancellationToken>(), It.IsAny<ITransferProgress>()))
                 .Returns(Task.FromResult(0))
                 .Verifiable();
 
-            var service = SetupAnimationEmailService(mockAnimService.Object, mockUserService.Object);
-            await service.SendAnimationCommentEmail("animationId");
+            var service = SetupAnimationEmailService(mockAnimService.Object, mockUserRepo.Object, mockAwsRepo.Object);
+            await service.SendAnimationCommentEmail("animationId", new Comment { Id = "Id", Text = "Text" });
 
             mockAnimService.VerifyAll();
-            mockUserService.VerifyAll();
+            mockUserRepo.VerifyAll();
             mockMailTransport.VerifyAll();
+            mockAwsRepo.VerifyAll();
         }
 
         private AnimationEmailService SetupAnimationEmailService(
             IAnimationService animService = null,
-            IUserService userService = null)
+            IUserRepository userRepo = null,
+            IAwsResourceRepository awsRepo = null)
         {
 
             var mockServiceProvider = MockHelpers.ServiceProvider;
@@ -117,7 +124,13 @@ namespace Grafika.Test.Services.Animations
             mockServiceContext.Setup(c => c.ServiceProvider)
                 .Returns(mockServiceProvider.Object);
 
-            return new AnimationEmailService(mockServiceContext.Object, animService, userService);
+            return new AnimationEmailService(mockServiceContext.Object, animService, userRepo, awsRepo);
+        }
+
+        private class Comment : IComment
+        {
+            public string Id { get; set; }
+            public string Text { get; set; }
         }
     }
 }
