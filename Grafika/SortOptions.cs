@@ -9,7 +9,7 @@ namespace Grafika
     public class SortOptions
     {
         public string Name { get; set; }
-        public SortDirection Direction { get; set; }
+        public SortDirection Direction { get; set; } = SortDirection.Ascending;
 
         /// <summary>
         /// Parses example:
