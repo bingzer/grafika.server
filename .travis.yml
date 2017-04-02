@@ -17,5 +17,5 @@ before_script:
 
 script:
   - dotnet build
-  - cd /Tests/Grafika.Test
+  - cd ./Tests/Grafika.Test
   - dotnet test
