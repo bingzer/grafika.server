@@ -4,6 +4,6 @@ namespace Grafika.Services
 {
     public interface IAnimationEmailService : IEmailService
     {
-        Task SendAnimationCommentEmail(string animationId);
+        Task SendAnimationCommentEmail(string animationId, IComment userComment);
     }
 }

@@ -5,6 +5,7 @@ using Microsoft.Extensions.Options;
 using Grafika.Configurations;
 using System.Reflection;
 using Grafika.Web.Extensions;
+using Microsoft.AspNetCore.Hosting;
 
 namespace Grafika.Web.Controllers
 {
@@ -14,7 +15,7 @@ namespace Grafika.Web.Controllers
     {
         [AllowAnonymous]
         [HttpGet, HttpPost]
-        public ServerModel Index([FromServices] IOptions<ServerConfiguration> serverOpts)
+        public ServerModel Index([FromServices] IHostingEnvironment env, [FromServices] IOptions<ServerConfiguration> serverOpts)
         {
             return new ServerModel
             {
@@ -22,7 +23,8 @@ namespace Grafika.Web.Controllers
                 Description = serverOpts.Value.Description,
                 Version = Assembly.GetEntryAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>().InformationalVersion,
                 Url = Request.GetServerUrl().ToString(),
-                HealthUrl = Url.Action(nameof(GetHealthStatus))
+                HealthUrl = Url.Action(nameof(GetHealthStatus)),
+                EnvironmentName = env.EnvironmentName
             };
         }
 

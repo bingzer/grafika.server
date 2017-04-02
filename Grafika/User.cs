@@ -10,6 +10,8 @@ namespace Grafika
     [BsonIgnoreExtraElements]
     public class User : BaseEntity, IUser
     {
+        public const string Anonymous = "Anonymous";
+
         #region Constructor
         public User()
         {
