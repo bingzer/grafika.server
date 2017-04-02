@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Grafika.Services;
 using Microsoft.AspNetCore.Authorization;
 using Grafika.Web.Models;
+using Grafika.Web.Filters;
 
 namespace Grafika.Web.Controllers
 {
@@ -32,6 +33,7 @@ namespace Grafika.Web.Controllers
             return Ok(user);
         }
 
+        [SkipModelValidation]
         [HttpPut("{userId}")]
         public async Task<IActionResult> Update([FromBody] User user)
         {
