@@ -16,4 +16,6 @@ before_script:
   dotnet restore
 
 script:
-  ./travis-build.sh
+  dotnet build
+  cd /Tests/Grafika.Test
+  dotnet test
