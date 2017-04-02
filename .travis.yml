@@ -16,6 +16,6 @@ before_script:
   dotnet restore
 
 script:
-  dotnet build
-  cd /Tests/Grafika.Test
-  dotnet test
+  - dotnet build
+  - cd /Tests/Grafika.Test
+  - dotnet test
