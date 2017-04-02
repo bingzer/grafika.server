@@ -9,11 +9,11 @@
 @inject IOptions<FacebookOAuthProviderConfiguration> facebookOpts
 @inject IOptions<ContentConfiguration> contentOpts
 @{
+    var url = Url.ActionContext.HttpContext.Request.GetServerUrl().ToString();
     var contentConfig = contentOpts.Value;
-    var contentUrl = contentConfig.Url;
-    var animationUrl = Utility.CombineUrl(contentUrl, "animations", Model.Id);
-    var thumbnailUrl = Utility.CombineUrl(animationUrl, "thumbnail");
-    var userUrl = Utility.CombineUrl(contentUrl, "users", Model.UserId);
+    var animationUrl = Utility.CombineUrl(url, "animations", Model.Id, "seo");
+    var thumbnailUrl = Utility.CombineUrl(url, "animations", Model.Id, "thumbnail");
+    var userUrl = Utility.CombineUrl(url, "users", Model.UserId);
     var description = "Grafika Animation - " + (string.IsNullOrEmpty(Model.Description) ? Model.Name : Model.Description);
 }
 <head>
