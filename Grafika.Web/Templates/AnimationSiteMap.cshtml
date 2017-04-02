@@ -2,14 +2,23 @@
 @model IEnumerable<Grafika.Animations.Animation>
 @{ 
     var contentUrl = ViewBag.ContentUrl;
+    var apiUrl = ViewBag.ApiUrl;
 }
-
-<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
     @foreach (var anim in Model)
     {
-        <sitemap>
-            <loc>@Grafika.Utilities.Utility.CombineUrl(contentUrl, "animations", anim.Id)</loc>
-            <lastmod>@DateTimeOffset.FromUnixTimeMilliseconds(anim.DateModified.Value).ToString("yyyy-MM-ddTHH:mm:ssZ")</lastmod>
-        </sitemap>
+        var animationUrl = Grafika.Utilities.Utility.CombineUrl(apiUrl, "animations", anim.Id);
+        var lastModified = DateTimeOffset.FromUnixTimeMilliseconds(anim.DateModified.Value).ToString("yyyy-MM-dd");
+    <url>
+        <loc>@Grafika.Utilities.Utility.CombineUrl(animationUrl, "seo")</loc>
+        <lastmod>@lastModified</lastmod>
+        <image:image>
+            <image:loc>@Grafika.Utilities.Utility.CombineUrl(animationUrl, "thumbnail")</image:loc>
+            <image:title>Grafika Animation - @anim.Name</image:title>
+            <image:caption>@anim.Name</image:caption>
+        </image:image>
+        <changefreq>monthly</changefreq>
+    </url>
     }
-</sitemapindex>
+</urlset>

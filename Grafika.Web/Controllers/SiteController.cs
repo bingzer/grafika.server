@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 using Grafika.Services.Models;
 using Grafika.Services.Emails;
 using Grafika.Web.Models;
+using Grafika.Web.Extensions;
 
 namespace Grafika.Web.Controllers
 {
@@ -24,7 +25,20 @@ namespace Grafika.Web.Controllers
             [FromServices] IOptions<ContentConfiguration> contentOpts)
         {
             ViewBag.ContentUrl = contentOpts.Value.Url;
-            var animations = await animationService.List(new AnimationQueryOptions { IsPublic = true, IsRemoved = false, PageSize = 100 });
+            ViewBag.ApiUrl = Request.GetServerUrl().ToString();
+
+            var queryOptions = new AnimationQueryOptions
+            {
+                IsPublic = true,
+                IsRemoved = false,
+                PageSize = 100,
+                Sort = new SortOptions
+                {
+                    Direction = SortDirection.Descending,
+                    Name = "views"
+                }
+            };
+            var animations = await animationService.List(queryOptions);
 
             var result = View("AnimationSiteMap", animations);
             result.ContentType = ContentTypes.Xml;
