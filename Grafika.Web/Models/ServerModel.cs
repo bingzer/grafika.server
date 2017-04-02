@@ -1,4 +1,6 @@
-﻿namespace Grafika.Web.Models
+﻿using Newtonsoft.Json;
+
+namespace Grafika.Web.Models
 {
     public class ServerModel
     {
@@ -7,5 +9,8 @@
         public string Description { get; set; }
         public string Url { get; set; }
         public string HealthUrl { get; set; }
+
+        [JsonProperty("environment")]
+        public string EnvironmentName { get; set; }
     }
 }
