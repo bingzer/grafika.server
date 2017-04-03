@@ -102,7 +102,11 @@ namespace Grafika.Test.Services.Users
                 Email = "user1@email.com",
                 Activation = new UserActivation { Hash = "hashForUser1", Timestamp = DateTime.UtcNow },
                 Local = new UserLocal { IsRegistered = true, Password = "passForUser1" },
-                Stats = new UserStats { DateLastSeen = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() }
+                Stats = new UserStats { DateLastSeen = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() },
+                Prefs = new UserPreference(),
+                Google = new UserOAuth(),
+                Facebook = new UserOAuth(),
+                Subscriptions = new UserSubscriptions()
             };
 
             var validator = new UserValidator();
@@ -110,10 +114,12 @@ namespace Grafika.Test.Services.Users
 
             Assert.Null(targetUser.Email);
             Assert.Null(targetUser.Activation);
-            Assert.NotNull(targetUser.Local);
-            Assert.NotNull(targetUser.Local.IsRegistered);
-            Assert.Null(targetUser.Local.Password);
+            Assert.Null(targetUser.Local);
             Assert.Null(targetUser.Stats);
+            Assert.Null(targetUser.Google);
+            Assert.Null(targetUser.Facebook);
+            Assert.Null(targetUser.Subscriptions);
+            Assert.Null(targetUser.Prefs);
         }
 
         [Fact]
@@ -125,7 +131,11 @@ namespace Grafika.Test.Services.Users
                 Email = "user1@email.com",
                 Activation = new UserActivation { Hash = "hashForUser1", Timestamp = DateTime.UtcNow },
                 Local = new UserLocal { IsRegistered = true, Password = "passForUser1" },
-                Stats = new UserStats { DateLastSeen = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() }
+                Stats = new UserStats { DateLastSeen = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() },
+                Prefs = new UserPreference(),
+                Google = new UserOAuth(),
+                Facebook = new UserOAuth(),
+                Subscriptions = new UserSubscriptions()
             };
 
             var validator = new UserValidator();
@@ -133,10 +143,12 @@ namespace Grafika.Test.Services.Users
 
             Assert.Null(targetUser.Email);
             Assert.Null(targetUser.Activation);
-            Assert.NotNull(targetUser.Local);
-            Assert.NotNull(targetUser.Local.IsRegistered);
-            Assert.Null(targetUser.Local.Password);
+            Assert.Null(targetUser.Local);
             Assert.Null(targetUser.Stats);
+            Assert.Null(targetUser.Google);
+            Assert.Null(targetUser.Facebook);
+            Assert.Null(targetUser.Subscriptions);
+            Assert.Null(targetUser.Prefs);
         }
     }
 }
