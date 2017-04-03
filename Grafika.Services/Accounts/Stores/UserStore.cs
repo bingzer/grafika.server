@@ -51,7 +51,7 @@ namespace Grafika.Services.Accounts.Stores
                 Activation = user.Activation,
                 IsActive = user.IsActive,
                 Prefs = AccountsUtils.NewUserPreference(username, _contentConfig),
-                Roles = new List<string> { Roles.User },
+                Roles = new HashSet<string> { Roles.User },
                 Stats = AccountsUtils.NewUserStats(now),
                 Subscriptions = AccountsUtils.NewUserSubscriptions(),
                 Local = user.Local,

@@ -91,7 +91,7 @@ namespace Grafika.Services.Animations
             var totalCount = _dataContext.Animations.Count(criteria);
             var random = Utility.RandomlyPickFrom(0, totalCount);
 
-            return query.Where(criteria).Skip(random).AsQueryable();
+            return query.Where(criteria).Skip(random).Take(1).AsQueryable();
         }
 
         private IQueryable<Animation> CreateRelatedToQuery(IQueryable<Animation> query, AnimationQueryOptions options)
