@@ -73,7 +73,7 @@ namespace Grafika
         /// Called by JSON.NET to skip serialization
         /// when roles is empty
         /// </summary>
-        public bool ShouldSerializeRoles() => Roles.Any();
+        public bool ShouldSerializeRoles() => Roles != null && Roles.Any();
     }
 
     [BsonIgnoreExtraElements]
