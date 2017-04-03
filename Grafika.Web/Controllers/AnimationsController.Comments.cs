@@ -10,7 +10,7 @@ namespace Grafika.Web.Controllers
     {
         [AllowAnonymous]
         [HttpGet("{animationId}/comments")]
-        public async Task<IActionResult> GetRemoteCommentUrl([FromServices] ICommentService disqusService, 
+        public async Task<IActionResult> GetRemoteCommentUrl([FromServices] ICommentService commentService, 
             [FromServices] IUserService userService,
             string animationId)
         {
@@ -22,7 +22,7 @@ namespace Grafika.Web.Controllers
             if (User.Identity as IUserIdentity != null)
                 user = new User(User.Identity as IUserIdentity);
 
-            var url = await disqusService.GenerateDisqusRemoteUrl(animation, user);
+            var url = await commentService.GenerateDisqusRemoteUrl(animation, user);
 
             return Redirect(url.ToString());
         }
