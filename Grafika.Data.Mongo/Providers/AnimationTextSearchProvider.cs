@@ -21,13 +21,12 @@ namespace Grafika.Data.Mongo.Providers
                 filter &= Builders<Animation>.Filter.Eq(anim => anim.IsRemoved, options.IsRemoved);
 
             var skip = (options.PageNumber - 1) * options.PageSize;
-            var findFluent = dataset.As<IMongoCollection<Animation>>()
+            var animations = await dataset.As<IMongoCollection<Animation>>()
                 .Find(filter)
                 .Skip(skip)
                 .Limit(options.PageSize)
-                .SortByDescending(anim => anim.DateModified);
-
-            var animations = await findFluent.ToListAsync();
+                .OrderBy(options.Sort)
+                .ToListAsync();
 
             return new StaticPaging<Animation>(animations, options);
         }
