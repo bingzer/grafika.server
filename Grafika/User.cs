@@ -35,7 +35,7 @@ namespace Grafika
             Username = user.Username;
 
             if (user.Roles != null)
-                Roles = new List<string>(user.Roles);
+                Roles = new HashSet<string>(user.Roles);
         }
         #endregion
 
@@ -149,9 +149,12 @@ namespace Grafika
     public class UserSubscriptions
     {
         [BsonElement("emailMarketing")]
+        [JsonProperty("emailMarketing")]
         public bool? EmailMarketing { get; set; }
+        [JsonProperty("emailAnimationComment")]
         [BsonElement("emailAnimationComment")]
         public bool? EmailOnComments { get; set; }
+        [JsonProperty("emailAnimationRating")]
         [BsonElement("emailAnimationRating")]
         public bool? EmailOnRating { get; set; }
     }
