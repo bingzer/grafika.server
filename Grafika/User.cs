@@ -48,6 +48,7 @@ namespace Grafika
         [BsonElement("lastName")]
         public string LastName { get; set; }
         [BsonElement("active")]
+        [JsonProperty("active")]
         public bool? IsActive { get; set; }
 
         [BsonElement("prefs")]

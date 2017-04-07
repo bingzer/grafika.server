@@ -46,7 +46,7 @@ namespace Grafika.Services
             if (options == default(TQueryOptions))
                 options = new TQueryOptions();
 
-            IEnumerable<TEntity> query = await Query(options);
+            IEnumerable<TEntity> query = await QueryAndOrderBy(options);
             if (!(query is IPaging))
             {
                 query = new Paging<TEntity>(query, options);
@@ -75,7 +75,17 @@ namespace Grafika.Services
             _dataContext.Dispose();
         }
 
+        protected virtual Task<IEnumerable<TEntity>> OrderBy(IEnumerable<TEntity> query, TQueryOptions options = default(TQueryOptions))
+        {
+            return Task.FromResult(query);
+        }
+
         protected abstract Task<IEnumerable<TEntity>> Query(TQueryOptions options = default(TQueryOptions));
 
+        private async Task<IEnumerable<TEntity>> QueryAndOrderBy(TQueryOptions options = default(TQueryOptions))
+        {
+            var query = await Query(options);
+            return await OrderBy(query, options);
+        }
     }
 }
