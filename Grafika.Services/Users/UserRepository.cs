@@ -38,5 +38,25 @@ namespace Grafika.Services.Users
 
             return query;
         }
+
+        protected override Task<IEnumerable<User>> OrderBy(IEnumerable<User> query, UserQueryOptions options = null)
+        {
+            var sortOptions = options.Sort;
+
+            switch (sortOptions?.Name)
+            {
+                case "lastSeen" when sortOptions.Direction == SortDirection.Ascending:
+                    query = query.OrderBy(u => u.Stats?.DateLastSeen);
+                    break;
+                case "lastSeen" when sortOptions.Direction == SortDirection.Descending:
+                    query = query.OrderByDescending(u => u.Stats?.DateLastSeen);
+                    break;
+                default:
+                    query = query.OrderBy(u => u.Id);
+                    break;
+            }
+
+            return Task.FromResult(query);
+        }
     }
 }

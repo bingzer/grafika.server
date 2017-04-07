@@ -19,8 +19,12 @@ namespace Grafika.Web.Controllers
         }
 
         [Authorize(Roles = Roles.Developer)]
-        public async Task<IActionResult> GetUsers([FromQuery] UserQueryOptions options = null)
+        public async Task<IActionResult> GetUsers([FromQuery] UserQueryOptions options, [FromQuery] int? skip, [FromQuery] int? limit)
         {
+            if (options == null)
+                options = new UserQueryOptions();
+            options.SetPaging(skip, limit);
+
             var users = await _service.List(options);
             return Ok(users);
         }

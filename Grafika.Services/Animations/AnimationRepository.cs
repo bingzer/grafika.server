@@ -48,14 +48,13 @@ namespace Grafika.Services.Animations
             if (!string.IsNullOrEmpty(options.RelatedToAnimationId))
                 query = CreateRelatedToQuery(query, options);
 
-            query = OrderBy(query, options.Sort);
-
             return query;
         }
 
-        #region Private Supporting Methods
-        private IQueryable<Animation> OrderBy(IQueryable<Animation> query, SortOptions sortOptions)
+        protected override Task<IEnumerable<Animation>> OrderBy(IEnumerable<Animation> query, AnimationQueryOptions options)
         {
+            var sortOptions = options.Sort;
+
             // order by
             switch (sortOptions?.Name)
             {
@@ -81,8 +80,11 @@ namespace Grafika.Services.Animations
                     query = query.OrderByDescending(anim => anim.DateModified);
                     break;
             }
-            return query;
+
+            return Task.FromResult(query);
         }
+
+        #region Private Supporting Methods
 
         private IQueryable<Animation> CreateRandomQuery(IQueryable<Animation> query)
         {
