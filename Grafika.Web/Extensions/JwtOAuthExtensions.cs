@@ -37,6 +37,7 @@ namespace Grafika.Web.Extensions
                     IssuerSigningKey = tokenProvider.SecurityKey,
                     ValidateAudience = false,
                     ValidateIssuer = false,
+                    ValidateLifetime = false,
                     AuthenticationType = "Bearer"
                 },
                 Events = new JwtBearerEvents { OnMessageReceived = FindToken }
