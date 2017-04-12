@@ -22,7 +22,7 @@ namespace Grafika.Web.Controllers
             if (User.Identity as IUserIdentity != null)
                 user = new User(User.Identity as IUserIdentity);
 
-            var url = await commentService.GenerateDisqusRemoteUrl(animation, user);
+            var url = await commentService.GenerateRemoteUrl(animation, user);
 
             return Redirect(url.ToString());
         }
