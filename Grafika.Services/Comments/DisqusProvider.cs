@@ -41,7 +41,7 @@ namespace Grafika.Services.Comments
             return new AuthenticationToken
             {
                 Id = _disqusConfig.Id,
-                Token = GeneratePayload(userdata.ToJson())
+                Token = GenerateSsoPayload(userdata.ToJson())
             };
         }
 
@@ -52,9 +52,10 @@ namespace Grafika.Services.Comments
             var disqusToken = context.User == null ? AuthenticationToken.Empty : await GenerateAuthenticationToken(context.User);
             var userToken = context.UserToken;
 
+            var seoUrl = Utility.CombineUrl(serverUrl, "animations", animation.Id, "seo");
             var animUrl = Utility.CombineUrl(serverUrl, "animations", animation.Id);
             var postUrl = Utility.CombineUrl(animUrl, "comments");
-            var queryString = $"url={animUrl}&title={animation.Name}&shortname=grafika-app&identifier={animation.Id}&pub={disqusToken.Id}&disqusToken={disqusToken.Token}&postUrl={postUrl}&jwtToken={userToken.Token}";
+            var queryString = $"url={seoUrl}&title={animation.Name}&shortname=grafika-app&identifier={animation.Id}&pub={disqusToken.Id}&disqusToken={disqusToken.Token}&postUrl={postUrl}&jwtToken={userToken.Token}";
 
             var urlBuilder = new UriBuilder(Utility.CombineUrl(_contentConfig.Url, "app", "content", "comment.html"));
             urlBuilder.Query = queryString;
@@ -64,7 +65,7 @@ namespace Grafika.Services.Comments
 
         #region https://github.com/disqus/DISQUS-API-Recipes/blob/master/sso/cs/DisqusSSO.cs
 
-        private string GeneratePayload(string serializedUserData)
+        private string GenerateSsoPayload(string serializedUserData)
         {
             byte[] userDataAsBytes = Encoding.UTF8.GetBytes(serializedUserData);
 
