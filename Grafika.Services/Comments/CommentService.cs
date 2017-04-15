@@ -26,7 +26,7 @@ namespace Grafika.Services.Disqus
             return _provider.GenerateAuthenticationToken(user);
         }
 
-        public async Task<Uri> GenerateDisqusRemoteUrl(Animation animation, User user = null)
+        public async Task<Uri> GenerateRemoteUrl(Animation animation, User user = null)
         {
             var context = new CommentAuthenticationContext
             {

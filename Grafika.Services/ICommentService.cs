@@ -7,6 +7,6 @@ namespace Grafika.Services
     public interface ICommentService : IService
     {
         Task<AuthenticationToken> GenerateAuthenticationToken(IUser user);
-        Task<Uri> GenerateDisqusRemoteUrl(Animation animation, User user);
+        Task<Uri> GenerateRemoteUrl(Animation animation, User user);
     }
 }
