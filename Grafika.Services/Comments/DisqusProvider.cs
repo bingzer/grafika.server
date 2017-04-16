@@ -35,7 +35,7 @@ namespace Grafika.Services.Comments
                 username = user.Username,
                 email = user.Email,
                 avatar = await _userService.GetAvatarOrBackdropUrl(user.Id, "avatar"),
-                url = Utility.CombineUrl(_serverConfig.Url, "users", user.Id)
+                url = Utility.CombineUrl(_serverConfig.Url, "users", user.Id, "seo")
             };
 
             return new AuthenticationToken

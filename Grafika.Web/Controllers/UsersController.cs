@@ -4,6 +4,10 @@ using Grafika.Services;
 using Microsoft.AspNetCore.Authorization;
 using Grafika.Web.Models;
 using Grafika.Web.Filters;
+using Microsoft.Extensions.Options;
+using Grafika.Configurations;
+using Grafika.Web.Extensions;
+using Grafika.Utilities;
 
 namespace Grafika.Web.Controllers
 {
@@ -35,6 +39,23 @@ namespace Grafika.Web.Controllers
         {
             var user = await _service.Get(userId);
             return Ok(user);
+        }
+
+        [AllowAnonymous]
+        [HttpGet("{userId}/seo"), HttpGet("{userId}/link")]
+        public async Task<IActionResult> SeoCrawlerLink([FromServices] IOptions<ClientConfiguration> clientConfig, 
+            [FromServices] IOptions<ContentConfiguration> contentConfig,
+            string userId)
+        {
+            var user = await _service.Get(userId);
+            if (user == null)
+                return NotFound();
+
+            if (Request.IsCrawler(clientConfig.Value))
+                return View("UserSeo", user);
+
+            var redirectUrl = Utility.CombineUrl(contentConfig.Value.Url, "users", user.Id);
+            return Redirect(redirectUrl);
         }
 
         [SkipModelValidation]
