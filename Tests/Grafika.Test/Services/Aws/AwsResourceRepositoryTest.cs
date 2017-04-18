@@ -70,5 +70,7 @@ namespace Grafika.Test.Services.Aws
     class TestingResource : IResource
     {
         public string Id { get; set; }
+        public string Type { get; set; }
+        public string ContentType { get; set; }
     }
 }
