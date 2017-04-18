@@ -98,21 +98,37 @@ namespace Grafika.Services.Animations
             await Repository.Update(animation);
         }
 
-        public Task<string> GetThumbnailUrl(string animationId)
+        //public Task<string> GetThumbnailUrl(string animationId)
+        //{
+        //    return _resRepo.GetResourceUrl(animationId, "thumbnail");
+        //}
+
+        //public async Task<ISignedUrl> CreateThumbnail(string animationId)
+        //{
+        //    var animation = await GetById(animationId);
+
+        //    return await _resRepo.CreateSignedUrl(animation, Thumbnail.ResourceId, ContentTypes.Png);
+        //}
+
+        //public Task<bool> HasThumbnail(string animationId)
+        //{
+        //    return _resRepo.HasResource(animationId, Thumbnail.ResourceId);
+        //}
+
+        public Task<string> GetResourceUrl(string animationId, string resourceId)
         {
-            return _resRepo.GetResourceUrl(animationId, "thumbnail");
+            return _resRepo.GetResourceUrl(animationId, resourceId);
         }
 
-        public async Task<ISignedUrl> CreateThumbnail(string animationId)
+        public async Task<ISignedUrl> CreateResource(string animationId, IResource resource)
         {
             var animation = await GetById(animationId);
-
-            return await _resRepo.CreateSignedUrl(animation, Thumbnail.ResourceId, ContentTypes.Png);
+            return await _resRepo.CreateSignedUrl(animation, resource.Id, resource.ContentType);
         }
 
-        public Task<bool> HasThumbnail(string animationId)
+        public Task<bool> HasResource(string animationId, string resourceId)
         {
-            return _resRepo.HasResource(animationId, Thumbnail.ResourceId);
+            return _resRepo.HasResource(animationId, resourceId);
         }
 
         protected internal override async Task<Animation> CreateEntityForUpdate(Animation source)
@@ -138,6 +154,7 @@ namespace Grafika.Services.Animations
                 Timer = source.Timer,
                 TotalFrame = source.TotalFrame,
                 UserId = source.UserId,
+                Resources = source.Resources,
                 // UserId = NEVER
                 Width = source.Width
             };

@@ -57,7 +57,7 @@ namespace Grafika.Animations
         public int? TotalFrame { get; set; }
 
         [BsonElement("resources")]
-        public IEnumerable<IResource> Resources { get; set; }
+        public IEnumerable<Resource> Resources { get; set; }
         [BsonElement("client")]
         public Client Client { get; set; }
 
