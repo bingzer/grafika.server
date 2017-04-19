@@ -32,7 +32,7 @@ namespace Grafika.Test.Services.Animations
             mockValidator.Setup(c => c.Validate(It.IsAny<Animation>()))
                 .Verifiable();
 
-            var service = new AnimationService(MockHelpers.ServiceContext.Object, mockRepo.Object, mockValidator.Object, null, null);
+            var service = new AnimationService(MockHelpers.ServiceContext.Object, mockRepo.Object, mockValidator.Object);
             var animation = await service.Delete("toDelete");
 
             Assert.Equal(true, target.IsRemoved);
@@ -50,7 +50,7 @@ namespace Grafika.Test.Services.Animations
                 .Returns(Task.FromResult(0))
                 .Verifiable();
 
-            var service = new AnimationService(MockHelpers.ServiceContext.Object, mockRepo.Object, null, null, null);
+            var service = new AnimationService(MockHelpers.ServiceContext.Object, mockRepo.Object, null);
             await service.BulkDeleteAnimations(new string[] { "1", "2" });
 
             mockRepo.VerifyAll();

@@ -1,25 +1,15 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Grafika.Animations;
-using System.Linq;
 using System;
 
 namespace Grafika.Services.Animations
 {
     public class AnimationService : EntityService<Animation, AnimationQueryOptions, IAnimationRepository>, IAnimationService
     {
-        private readonly IAwsFrameRepository _frameRepo;
-        private readonly IAwsResourceRepository _resRepo;
-
-        public AnimationService(IServiceContext userContext, 
-            IAnimationRepository repo, 
-            IAnimationValidator validator, 
-            IAwsFrameRepository frameRepo,
-            IAwsResourceRepository resRepo)
+        public AnimationService(IServiceContext userContext, IAnimationRepository repo, IAnimationValidator validator)
             : base(userContext, repo, validator)
         {
-            _frameRepo = frameRepo;
-            _resRepo = resRepo;
         }
 
         public override async Task<Animation> Delete(string entityId)
@@ -65,20 +55,6 @@ namespace Grafika.Services.Animations
             return Task.FromResult(animation);
         }
 
-        public async Task<FrameData> GetFrameData(string animationId, FrameData frameData)
-        {
-            var animation = await GetById(animationId);
-
-            return await _frameRepo.GetFrameData(animation, frameData);
-        }
-
-        public async Task PostFrameData(string animationId, FrameData frameData)
-        {
-            var animation = await GetById(animationId);
-
-            await _frameRepo.PostFrameData(animation, frameData);
-        }
-
         public async Task IncrementViewCount(string animationId)
         {
             var animation = await GetById(animationId);
@@ -96,39 +72,6 @@ namespace Grafika.Services.Animations
 
             animation.Rating = double.Parse(((animation.Rating + rating) / 2).Value.ToString("0.00"));
             await Repository.Update(animation);
-        }
-
-        //public Task<string> GetThumbnailUrl(string animationId)
-        //{
-        //    return _resRepo.GetResourceUrl(animationId, "thumbnail");
-        //}
-
-        //public async Task<ISignedUrl> CreateThumbnail(string animationId)
-        //{
-        //    var animation = await GetById(animationId);
-
-        //    return await _resRepo.CreateSignedUrl(animation, Thumbnail.ResourceId, ContentTypes.Png);
-        //}
-
-        //public Task<bool> HasThumbnail(string animationId)
-        //{
-        //    return _resRepo.HasResource(animationId, Thumbnail.ResourceId);
-        //}
-
-        public Task<string> GetResourceUrl(string animationId, string resourceId)
-        {
-            return _resRepo.GetResourceUrl(animationId, resourceId);
-        }
-
-        public async Task<ISignedUrl> CreateResource(string animationId, IResource resource)
-        {
-            var animation = await GetById(animationId);
-            return await _resRepo.CreateSignedUrl(animation, resource.Id, resource.ContentType);
-        }
-
-        public Task<bool> HasResource(string animationId, string resourceId)
-        {
-            return _resRepo.HasResource(animationId, resourceId);
         }
 
         protected internal override async Task<Animation> CreateEntityForUpdate(Animation source)

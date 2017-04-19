@@ -36,6 +36,8 @@ namespace Grafika.Services
                 .AddScoped<IAnimationService, AnimationService>()
                 .AddScoped<IAnimationEmailService, AnimationEmailService>()
                 .AddScoped<IAnimationRepository, AnimationRepository>()
+                .AddScoped<IFrameService, FrameService>()
+                .AddScoped<IResourceService, ResourceService>()
                 .AddSingleton<IAnimationValidator, AnimationValidator>()
                 .AddSingleton<IFrameDataProcessingFactory, FrameDataProcesingFactory>()
                 .AddScoped<FrameDataDeflatedProcessingStrategy, FrameDataDeflatedProcessingStrategy>()

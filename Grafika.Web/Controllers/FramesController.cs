@@ -1,13 +1,22 @@
-﻿using Grafika.Animations;
-using Grafika.Web.Extensions;
-using Microsoft.AspNetCore.Authorization;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Grafika.Services;
+using Grafika.Animations;
+using Grafika.Web.Extensions;
 
 namespace Grafika.Web.Controllers
 {
-    public partial class AnimationsController
+    [Produces("application/json")]
+    [Route("animations"), Route("api/animations")]
+    public class FramesController : Controller
     {
+        private readonly IFrameService _service;
+
+        public FramesController(IFrameService service)
+        {
+            _service = service;
+        }
 
         [AllowAnonymous]
         [HttpGet("{animationId}/frames")]

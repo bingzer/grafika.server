@@ -1,12 +1,22 @@
-﻿using Grafika.Animations;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
+using Grafika.Services;
+using Grafika.Animations;
 
 namespace Grafika.Web.Controllers
 {
-    public partial class AnimationsController
+    [Produces("application/json")]
+    [Route("animations"), Route("api/animations")]
+    public class ResourcesController : Controller
     {
+        private readonly IResourceService _service;
+
+        public ResourcesController(IResourceService service)
+        {
+            _service = service;
+        }
+
         [AllowAnonymous]
         [HttpHead("{animationId}/thumbnail")]
         public Task<IActionResult> HasThumbnail(string animationId)
@@ -26,7 +36,7 @@ namespace Grafika.Web.Controllers
         {
             return CreateResourceSignedUrl(animationId, Thumbnail.Create());
         }
-        
+
         [AllowAnonymous]
         [HttpHead("{animationId}/resources/{resourceId}")]
         public async Task<IActionResult> HasResource(string animationId, string resourceId)
@@ -50,6 +60,14 @@ namespace Grafika.Web.Controllers
         {
             var url = await _service.CreateResource(animationId, resource);
             return Ok(url);
+        }
+
+        [HttpDelete("{animationId}/resources/{resourceId}")]
+        public async Task<IActionResult> DeleteResource(string animationId, string resourceId)
+        {
+            if (await _service.DeleteResource(animationId, resourceId))
+                return Ok();
+            return BadRequest();
         }
     }
 }

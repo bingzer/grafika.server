@@ -14,7 +14,7 @@ namespace Grafika.Web.Controllers
 {
     [Produces("application/json")]
     [Route("[controller]"), Route("api/[controller]")]
-    public partial class AnimationsController : Controller
+    public class AnimationsController : Controller
     {
         private readonly IAnimationService _service;
 

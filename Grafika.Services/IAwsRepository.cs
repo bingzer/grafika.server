@@ -21,6 +21,7 @@ namespace Grafika.Services
         Task<ISignedUrl> CreateSignedUrl(Animation animation, string resourceId, string contentType);
         Task<string> GetResourceUrl(string animationId, string resourceId);
         Task<bool> HasResource(string animationId, string resourceId);
+        Task<bool> DeleteResource(string animationId, string resourceId);
     }
 
     public interface IAwsUsersRepository : IAwsRepository

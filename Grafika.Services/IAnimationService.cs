@@ -15,18 +15,7 @@ namespace Grafika.Services
         /// <returns></returns>
         Task<Animation> PrepareNewAnimation(Animation animation, User user);
 
-        //Task<string> GetThumbnailUrl(string animationId);
-        //Task<ISignedUrl> CreateThumbnail(string animationId);
-        //Task<bool> HasThumbnail(string animationId);
-
-        Task<string> GetResourceUrl(string animationId, string resourceId);
-        Task<ISignedUrl> CreateResource(string animationId, IResource resource);
-        Task<bool> HasResource(string animationId, string resourceId);
-
         Task IncrementViewCount(string animationId);
         Task SubmitRating(string animationId, int rating);
-
-        Task<FrameData> GetFrameData(string animationId, FrameData frameData);
-        Task PostFrameData(string animationId, FrameData frameData);
     }
 }

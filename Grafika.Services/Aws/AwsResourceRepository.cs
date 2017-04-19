@@ -57,5 +57,17 @@ namespace Grafika.Services.Aws
             var url = Utility.CombineUrl(Config.Url, Config.Bucket, Config.Folder, "animations", animationId, resourceId);
             return Task.FromResult(url);
         }
+
+        public async Task<bool> DeleteResource(string animationId, string resourceId)
+        {
+            var deleteRequest = new DeleteObjectRequest
+            {
+                BucketName = Config.Bucket,
+                Key = Utility.CombineUrl(Config.Folder, "animations", animationId, resourceId)
+            };
+
+            var response = await Client.DeleteObjectAsync(deleteRequest);
+            return true;
+        }
     }
 }
