@@ -20,7 +20,7 @@ namespace Grafika.Test.Data.Mongo
 
             var entityToInsert = new BaseEntity { Id = "BaseEntityId" };
 
-            var dataSet = new MongoDataSet<BaseEntity>(mockCollection.Object);
+            var dataSet = new TestingMongoDataSet(mockCollection.Object);
             var entity = await dataSet.AddAsync(entityToInsert);
 
             mockCollection.Verify(c => 
@@ -52,7 +52,7 @@ namespace Grafika.Test.Data.Mongo
                     return Task.FromResult(mockCursor.Object);
                 });
 
-            var dataSet = new MongoDataSet<BaseEntity>(mockCollection.Object);
+            var dataSet = new TestingMongoDataSet(mockCollection.Object);
             var entity = await dataSet.FindAsync(entityToFind);
 
             mockCollection.Verify(c =>
@@ -71,7 +71,7 @@ namespace Grafika.Test.Data.Mongo
 
             var entityToRemove = new BaseEntity { Id = "BaseEntityId" };
 
-            var dataSet = new MongoDataSet<BaseEntity>(mockCollection.Object);
+            var dataSet = new TestingMongoDataSet(mockCollection.Object);
             var entity = await dataSet.RemoveAsync(entityToRemove);
 
             mockCollection.Verify(c =>
@@ -90,7 +90,7 @@ namespace Grafika.Test.Data.Mongo
 
             var entityToUpdate = new BaseEntity { Id = "BaseEntityId" };
 
-            var dataSet = new MongoDataSet<BaseEntity>(mockCollection.Object);
+            var dataSet = new TestingMongoDataSet(mockCollection.Object);
             var entity = await dataSet.UpdateAsync(entityToUpdate);
 
             mockCollection.Verify(c =>
@@ -103,18 +103,16 @@ namespace Grafika.Test.Data.Mongo
             );
         }
 
-        [Fact]
-        public void TestAs()
+        class TestingMongoDataSet : MongoDataSet<BaseEntity>
         {
-            var mockCollection = new Mock<IMongoCollection<BaseEntity>>();
-            var collection = mockCollection.Object;
+            public TestingMongoDataSet(IMongoCollection<BaseEntity> collection) : base(collection)
+            {
+            }
 
-            var dataSet = new MongoDataSet<BaseEntity>(collection);
-
-            Assert.Same(collection, dataSet.As<IMongoCollection<BaseEntity>>());
-
-
-            Assert.Throws<NotImplementedException>(() => dataSet.As<IEnumerable<BaseEntity>>());
+            public override Task EnsureIndex()
+            {
+                return Task.FromResult(0);
+            }
         }
     }
 }

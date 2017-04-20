@@ -9,11 +9,13 @@ namespace Grafika.Test
     {
         public IDataSet<Animation> Animations { get; private set; }
         public IDataSet<User> Users { get; private set; }
+        public IDataSet<Background> Backgrounds { get; private set; }
 
         public InMemoryDataContext()
         {
             Animations = new InMemoryDataSet<Animation>();
             Users = new InMemoryDataSet<User>();
+            Backgrounds = new InMemoryDataSet<Background>();
         }
 
         public IDataSet<IEntity> Set<IEntity>() where IEntity : class
@@ -22,6 +24,8 @@ namespace Grafika.Test
                 return (IDataSet<IEntity>)Animations;
             if (typeof(IEntity) == typeof(User))
                 return (IDataSet<IEntity>)Users;
+            if (typeof(IEntity) == typeof(Background))
+                return (IDataSet<IEntity>)Backgrounds;
 
             throw new NotImplementedException("Not implemented " + typeof(IEntity));
         }

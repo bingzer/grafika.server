@@ -1,4 +1,5 @@
 ﻿using Grafika.Animations;
+using Grafika.Data.Mongo.Supports;
 using MongoDB.Driver;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -7,7 +8,7 @@ namespace Grafika.Data.Mongo.Providers
 {
     class AnimationTextSearchProvider : ITextSearchProvider<Animation, AnimationQueryOptions>
     {
-        public async Task<IEnumerable<Animation>> TextSearchAsync(IDataSet<Animation> dataset, AnimationQueryOptions options)
+        public async Task<IEnumerable<Animation>> TextSearchAsync(IDataSet<Animation> dataSet, AnimationQueryOptions options)
         {
             var filter = Builders<Animation>.Filter.Text(options.Term, new TextSearchOptions { CaseSensitive = false });
 
@@ -21,7 +22,7 @@ namespace Grafika.Data.Mongo.Providers
                 filter &= Builders<Animation>.Filter.Eq(anim => anim.IsRemoved, options.IsRemoved);
 
             var skip = (options.PageNumber - 1) * options.PageSize;
-            var animations = await dataset.As<IMongoCollection<Animation>>()
+            var animations = await dataSet.ToMongoDataSet().Collection
                 .Find(filter)
                 .Skip(skip)
                 .Limit(options.PageSize)

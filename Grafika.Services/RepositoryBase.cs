@@ -12,21 +12,21 @@ namespace Grafika.Services
         where TEntity : class, IEntity
         where TQueryOptions : QueryOptions, new()
     {
-        protected readonly TDataContext _dataContext;
+        protected readonly TDataContext DataContext;
 
         protected RepositoryBase(TDataContext dataContext)
         {
-            _dataContext = dataContext;
+            DataContext = dataContext;
         }
 
         public bool ValidateId(string id)
         {
-            return _dataContext.ValidateId(id);
+            return DataContext.ValidateId(id);
         }
 
         public async Task<TEntity> Add(TEntity entity)
         {
-            return await _dataContext.Set<TEntity>().AddAsync(entity);
+            return await DataContext.Set<TEntity>().AddAsync(entity);
         }
 
         public async Task<TEntity> First(TQueryOptions options = default(TQueryOptions))
@@ -62,17 +62,17 @@ namespace Grafika.Services
 
         public async Task<TEntity> Remove(TEntity entity)
         {
-            return await _dataContext.Set<TEntity>().RemoveAsync(entity);
+            return await DataContext.Set<TEntity>().RemoveAsync(entity);
         }
 
         public async Task<TEntity> Update(TEntity entity)
         {
-            return await _dataContext.Set<TEntity>().UpdateAsync(entity);
+            return await DataContext.Set<TEntity>().UpdateAsync(entity);
         }
 
         public void Dispose()
         {
-            _dataContext.Dispose();
+            DataContext.Dispose();
         }
 
         protected virtual Task<IEnumerable<TEntity>> OrderBy(IEnumerable<TEntity> query, TQueryOptions options = default(TQueryOptions))

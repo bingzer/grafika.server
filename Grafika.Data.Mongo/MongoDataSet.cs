@@ -6,20 +6,20 @@ using Grafika.Utilities;
 
 namespace Grafika.Data.Mongo
 {
-    public class MongoDataSet<TEntity> : DataSet<TEntity>
+    public abstract class MongoDataSet<TEntity> : DataSet<TEntity>, IMongoDataSet<TEntity>
         where TEntity : class, IEntity
     {
-        private readonly IMongoCollection<TEntity> _collection;
+        public IMongoCollection<TEntity> Collection { get; private set; }
 
         public MongoDataSet(IMongoCollection<TEntity> collection) 
             : base(collection.AsQueryable())
         {
-            _collection = collection;
+            Collection = collection;
         }
 
         public override async Task<TEntity> AddAsync(TEntity entity)
         {
-            await _collection.InsertOneAsync(entity, new InsertOneOptions());
+            await Collection.InsertOneAsync(entity, new InsertOneOptions());
             return entity;
         }
 
@@ -27,7 +27,7 @@ namespace Grafika.Data.Mongo
         {
             Ensure.ArgumentNotNull(entity.Id, nameof(entity.Id));
 
-            var findFluent = await _collection.FindAsync(item => item.Id == entity.Id);
+            var findFluent = await Collection.FindAsync(item => item.Id == entity.Id);
             return await findFluent.FirstAsync();
         }
 
@@ -35,7 +35,7 @@ namespace Grafika.Data.Mongo
         {
             Ensure.ArgumentNotNull(entity.Id, nameof(entity.Id));
 
-            await _collection.DeleteOneAsync(item => item.Id == entity.Id);
+            await Collection.DeleteOneAsync(item => item.Id == entity.Id);
             return entity;
         }
 
@@ -44,16 +44,11 @@ namespace Grafika.Data.Mongo
             Ensure.ArgumentNotNull(entity.Id, nameof(entity.Id));
 
             var updateDefinition = new ObjectPartialUpdateDefinitionBuilder<TEntity>(entity).Build();
-            await _collection.UpdateOneAsync(item => item.Id == entity.Id, updateDefinition);
+            await Collection.UpdateOneAsync(item => item.Id == entity.Id, updateDefinition);
 
             return entity;
         }
 
-        public override TEnumerable As<TEnumerable>()
-        {
-            if (typeof(TEnumerable) == typeof(IMongoCollection<TEntity>))
-                return (TEnumerable) _collection;
-            throw new NotImplementedException();
-        }
+        public abstract Task EnsureIndex();
     }
 }

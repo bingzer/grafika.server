@@ -15,6 +15,7 @@ using Grafika.Services.Disqus;
 using Grafika.Services.Emails;
 using Grafika.Services.Syncs;
 using Grafika.Services.Users;
+using Grafika.Services.Backgrounds;
 
 namespace Grafika.Services
 {
@@ -42,7 +43,14 @@ namespace Grafika.Services
                 .AddSingleton<IFrameDataProcessingFactory, FrameDataProcesingFactory>()
                 .AddScoped<FrameDataDeflatedProcessingStrategy, FrameDataDeflatedProcessingStrategy>()
                 .AddScoped<FrameDataRawProcessingStrategy, FrameDataRawProcessingStrategy>()
-            ;
+                ;
+
+            // -- Backgrounds
+            services
+                .AddScoped<IBackgroundService, BackgroundService>()
+                .AddScoped<IBackgroundRepository, BackgroundRepository>()
+                .AddSingleton<IBackgroundValidator, BackgroundValidator>()
+                ;
 
             // -- Aws
             services

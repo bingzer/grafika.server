@@ -2,12 +2,14 @@
 using Grafika.Data;
 using System.Threading.Tasks;
 using MongoDB.Driver;
+using Grafika.Data.Mongo;
+using Grafika.Data.Mongo.Supports;
 
 namespace Grafika.Services.Users.Mongo
 {
     class UserTextSearchProvider : ITextSearchProvider<User, UserQueryOptions>
     {
-        public async Task<IEnumerable<User>> TextSearchAsync(IDataSet<User> dataset, UserQueryOptions options)
+        public async Task<IEnumerable<User>> TextSearchAsync(IDataSet<User> dataSet, UserQueryOptions options)
         {
             var filter = Builders<User>.Filter.Text(options.Term, new TextSearchOptions { CaseSensitive = false });
 
@@ -19,7 +21,7 @@ namespace Grafika.Services.Users.Mongo
                 filter &= Builders<User>.Filter.Eq(user => user.Username, options.Username);
 
             var skip = (options.PageNumber - 1) * options.PageSize;
-            var findFluent = dataset.As<IMongoCollection<User>>()
+            var findFluent = dataSet.ToMongoDataSet().Collection
                 .Find(filter)
                 .Skip(skip)
                 .Limit(options.PageSize)

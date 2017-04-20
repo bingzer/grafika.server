@@ -22,8 +22,11 @@ namespace Grafika.Data.Mongo
 
             services
                 .AddScoped<IDataContext, MongoDbContext>()
+                .AddScoped<IMongoDataContext, MongoDbContext>()
                 .AddScoped<ITextSearchProvider<Animation, AnimationQueryOptions>, AnimationTextSearchProvider>()
                 .AddScoped<IBulkRemoveProvider<Animation>, AnimationBulkRemoveProvider>()
+                .AddScoped<ITextSearchProvider<Background, BackgroundQueryOptions>, BackgroundTextSearchProvider>()
+                .AddScoped<IBulkRemoveProvider<Background>, BackgroundBulkRemoveProvider>()
                 .AddScoped<ITextSearchProvider<User, UserQueryOptions>, UserTextSearchProvider>()
                 ;
         }

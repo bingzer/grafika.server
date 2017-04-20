@@ -1,15 +1,12 @@
 ﻿using Grafika.Animations;
 using MongoDB.Driver;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace Grafika.Data.Mongo.Providers
+namespace Grafika.Data.Mongo.Supports
 {
     internal static class FindFluentExtensions
     {
         /// <summary>
-        /// OrderBy by sort options
+        /// Animation OrderBy by sort options
         /// </summary>
         /// <param name="findFluent"></param>
         /// <param name="sortOptions"></param>
@@ -39,6 +36,31 @@ namespace Grafika.Data.Mongo.Providers
                     break;
                 default:
                     findFluent = findFluent.SortByDescending(anim => anim.DateModified);
+                    break;
+            }
+
+            return findFluent;
+        }
+
+        /// <summary>
+        /// Background OrderBy by sort options
+        /// </summary>
+        /// <param name="findFluent"></param>
+        /// <param name="sortOptions"></param>
+        /// <returns></returns>
+        internal static IFindFluent<Background, Background> OrderBy(this IFindFluent<Background, Background> findFluent, SortOptions sortOptions)
+        {
+            // order by
+            switch (sortOptions?.Name)
+            {
+                case "lastModified" when sortOptions.Direction == SortDirection.Ascending:
+                    findFluent = findFluent.SortBy(q => q.DateModified);
+                    break;
+                case "lastModified" when sortOptions.Direction == SortDirection.Descending:
+                    findFluent = findFluent.SortByDescending(q => q.DateModified);
+                    break;
+                default:
+                    findFluent = findFluent.SortByDescending(q => q.DateModified);
                     break;
             }
 
