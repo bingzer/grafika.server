@@ -1,7 +1,5 @@
-﻿using System;
-using System.Threading.Tasks;
-using MongoDB.Driver;
-using Grafika.Animations;
+﻿using MongoDB.Driver;
+using Grafika.Connections;
 
 namespace Grafika.Data.Mongo
 {

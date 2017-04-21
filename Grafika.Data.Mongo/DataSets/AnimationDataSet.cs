@@ -1,7 +1,7 @@
 ﻿using Grafika.Animations;
-using System;
 using MongoDB.Driver;
 using System.Threading.Tasks;
+using MongoDB.Bson;
 
 namespace Grafika.Data.Mongo.DataSets
 {
@@ -14,8 +14,17 @@ namespace Grafika.Data.Mongo.DataSets
 
         public override Task EnsureIndex()
         {
-            var indexKeyDefinition = new JsonIndexKeysDefinition<Animation>("{ name: \"text\", description: \"text\", author: \"text\" }, { name: \"AnimationTextIndex\", weights: { name: 10, description: 4, author: 2 } }");
-            return Collection.Indexes.CreateOneAsync(indexKeyDefinition);
+            var indexDefinition = new IndexKeysDefinitionBuilder<Animation>()
+                                            .Text(anim => anim.Name)
+                                            .Text(anim => anim.Description)
+                                            .Text(anim => anim.Author);
+            var createIndexOptions = new CreateIndexOptions<Animation>
+            {
+                Name = "AnimationTextIndex",
+                Weights = new { name = 10, description = 4, author = 2 }.ToBsonDocument()
+            };
+
+            return Collection.Indexes.CreateOneAsync(indexDefinition, createIndexOptions);
         }
     }
 }

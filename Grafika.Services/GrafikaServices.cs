@@ -1,7 +1,12 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using MailKit;
+using MailKit.Net.Smtp;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Grafika.Connections;
 using Grafika.Configurations;
 using Grafika.Data.Mongo;
 using Grafika.Services.Accounts;
@@ -11,11 +16,13 @@ using Grafika.Services.Admins;
 using Grafika.Services.Animations;
 using Grafika.Services.Aws;
 using Grafika.Services.Comments;
+using Grafika.Services.Connections;
 using Grafika.Services.Disqus;
 using Grafika.Services.Emails;
 using Grafika.Services.Syncs;
 using Grafika.Services.Users;
 using Grafika.Services.Backgrounds;
+using Grafika.Utilities;
 
 namespace Grafika.Services
 {
@@ -24,10 +31,11 @@ namespace Grafika.Services
         public static void AddGrafika(this IServiceCollection services)
         {
             // -- Grafika.Data.MongoDB
-            services.AddMongoDB();
+            services.AddMongoDb();
 
             services
                 .AddSingleton(AppEnvironment.Default)
+                .AddSingleton<IConnectionManager, ConnectionManager>()
                 .AddScoped<IHttpClient, HttpClientDecorator>()
                 .AddScoped<IHttpClientFactory, HttpClientFactory>()
                 ;
@@ -57,6 +65,7 @@ namespace Grafika.Services
                 .AddScoped<IAwsFrameRepository, AwsFrameRepository>()
                 .AddScoped<IAwsResourceRepository, AwsResourceRepository>()
                 .AddScoped<IAwsUsersRepository, AwsUsersRepository>()
+                .AddScoped<IAwsConnectionHub, AwsConnectionHub>()
                 ;
 
             // -- Users
@@ -85,6 +94,8 @@ namespace Grafika.Services
             services
                 .AddScoped<IEmailService, EmailService>()
                 .AddScoped<ITemplatedEmailService, TemplatedEmailService>()
+                .AddScoped<IEmailConnectionHub, EmailConnectionHub>()
+                .AddScoped<IMailTransport, SmtpClient>()
                 ;
 
             // -- Syncs
@@ -121,6 +132,23 @@ namespace Grafika.Services
                 .AddSingleton<IOptions<DisqusOAuthProviderConfiguration>>(new OptionsWrapper<DisqusOAuthProviderConfiguration>(AppEnvironment.Default.Auth.Disqus))
                 .AddSingleton<IOptions<JwtConfiguration>>(new OptionsWrapper<JwtConfiguration>(AppEnvironment.Default.Auth.Jwt));
                 ;
+        }
+
+        public static void UseGrafika(this IApplicationBuilder app)
+        {
+            app.ApplicationServices.UseMongoDb();
+
+            app.ApplicationServices.Get<IConnectionManager>().Register<IAwsConnectionHub>();
+            app.ApplicationServices.Get<IConnectionManager>().Register<IEmailConnectionHub>();
+
+            var logger = app.ApplicationServices.Get<ILoggerFactory>().CreateLogger("Startup");
+            foreach (var connection in app.ApplicationServices.Get<IConnectionManager>().Connections)
+            {
+                logger.LogInformation("Ensure {0} is ready...", connection.Name);
+
+                connection.EnsureReady().GetAwaiter().GetResult();
+                connection.Dispose();
+            }
         }
     }
 }

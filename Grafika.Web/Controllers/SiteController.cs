@@ -8,10 +8,13 @@ using Grafika.Services.Models;
 using Grafika.Services.Emails;
 using Grafika.Web.Models;
 using Grafika.Web.Extensions;
+using Grafika.Connections;
+using System.Linq;
+using Grafika.Utilities;
 
 namespace Grafika.Web.Controllers
 {
-    [Route("")]
+    [Route(""), Route("api")]
     public class SiteController : Controller
     {
         [AllowAnonymous]
@@ -58,6 +61,20 @@ namespace Grafika.Web.Controllers
 
             await emailService.SendEmail(model);
             return Ok();
+        }
+
+        [AllowAnonymous]
+        [HttpGet("health/{connectionName}")]
+        public async Task<IActionResult> GetHealth([FromServices] IConnectionManager manager, string connectionName)
+        {
+            using (var connection = manager.Connections.FirstOrDefault(conn => conn.Name.EqualsIgnoreCase(connectionName)))
+            {
+                if (connection == null)
+                    return NotFound();
+
+                await connection.CheckStatus();
+                return Ok();
+            }
         }
     }
 }

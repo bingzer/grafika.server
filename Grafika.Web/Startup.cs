@@ -57,6 +57,8 @@ namespace Grafika.Web
             app.UseStaticFiles();
 
             //app.UseScratch();
+
+            app.UseGrafika();
         }
     }
 }

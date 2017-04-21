@@ -5,18 +5,19 @@ using Grafika.Data.Mongo.Supports;
 
 namespace Grafika.Data.Mongo
 {
-    public class MongoConnectionHub : IDataConnectionHub
+    public class MongoConnectionHub : ConnectionHub, IMongoConnectionHub
     {
         private readonly IMongoDataContext _context;
         private readonly IMongoConnector _dbConnector;
 
-        public MongoConnectionHub(IMongoConnector dbConnector, IMongoDataContext context)
+        public MongoConnectionHub(IMongoConnector dbConnector, IMongoDataContext context):
+            base ("MongoDb")
         {
             _context = context;
             _dbConnector = dbConnector;
         }
 
-        public Task EnsureReady()
+        public override Task EnsureReady()
         {
             return Task.WhenAll(
                 _context.Animations.ToMongoDataSet().EnsureIndex(),
@@ -25,19 +26,12 @@ namespace Grafika.Data.Mongo
             );
         }
 
-        public Task<ConnectionStatus> GetStatus()
+        public override Task CheckStatus()
         {
-            var status = new ConnectionStatus();
-            try
-            {
-                status.Status = _dbConnector.Client.Cluster.Description.State == MongoDB.Driver.Core.Clusters.ClusterState.Connected;
-            }
-            catch (Exception e)
-            {
-                status.Exception = e;
-            }
+            if (_dbConnector.Client.Cluster.Description.State != MongoDB.Driver.Core.Clusters.ClusterState.Connected)
+                throw new Exception();
 
-            return Task.FromResult(status);
+            return Task.FromResult(0);
         }
     }
 }

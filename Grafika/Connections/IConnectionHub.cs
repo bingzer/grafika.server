@@ -1,13 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Grafika.Connections
 {
-    public interface IConnectionHub
+    public interface IConnectionHub : IDisposable
     {
+        string Name { get; }
+
         Task EnsureReady();
-        Task<ConnectionStatus> GetStatus();
+        Task CheckStatus();
     }
 }

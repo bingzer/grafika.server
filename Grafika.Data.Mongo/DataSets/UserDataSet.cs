@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using MongoDB.Driver;
+using MongoDB.Bson;
 
 namespace Grafika.Data.Mongo.DataSets
 {
@@ -13,8 +14,19 @@ namespace Grafika.Data.Mongo.DataSets
 
         public override Task EnsureIndex()
         {
-            var indexKeyDefinition = new JsonIndexKeysDefinition<User>("{ name: \"text\", firstName: \"text\", lastName: \"text\", username: \"text\" }, { name: \"UserTextIndex\", weights: { email: 10, lastName: 6, firstName: 4, username: 2 } }");
-            return Collection.Indexes.CreateOneAsync(indexKeyDefinition);
+            var indexDefinition = new IndexKeysDefinitionBuilder<User>()
+                                            .Text(user => user.Email)
+                                            .Text(user => user.LastName)
+                                            .Text(user => user.FirstName)
+                                            .Text(user => user.Username);
+            var createIndexOptions = new CreateIndexOptions<User>
+            {
+                Name = "UserTextIndex",
+                Weights = new { email = 10, lastName = 6, firstName = 4, username = 2 }.ToBsonDocument()
+            };
+
+            return Collection.Indexes.CreateOneAsync(indexDefinition, createIndexOptions);
+
         }
     }
 }
