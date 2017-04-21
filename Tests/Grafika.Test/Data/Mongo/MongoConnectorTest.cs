@@ -15,12 +15,10 @@ namespace Grafika.Test.Data.Mongo
         [Fact]
         public void TestCotr()
         {
-            var mockConnManager = new Mock<IConnectionManager>();
-
             var mockClient = new Mock<IMongoClient>();
             var client = mockClient.Object;
 
-            var connector = new MongoConnector(mockConnManager.Object, client, "DatabaseName");
+            var connector = new MongoConnector(client, "DatabaseName");
             Assert.Same(client, connector.Client);
             Assert.Equal("DatabaseName", connector.DatabaseName);
         }
@@ -28,11 +26,10 @@ namespace Grafika.Test.Data.Mongo
         [Fact]
         public void TestGetDatabase()
         {
-            var mockConnManager = new Mock<IConnectionManager>();
             var mockClient = new Mock<IMongoClient>();
             var client = mockClient.Object;
 
-            var connector = new MongoConnector(mockConnManager.Object, client, "DatabaseName");
+            var connector = new MongoConnector(client, "DatabaseName");
             connector.GetDatabase();
 
             mockClient.Verify(c => c.GetDatabase(It.Is<string>(str => str == "DatabaseName"), It.IsAny<MongoDatabaseSettings>()));
