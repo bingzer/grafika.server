@@ -9,7 +9,7 @@ using Xunit;
 
 namespace Grafika.Test.Data.Mongo
 {
-    public class MongoDbConnectorTest
+    public class MongoConnectorTest
     {
         [Fact]
         public void TestCotr()
@@ -17,7 +17,7 @@ namespace Grafika.Test.Data.Mongo
             var mockClient = new Mock<IMongoClient>();
             var client = mockClient.Object;
 
-            var connector = new MongoDbConnector(client, "DatabaseName");
+            var connector = new MongoConnector(client, "DatabaseName");
             Assert.Same(client, connector.Client);
             Assert.Equal("DatabaseName", connector.DatabaseName);
         }
@@ -28,7 +28,7 @@ namespace Grafika.Test.Data.Mongo
             var mockClient = new Mock<IMongoClient>();
             var client = mockClient.Object;
 
-            var connector = new MongoDbConnector(client, "DatabaseName");
+            var connector = new MongoConnector(client, "DatabaseName");
             connector.GetDatabase();
 
             mockClient.Verify(c => c.GetDatabase(It.Is<string>(str => str == "DatabaseName"), It.IsAny<MongoDatabaseSettings>()));

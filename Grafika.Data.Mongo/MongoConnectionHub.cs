@@ -8,9 +8,9 @@ namespace Grafika.Data.Mongo
     public class MongoConnectionHub : IDataConnectionHub
     {
         private readonly IMongoDataContext _context;
-        private readonly IMongoDbConnector _dbConnector;
+        private readonly IMongoConnector _dbConnector;
 
-        public MongoConnectionHub(IMongoDbConnector dbConnector, IMongoDataContext context)
+        public MongoConnectionHub(IMongoConnector dbConnector, IMongoDataContext context)
         {
             _context = context;
             _dbConnector = dbConnector;

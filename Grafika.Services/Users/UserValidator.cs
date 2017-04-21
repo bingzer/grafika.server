@@ -1,8 +1,13 @@
 ﻿namespace Grafika.Services.Users
 {
-    public class UserValidator : Validator<User>, IUserValidator
+    public class UserValidator : EntityValidator<User>, IUserValidator
     {
-        public void Sanitize(User entity, IUser caller = null)
+        public UserValidator(IEntityIdValidator entityIdValidator) 
+            : base(entityIdValidator)
+        {
+        }
+
+        public override void Sanitize(User entity, IUser caller = null)
         {
             // password should always be null
             if (entity.Local != null)

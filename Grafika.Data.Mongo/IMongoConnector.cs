@@ -1,12 +1,8 @@
 ﻿using MongoDB.Driver;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Grafika.Data.Mongo
 {
-    public interface IMongoDbConnector
+    public interface IMongoConnector
     {
         string DatabaseName { get; }
         IMongoClient Client { get; }

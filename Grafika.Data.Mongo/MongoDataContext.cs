@@ -1,21 +1,25 @@
-﻿using Grafika.Data;
+﻿using Grafika.Animations;
+using Grafika.Data.Mongo.DataSets;
+using MongoDB.Driver;
 using System;
-using System.Text;
-using Grafika.Animations;
 
-namespace Grafika.Test
+namespace Grafika.Data.Mongo
 {
-    class InMemoryDataContext : IDataContext
+    public sealed class MongoDataContext : IMongoDataContext
     {
+        private readonly IMongoDatabase _db;
+
         public IDataSet<Animation> Animations { get; private set; }
         public IDataSet<User> Users { get; private set; }
         public IDataSet<Background> Backgrounds { get; private set; }
 
-        public InMemoryDataContext()
+        public MongoDataContext(IMongoConnector dbConnector)
         {
-            Animations = new InMemoryDataSet<Animation>();
-            Users = new InMemoryDataSet<User>();
-            Backgrounds = new InMemoryDataSet<Background>();
+            _db = dbConnector.GetDatabase();
+
+            Animations = new AnimationDataSet(_db);
+            Backgrounds = new BackgroundDataSet(_db);
+            Users = new UserDataSet(_db);
         }
 
         public IDataSet<TEntity> Set<TEntity>() where TEntity : class, IEntity
@@ -25,7 +29,7 @@ namespace Grafika.Test
             if (typeof(TEntity) == typeof(User))
                 return (IDataSet<TEntity>)Users;
             if (typeof(TEntity) == typeof(Background))
-                return (IDataSet<TEntity>)Backgrounds;
+                return (IDataSet<TEntity>) Backgrounds;
 
             throw new NotImplementedException("Not implemented " + typeof(TEntity));
         }
@@ -33,11 +37,6 @@ namespace Grafika.Test
         public void Dispose()
         {
             // do nothing
-        }
-
-        public bool ValidateId(string id)
-        {
-            return string.IsNullOrEmpty(id);
         }
     }
 }

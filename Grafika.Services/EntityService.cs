@@ -11,6 +11,7 @@ namespace Grafika.Services
     {
         protected readonly TRepository Repository;
         protected readonly IEntityValidator<TEntity> Validator;
+        protected readonly IEntityIdValidator EntityIdValidator;
 
         protected EntityService(IServiceContext context, 
             TRepository repository,
@@ -66,7 +67,7 @@ namespace Grafika.Services
 
         protected virtual async Task<TEntity> GetById(string entityId)
         {
-            if (!Repository.ValidateId(entityId))
+            if (!Validator.ValidateId(entityId))
                 throw new NotFoundExeption();
 
             var entity = await Repository.First(new TQueryOptions { Id = entityId });

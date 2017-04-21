@@ -24,12 +24,12 @@ namespace Grafika.Test.Services.Animations
             mockRepo.Setup(c => c.Update(It.Is<Animation>(anim => anim.Id == "toDelete")))
                 .ReturnsAsync(new Animation { Id = "wasDeleted " })
                 .Verifiable();
-            mockRepo.Setup(c => c.ValidateId(It.IsAny<string>()))
-                .Returns(true)
-                .Verifiable();
 
             var mockValidator = new Mock<IAnimationValidator>();
             mockValidator.Setup(c => c.Validate(It.IsAny<Animation>()))
+                .Verifiable();
+            mockValidator.Setup(c => c.ValidateId(It.IsAny<string>()))
+                .Returns(true)
                 .Verifiable();
 
             var service = new AnimationService(MockHelpers.ServiceContext.Object, mockRepo.Object, mockValidator.Object);

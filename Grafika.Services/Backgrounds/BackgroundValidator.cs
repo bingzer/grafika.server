@@ -2,9 +2,14 @@
 
 namespace Grafika.Services.Backgrounds
 {
-    class BackgroundValidator : Validator<Background>, IBackgroundValidator
+    class BackgroundValidator : EntityValidator<Background>, IBackgroundValidator
     {
-        public void Sanitize(Background entity, IUser caller = null)
+        public BackgroundValidator(IEntityIdValidator entityIdValidator) 
+            : base(entityIdValidator)
+        {
+        }
+
+        public override void Sanitize(Background entity, IUser caller = null)
         {
             if (caller?.IsAdmin() == true || caller?.IsSystem() == true) return;
 

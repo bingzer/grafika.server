@@ -11,23 +11,24 @@ namespace Grafika.Data.Mongo
     {
         public static void AddMongoDB(this IServiceCollection services)
         {
-            services.AddSingleton<IMongoDbConnector>((provider) =>
+            services.AddSingleton<IMongoConnector>((provider) =>
             {
                 var env = provider.GetService<AppEnvironment>();
                 var mongoClient = new MongoClient(env.Data.ConnectionString);
 
-                return new MongoDbConnector(mongoClient, env.Data.Name);
+                return new MongoConnector(mongoClient, env.Data.Name);
             });
 
 
             services
-                .AddScoped<IDataContext, MongoDbContext>()
-                .AddScoped<IMongoDataContext, MongoDbContext>()
+                .AddScoped<IDataContext, MongoDataContext>()
+                .AddScoped<IMongoDataContext, MongoDataContext>()
                 .AddScoped<ITextSearchProvider<Animation, AnimationQueryOptions>, AnimationTextSearchProvider>()
                 .AddScoped<IBulkRemoveProvider<Animation>, AnimationBulkRemoveProvider>()
                 .AddScoped<ITextSearchProvider<Background, BackgroundQueryOptions>, BackgroundTextSearchProvider>()
                 .AddScoped<IBulkRemoveProvider<Background>, BackgroundBulkRemoveProvider>()
                 .AddScoped<ITextSearchProvider<User, UserQueryOptions>, UserTextSearchProvider>()
+                .AddSingleton<IEntityIdValidator, MongoEntityIdValidator>()
                 ;
         }
 

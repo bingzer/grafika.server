@@ -43,7 +43,6 @@ namespace Grafika.Services
         where TEntity : class, IEntity
         where TQueryOptions : QueryOptions, new()
     {
-        bool ValidateId(string id);
         Task<TEntity> Add(TEntity entity);
         Task<TEntity> Update(TEntity entity);
         Task<TEntity> Remove(TEntity entity);

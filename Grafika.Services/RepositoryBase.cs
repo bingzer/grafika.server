@@ -19,11 +19,6 @@ namespace Grafika.Services
             DataContext = dataContext;
         }
 
-        public bool ValidateId(string id)
-        {
-            return DataContext.ValidateId(id);
-        }
-
         public async Task<TEntity> Add(TEntity entity)
         {
             return await DataContext.Set<TEntity>().AddAsync(entity);

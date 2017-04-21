@@ -77,22 +77,21 @@ namespace Grafika.Test.Services.Users
             if (type == "backdrop" && prefValue != null)
                 user.Prefs.Backdrop = prefValue;
 
-
-
             var mockUserRepo = new Mock<IUserRepository>();
-            mockUserRepo.Setup(c => c.ValidateId(It.IsAny<string>()))
-                .Returns(true)
-                .Verifiable();
             mockUserRepo.Setup(c => c.First(It.IsAny<UserQueryOptions>()))
                 .ReturnsAsync(user)
                 .Verifiable();
 
             var mockUserValidator = new Mock<IUserValidator>();
+            mockUserValidator.Setup(c => c.ValidateId(It.IsAny<string>()))
+                .Returns(true)
+                .Verifiable();
 
             var userService = new UserService(MockHelpers.ServiceContext.Object, mockUserRepo.Object, mockUserValidator.Object, null, CreateMockContentOptions().Object);
             var actual = await userService.GetAvatarOrBackdropUrl(userId, type);
 
             mockUserRepo.VerifyAll();
+            mockUserValidator.VerifyAll();
 
             Assert.Equal(urlExpected, actual);
         }
@@ -103,9 +102,6 @@ namespace Grafika.Test.Services.Users
             var user = new User { Id = "userId" };
 
             var mockUserRepo = new Mock<IUserRepository>();
-            mockUserRepo.Setup(c => c.ValidateId(It.IsAny<string>()))
-                .Returns(true)
-                .Verifiable();
             mockUserRepo.Setup(c => c.First(It.IsAny<UserQueryOptions>()))
                 .ReturnsAsync(user)
                 .Verifiable();
@@ -113,6 +109,10 @@ namespace Grafika.Test.Services.Users
             var mockSignedUrl = new Mock<ISignedUrl>();
 
             var mockUserValidator = new Mock<IUserValidator>();
+            mockUserValidator.Setup(c => c.ValidateId(It.IsAny<string>()))
+                .Returns(true)
+                .Verifiable();
+
             var mockAwsRepo = new Mock<IAwsUsersRepository>();
             mockAwsRepo.Setup(c => c.CreateSignedUrl(
                 It.Is<User>(u => u.Id == "userId"),
@@ -125,6 +125,7 @@ namespace Grafika.Test.Services.Users
 
             mockUserRepo.VerifyAll();
             mockAwsRepo.VerifyAll();
+            mockUserValidator.VerifyAll();
         }
 
 
