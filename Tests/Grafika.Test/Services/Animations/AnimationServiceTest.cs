@@ -51,7 +51,7 @@ namespace Grafika.Test.Services.Animations
                 .Verifiable();
 
             var service = new AnimationService(MockHelpers.ServiceContext.Object, mockRepo.Object, null);
-            await service.BulkDeleteAnimations(new string[] { "1", "2" });
+            await service.Delete(new string[] { "1", "2" });
 
             mockRepo.VerifyAll();
         }

@@ -20,9 +20,14 @@ namespace Grafika.Syncs
             SyncDate = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
         }
 
+        public void AddAction(SyncAction action, Background background)
+        {
+            _events.Add(new SyncEvent { Action = action, EntityId = background.Id, EntityType = Background.DefaultType, LocalId = background.LocalId });
+        }
+
         public void AddAction(SyncAction action, Animation animation)
         {
-            _events.Add(new SyncEvent { Action = action, AnimationId = animation.Id, LocalId = animation.LocalId });
+            _events.Add(new SyncEvent { Action = action, EntityId = animation.Id, EntityType = Animation.DefaultType, LocalId = animation.LocalId });
         }
 
         public override string ToString()

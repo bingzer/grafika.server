@@ -13,15 +13,23 @@ namespace Grafika.Services.Syncs
         {
         }
 
-        protected override Task ExecuteSync(SyncResult result, ILocalChanges localChanges, IServerChanges serverSync)
+        protected override Task ExecuteSync(SyncResult result, ILocalChanges localChanges, IServerChanges serverChanges)
         {
-            CheckLocalAddition(result, localChanges, serverSync);
-            CheckServerAddition(result, localChanges, serverSync);
+            // -- animations
+            CheckLocalAdditionAnimations(result, localChanges, serverChanges);
+            CheckServerAdditionAnimations(result, localChanges, serverChanges);
+
+            // -- backgrounds
+            if (localChanges.Backgrounds != null)
+            {
+                CheckLocalAdditionBackgrounds(result, localChanges, serverChanges);
+                CheckServerAdditionBackgrounds(result, localChanges, serverChanges);
+            }
 
             return Task.FromResult(0);
         }
 
-        private void CheckLocalAddition(SyncResult result, ILocalChanges localChanges, IServerChanges serverChanges)
+        private void CheckLocalAdditionAnimations(SyncResult result, ILocalChanges localChanges, IServerChanges serverChanges)
         {
             foreach (var localAnim in localChanges.Animations)
             {
@@ -50,9 +58,38 @@ namespace Grafika.Services.Syncs
             }
         }
 
-        private void CheckServerAddition(SyncResult result, ILocalChanges localChanges, IServerChanges serverSync)
+        private void CheckLocalAdditionBackgrounds(SyncResult result, ILocalChanges localChanges, IServerChanges serverChanges)
         {
-            foreach (var serverAnim in serverSync.Animations)
+            foreach (var localBackground in localChanges.Backgrounds)
+            {
+                var serverMissing = true;
+
+                foreach (var serverBackground in serverChanges.Backgrounds)
+                {
+                    if (localBackground.Equals(serverBackground))
+                    {
+                        serverMissing = false;
+                        break;
+                    }
+                }
+
+                foreach (var serverBackground in serverChanges.BackgroundTombstones)
+                {
+                    if (localBackground.Equals(serverBackground))
+                    {
+                        serverMissing = false;
+                        break;
+                    }
+                }
+
+                if (serverMissing)
+                    result.AddAction(SyncAction.ServerMissing, localBackground);
+            }
+        }
+
+        private void CheckServerAdditionAnimations(SyncResult result, ILocalChanges localChanges, IServerChanges serverChanges)
+        {
+            foreach (var serverAnim in serverChanges.Animations)
             {
                 var clientMissing = true;
 
@@ -76,6 +113,35 @@ namespace Grafika.Services.Syncs
 
                 if (clientMissing)
                     result.AddAction(SyncAction.ClientMissing, serverAnim);
+            }
+        }
+
+        private void CheckServerAdditionBackgrounds(SyncResult result, ILocalChanges localChanges, IServerChanges serverChanges)
+        {
+            foreach (var serverBackground in serverChanges.Backgrounds)
+            {
+                var clientMissing = true;
+
+                foreach (var localBackground in localChanges.Backgrounds)
+                {
+                    if (localBackground.Equals(serverBackground))
+                    {
+                        clientMissing = false;
+                        break;
+                    }
+                }
+
+                foreach (var localBackground in localChanges.BackgroundTombstones)
+                {
+                    if (localBackground.Equals(serverBackground))
+                    {
+                        clientMissing = false;
+                        break;
+                    }
+                }
+
+                if (clientMissing)
+                    result.AddAction(SyncAction.ClientMissing, serverBackground);
             }
         }
     }

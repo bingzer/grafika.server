@@ -1,5 +1,6 @@
 ﻿using Grafika.Animations;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace Grafika.Services.Backgrounds
 {
@@ -8,6 +9,13 @@ namespace Grafika.Services.Backgrounds
         public BackgroundService(IServiceContext context, IBackgroundRepository repository, IEntityValidator<Background> validator) 
             : base(context, repository, validator)
         {
+        }
+
+        public Task Delete(IEnumerable<string> backgroundIds)
+        {
+            // TODO: Check permission for User
+            //       Only allows by System user
+            return Repository.RemoveByIds(backgroundIds);
         }
 
         protected internal override async Task<Background> CreateEntityForUpdate(Background source)

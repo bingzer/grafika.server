@@ -23,7 +23,7 @@ namespace Grafika.Services.Animations
             return await Repository.Update(animation);
         }
 
-        public async Task BulkDeleteAnimations(IEnumerable<string> animationIds)
+        public async Task Delete(IEnumerable<string> animationIds)
         {
             // TODO: Check permission for User
             //       Only allows by System user

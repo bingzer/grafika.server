@@ -3,6 +3,7 @@ using Grafika.Syncs;
 using System.Linq;
 using Grafika.Utilities;
 using System;
+using Grafika.Animations;
 
 namespace Grafika.Services.Syncs
 {
@@ -18,10 +19,32 @@ namespace Grafika.Services.Syncs
 
         protected override async Task ExecuteSync(SyncResult result, ILocalChanges localChanges, IServerChanges serverChanges)
         {
-            var animationIds = result.Events.Where(e => e.Action == SyncAction.ServerDelete).Select(e => e.AnimationId);
+            await CheckFinalizationForAnimations(result);
+            await CheckFinalizationForBackgrounds(result);
+        }
+
+        private Task CheckFinalizationForAnimations(SyncResult result)
+        {
+            var animationIds = result.Events.Where(e => e.Action == SyncAction.ServerDelete)
+                                    .Where(e => e.EntityType == Animation.DefaultType)
+                                    .Select(e => e.EntityId);
+
+            if (!animationIds.Any()) return Task.FromResult(0);
 
             var animService = ServiceProvider.Get<IAnimationService>();
-            await animService.BulkDeleteAnimations(animationIds);
+            return animService.Delete(animationIds);
+        }
+
+        private Task CheckFinalizationForBackgrounds(SyncResult result)
+        {
+            var backgroundIds = result.Events.Where(e => e.Action == SyncAction.ServerDelete)
+                                    .Where(e => e.EntityType == Background.DefaultType)
+                                    .Select(e => e.EntityId);
+
+            if (!backgroundIds.Any()) return Task.FromResult(0);
+
+            var backgroundService = ServiceProvider.Get<IBackgroundService>();
+            return backgroundService.Delete(backgroundIds);
         }
     }
 }

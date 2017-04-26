@@ -6,7 +6,7 @@ namespace Grafika.Services
 {
     public interface IAnimationService : IEntityService<Animation, AnimationQueryOptions>
     {
-        Task BulkDeleteAnimations(IEnumerable<string> animationIds);
+        Task Delete(IEnumerable<string> animationIds);
 
         /// <summary>
         /// Create animation template

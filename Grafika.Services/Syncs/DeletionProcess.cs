@@ -15,6 +15,14 @@ namespace Grafika.Services.Syncs
 
         protected override Task ExecuteSync(SyncResult result, ILocalChanges localChanges, IServerChanges serverChanges)
         {
+            CheckForAnimationDeletions(result, localChanges, serverChanges);
+            CheckForBackgroundDeletions(result, localChanges, serverChanges);
+
+            return Task.FromResult(0);
+        }
+
+        private void CheckForAnimationDeletions(SyncResult result, ILocalChanges localChanges, IServerChanges serverChanges)
+        {
             foreach (var localAnim in localChanges.Tombstones)
             {
                 foreach (var serverAnim in serverChanges.Animations)
@@ -38,8 +46,39 @@ namespace Grafika.Services.Syncs
                     }
                 }
             }
+        }
 
-            return Task.FromResult(0);
+        private void CheckForBackgroundDeletions(SyncResult result, ILocalChanges localChanges, IServerChanges serverChanges)
+        {
+            if (localChanges.BackgroundTombstones != null)
+            {
+                foreach (var localBackground in localChanges.BackgroundTombstones)
+                {
+                    foreach (var serverBackground in serverChanges.Backgrounds)
+                    {
+                        if (localBackground.Equals(serverBackground))
+                        {
+                            result.AddAction(SyncAction.ServerDelete, serverBackground);
+                            break;
+                        }
+                    }
+                }
+            }
+
+            if (serverChanges.BackgroundTombstones != null)
+            {
+                foreach (var serverBackground in serverChanges.BackgroundTombstones)
+                {
+                    foreach (var localBackground in localChanges.Backgrounds)
+                    {
+                        if (localBackground.Equals(serverBackground))
+                        {
+                            result.AddAction(SyncAction.ClientDelete, localBackground);
+                            break;
+                        }
+                    }
+                }
+            }
         }
     }
 }

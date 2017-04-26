@@ -7,7 +7,9 @@ namespace Grafika.Syncs
     {
         string UserId { get; }
         IEnumerable<Animation> Animations { get; }
+        IEnumerable<Background> Backgrounds { get; }
         IEnumerable<Animation> Tombstones { get; }
+        IEnumerable<Background> BackgroundTombstones { get; }
     }
 
     public interface ILocalChanges : IChanges
