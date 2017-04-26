@@ -13,8 +13,8 @@ namespace Grafika.Services.Backgrounds
         private readonly ITextSearchProvider<Background, BackgroundQueryOptions> _textSearchProvider;
 
         public BackgroundRepository(IDataContext dataContext,
-            IBulkRemoveProvider<Background> bulkRemoveProvider,
-            ITextSearchProvider<Background, BackgroundQueryOptions> textSearchProvider) 
+            ITextSearchProvider<Background, BackgroundQueryOptions> textSearchProvider,
+            IBulkRemoveProvider<Background> bulkRemoveProvider) 
             : base(dataContext)
         {
             _bulkRemoveProvider = bulkRemoveProvider;
