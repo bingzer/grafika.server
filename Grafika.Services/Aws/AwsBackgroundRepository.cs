@@ -1,19 +1,18 @@
-﻿using System;
-using Grafika.Animations;
+﻿using Amazon.S3;
 using Amazon.S3.Model;
-using System.Threading.Tasks;
+using Grafika.Animations;
 using Grafika.Configurations;
-using Microsoft.Extensions.Options;
-using Amazon.S3;
 using Grafika.Utilities;
+using Microsoft.Extensions.Options;
+using System.Threading.Tasks;
 
 namespace Grafika.Services.Aws
 {
-    class AwsFrameRepository : AwsRepository, IAwsFrameRepository
+    class AwsBackgroundRepository : AwsRepository, IAwsBackgroundRepository
     {
         private readonly IFrameDataProcessingFactory _factory;
 
-        public AwsFrameRepository(IFrameDataProcessingFactory factory, 
+        public AwsBackgroundRepository(IFrameDataProcessingFactory factory,
             IOptions<AwsOAuthProviderConfiguration> serverOpts,
             IAmazonS3 client = null) 
             : base(serverOpts, client)
@@ -21,13 +20,13 @@ namespace Grafika.Services.Aws
             _factory = factory;
         }
 
-        public async Task<FrameData> GetFrameData(Animation animation, FrameData frameData)
+        public async Task<FrameData> GetFrameData(Background background, FrameData frameData)
         {
             var signedUrlRequest = new GetPreSignedUrlRequest
             {
                 BucketName = Config.Bucket,
                 Expires = DefaultExpiration,
-                Key = Utility.CombineUrl(Config.Folder, "animations", animation.Id, "frames")
+                Key = Utility.CombineUrl(Config.Folder, "backgrounds", background.Id, "frames")
             };
 
             var signedUrl = Client.GetPreSignedURL(signedUrlRequest);
@@ -37,12 +36,12 @@ namespace Grafika.Services.Aws
             return await processor.ProcessHttpGet(frameData, signedUrl);
         }
 
-        public async Task PostFrameData(Animation animation, FrameData frameData)
+        public async Task PostFrameData(Background background, FrameData frameData)
         {
             var putObjectRequest = new PutObjectRequest
             {
                 BucketName = Config.Bucket,
-                Key = $"{Config.Folder}/animations/{animation.Id}/frames",
+                Key = $"{Config.Folder}/backgrounds/{background.Id}/frames",
                 ContentType = frameData.ContentType,
                 CannedACL = S3CannedACL.AuthenticatedRead
             };

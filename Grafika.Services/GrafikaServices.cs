@@ -62,7 +62,8 @@ namespace Grafika.Services
 
             // -- Aws
             services
-                .AddScoped<IAwsFrameRepository, AwsFrameRepository>()
+                .AddScoped<IAwsAnimationRepository, AwsAnimationRepository>()
+                .AddScoped<IAwsBackgroundRepository, AwsBackgroundRepository>()
                 .AddScoped<IAwsResourceRepository, AwsResourceRepository>()
                 .AddScoped<IAwsUsersRepository, AwsUsersRepository>()
                 .AddScoped<IAwsConnectionHub, AwsConnectionHub>()

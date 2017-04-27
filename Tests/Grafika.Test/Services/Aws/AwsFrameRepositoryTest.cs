@@ -43,7 +43,7 @@ namespace Grafika.Test.Services.Aws
                 .Returns(() => "signed-url")
                 .Verifiable();
 
-            var repo = new AwsFrameRepository(mockFactory.Object, awsOpts.Object, mockClient.Object);
+            var repo = new AwsAnimationRepository(mockFactory.Object, awsOpts.Object, mockClient.Object);
             frameData = await repo.GetFrameData(new Animation { Id = animationId }, frameData);
 
             Assert.Equal(frameData.ContentType, ContentTypes.Json);  // always JSOn
@@ -82,7 +82,7 @@ namespace Grafika.Test.Services.Aws
             mockClient.Setup(c => c.PutObjectAsync(It.IsAny<PutObjectRequest>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(new PutObjectResponse());
 
-            var repo = new AwsFrameRepository(mockFactory.Object, awsOpts.Object, mockClient.Object);
+            var repo = new AwsAnimationRepository(mockFactory.Object, awsOpts.Object, mockClient.Object);
             await repo.PostFrameData(new Animation { Id = animationId }, frameData);
 
             mockStrategy.VerifyAll();

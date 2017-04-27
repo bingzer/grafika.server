@@ -9,11 +9,16 @@ namespace Grafika.Services
 
     }
 
-    public interface IAwsFrameRepository : IAwsRepository
+    public interface IAwsAnimationRepository : IAwsRepository
     {
         Task PostFrameData(Animation animation, FrameData frameData);
-        //Task<FrameData> CreateFirstFrameData(Animation animation);
         Task<FrameData> GetFrameData(Animation animation, FrameData frameData);
+    }
+
+    public interface IAwsBackgroundRepository : IAwsRepository
+    {
+        Task PostFrameData(Background background, FrameData frameData);
+        Task<FrameData> GetFrameData(Background background, FrameData frameData);
     }
 
     public interface IAwsResourceRepository : IAwsRepository
