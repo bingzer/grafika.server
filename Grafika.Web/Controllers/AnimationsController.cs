@@ -49,6 +49,15 @@ namespace Grafika.Web.Controllers
         }
 
         [AllowAnonymous]
+        [HttpGet("{animationId}")]
+        public async Task<IActionResult> GetDetail(string animationId)
+        {
+            var animation = await _service.Get(animationId);
+            if (animation == null) return NotFound();
+            return Ok(animation);
+        }
+
+        [AllowAnonymous]
         [HttpGet("{animationId}/related")]
         public async Task<IActionResult> GetRelatedAnimations(string animationId, int count = 5)
         {
@@ -81,15 +90,6 @@ namespace Grafika.Web.Controllers
 
             var animations = await _service.List(options);
             return Ok(animations);
-        }
-
-        [AllowAnonymous]
-        [HttpGet("{animationId}")]
-        public async Task<IActionResult> GetDetail(string animationId)
-        {
-            var animation = await _service.Get(animationId);
-            if (animation == null) return NotFound();
-            return Ok(animation);
         }
 
         [SkipModelValidation]

@@ -42,7 +42,16 @@ namespace Grafika.Web.Controllers
             var backgrounds = await _service.List(options);
             return Ok(backgrounds);
         }
-        
+
+        [AllowAnonymous]
+        [HttpGet("{backgroundId}")]
+        public async Task<IActionResult> GetDetail(string backgroundId)
+        {
+            var animation = await _service.Get(backgroundId);
+            if (animation == null) return NotFound();
+            return Ok(animation);
+        }
+
         [HttpPost]
         public async Task<IActionResult> Create([FromServices] IUserService userService, [FromBody] Background background)
         {
@@ -89,7 +98,7 @@ namespace Grafika.Web.Controllers
         }
 
         [HttpPost("{backgroundId}/frames")]
-        public async Task<IActionResult> CreateOrUpdateFrameData(string animationId)
+        public async Task<IActionResult> CreateOrUpdateFrameData(string backgroundId)
         {
             var frameData = new FrameData
             {
@@ -99,8 +108,8 @@ namespace Grafika.Web.Controllers
                 Stream = Request.Body
             };
 
-            await _service.PostFrameData(animationId, frameData);
-            return Created(Url.Action(nameof(GetFrameData), new { animationId = animationId }), null);
+            await _service.PostFrameData(backgroundId, frameData);
+            return Created(Url.Action(nameof(GetFrameData), new { backgroundId = backgroundId }), null);
         }
     }
 }
