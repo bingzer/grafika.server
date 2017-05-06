@@ -9,11 +9,11 @@ using Grafika.Utilities;
 
 namespace Grafika.Services.Aws
 {
-    class AwsAnimationRepository : AwsRepository, IAwsAnimationRepository
+    class AwsFrameRepository : AwsRepository, IAwsFrameRepository
     {
         private readonly IFrameDataProcessingFactory _factory;
 
-        public AwsAnimationRepository(IFrameDataProcessingFactory factory, 
+        public AwsFrameRepository(IFrameDataProcessingFactory factory, 
             IOptions<AwsOAuthProviderConfiguration> serverOpts,
             IAmazonS3 client = null) 
             : base(serverOpts, client)
@@ -21,13 +21,13 @@ namespace Grafika.Services.Aws
             _factory = factory;
         }
 
-        public async Task<FrameData> GetFrameData(Animation animation, FrameData frameData)
+        public async Task<FrameData> GetFrameData(IDrawableEntity entity, FrameData frameData)
         {
             var signedUrlRequest = new GetPreSignedUrlRequest
             {
                 BucketName = Config.Bucket,
                 Expires = DefaultExpiration,
-                Key = Utility.CombineUrl(Config.Folder, "animations", animation.Id, "frames")
+                Key = Utility.CombineUrl(Config.Folder, entity.Type.GetGroupName(), entity.Id, "frames")
             };
 
             var signedUrl = Client.GetPreSignedURL(signedUrlRequest);
@@ -37,12 +37,12 @@ namespace Grafika.Services.Aws
             return await processor.ProcessHttpGet(frameData, signedUrl);
         }
 
-        public async Task PostFrameData(Animation animation, FrameData frameData)
+        public async Task PostFrameData(IDrawableEntity entity, FrameData frameData)
         {
             var putObjectRequest = new PutObjectRequest
             {
                 BucketName = Config.Bucket,
-                Key = $"{Config.Folder}/animations/{animation.Id}/frames",
+                Key = $"{Config.Folder}/{entity.Type.GetGroupName()}/{entity.Id}/frames",
                 ContentType = frameData.ContentType,
                 CannedACL = S3CannedACL.AuthenticatedRead
             };

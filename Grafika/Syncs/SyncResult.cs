@@ -22,12 +22,12 @@ namespace Grafika.Syncs
 
         public void AddAction(SyncAction action, Background background)
         {
-            _events.Add(new SyncEvent { Action = action, EntityId = background.Id, EntityType = Background.DefaultType, LocalId = background.LocalId });
+            _events.Add(new SyncEvent { Action = action, EntityId = background.Id, EntityType = EntityType.Background, LocalId = background.LocalId });
         }
 
         public void AddAction(SyncAction action, Animation animation)
         {
-            _events.Add(new SyncEvent { Action = action, EntityId = animation.Id, EntityType = Animation.DefaultType, LocalId = animation.LocalId });
+            _events.Add(new SyncEvent { Action = action, EntityId = animation.Id, EntityType = EntityType.Animation, LocalId = animation.LocalId });
         }
 
         public override string ToString()

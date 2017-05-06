@@ -6,11 +6,11 @@ namespace Grafika.Services.Animations
     class FrameService : Service, IFrameService
     {
         private IAnimationService _animationService;
-        private IAwsAnimationRepository _frameRepo;
+        private IAwsFrameRepository _frameRepo;
 
         public FrameService(IServiceContext serviceContext, 
             IAnimationService animationService,
-            IAwsAnimationRepository frameRepo) 
+            IAwsFrameRepository frameRepo) 
             : base(serviceContext)
         {
             _animationService = animationService;

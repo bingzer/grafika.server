@@ -1,4 +1,7 @@
-﻿using MongoDB.Bson.Serialization.Attributes;
+﻿using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -6,10 +9,8 @@ using System.ComponentModel.DataAnnotations;
 namespace Grafika.Animations
 {
     [BsonIgnoreExtraElements]
-    public class Background : BaseEntity, IDrawable, IEquatable<Background>
+    public class Background : BaseEntity, IDrawableEntity, IEquatable<Background>
     {
-        public const string DefaultType = "Background";
-
         [BsonElement("localId")]
         public string LocalId { get; set; }
 
@@ -17,9 +18,10 @@ namespace Grafika.Animations
         [BsonElement("name")]
         public string Name { get; set; }
 
-        [Required, DefaultValue(DefaultType)]
-        [BsonElement("type")]
-        public string Type { get; set; }
+        [Required, DefaultValue(EntityType.Background)]
+        [JsonConverter(typeof(StringEnumConverter))]
+        [BsonElement("type"), BsonSerializer(typeof(EntityTypeBsonSerializer))]
+        public EntityType Type { get; set; }
         [BsonElement("description")]
         public string Description { get; set; }
 

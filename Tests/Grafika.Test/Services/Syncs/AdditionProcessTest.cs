@@ -53,8 +53,8 @@ namespace Grafika.Test.Services.Syncs
             // check sync events
             var events = syncResult.Events.ToList();
             Assert.Equal(2, events.Count);
-            Assert.True(events.Any(e => e.Action == SyncAction.ServerMissing && e.EntityId == "Local2" && e.EntityType == Animation.DefaultType));
-            Assert.True(events.Any(e => e.Action == SyncAction.ClientMissing && e.EntityId == "Server1" && e.EntityType == Animation.DefaultType));
+            Assert.True(events.Any(e => e.Action == SyncAction.ServerMissing && e.EntityId == "Local2" && e.EntityType == EntityType.Animation));
+            Assert.True(events.Any(e => e.Action == SyncAction.ClientMissing && e.EntityId == "Server1" && e.EntityType == EntityType.Animation));
         }
 
         [Fact]
@@ -119,10 +119,10 @@ namespace Grafika.Test.Services.Syncs
             // check sync events
             var events = syncResult.Events.ToList();
             Assert.Equal(4, events.Count);
-            Assert.True(events.Any(e => e.Action == SyncAction.ServerMissing && e.EntityId == "Local2" && e.EntityType == Animation.DefaultType));
-            Assert.True(events.Any(e => e.Action == SyncAction.ClientMissing && e.EntityId == "Server1" && e.EntityType == Animation.DefaultType));
-            Assert.True(events.Any(e => e.Action == SyncAction.ServerMissing && e.EntityId == "LocalBack2" && e.EntityType == Background.DefaultType));
-            Assert.True(events.Any(e => e.Action == SyncAction.ClientMissing && e.EntityId == "ServerBack1" && e.EntityType == Background.DefaultType));
+            Assert.True(events.Any(e => e.Action == SyncAction.ServerMissing && e.EntityId == "Local2" && e.EntityType == EntityType.Animation));
+            Assert.True(events.Any(e => e.Action == SyncAction.ClientMissing && e.EntityId == "Server1" && e.EntityType == EntityType.Animation));
+            Assert.True(events.Any(e => e.Action == SyncAction.ServerMissing && e.EntityId == "LocalBack2" && e.EntityType == EntityType.Background));
+            Assert.True(events.Any(e => e.Action == SyncAction.ClientMissing && e.EntityId == "ServerBack1" && e.EntityType == EntityType.Background));
         }
     }
 }

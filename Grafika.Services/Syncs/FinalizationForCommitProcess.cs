@@ -26,7 +26,7 @@ namespace Grafika.Services.Syncs
         private Task CheckFinalizationForAnimations(SyncResult result)
         {
             var animationIds = result.Events.Where(e => e.Action == SyncAction.ServerDelete)
-                                    .Where(e => e.EntityType == Animation.DefaultType)
+                                    .Where(e => e.EntityType == EntityType.Animation)
                                     .Select(e => e.EntityId);
 
             if (!animationIds.Any()) return Task.FromResult(0);
@@ -38,7 +38,7 @@ namespace Grafika.Services.Syncs
         private Task CheckFinalizationForBackgrounds(SyncResult result)
         {
             var backgroundIds = result.Events.Where(e => e.Action == SyncAction.ServerDelete)
-                                    .Where(e => e.EntityType == Background.DefaultType)
+                                    .Where(e => e.EntityType == EntityType.Background)
                                     .Select(e => e.EntityId);
 
             if (!backgroundIds.Any()) return Task.FromResult(0);

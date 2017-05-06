@@ -35,7 +35,7 @@ namespace Grafika.Services.Animations
             var now = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
 
             animation.UserId = user.Id;
-            animation.Type = "Animation";
+            animation.Type = EntityType.Animation;
             animation.IsRemoved = false;
             animation.Rating = 5;
             animation.Views = 0;

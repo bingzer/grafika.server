@@ -17,7 +17,7 @@ namespace Grafika.Test.Services.Backgrounds
                 .Returns(Task.FromResult(0))
                 .Verifiable();
 
-            var service = new BackgroundService(MockHelpers.ServiceContext.Object, mockRepo.Object, null, null);
+            var service = new BackgroundService(MockHelpers.ServiceContext.Object, mockRepo.Object, null, null, null);
             await service.Delete(new string[] { "1", "2" });
 
             mockRepo.VerifyAll();

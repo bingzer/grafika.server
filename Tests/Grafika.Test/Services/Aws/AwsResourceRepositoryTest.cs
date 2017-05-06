@@ -61,7 +61,7 @@ namespace Grafika.Test.Services.Aws
             var mockClient = new Mock<IAmazonS3>();
 
             var repo = new AwsResourceRepository(awsOpts.Object, mockFactory.Object, mockClient.Object);
-            var result = await repo.GetResourceUrl(animationId, resourceId);
+            var result = await repo.GetResourceUrl(EntityType.Animation, animationId, resourceId);
 
             Assert.Equal(result, $"http://example.com/bucket/folder/animations/{animationId}/{resourceId}");
         }

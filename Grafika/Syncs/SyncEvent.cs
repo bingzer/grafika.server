@@ -1,5 +1,7 @@
 ﻿using Grafika.Animations;
 using Grafika.Utilities;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using System;
 
 namespace Grafika.Syncs
@@ -7,7 +9,8 @@ namespace Grafika.Syncs
     public class SyncEvent : IEquatable<SyncEvent>
     {
         public string EntityId { get; set; }
-        public string EntityType { get; set; }
+        [JsonConverter(typeof(StringEnumConverter))]
+        public EntityType EntityType { get; set; }
 
         public string LocalId { get; set; }
         public SyncAction Action { get; set; }
@@ -16,13 +19,13 @@ namespace Grafika.Syncs
         {
             get
             {
-                if (EntityType == Animation.DefaultType)
+                if (EntityType == EntityType.Animation)
                     return EntityId;
                 return null;
             }
             set
             {
-                EntityType = Animation.DefaultType;
+                EntityType = EntityType.Animation;
                 EntityId = value;
             }
         }

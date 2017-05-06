@@ -20,12 +20,12 @@ namespace Grafika.Services.Aws
             _httpFactory = httpFactory;
         }
 
-        public Task<ISignedUrl> CreateSignedUrl(Animation animation, string resourceId, string contentType)
+        public Task<ISignedUrl> CreateSignedUrl(IDrawableEntity entity, string resourceId, string contentType)
         {
             var signedUrlRequest = new GetPreSignedUrlRequest
             {
                 BucketName = Config.Bucket,
-                Key = Utility.CombineUrl(Config.Folder, "animations", animation.Id, resourceId),
+                Key = Utility.CombineUrl(Config.Folder, entity.Type.GetGroupName(), entity.Id, resourceId),
                 Expires = DefaultExpiration,
                 Verb = Amazon.S3.HttpVerb.PUT,
                 ContentType = contentType
@@ -41,9 +41,9 @@ namespace Grafika.Services.Aws
             return Task.FromResult<ISignedUrl>(signedUrl);
         }
 
-        public async Task<bool> HasResource(string animationId, string resourceId)
+        public async Task<bool> HasResource(EntityType entityType, string entityId, string resourceId)
         {
-            var resourceUrl = await GetResourceUrl(animationId, resourceId);
+            var resourceUrl = await GetResourceUrl(entityType, entityId, resourceId);
             using (var httpClient = _httpFactory.CreateHttpClient())
             {
                 var requestMessage = new HttpRequestMessage(HttpMethod.Head, resourceUrl);
@@ -52,18 +52,18 @@ namespace Grafika.Services.Aws
             }
         }
 
-        public Task<string> GetResourceUrl(string animationId, string resourceId)
+        public Task<string> GetResourceUrl(EntityType entityType, string entityId, string resourceId)
         {
-            var url = Utility.CombineUrl(Config.Url, Config.Bucket, Config.Folder, "animations", animationId, resourceId);
+            var url = Utility.CombineUrl(Config.Url, Config.Bucket, Config.Folder, entityType.GetGroupName(), entityId, resourceId);
             return Task.FromResult(url);
         }
 
-        public async Task<bool> DeleteResource(string animationId, string resourceId)
+        public async Task<bool> DeleteResource(EntityType entityType, string entityId, string resourceId)
         {
             var deleteRequest = new DeleteObjectRequest
             {
                 BucketName = Config.Bucket,
-                Key = Utility.CombineUrl(Config.Folder, "animations", animationId, resourceId)
+                Key = Utility.CombineUrl(Config.Folder, entityType.GetGroupName(), entityId, resourceId)
             };
 
             var response = await Client.DeleteObjectAsync(deleteRequest);

@@ -10,5 +10,10 @@ namespace Grafika.Services
 
         Task<FrameData> GetFrameData(string backgroundId, FrameData frameData);
         Task PostFrameData(string backgroundId, FrameData frameData);
+
+        Task<string> GetThumbnailUrl(string backgroundId);
+        Task<ISignedUrl> CreateThumbnail(string backgroundId);
+        Task<bool> HasThumbnail(string backgroundId);
+        Task<bool> DeleteThumbnail(string backgroundId);
     }
 }

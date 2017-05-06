@@ -5,9 +5,9 @@ namespace Grafika.Services
 {
     public interface IResourceService : IService
     {
-        Task<string> GetResourceUrl(string animationId, string resourceId);
-        Task<ISignedUrl> CreateResource(string animationId, IResource resource);
-        Task<bool> HasResource(string animationId, string resourceId);
-        Task<bool> DeleteResource(string animationId, string resourceId);
+        Task<ISignedUrl> CreateResource(IDrawableEntity entity, IResource resource);
+        Task<string> GetResourceUrl(EntityType entityType, string entityId, string resourceId);
+        Task<bool> HasResource(EntityType entityType, string entityId, string resourceId);
+        Task<bool> DeleteResource(EntityType entityType, string entityId, string resourceId);
     }
 }

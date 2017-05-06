@@ -11,10 +11,12 @@ namespace Grafika.Web.Controllers
     public class ResourcesController : Controller
     {
         private readonly IResourceService _service;
+        private readonly IAnimationService _animationService;
 
-        public ResourcesController(IResourceService service)
+        public ResourcesController(IResourceService service, IAnimationService animationService)
         {
             _service = service;
+            _animationService = animationService;
         }
 
         [AllowAnonymous]
@@ -41,7 +43,7 @@ namespace Grafika.Web.Controllers
         [HttpHead("{animationId}/resources/{resourceId}")]
         public async Task<IActionResult> HasResource(string animationId, string resourceId)
         {
-            var hasThumbnail = await _service.HasResource(animationId, resourceId);
+            var hasThumbnail = await _service.HasResource(EntityType.Animation, animationId, resourceId);
 
             if (hasThumbnail) return Ok();
             return NotFound();
@@ -51,21 +53,22 @@ namespace Grafika.Web.Controllers
         [HttpGet("{animationId}/resources/{resourceId}")]
         public async Task<IActionResult> GetResources(string animationId, string resourceId)
         {
-            var url = await _service.GetResourceUrl(animationId, resourceId);
+            var url = await _service.GetResourceUrl(EntityType.Animation, animationId, resourceId);
             return Redirect(url);
         }
 
         [HttpPost("{animationId}/resources")]
         public async Task<IActionResult> CreateResourceSignedUrl([FromRoute] string animationId, [FromBody] Resource resource)
         {
-            var url = await _service.CreateResource(animationId, resource);
+            var animation = await _animationService.Get(animationId);
+            var url = await _service.CreateResource(animation, resource);
             return Ok(url);
         }
 
         [HttpDelete("{animationId}/resources/{resourceId}")]
         public async Task<IActionResult> DeleteResource(string animationId, string resourceId)
         {
-            if (await _service.DeleteResource(animationId, resourceId))
+            if (await _service.DeleteResource(EntityType.Animation, animationId, resourceId))
                 return Ok();
             return BadRequest();
         }

@@ -111,5 +111,31 @@ namespace Grafika.Web.Controllers
             await _service.PostFrameData(backgroundId, frameData);
             return Created(Url.Action(nameof(GetFrameData), new { backgroundId = backgroundId }), null);
         }
+
+        [AllowAnonymous]
+        [HttpHead("{backgroundId}/thumbnail")]
+        public async Task<IActionResult> HasThumbnail(string backgroundId)
+        {
+            var hasThumbnail = await _service.HasThumbnail(backgroundId);
+            if (!hasThumbnail)
+                return NotFound();
+
+            return Ok();
+        }
+
+        [AllowAnonymous]
+        [HttpGet("{backgroundId}/thumbnail")]
+        public async Task<IActionResult> GetThumbnail(string backgroundId)
+        {
+            var url = await _service.GetThumbnailUrl(backgroundId);
+            return Redirect(url);
+        }
+
+        [HttpPost("{backgroundId}/thumbnail")]
+        public async Task<IActionResult> CreateThumbnailSignedUrl(string backgroundId)
+        {
+            var url = await _service.CreateThumbnail(backgroundId);
+            return Ok(url);
+        }
     }
 }

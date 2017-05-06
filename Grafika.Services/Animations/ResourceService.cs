@@ -6,37 +6,32 @@ namespace Grafika.Services.Animations
     class ResourceService : Service, IResourceService
     {
         private IAwsResourceRepository _resRepo;
-        private IAnimationService _animationService;
 
         public ResourceService(IServiceContext serviceContext,
-            IAnimationService animationService,
             IAwsResourceRepository resRepo) 
             : base(serviceContext)
         {
-            _animationService = animationService;
             _resRepo = resRepo;
         }
 
-        public Task<string> GetResourceUrl(string animationId, string resourceId)
+        public Task<string> GetResourceUrl(EntityType entityType, string animationId, string resourceId)
         {
-            return _resRepo.GetResourceUrl(animationId, resourceId);
+            return _resRepo.GetResourceUrl(entityType, animationId, resourceId);
         }
 
-        public Task<bool> HasResource(string animationId, string resourceId)
+        public Task<bool> HasResource(EntityType entityType, string animationId, string resourceId)
         {
-            return _resRepo.HasResource(animationId, resourceId);
+            return _resRepo.HasResource(entityType, animationId, resourceId);
         }
 
-        public async Task<ISignedUrl> CreateResource(string animationId, IResource resource)
+        public Task<ISignedUrl> CreateResource(IDrawableEntity entity, IResource resource)
         {
-            var animation = await _animationService.Get(animationId);
-            return await _resRepo.CreateSignedUrl(animation, resource.Id, resource.ContentType);
+            return _resRepo.CreateSignedUrl(entity, resource.Id, resource.ContentType);
         }
 
-        public async Task<bool> DeleteResource(string animationId, string resourceId)
+        public Task<bool> DeleteResource(EntityType entityType, string animationId, string resourceId)
         {
-            var animation = await _animationService.Get(animationId);
-            return await _resRepo.DeleteResource(animationId, resourceId);
+            return _resRepo.DeleteResource(entityType, animationId, resourceId);
         }
     }
 }

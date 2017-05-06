@@ -87,7 +87,10 @@ namespace Grafika.Test.Services.Animations
                 .ReturnsAsync(new User { Subscriptions = new UserSubscriptions { EmailOnComments = true }, Email = "user@email.com" })
                 .Verifiable();
             var mockAwsRepo = new Mock<IAwsResourceRepository>();
-            mockAwsRepo.Setup(c => c.GetResourceUrl(It.Is<string>(str => str == "animationId"), It.Is<string>(str => str == Thumbnail.ResourceId)))
+            mockAwsRepo.Setup(c => c.GetResourceUrl(
+                    It.Is<EntityType>(e => e == EntityType.Animation),
+                    It.Is<string>(str => str == "animationId"), 
+                    It.Is<string>(str => str == Thumbnail.ResourceId)))
                 .ReturnsAsync("resource-url")
                 .Verifiable();
 

@@ -7,15 +7,18 @@ namespace Grafika.Services.Backgrounds
 {
     class BackgroundService : EntityService<Background, BackgroundQueryOptions, IBackgroundRepository>, IBackgroundService
     {
-        private readonly IAwsBackgroundRepository _awsRepository;
+        private readonly IAwsFrameRepository _frameRepository;
+        private readonly IResourceService _resourceService;
 
         public BackgroundService(IServiceContext context, 
             IBackgroundRepository repository, 
             IBackgroundValidator validator,
-            IAwsBackgroundRepository awsRepository) 
+            IAwsFrameRepository frameRepository,
+            IResourceService resourceService) 
             : base(context, repository, validator)
         {
-            _awsRepository = awsRepository;
+            _frameRepository = frameRepository;
+            _resourceService = resourceService;
         }
 
         public Task Delete(IEnumerable<string> backgroundIds)
@@ -28,13 +31,35 @@ namespace Grafika.Services.Backgrounds
         public async Task<FrameData> GetFrameData(string backgroundId, FrameData frameData)
         {
             var background = await GetById(backgroundId);
-            return await _awsRepository.GetFrameData(background, frameData);
+            return await _frameRepository.GetFrameData(background, frameData);
         }
 
         public async Task PostFrameData(string backgroundId, FrameData frameData)
         {
             var background = await GetById(backgroundId);
-            await _awsRepository.PostFrameData(background, frameData);
+            await _frameRepository.PostFrameData(background, frameData);
+        }
+
+        public async Task<ISignedUrl> CreateThumbnail(string backgroundId)
+        {
+            var background = await GetById(backgroundId);
+            var signedUrl = await _resourceService.CreateResource(background, Thumbnail.Create());
+            return signedUrl;
+        }
+
+        public Task<bool> DeleteThumbnail(string backgroundId)
+        {
+            return _resourceService.DeleteResource(EntityType.Background, backgroundId, Thumbnail.ResourceId);
+        }
+
+        public Task<string> GetThumbnailUrl(string backgroundId)
+        {
+            return _resourceService.GetResourceUrl(EntityType.Background, backgroundId, Thumbnail.ResourceId);
+        }
+
+        public Task<bool> HasThumbnail(string backgroundId)
+        {
+            return _resourceService.HasResource(EntityType.Background, backgroundId, Thumbnail.ResourceId);
         }
 
         protected internal override async Task<Background> CreateEntityForUpdate(Background source)
