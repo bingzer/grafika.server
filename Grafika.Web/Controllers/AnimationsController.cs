@@ -25,7 +25,7 @@ namespace Grafika.Web.Controllers
         
         [AllowAnonymous]
         [HttpGet]
-        public async Task<IActionResult> Get(AnimationQueryOptions options, [FromQuery] int? skip, [FromQuery] int? limit)
+        public async Task<IActionResult> Get(AnimationQueryOptions options, [FromQuery] int? skip = null, [FromQuery] int? limit = null)
         {
             if (options == null)
                 options = new AnimationQueryOptions();
@@ -86,14 +86,13 @@ namespace Grafika.Web.Controllers
         }
 
         [HttpGet("mine")]
-        public async Task<IActionResult> GetMine([FromQuery] AnimationQueryOptions options = null)
+        public Task<IActionResult> GetMine([FromQuery] AnimationQueryOptions options = null)
         {
             if (options == null)
                 options = new AnimationQueryOptions();
             options.UserId = ((UserIdentity)User.Identity).Id;
 
-            var animations = await _service.List(options);
-            return Ok(animations);
+            return Get(options);
         }
 
         [SkipModelValidation]

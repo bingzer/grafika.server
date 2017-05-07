@@ -20,7 +20,7 @@ namespace Grafika.Web.Controllers
 
         [AllowAnonymous]
         [HttpGet]
-        public async Task<IActionResult> Get(BackgroundQueryOptions options, [FromQuery] int? skip, [FromQuery] int? limit)
+        public async Task<IActionResult> Get(BackgroundQueryOptions options, [FromQuery] int? skip = null, [FromQuery] int? limit = null)
         {
             if (options == null)
                 options = new BackgroundQueryOptions();
@@ -41,6 +41,16 @@ namespace Grafika.Web.Controllers
 
             var backgrounds = await _service.List(options);
             return Ok(backgrounds);
+        }
+
+        [HttpGet("mine")]
+        public Task<IActionResult> GetMine([FromQuery] BackgroundQueryOptions options = null)
+        {
+            if (options == null)
+                options = new BackgroundQueryOptions();
+            options.UserId = ((UserIdentity)User.Identity).Id;
+
+            return Get(options);
         }
 
         [AllowAnonymous]
