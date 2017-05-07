@@ -30,7 +30,7 @@ namespace Grafika.Services.Animations
 
         protected override async Task<IEnumerable<Animation>> Query(AnimationQueryOptions options = null)
         {
-            IQueryable<Animation> query = DataContext.Animations.Where(anim => anim.TotalFrame > 0);
+            IQueryable<Animation> query = DataContext.Animations;
 
             if (!string.IsNullOrEmpty(options.Term))
                 return await _textSearchProvider.TextSearchAsync(DataContext.Animations, options);
@@ -43,6 +43,8 @@ namespace Grafika.Services.Animations
                 query = query.Where(q => q.IsPublic == options.IsPublic);
             if (options.IsRemoved.HasValue)
                 query = query.Where(q => q.IsRemoved == options.IsRemoved);
+            if (options.MinimumFrames.HasValue)
+                query = query.Where(q => q.TotalFrame >= options.MinimumFrames);
             if (options.IsRandom == true)
                 query = CreateRandomQuery(query);
             if (!string.IsNullOrEmpty(options.RelatedToAnimationId))

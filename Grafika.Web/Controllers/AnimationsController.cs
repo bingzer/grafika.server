@@ -31,15 +31,19 @@ namespace Grafika.Web.Controllers
                 options = new AnimationQueryOptions();
             if (options.UserId != null)
             {
+                // -- My Animations
                 if (!options.IsRemoved.HasValue)
                     options.IsRemoved = false;
             }
             else
             {
+                // -- Public animations defaults
                 if (!options.IsPublic.HasValue)
                     options.IsPublic = true;
                 if (!options.IsRemoved.HasValue)
                     options.IsRemoved = false;
+                if (!options.MinimumFrames.HasValue)
+                    options.MinimumFrames = 1;
             }
 
             options.SetPaging(skip, limit);

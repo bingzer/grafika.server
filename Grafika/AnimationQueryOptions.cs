@@ -8,5 +8,7 @@
 
         public bool? IsRandom { get; set; }
         public string RelatedToAnimationId { get; set; }
+
+        public int? MinimumFrames { get; set; }
     }
 }

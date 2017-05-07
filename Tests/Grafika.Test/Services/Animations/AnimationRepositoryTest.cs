@@ -17,8 +17,7 @@ namespace Grafika.Test.Services.Animations
             new Animation { Id = "2", Name = "2", UserId = "user1", IsPublic = true, IsRemoved = true, Views = 2, Rating = 4, TotalFrame = 10 },
             new Animation { Id = "3", Name = "3", UserId = "user2", IsPublic = true, IsRemoved = false, Views = 3, Rating = 3, TotalFrame = 10 },
             new Animation { Id = "4", Name = "4", UserId = "user3", IsPublic = false, IsRemoved = false, Views = 4, Rating = 2, TotalFrame = 10 },
-            // should get excluded
-            new Animation { Id = "5", Name = "5", UserId = "user3", IsPublic = false, IsRemoved = false, Views = 4, Rating = 2, TotalFrame = 0 },
+            new Animation { Id = "5", Name = "5", UserId = "user4", IsPublic = true, IsRemoved = false, Views = 5, Rating = 1, TotalFrame = 0 },
         };
 
         [Fact]
@@ -28,7 +27,7 @@ namespace Grafika.Test.Services.Animations
             var options = new AnimationQueryOptions();
             var results = await repo.Find(options);
 
-            Assert.Equal(4, results.Count());
+            Assert.Equal(5, results.Count());
         }
 
         [Theory]
@@ -60,7 +59,7 @@ namespace Grafika.Test.Services.Animations
         }
 
         [Theory]
-        [InlineData(true, 3)]
+        [InlineData(true, 4)]
         [InlineData(false, 1)]
         public async void TestFind_IsPublic(bool isPublic, int expectedCount)
         {
@@ -73,11 +72,24 @@ namespace Grafika.Test.Services.Animations
 
         [Theory]
         [InlineData(true, 1)]
-        [InlineData(false, 3)]
+        [InlineData(false, 4)]
         public async void TestFind_IsRemoved(bool isRemoved, int expectedCount)
         {
             var repo = await SetupAnimationRepository();
             var options = new AnimationQueryOptions { IsRemoved = isRemoved };
+            var results = await repo.Find(options);
+
+            Assert.Equal(expectedCount, results.Count());
+        }
+
+        [Theory]
+        [InlineData(1, 4)]
+        [InlineData(10, 4)]
+        [InlineData(15, 0)]
+        public async void TestFind_MinimumFrames(int minimumFrames, int expectedCount)
+        {
+            var repo = await SetupAnimationRepository();
+            var options = new AnimationQueryOptions { MinimumFrames = minimumFrames };
             var results = await repo.Find(options);
 
             Assert.Equal(expectedCount, results.Count());
@@ -108,20 +120,23 @@ namespace Grafika.Test.Services.Animations
             Assert.Equal("2", results[1].Id);
             Assert.Equal("3", results[2].Id);
             Assert.Equal("4", results[3].Id);
+            Assert.Equal("5", results[4].Id);
 
             options = new AnimationQueryOptions { Sort = new SortOptions { Direction = SortDirection.Descending, Name = "views" } };
             results = (await repo.Find(options)).ToList();
-            Assert.Equal("4", results[0].Id);
-            Assert.Equal("3", results[1].Id);
-            Assert.Equal("2", results[2].Id);
-            Assert.Equal("1", results[3].Id);
+            Assert.Equal("5", results[0].Id);
+            Assert.Equal("4", results[1].Id);
+            Assert.Equal("3", results[2].Id);
+            Assert.Equal("2", results[3].Id);
+            Assert.Equal("1", results[4].Id);
 
             options = new AnimationQueryOptions { Sort = new SortOptions { Direction = SortDirection.Ascending, Name = "rating" } };
             results = (await repo.Find(options)).ToList();
-            Assert.Equal("4", results[0].Id);
-            Assert.Equal("3", results[1].Id);
-            Assert.Equal("2", results[2].Id);
-            Assert.Equal("1", results[3].Id);
+            Assert.Equal("5", results[0].Id);
+            Assert.Equal("4", results[1].Id);
+            Assert.Equal("3", results[2].Id);
+            Assert.Equal("2", results[3].Id);
+            Assert.Equal("1", results[4].Id);
 
 
             options = new AnimationQueryOptions { Sort = new SortOptions { Direction = SortDirection.Descending, Name = "rating" } };
@@ -130,6 +145,7 @@ namespace Grafika.Test.Services.Animations
             Assert.Equal("2", results[1].Id);
             Assert.Equal("3", results[2].Id);
             Assert.Equal("4", results[3].Id);
+            Assert.Equal("5", results[4].Id);
         }
 
         [Fact]
