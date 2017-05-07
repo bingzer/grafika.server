@@ -30,7 +30,7 @@ namespace Grafika.Services.Animations
 
         protected override async Task<IEnumerable<Animation>> Query(AnimationQueryOptions options = null)
         {
-            IQueryable<Animation> query = DataContext.Animations;
+            IQueryable<Animation> query = DataContext.Animations.Where(anim => anim.TotalFrame > 0);
 
             if (!string.IsNullOrEmpty(options.Term))
                 return await _textSearchProvider.TextSearchAsync(DataContext.Animations, options);

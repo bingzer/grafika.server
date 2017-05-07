@@ -16,7 +16,9 @@ namespace Grafika.Test.Services.Animations
             new Animation { Id = "1", Name = "1", UserId = "user1", IsPublic = true, IsRemoved = false, Views = 1, Rating = 5, TotalFrame = 10 },
             new Animation { Id = "2", Name = "2", UserId = "user1", IsPublic = true, IsRemoved = true, Views = 2, Rating = 4, TotalFrame = 10 },
             new Animation { Id = "3", Name = "3", UserId = "user2", IsPublic = true, IsRemoved = false, Views = 3, Rating = 3, TotalFrame = 10 },
-            new Animation { Id = "4", Name = "4", UserId = "user3", IsPublic = false, IsRemoved = false, Views = 4, Rating = 2, TotalFrame = 10 }
+            new Animation { Id = "4", Name = "4", UserId = "user3", IsPublic = false, IsRemoved = false, Views = 4, Rating = 2, TotalFrame = 10 },
+            // should get excluded
+            new Animation { Id = "5", Name = "5", UserId = "user3", IsPublic = false, IsRemoved = false, Views = 4, Rating = 2, TotalFrame = 0 },
         };
 
         [Fact]
