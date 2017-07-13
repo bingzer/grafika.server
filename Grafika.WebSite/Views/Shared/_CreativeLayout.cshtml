@@ -1,0 +1,90 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Grafika</title>
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/icon?family=Material+Icons" />
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Roboto:400,500,700" />
+    <!-- Bootstrap Core CSS -->
+    <link href="/css/bootstrap.css" rel="stylesheet">
+    <!-- Custom Fonts -->
+    <link href="/css/font-awesome.css" rel="stylesheet" type="text/css">
+    <!-- Plugin CSS -->
+    <link href="/css/magnific-popup.css" rel="stylesheet">
+    <!-- Theme CSS -->
+    <link href="/css/creative.css" rel="stylesheet">
+    @RenderSection("styles", false)
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn"t work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <meta itemprop="name" content="Grafika" />
+    <meta itemprop="description" content="Grafika - Super simple animation maker for web and Android" />
+    <!-- Open Graph -->
+    <meta property="og:site_name" content="Grafika" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://grafika.bingzer.com" />
+    <meta property="og:title" content="Grafika" />
+    <meta property="og:description" content="Grafika - Super simple animation maker for web and Android" />
+    <meta property="fb:app_id" content="1742692282614357" />
+    <!-- twitter -->
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="@@grafikaapp" />
+    <meta name="twitter:site:id" content="791028721138401281" />
+    <meta name="twitter:title" content="Grafika" />
+    <meta name="twitter:description" content="Grafika - Super simple animation maker for web and Android" />
+</head>
+<body id="page-top">
+    <nav id="mainNav" class="navbar navbar-default navbar-fixed-top">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span> Menu <i class="fa fa-bars"></i>
+                </button>
+                <a class="navbar-brand page-scroll" href="#page-top" style="padding: 2px">
+                    <img src="~/img/logo.png" alt="Grafika" title="Grafika" style="height: 48px" />
+                </a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a class="page-scroll" href="#about">Animations</a>
+                    </li>
+                    <li>
+                        <a class="page-scroll" href="#services">Services</a>
+                    </li>
+                    <li>
+                        <a class="page-scroll" href="#portfolio">Portfolio</a>
+                    </li>
+                    <li>
+                        <a class="page-scroll" href="#contact">Contact</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container-fluid -->
+    </nav>
+    @RenderBody()
+
+    <!-- jQuery -->
+    <script src="/js/jquery.js"></script>
+    <!-- Bootstrap Core JavaScript -->
+    <script src="/js/bootstrap.js"></script>
+    <!-- Plugin JavaScript -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
+    <script src="/js/scrollreveal.js"></script>
+    <script src="/js/jquery.magnific-popup.js"></script>
+    <!-- Theme JavaScript -->
+    <script src="js/creative.js"></script>
+    @RenderSection("scripts", false)
+</body>
+</html>

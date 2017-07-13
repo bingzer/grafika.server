@@ -1,4 +1,4 @@
-﻿{
+{
   "iisSettings": {
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
@@ -18,12 +18,12 @@
     },
     "Grafika.WebSite": {
       "commandName": "Project",
-      "launchBrowser": true,
       "launchUrl": "api/values",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "PORT": "3001"
       },
-      "applicationUrl": "http://localhost:55650"
+      "applicationUrl": "http://localhost:3001"
     }
   }
 }

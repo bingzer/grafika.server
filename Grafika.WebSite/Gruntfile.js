@@ -11,7 +11,8 @@
         "bower",
         "less",
         "copy:fa",
-        "copy:creative"
+        "copy:creative",
+        "copy:grafika",
     ]);
 
     ///////////////////////////////////////////////////////////////////////////////////////////
@@ -19,9 +20,16 @@
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
         copy: {
+            grafika: {
+                files: [
+                    { src: 'bower_components/grafika-js/dist/grafika.js', dest: 'wwwroot/js/grafika.js' },
+                    { src: 'bower_components/grafika-js/dist/grafika.random-drawing.js', dest: 'wwwroot/js/grafika.random-drawing.js' },
+                    { src: 'bower_components/grafika-js/dist/grafika.demo.js', dest: 'wwwroot/js/grafika.demo.js' }
+                ]
+            },
             creative: {
                 files: [
-                    { src: 'wwwroot/templates/creative/js/creative.js', dest: 'wwwroot/js/creative.js' }
+                    { src: 'Templates/creative/js/creative.js', dest: 'wwwroot/js/creative.js' }
                 ]
             },
             fa: {
@@ -60,10 +68,10 @@
             },
             creative: {
                 options: {
-                    paths: ['wwwroot/templates/creative/less']
+                    paths: ['Templates/creative/less']
                 },
                 files: {
-                    'wwwroot/templates/creative/css/creative.css': 'wwwroot/templates/creative/less/creative.less'
+                    'wwwroot/css/creative.css': 'Templates/creative/less/creative.less'
                 }
             }
         },
