@@ -23,8 +23,8 @@ namespace Grafika.Animations
 
         [Required, DefaultValue(EntityType.Animation)]
         [JsonConverter(typeof(StringEnumConverter))]
-        [BsonElement("type"), BsonSerializer(typeof(EntityTypeBsonSerializer))]
-        public EntityType Type { get; set; }
+        [BsonElement("type"), BsonRepresentation(BsonType.String), BsonSerializer(typeof(EntityTypeBsonSerializer))]
+        public EntityType Type { get; set; } = EntityType.Animation;
         [BsonElement("description")]
         public string Description { get; set; }
 

@@ -1,6 +1,7 @@
 using Grafika.Animations;
 using Grafika.Services;
 using Grafika.Web.Extensions;
+using Grafika.Web.Filters;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -62,6 +63,7 @@ namespace Grafika.Web.Controllers
             return Ok(animation);
         }
 
+        [SkipModelValidation]
         [HttpPost]
         public async Task<IActionResult> Create([FromServices] IUserService userService, [FromBody] Background background)
         {

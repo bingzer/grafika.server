@@ -97,13 +97,8 @@ namespace Grafika.Web.Controllers
 
         [SkipModelValidation]
         [HttpPost]
-        public async Task<IActionResult> Create([FromServices] IUserService userService, [FromBody] Animation animation)
+        public async Task<IActionResult> Create([FromBody] Animation animation)
         {
-            var user = await userService.Get((User.Identity as IUserIdentity).Id);
-            if (user == null)
-                throw new NotAuthorizedException();
-
-            animation = await _service.PrepareNewAnimation(animation, user);
             animation = await _service.Create(animation);
 
             return Created(Url.Action(nameof(GetDetail), new { animationId = animation.Id }), animation);
