@@ -1,0 +1,18 @@
+<md-dialog>
+<md-list flex layout="column">
+    <md-list-item class="md-2-line" ng-repeat="resource in vm.resources" ng-click="vm.select(resource.id)">
+        <img ng-src="{{resource.url}}" class="md-avatar"/>
+        <div class="md-list-item-text" layout="column">
+            <h3>{{resource.id}}</h3>
+            <p>{{resource.mime}}</p>
+        </div>
+        <md-button class="md-secondary md-icon-button" ng-click="vm.deleteResource(resource.id)" aria-label="delete">
+            <md-icon md-font-library="material designs">delete</md-icon>
+        </md-button>
+    </md-list-item>
+</md-list>
+<md-dialog-actions layout="row">
+    <span flex></span>
+    <md-button type="button" ng-click="vm.cancel()">Cancel</md-button>
+</md-dialog-actions>
+</md-dialog>

@@ -1,0 +1,44 @@
+<!-- Animation card -->
+<div class="animation-card animation-card-small">
+    <md-whiteframe class="md-whiteframe-2dp" layout="column">
+        <div class="thumbnail-image-container" ng-class="anim.width > anim.height ? 'landscape' : 'portrait'">
+            <a href ui-sref="detail({_id: anim._id})">
+                <img class="card-image" ng-src="{{anim.thumbnailUrl}}" alt="thumbnail">
+            </a>
+            <div class="thumbnail-overlay link">
+                <span class="thumbnail-left-icons" ng-if="!anim.isPublic">
+                    <span>
+                        <md-tooltip md-direction="bottom">Private to you</md-tooltip>
+                        <i class="material-icons">lock_outline</i>
+                    </span>
+                </span>
+                <span class="thumbnail-right-icons" layout="row">
+                    <a href ui-sref="drawing({_id: anim._id})" ng-if="vm.canEdit">
+                        <md-tooltip md-direction="bottom">Edit</md-tooltip>
+                        <i class="material-icons">mode_edit</i>
+                    </a>
+                    <a href ng-click="vm.confirmDelete(anim)" ng-if="vm.canDelete()">
+                        <md-tooltip md-direction="bottom">Delete</md-tooltip>
+                        <i class="material-icons">delete</i>
+                    </a>
+                </span>
+            </div>
+        </div>
+        <div class="thumbnail-content" layout="row">
+            <div layout="column" flex>
+                <div layout="column">
+                    <a class="name md-body-2 link" ui-sref="detail({_id: anim._id})">
+                        <span ng-bind="anim.name"></span>
+                    </a>
+                    <avatar class="avatar avatar-xs" user-id="{{anim.userId}}" username="{{anim.author || 'anonymous'}}"></avatar>
+                </div>
+            </div>
+            <div class="caption" layout="column" layout-align="start end">
+                <div class="md-caption text-muted" layout-align="center end" layout="column">
+                    <span class="font-x-small">{{ anim.totalFrame + ' frames'}}&nbsp;&middot;&nbsp;{{ anim.views + ' views'}}</span>
+                    <rating-stars class="font-x-small" rating="{{anim.rating}}" readonly></rating-stars>
+                </div>
+            </div>
+        </div>
+    </md-whiteframe>
+</div>

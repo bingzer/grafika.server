@@ -1,0 +1,48 @@
+<div ng-init="vm.fetchServerInfo()">
+    <div>
+        <form name="configForm">
+            <md-input-container class="md-block">
+                <label>Search configuration</label>
+                <input type="search" ng-model="vm.configQuery">
+            </md-input-container>
+        </form>
+    </div>
+    <div>
+        <h4>Server Configuration</h4>
+        <div class="table-responsive" layout="column" layout-padding>
+            <table class="table">
+                <tr>
+                    <th>Key</th>
+                    <th>Value</th>
+                </tr>
+                <tr ng-repeat="serverConfig in vm.serverConfigs | filter:vm.configQuery">
+                    <td>
+                        <span class="font-small" ng-bind="serverConfig.key" flex="20"></span>
+                    </td>
+                    <td>
+                        <span class="font-small" ng-bind="serverConfig.value" flex></span>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div>
+        <h4>Client Configuration</h4>
+        <div class="table-responsive" layout="column" layout-padding>
+            <table class="table">
+                <tr>
+                    <th>Key</th>
+                    <th>Value</th>
+                </tr>
+                <tr ng-repeat="clientConfig in vm.clientConfigs | filter:vm.configQuery">
+                    <td>
+                        <span class="font-small" ng-bind="clientConfig.key" flex="20"></span>
+                    </td>
+                    <td>
+                        <span class="font-small" ng-bind="clientConfig.value" flex></span>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
