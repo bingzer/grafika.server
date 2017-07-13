@@ -1,0 +1,13 @@
+<div layout="column">
+	<div layout="row" layout-wrap layout-align="center start">
+		<ng-include src="'/app/background/card.html'" ng-repeat="background in vm.backgrounds" ></ng-include>
+	</div>
+	
+	<div layout="row" layout-align="center center" layout-margin layout-padding flex>
+		<gf-spinner ng-show="vm.busy"></gf-spinner>
+		<md-button ng-show="!vm.busy && vm.hasMore" class="md-button md-icon-button" ng-click="vm.list(true)" ng-disabled="vm.busy">
+			<md-icon md-font-library="material designs">expand_more</md-icon>
+			<md-tooltip>Load more...</md-tooltip>
+		</md-button>
+	</div>
+</div>

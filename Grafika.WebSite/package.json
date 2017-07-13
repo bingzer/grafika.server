@@ -1,18 +1,42 @@
 {
-  "name": "grafika.website",
-  "version": "1.0.0",
-  "description": "grafika website",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "name": "grafika",
+  "version": "1.0.12",
+  "engines": {
+    "node": "5.2.0"
   },
-  "author": "",
-  "license": "ISC",
+  "description": "",
+  "repository": {
+    "type": "git",
+    "url": "https://bingzer.visualstudio.com/DefaultCollection/_git/grafika"
+  },
+  "scripts": {
+    "postinstall": "grunt"
+  },
+  "license": "UNLICENSED",
   "dependencies": {
-    "grunt": "^1.0.1",
-    "grunt-bower": "^0.21.4",
-    "grunt-contrib-clean": "^1.1.0",
-    "grunt-contrib-copy": "^1.0.0",
-    "grunt-contrib-less": "^1.4.1"
+    "@types/jquery": "^2.0.48",
+    "@types/angular": "^1.6.26",
+    "@types/angular-cookies": "^1.4.3",
+    "@types/angular-jwt": "0.0.28",
+    "@types/angular-material": "^1.1.48",
+    "@types/angular-ui-router": "^1.1.36",
+    "@types/q": "^1.0.0",
+    "@types/underscore": "^1.8.0",
+    "grunt": "*",
+    "grunt-bower-task": "*",
+    "grunt-cli": "*",
+    "grunt-contrib-clean": "*",
+    "grunt-contrib-compress": "^1.3.0",
+    "grunt-contrib-copy": "*",
+    "grunt-contrib-cssmin": "^1.0.1",
+    "grunt-contrib-less": "^1.4.1",
+    "grunt-contrib-uglify": "*",
+    "grunt-mocha-cli": "^2.1.0",
+    "grunt-ng-constant": "^2.0.1",
+    "grunt-string-replace": "^1.2.1",
+    "grunt-ts": "*",
+    "grunt-typings": "^0.1.5",
+    "typescript": "^2.2.2",
+    "typings": "^1.5.0"
   }
 }

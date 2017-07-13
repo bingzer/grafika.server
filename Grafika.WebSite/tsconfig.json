@@ -1,0 +1,21 @@
+﻿{
+  "compileOnSave": true,
+  "compilerOptions": {
+    "target": "es5",
+    "outDir": "Templates/GrafikaApp/output",
+    "mapRoot": "Tempaltes/GrafikaApp/output",
+    "sourceMap": true,
+    "allowJs": false
+  },
+  "exclude": [
+    "bower_components",
+    "node_modules",
+    "typings/globals"
+  ],
+  "include": [
+    "typings/index.d.ts",
+    "typings/user.d.ts",
+    "typings/resource.d.ts",
+    "Templates/GrafikaApp/**/*.ts"
+  ]
+}

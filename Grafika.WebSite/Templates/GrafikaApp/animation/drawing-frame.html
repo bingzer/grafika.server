@@ -1,0 +1,32 @@
+<md-dialog style="min-width: 450px">
+<form name="framePropertiesForm" novalidate>
+	<md-toolbar>
+		<div class="md-toolbar-tools">
+			<h4 flex ng-bind="'Frame ' + (vm.frame.index + 1)"></h4>
+		</div>
+	</md-toolbar>
+	<md-dialog-content layout-margin>
+		<div layout="row" layout-padding>
+			<md-input-container flex="45">
+				<label>Frame index</label>
+				<input type="number" ng-model="vm.frame.index" ng-required="true" ng-disabled="true">
+			</md-input-container>
+			<div flex="45">
+				<md-checkbox ng-model="vm.frame.modified" ng-disabled="true">Modified</md-checkbox>
+			</div>
+		</div>
+		<div layout="column" layout-padding>
+			<label class="md-caption" layout-margin>Background Color</label>
+			<spectrum-colorpicker 
+				format="'hex'"
+				ng-model="vm.frame.backgroundColor"
+				on-change="vm.grafika.setOptions({ backgroundColor: color})"/>
+		</div>
+	</md-dialog-content>
+    <md-dialog-actions layout="row">
+		<span flex></span>
+		<md-button ng-click="vm.asThumbnail()">Use as thumbnail</md-button>
+		<md-button ng-click="vm.close(true)" ng-disabled="framePropertiesForm.$invalid">Done</md-button>
+    </md-dialog-actions>
+</form>
+</md-dialog>

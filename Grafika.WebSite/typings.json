@@ -1,0 +1,7 @@
+{
+  "globalDependencies": {
+    "grafika": "github:bingzer/grafika.js/dist/grafika.d.ts",
+    "grafika.exts": "github:bingzer/grafika.js/dist/grafika.extensions.d.ts",
+    "grafika.interfaces": "github:bingzer/grafika.js/dist/grafika.interfaces.d.ts"
+  }
+}

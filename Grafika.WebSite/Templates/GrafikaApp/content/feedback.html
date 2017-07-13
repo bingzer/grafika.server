@@ -1,0 +1,42 @@
+<style ng-if="app.feedback.lean">
+	nav.navbar .nav-link-logo {
+		display: inherit !important;
+	}
+	.nav.navbar-nav.navbar-right {
+		display: none !important;
+	}
+	nav.md-whiteframe-z1 {
+		box-shadow: inherit !important;
+	}
+	.intro {
+		display: none;
+	}
+</style>
+<div class="feedback" layout="row" flex>
+	<form name="feedbackForm" layout="row" layout-align="center start" flex>
+	<div layout="column" layout="column" layout-margin layout-padding flex-gt-md="75" flex>
+		<md-input-container>
+			<label>Area</label>
+			<md-select ng-model="app.feedback.category" md-on-close="app.filter()">
+				<md-option ng-value="category" ng-repeat="category in app.feedbackCategories" ng-bind="category" ng-required="true"></md-option>
+			</md-select>
+		</md-input-container>
+		<md-input-container>
+			<label>Subject</label>
+			<input type="text" ng-model="app.feedback.subject" ng-required="true">
+		</md-input-container>
+		<md-input-container>
+			<label>Email Address (optional)</label>
+			<input type="email" ng-model="app.feedback.email" ng-required="false">
+		</md-input-container>
+		<md-input-container>
+			<label>Feedback</label>
+			<textarea ng-model="app.feedback.content" ng-required="true"></textarea>
+		</md-input-container>
+		<div layout="row" layout-align="end">
+			<md-button class="md-button md-raised md-primary" ng-click="app.sendFeedback()" ng-disabled="feedbackForm.$invalid">Send</md-button>
+			<md-button class="md-button md-raised md-warn" ui-sref="about">Cancel</md-button>
+		</div>
+	</div>
+	</form>
+</div>

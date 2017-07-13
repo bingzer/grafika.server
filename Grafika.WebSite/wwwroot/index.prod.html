@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en" prefix="og:http://ogp.me/ns#" ng-app="app" ng-controller="AppController as app" ng-cloak>
+<head>
+<title ng-bind="app.uxService.pageTitle">Grafika</title>
+<meta charset="utf-8"/>
+<meta name="description" content="Grafika - Super simple animation maker for web and Android"/>
+<meta name="keyword" content="grafika,animation,animation maker,animation creator"/>
+<meta name="author" content="Grafika Team"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<base href="/">
+<link rel="stylesheet" type="text/css" href="/assets/grafika.app.css"/>
+<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/icon?family=Material+Icons"/>
+<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Roboto:400,500,700"/>
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+<link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+<meta name="theme-color" content="#008080"/>
+<!-- Schema.org markup for Google+ -->
+<meta itemprop="name" content="Grafika"/>
+<meta itemprop="description" content="Grafika - Super simple animation maker for web and Android"/>
+<!-- Open Graph -->
+<meta property="og:site_name" content="Grafika"/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://grafika.bingzer.com"/>
+<meta property="og:title" content="Grafika"/>
+<meta property="og:description" content="Grafika - Super simple animation maker for web and Android"/>
+<meta property="fb:app_id" content="1742692282614357"/>
+<!-- twitter -->
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:site" content="@grafikaapp"/>
+<meta name="twitter:site:id" content="791028721138401281"/>
+<meta name="twitter:title" content="Grafika"/>
+<meta name="twitter:description" content="Grafika - Super simple animation maker for web and Android"/>
+</head>
+<body>
+	<div id="progress-modal" layout-fill class="progress-modal" layout-align="center center">
+		<md-progress-circular md-mode="indeterminate" class="md-primary"></md-progress-circular>    
+	</div>
+	<ng-include src="'/app/layout/header.html'"></ng-include>
+	<ng-include src="'/app/layout/content.html'"></ng-include>
+	<ng-include src="'/app/layout/footer.html'"></ng-include>
+	<script type="text/javascript" src="/assets/grafika.js"></script>
+	<script type="text/javascript" src="/assets/grafika.app.js"></script>
+	<script type="text/javascript">
+		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+		ga('create', 'UA-38178471-6', 'auto');
+	</script>
+</body>
+</html>

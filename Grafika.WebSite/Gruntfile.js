@@ -4,12 +4,15 @@
     grunt.loadNpmTasks("grunt-contrib-copy");
     grunt.loadNpmTasks("grunt-contrib-clean");
     grunt.loadNpmTasks("grunt-contrib-less");
+    grunt.loadNpmTasks("grunt-ts");
+    grunt.loadNpmTasks("grunt-typings");
     grunt.loadNpmTasks("grunt-bower");
 
     grunt.registerTask("default", [
         "clean",
         "bower",
         "less",
+        "ts",
         "copy:fa",
         "copy:creative",
         "copy:grafika",
@@ -19,12 +22,27 @@
 
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
+        ts: {
+            options: {
+                'compiler': './node_modules/typescript/bin/tsc'
+            },
+            default: {
+                tsconfig: {
+                    src: ['Templates/GrafikaApp/**/*.ts'],
+                    passThrough: true
+                }
+            }
+        },
+        typings: {
+            install: {}
+        },      
         copy: {
             grafika: {
                 files: [
                     { src: 'bower_components/grafika-js/dist/grafika.js', dest: 'wwwroot/js/grafika.js' },
                     { src: 'bower_components/grafika-js/dist/grafika.random-drawing.js', dest: 'wwwroot/js/grafika.random-drawing.js' },
-                    { src: 'bower_components/grafika-js/dist/grafika.demo.js', dest: 'wwwroot/js/grafika.demo.js' }
+                    { src: 'bower_components/grafika-js/dist/grafika.demo.js', dest: 'wwwroot/js/grafika.demo.js' },
+                    { src: 'Templates/defaults/js/**.js*', dest: 'wwwroot/js', flatten: true, expand: true }
                 ]
             },
             creative: {
