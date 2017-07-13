@@ -21,8 +21,7 @@
         copy: {
             creative: {
                 files: [
-                    { src: 'wwwroot/vendors/creative/js/creative.js', dest: 'wwwroot/js/creative.js' },
-                    { src: 'wwwroot/vendors/creative/css/creative.css', dest: 'wwwroot/css/creative.css' }
+                    { src: 'wwwroot/templates/creative/js/creative.js', dest: 'wwwroot/js/creative.js' }
                 ]
             },
             fa: {
@@ -61,10 +60,10 @@
             },
             creative: {
                 options: {
-                    paths: ['wwwroot/vendors/creative/less']
+                    paths: ['wwwroot/templates/creative/less']
                 },
                 files: {
-                    'wwwroot/vendors/creative/css/creative.css': 'wwwroot/vendors/creative/less/creative.less'
+                    'wwwroot/templates/creative/css/creative.css': 'wwwroot/templates/creative/less/creative.less'
                 }
             }
         },
