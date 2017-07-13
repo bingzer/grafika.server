@@ -181,25 +181,25 @@ var GrafikaApp;
         AppCommon.prototype.getBaseUrl = function () {
             return this.$location.protocol() + '://' + this.$location.host() + (this.$location.port() != 80 ? ':' + this.$location.port() : '') + '/';
         };
-        AppCommon.$inject = [
-            '$q',
-            '$log',
-            '$interval',
-            '$timeout',
-            '$location',
-            '$window',
-            '$cookies',
-            '$mdToast',
-            '$mdDialog',
-            '$state',
-            '$stateParams',
-            '$mdPanel',
-            '$mdMedia',
-            '$mdSidenav',
-            'appConfig'
-        ];
         return AppCommon;
     }());
+    AppCommon.$inject = [
+        '$q',
+        '$log',
+        '$interval',
+        '$timeout',
+        '$location',
+        '$window',
+        '$cookies',
+        '$mdToast',
+        '$mdDialog',
+        '$state',
+        '$stateParams',
+        '$mdPanel',
+        '$mdMedia',
+        '$mdSidenav',
+        'appConfig'
+    ];
     GrafikaApp.AppCommon = AppCommon;
 })(GrafikaApp || (GrafikaApp = {}));
 //# sourceMappingURL=C:/Users/rtobings/GrafikaProject/grafika.server/Grafika.WebSite/Tempaltes/GrafikaApp/output/app-common.js.map

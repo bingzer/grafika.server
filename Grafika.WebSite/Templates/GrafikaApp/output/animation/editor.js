@@ -31,16 +31,16 @@ var GrafikaApp;
                 .then(function (res) { return _this.resourceService.upload(res.data, _this.grafika.exts.getCanvasBlob()); })
                 .then(function (res) { return _this.appCommon.toast('Successfully saved!'); });
         };
-        AnimationEditorController.$inject = [
-            '$rootScope',
-            '$stateParams',
-            'appCommon',
-            'animationService',
-            'frameService',
-            'resourceService'
-        ];
         return AnimationEditorController;
     }());
+    AnimationEditorController.$inject = [
+        '$rootScope',
+        '$stateParams',
+        'appCommon',
+        'animationService',
+        'frameService',
+        'resourceService'
+    ];
     GrafikaApp.AnimationEditorController = AnimationEditorController;
 })(GrafikaApp || (GrafikaApp = {}));
 //# sourceMappingURL=C:/Users/rtobings/GrafikaProject/grafika.server/Grafika.WebSite/Tempaltes/GrafikaApp/output/animation/editor.js.map

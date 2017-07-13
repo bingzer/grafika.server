@@ -31,9 +31,9 @@ var GrafikaApp;
             }
             return message;
         };
-        PasswordValidator.MINIMUM_CHARACTER_LENGTH = 6;
         return PasswordValidator;
     }());
+    PasswordValidator.MINIMUM_CHARACTER_LENGTH = 6;
     GrafikaApp.PasswordValidator = PasswordValidator;
 })(GrafikaApp || (GrafikaApp = {}));
 //# sourceMappingURL=C:/Users/rtobings/GrafikaProject/grafika.server/Grafika.WebSite/Tempaltes/GrafikaApp/output/models/password-validator.js.map

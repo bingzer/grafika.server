@@ -1,13 +1,8 @@
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
 var GrafikaApp;
 (function (GrafikaApp) {
     var AuthService = (function (_super) {
@@ -82,9 +77,6 @@ var GrafikaApp;
             var user = this.getUser();
             if (!explicit) {
                 return user.hasRoles('user');
-                // let route = this.appCommon.getCurrentRoute();
-                // if (route) 
-                //     roles = route.config.roles; 
             }
             else {
                 return user.hasRoles(roles);
@@ -110,9 +102,9 @@ var GrafikaApp;
             var user = new GrafikaApp.User(payload);
             return user;
         };
-        AuthService.$inject = ['appCommon', '$rootScope', 'apiService', 'jwtHelper'];
         return AuthService;
     }(GrafikaApp.BaseService));
+    AuthService.$inject = ['appCommon', '$rootScope', 'apiService', 'jwtHelper'];
     GrafikaApp.AuthService = AuthService;
 })(GrafikaApp || (GrafikaApp = {}));
 //# sourceMappingURL=C:/Users/rtobings/GrafikaProject/grafika.server/Grafika.WebSite/Tempaltes/GrafikaApp/output/services/auth-service.js.map

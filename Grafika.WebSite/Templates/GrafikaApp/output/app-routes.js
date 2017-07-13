@@ -129,13 +129,13 @@ var GrafikaApp;
                 .otherwise('/');
             $locationProvder.html5Mode(true);
         }
-        Routes.$inject = [
-            '$stateProvider',
-            '$urlRouterProvider',
-            '$locationProvider'
-        ];
         return Routes;
     }());
+    Routes.$inject = [
+        '$stateProvider',
+        '$urlRouterProvider',
+        '$locationProvider'
+    ];
     GrafikaApp.Routes = Routes;
 })(GrafikaApp || (GrafikaApp = {}));
 //# sourceMappingURL=C:/Users/rtobings/GrafikaProject/grafika.server/Grafika.WebSite/Tempaltes/GrafikaApp/output/app-routes.js.map

@@ -1,13 +1,8 @@
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
 var GrafikaApp;
 (function (GrafikaApp) {
     var AnimationEditController = (function (_super) {
@@ -31,9 +26,9 @@ var GrafikaApp;
                 _this.close().then(function () { return _this.appCommon.toast('Saved'); });
             });
         };
-        AnimationEditController.$inject = ['appCommon', 'animationService'];
         return AnimationEditController;
     }(GrafikaApp.DialogController));
+    AnimationEditController.$inject = ['appCommon', 'animationService'];
     GrafikaApp.AnimationEditController = AnimationEditController;
 })(GrafikaApp || (GrafikaApp = {}));
 //# sourceMappingURL=C:/Users/rtobings/GrafikaProject/grafika.server/Grafika.WebSite/Tempaltes/GrafikaApp/output/animation/edit.js.map

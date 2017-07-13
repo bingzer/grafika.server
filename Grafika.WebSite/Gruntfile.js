@@ -12,6 +12,7 @@
         "clean",
         "bower",
         "less",
+        "typings",
         "ts",
         "copy:fa",
         "copy:creative",
@@ -28,7 +29,6 @@
             },
             default: {
                 tsconfig: {
-                    src: ['Templates/GrafikaApp/**/*.ts'],
                     passThrough: true
                 }
             }

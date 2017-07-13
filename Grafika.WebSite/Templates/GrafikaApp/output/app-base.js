@@ -1,13 +1,8 @@
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
 var GrafikaApp;
 (function (GrafikaApp) {
     var Base = (function () {
@@ -15,9 +10,9 @@ var GrafikaApp;
             this.appCommon = appCommon;
             // nothing
         }
-        Base.$inject = ['appCommon'];
         return Base;
     }());
+    Base.$inject = ['appCommon'];
     GrafikaApp.Base = Base;
     var BaseService = (function (_super) {
         __extends(BaseService, _super);
@@ -59,9 +54,9 @@ var GrafikaApp;
         AuthController.prototype.getUser = function () {
             return this.authService.getUser();
         };
-        AuthController.$inject = ['appCommon', 'authService'];
         return AuthController;
     }(BaseController));
+    AuthController.$inject = ['appCommon', 'authService'];
     GrafikaApp.AuthController = AuthController;
     /**
      * Dialog controller
