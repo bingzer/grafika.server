@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Grafika</title>
+</head>
+<body onload="load()" onresize="load()">
+    <div>
+        <p>Top</p>
+        <div>
+	        <canvas id="grafika-canvas"></canvas>
+        </div>
+        <p>Bottom</p>
+    </div>
+
+    <script type="text/javascript" src="../dist/grafika.js"></script>
+    <script type="text/javascript" src="../dist/grafika.extensions.js"></script>
+    <script type="text/javascript" src="../dist/grafika.android.js"></script>
+    <script type="text/javascript" src="../dist/grafika.demo.js"></script>
+	<script type="text/javascript" src="../dist/grafika.random-drawing.js"></script>
+    <script type="text/javascript">
+		var ready = false;
+        function load(){
+            if (document.body.clientWidth == 0 || document.body.clientHeight == 0){
+                console.log("not ready...");
+            }
+            else {
+				if (!ready) {				
+					ready = true;
+					window.grafika = new Grafika();
+					window.grafika.initialize('#grafika-canvas', { debugMode: true, drawingMode: 'paint' /* , graphic: 'freeform' */ });
+				}
+			}
+        }
+    </script>
+</body>
+</html>
