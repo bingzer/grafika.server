@@ -3,7 +3,7 @@
   "private": true,
   "dependencies": {
     "bootstrap": "3.3.6",
-    "jquery": "2.2.0",
+    "jquery": "^3.2.1",
     "jquery-validation": "1.14.0",
     "jquery-validation-unobtrusive": "3.2.6",
     "q": "^1.4.1",
@@ -26,5 +26,8 @@
     "angulartics-google-analytics": "^0.4.0",
     "angular-google-adsense": "^0.4.5",
     "angular-socialshare": "angularjs-socialshare#^2.3.7"
+  },
+  "resolutions": {
+    "jquery": ">= 1.7.2"
   }
 }

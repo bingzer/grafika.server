@@ -21,9 +21,9 @@
       "launchUrl": "api/values",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "PORT": "3001"
+        "PORT": "5000"
       },
-      "applicationUrl": "http://localhost:3001"
+      "applicationUrl": "http://localhost:5000"
     }
   }
 }

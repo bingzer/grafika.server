@@ -10,9 +10,9 @@ var mainBowerFiles = require('main-bower-files');
 var ts = require('gulp-typescript');
 var del = require('del');
 
-gulp.task('default', function () {
-    gulp.run('install', 'scripts', 'styles');
+gulp.task('default', ['install', 'scripts', 'styles']);
 
+gulp.task('watch', function () {
     gulp.watch('Templates/GrafikaApp/**/*.ts', function (event) {
         gulp.run('scripts');
     });
@@ -28,7 +28,9 @@ gulp.task('clean', function (callback) {
     del.sync([
         "wwwroot/js",
         "wwwroot/css",
-        "wwwroot/fonts"
+        "wwwroot/fonts",
+        "wwwroot/less",
+        "wwwroot/scss",
     ]);
     callback();
 });
@@ -37,14 +39,20 @@ gulp.task('typings', function () {
     return gulp.src('./typings.json').pipe(typings());
 });
 
-gulp.task('bower', ['bower-js', 'bower-css']);
+gulp.task('bower', function (callback) {
+    console.log('Installing bower components');
+    gulp.src(mainBowerFiles()).pipe(gulp.dest('./wwwroot/js')).on('end', function () {
+        gulp.src('./wwwroot/js/**/*.css').pipe(gulp.dest('./wwwroot/css')).on('end', function () {
+            console.log('deleting junks');
+            del.sync([
+                './wwwroot/js/**/*.css',
+                './wwwroot/js/**/*.less',
+                './wwwroot/js/**/*.scss',
+            ]);
 
-gulp.task('bower-js', function () {
-    return gulp.src(mainBowerFiles({ filter: '**/*.js' })).pipe(gulp.dest('wwwroot/js'));
-});
-
-gulp.task('bower-css', function () {
-    return gulp.src(mainBowerFiles({ filter: '**/*.css' })).pipe(gulp.dest('wwwroot/css'));
+            callback();
+        });
+    });
 });
 
 gulp.task('less', function () {
@@ -77,7 +85,7 @@ gulp.task('copy-js', function () {
         'bower_components/grafika-js/dist/grafika.js',
         'bower_components/grafika-js/dist/grafika.random-drawing.js',
         'bower_components/grafika-js/dist/grafika.demo.js',
-        'Templates/creative/js/creative.js'
+        'Templates/creative/js/creative.js',
     ])
     .pipe(gulp.dest('wwwroot/js'));
 });

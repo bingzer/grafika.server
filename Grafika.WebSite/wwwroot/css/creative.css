@@ -56,6 +56,33 @@ aside {
 .no-padding {
   padding: 0;
 }
+padding-sm {
+  padding: 8px;
+}
+padding {
+  padding: 16px;
+}
+padding-lg {
+  padding: 24px;
+}
+padding-xl {
+  padding: 32px;
+}
+.no-margin {
+  margin: 0;
+}
+marign-sm {
+  margin: 8px;
+}
+margin {
+  margin: 16px;
+}
+margin-lg {
+  margin: 24px;
+}
+margin-xl {
+  margin: 32px;
+}
 .navbar-default {
   background-color: white;
   border-color: transparent;
@@ -165,6 +192,7 @@ header #header-canvas-container {
   top: 0;
   left: 0;
   background-color: #2C9C9C;
+  background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7));
 }
 header #header-canvas {
   width: 100%;
