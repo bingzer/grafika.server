@@ -1,9 +1,9 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
-using Grafika.Services;
 using Grafika.Animations;
-using Grafika.Web.Extensions;
+using Grafika.Services;
+using Grafika.Services.Web.Extensions;
 
 namespace Grafika.Web.Controllers
 {

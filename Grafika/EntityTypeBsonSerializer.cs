@@ -5,7 +5,7 @@ using MongoDB.Bson;
 
 namespace Grafika
 {
-    class EntityTypeBsonSerializer : EnumSerializer<EntityType>
+    public class EntityTypeBsonSerializer : EnumSerializer<EntityType>
     {
         public override EntityType Deserialize(BsonDeserializationContext context, BsonDeserializationArgs args)
         {

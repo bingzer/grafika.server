@@ -66,4 +66,4 @@ var GrafikaApp;
     app.controller('UserController', GrafikaApp.UserController);
 })(GrafikaApp || (GrafikaApp = {}));
 window.onerror = function (err) { return console.error(err); };
-//# sourceMappingURL=C:/Users/rtobings/GrafikaProject/grafika.server/Grafika.WebSite/Tempaltes/GrafikaApp/output/app.js.map
+//# sourceMappingURL=C:/Users/ricky/GrafikaProject/grafika.server/Grafika.WebSite/Tempaltes/GrafikaApp/output/app.js.map

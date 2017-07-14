@@ -28,7 +28,7 @@ namespace Grafika.Services
 {
     public static class GrafikaServices
     {
-        public static void AddGrafika(this IServiceCollection services)
+        public static void AddGrafikaServices(this IServiceCollection services)
         {
             // -- Grafika.Data.MongoDB
             services.AddMongoDb();
@@ -115,7 +115,7 @@ namespace Grafika.Services
                 ;
         }
 
-        public static void ConfigureGrafika(this IServiceCollection services, IConfiguration configuration)
+        public static void ConfigureGrafikaServices(this IServiceCollection services, IConfiguration configuration)
         {
             configuration.GetSection("Grafika").Bind(AppEnvironment.Default);
 
@@ -134,7 +134,7 @@ namespace Grafika.Services
                 ;
         }
 
-        public static void UseGrafika(this IApplicationBuilder app)
+        public static void UseGrafikaServices(this IApplicationBuilder app)
         {
             app.ApplicationServices.UseMongoDb();
 

@@ -44,4 +44,4 @@ var GrafikaApp;
         return angular.isDefined(window.document["documentMode"]);
     }
 })(GrafikaApp || (GrafikaApp = {}));
-//# sourceMappingURL=C:/Users/rtobings/GrafikaProject/grafika.server/Grafika.WebSite/Tempaltes/GrafikaApp/output/app-http.js.map
+//# sourceMappingURL=C:/Users/ricky/GrafikaProject/grafika.server/Grafika.WebSite/Tempaltes/GrafikaApp/output/app-http.js.map

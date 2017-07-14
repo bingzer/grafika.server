@@ -91,4 +91,4 @@
             };
         }]);
 })();
-//# sourceMappingURL=C:/Users/rtobings/GrafikaProject/grafika.server/Grafika.WebSite/Tempaltes/GrafikaApp/output/directives/gf-disqus.js.map
+//# sourceMappingURL=C:/Users/ricky/GrafikaProject/grafika.server/Grafika.WebSite/Tempaltes/GrafikaApp/output/directives/gf-disqus.js.map

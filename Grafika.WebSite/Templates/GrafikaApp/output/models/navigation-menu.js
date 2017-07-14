@@ -37,4 +37,4 @@ var GrafikaApp;
     ];
     GrafikaApp.NavigationMenu = NavigationMenu;
 })(GrafikaApp || (GrafikaApp = {}));
-//# sourceMappingURL=C:/Users/rtobings/GrafikaProject/grafika.server/Grafika.WebSite/Tempaltes/GrafikaApp/output/models/navigation-menu.js.map
+//# sourceMappingURL=C:/Users/ricky/GrafikaProject/grafika.server/Grafika.WebSite/Tempaltes/GrafikaApp/output/models/navigation-menu.js.map

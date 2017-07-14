@@ -138,4 +138,4 @@ var GrafikaApp;
     ];
     GrafikaApp.Routes = Routes;
 })(GrafikaApp || (GrafikaApp = {}));
-//# sourceMappingURL=C:/Users/rtobings/GrafikaProject/grafika.server/Grafika.WebSite/Tempaltes/GrafikaApp/output/app-routes.js.map
+//# sourceMappingURL=C:/Users/ricky/GrafikaProject/grafika.server/Grafika.WebSite/Tempaltes/GrafikaApp/output/app-routes.js.map

@@ -202,4 +202,4 @@ var GrafikaApp;
     ];
     GrafikaApp.AppCommon = AppCommon;
 })(GrafikaApp || (GrafikaApp = {}));
-//# sourceMappingURL=C:/Users/rtobings/GrafikaProject/grafika.server/Grafika.WebSite/Tempaltes/GrafikaApp/output/app-common.js.map
+//# sourceMappingURL=C:/Users/ricky/GrafikaProject/grafika.server/Grafika.WebSite/Tempaltes/GrafikaApp/output/app-common.js.map

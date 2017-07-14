@@ -117,4 +117,4 @@ var GrafikaApp;
         var checkCanvas = appCommon.$interval(initialize, 1000);
     }
 })(GrafikaApp || (GrafikaApp = {}));
-//# sourceMappingURL=C:/Users/rtobings/GrafikaProject/grafika.server/Grafika.WebSite/Tempaltes/GrafikaApp/output/directives/image-uploader.js.map
+//# sourceMappingURL=C:/Users/ricky/GrafikaProject/grafika.server/Grafika.WebSite/Tempaltes/GrafikaApp/output/directives/image-uploader.js.map

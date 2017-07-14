@@ -4,10 +4,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Grafika.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Grafika.WebSite.Controllers
 {
-    [Route("/")]
+    [Route("/"), AllowAnonymous]
     public class HomeController : Controller
     {
         [Route("/")]

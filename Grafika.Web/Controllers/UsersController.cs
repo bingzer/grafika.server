@@ -3,10 +3,10 @@ using Microsoft.AspNetCore.Mvc;
 using Grafika.Services;
 using Microsoft.AspNetCore.Authorization;
 using Grafika.Web.Models;
-using Grafika.Web.Filters;
+using Grafika.Services.Web.Filters;
+using Grafika.Services.Web.Extensions;
 using Microsoft.Extensions.Options;
 using Grafika.Configurations;
-using Grafika.Web.Extensions;
 using Grafika.Utilities;
 
 namespace Grafika.Web.Controllers

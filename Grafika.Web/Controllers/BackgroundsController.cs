@@ -1,7 +1,7 @@
 using Grafika.Animations;
 using Grafika.Services;
-using Grafika.Web.Extensions;
-using Grafika.Web.Filters;
+using Grafika.Services.Web.Extensions;
+using Grafika.Services.Web.Filters;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;

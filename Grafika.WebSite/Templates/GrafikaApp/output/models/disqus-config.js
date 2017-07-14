@@ -12,4 +12,4 @@ var GrafikaApp;
     }());
     GrafikaApp.DisqusConfig = DisqusConfig;
 })(GrafikaApp || (GrafikaApp = {}));
-//# sourceMappingURL=C:/Users/rtobings/GrafikaProject/grafika.server/Grafika.WebSite/Tempaltes/GrafikaApp/output/models/disqus-config.js.map
+//# sourceMappingURL=C:/Users/ricky/GrafikaProject/grafika.server/Grafika.WebSite/Tempaltes/GrafikaApp/output/models/disqus-config.js.map

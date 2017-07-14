@@ -13,4 +13,4 @@ var GrafikaApp;
     }());
     GrafikaApp.NoResultDirective = NoResultDirective;
 })(GrafikaApp || (GrafikaApp = {}));
-//# sourceMappingURL=C:/Users/rtobings/GrafikaProject/grafika.server/Grafika.WebSite/Tempaltes/GrafikaApp/output/directives/no-result.js.map
+//# sourceMappingURL=C:/Users/ricky/GrafikaProject/grafika.server/Grafika.WebSite/Tempaltes/GrafikaApp/output/directives/no-result.js.map

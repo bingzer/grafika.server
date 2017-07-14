@@ -7,8 +7,8 @@ using System.Linq;
 using Grafika.Configurations;
 using Microsoft.Extensions.Options;
 using Grafika.Utilities;
-using Grafika.Web.Extensions;
-using Grafika.Web.Filters;
+using Grafika.Services.Web.Extensions;
+using Grafika.Services.Web.Filters;
 
 namespace Grafika.Web.Controllers
 {
@@ -30,21 +30,9 @@ namespace Grafika.Web.Controllers
             if (options == null)
                 options = new AnimationQueryOptions();
             if (options.UserId != null)
-            {
-                // -- My Animations
-                if (!options.IsRemoved.HasValue)
-                    options.IsRemoved = false;
-            }
+                options = AnimationQueryOptions.MyAnimations(options);
             else
-            {
-                // -- Public animations defaults
-                if (!options.IsPublic.HasValue)
-                    options.IsPublic = true;
-                if (!options.IsRemoved.HasValue)
-                    options.IsRemoved = false;
-                if (!options.MinimumFrames.HasValue)
-                    options.MinimumFrames = 1;
-            }
+                options = AnimationQueryOptions.PublicAnimations(options);
 
             options.SetPaging(skip, limit);
 

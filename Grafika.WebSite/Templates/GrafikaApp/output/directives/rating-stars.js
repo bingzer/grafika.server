@@ -83,4 +83,4 @@ var GrafikaApp;
     }());
     GrafikaApp.RatingStarsDirective = RatingStarsDirective;
 })(GrafikaApp || (GrafikaApp = {}));
-//# sourceMappingURL=C:/Users/rtobings/GrafikaProject/grafika.server/Grafika.WebSite/Tempaltes/GrafikaApp/output/directives/rating-stars.js.map
+//# sourceMappingURL=C:/Users/ricky/GrafikaProject/grafika.server/Grafika.WebSite/Tempaltes/GrafikaApp/output/directives/rating-stars.js.map
