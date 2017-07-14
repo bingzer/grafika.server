@@ -94,6 +94,7 @@
 
   <ItemGroup>
     <Folder Include="Templates\creative\" />
+    <Folder Include="Views\Animations\" />
     <Folder Include="wwwroot\app\" />
   </ItemGroup>
   <ItemGroup>

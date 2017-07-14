@@ -41,7 +41,6 @@ h6 {
 }
 
 p {
-    font-size: 16px;
     line-height: 1.5;
     margin-bottom: 20px;
 }
@@ -70,57 +69,67 @@ aside {
 .no-padding {
     padding: 0;
 }
-padding-sm {
+.padding-sm {
     padding: 8px;
 }
-padding {
+.padding {
     padding: 16px;
 }
-padding-lg {
+.padding-lg {
     padding: 24px;
 }
-padding-xl {
+.padding-xl {
     padding: 32px;
 }
 .no-margin {
     margin: 0;
 }
-marign-sm { 
-    margin: 8px; 
+.margin-sm {
+    margin: 8px;
 }
-margin { 
-    margin: 16px; 
+.margin {
+    margin: 16px;
 }
-margin-lg {
+.margin-lg {
     margin: 24px;
 }
-margin-xl {
+.margin-xl {
     margin: 32px;
+}
+.font-smaller {
+    font-size: smaller;
+}
+.font-larger {
+    font-size: larger;
 }
 
 // Navigation
 
 .navbar-default {
-    background-color: white;
+    background-color: transparent;
     border-color: transparent;
     .sans-serif-font;
     .transition-all;
+
     .navbar-header .navbar-brand {
         color: @theme-primary;
         .sans-serif-font;
         font-weight: 700;
         text-transform: uppercase;
+
         &:hover,
         &:focus {
             color: darken(@theme-primary, 10%);
         }
     }
+
     .navbar-header .navbar-toggle {
         font-weight: 700;
         font-size: 12px;
         color: @gray-darker;
         text-transform: uppercase;
     }
+
     .nav {
         > li {
             > a,
@@ -129,15 +138,18 @@ margin-xl {
                 font-weight: 700;
                 font-size: 13px;
                 color: @gray-darker;
+
                 &:hover {
                     color: @theme-primary;
                 }
             }
+
             &.active {
                 > a,
                 > a:focus {
-                    color: @theme-primary !important;
+                    color: @theme-accent !important;
                     background-color: transparent;
+
                     &:hover {
                         background-color: transparent;
                     }
@@ -145,39 +157,37 @@ margin-xl {
             }
         }
     }
+
     @media (min-width: 768px) {
-        background-color: transparent;
-        border-color: transparent;
         .navbar-header .navbar-brand {
             color: fade(white, 70%);
+
             &:hover,
             &:focus {
                 color: white;
             }
         }
+
         .nav > li > a,
         .nav > li > a:focus {
-            color: fade(white, 70%);
+            color: white;
+
             &:hover {
-                color: white;
+                color: fade(white, 70%);
             }
         }
+
         &.affix {
-            background-color: white;
-            border-color: fade(@gray-darker, 5%);
+            background-color: @theme-primary;
+            border-color: fade(@gray-darker, 20%);
+
             .navbar-header .navbar-brand {
                 color: @theme-primary;
                 font-size: 14px;
+
                 &:hover,
                 &:focus {
                     color: darken(@theme-primary, 10%);
-                }
-            }
-            .nav > li > a,
-            .nav > li > a:focus {
-                color: @gray-darker;
-                &:hover {
-                    color: @theme-primary;
                 }
             }
         }
@@ -191,8 +201,6 @@ header {
     width: 100%;
     min-height: auto;
     .background-cover;
-    background-position: center;
-    background-image: url('../img/header.jpg');
     text-align: center;
     color: white;
 
