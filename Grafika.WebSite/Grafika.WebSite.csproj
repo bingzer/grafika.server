@@ -6,83 +6,62 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Templates\**" />
     <Compile Remove="typings\**" />
+    <Compile Remove="wwwroot\fonts\**" />
+    <Content Remove="Templates\**" />
     <Content Remove="typings\**" />
+    <Content Remove="wwwroot\fonts\**" />
+    <EmbeddedResource Remove="Templates\**" />
     <EmbeddedResource Remove="typings\**" />
+    <EmbeddedResource Remove="wwwroot\fonts\**" />
+    <None Remove="Templates\**" />
     <None Remove="typings\**" />
+    <None Remove="wwwroot\fonts\**" />
   </ItemGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot/css\angular-material.css" />
     <Content Remove="wwwroot/css\bootstrap.css" />
     <Content Remove="wwwroot/css\font-awesome.css" />
+    <Content Remove="wwwroot/css\magnific-popup.css" />
     <Content Remove="wwwroot/css\site.css" />
+    <Content Remove="wwwroot/css\spectrum.css" />
+    <Content Remove="wwwroot/js\angular-animate.js" />
+    <Content Remove="wwwroot/js\angular-aria.js" />
+    <Content Remove="wwwroot/js\angular-cookies.js" />
+    <Content Remove="wwwroot/js\angular-google-adsense.js" />
+    <Content Remove="wwwroot/js\angular-jwt.js" />
+    <Content Remove="wwwroot/js\angular-material.js" />
+    <Content Remove="wwwroot/js\angular-messages.js" />
+    <Content Remove="wwwroot/js\angular-sanitize.js" />
+    <Content Remove="wwwroot/js\angular-socialshare.min.js" />
+    <Content Remove="wwwroot/js\angular-spectrum-colorpicker.min.js" />
+    <Content Remove="wwwroot/js\angular-touch.js" />
+    <Content Remove="wwwroot/js\angular-ui-router.js" />
+    <Content Remove="wwwroot/js\angular.js" />
+    <Content Remove="wwwroot/js\angulartics-ga.js" />
+    <Content Remove="wwwroot/js\angulartics.js" />
+    <Content Remove="wwwroot/js\bootstrap.js" />
+    <Content Remove="wwwroot/js\grafika.demo.js" />
+    <Content Remove="wwwroot/js\grafika.js" />
+    <Content Remove="wwwroot/js\grafika.random-drawing.js" />
+    <Content Remove="wwwroot/js\GrafikaApp.js" />
+    <Content Remove="wwwroot/js\GrafikaApp.Partials.js" />
+    <Content Remove="wwwroot/js\GrafikaApp.Types.js" />
+    <Content Remove="wwwroot/js\home\GrafikaApp.Home.js" />
+    <Content Remove="wwwroot/js\jquery.js" />
+    <Content Remove="wwwroot/js\jquery.magnific-popup.js" />
+    <Content Remove="wwwroot/js\jquery.validate.js" />
+    <Content Remove="wwwroot/js\jquery.validate.unobtrusive.js" />
+    <Content Remove="wwwroot/js\moment.js" />
+    <Content Remove="wwwroot/js\q.js" />
+    <Content Remove="wwwroot/js\scrollreveal.js" />
+    <Content Remove="wwwroot/js\sha1.js" />
+    <Content Remove="wwwroot/js\spectrum.js" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Templates\creative\.gitignore" />
-    <Content Include="Templates\creative\css\creative.css" />
-    <Content Include="Templates\creative\css\creative.min.css" />
-    <Content Include="Templates\creative\gulpfile.js" />
-    <Content Include="Templates\creative\index.html" />
-    <Content Include="Templates\creative\js\creative.js" />
-    <Content Include="Templates\creative\js\creative.min.js" />
-    <Content Include="Templates\creative\less\creative.less" />
-    <Content Include="Templates\creative\less\mixins.less" />
-    <Content Include="Templates\creative\less\variables.less" />
-    <Content Include="Templates\creative\LICENSE" />
-    <Content Include="Templates\creative\README.md" />
-    <Content Include="Templates\creative\vendor\bootstrap\css\bootstrap.css" />
-    <Content Include="Templates\creative\vendor\bootstrap\css\bootstrap.min.css" />
-    <Content Include="Templates\creative\vendor\bootstrap\fonts\glyphicons-halflings-regular.eot" />
-    <Content Include="Templates\creative\vendor\bootstrap\fonts\glyphicons-halflings-regular.svg" />
-    <Content Include="Templates\creative\vendor\bootstrap\fonts\glyphicons-halflings-regular.ttf" />
-    <Content Include="Templates\creative\vendor\bootstrap\fonts\glyphicons-halflings-regular.woff" />
-    <Content Include="Templates\creative\vendor\bootstrap\fonts\glyphicons-halflings-regular.woff2" />
-    <Content Include="Templates\creative\vendor\bootstrap\js\bootstrap.js" />
-    <Content Include="Templates\creative\vendor\bootstrap\js\bootstrap.min.js" />
-    <Content Include="Templates\creative\vendor\font-awesome\css\font-awesome.css" />
-    <Content Include="Templates\creative\vendor\font-awesome\css\font-awesome.min.css" />
-    <Content Include="Templates\creative\vendor\font-awesome\fonts\fontawesome-webfont.eot" />
-    <Content Include="Templates\creative\vendor\font-awesome\fonts\fontawesome-webfont.svg" />
-    <Content Include="Templates\creative\vendor\font-awesome\fonts\fontawesome-webfont.ttf" />
-    <Content Include="Templates\creative\vendor\font-awesome\fonts\fontawesome-webfont.woff" />
-    <Content Include="Templates\creative\vendor\font-awesome\fonts\fontawesome-webfont.woff2" />
-    <Content Include="Templates\creative\vendor\font-awesome\fonts\FontAwesome.otf" />
-    <Content Include="Templates\creative\vendor\font-awesome\less\animated.less" />
-    <Content Include="Templates\creative\vendor\font-awesome\less\bordered-pulled.less" />
-    <Content Include="Templates\creative\vendor\font-awesome\less\core.less" />
-    <Content Include="Templates\creative\vendor\font-awesome\less\fixed-width.less" />
-    <Content Include="Templates\creative\vendor\font-awesome\less\font-awesome.less" />
-    <Content Include="Templates\creative\vendor\font-awesome\less\icons.less" />
-    <Content Include="Templates\creative\vendor\font-awesome\less\larger.less" />
-    <Content Include="Templates\creative\vendor\font-awesome\less\list.less" />
-    <Content Include="Templates\creative\vendor\font-awesome\less\mixins.less" />
-    <Content Include="Templates\creative\vendor\font-awesome\less\path.less" />
-    <Content Include="Templates\creative\vendor\font-awesome\less\rotated-flipped.less" />
-    <Content Include="Templates\creative\vendor\font-awesome\less\screen-reader.less" />
-    <Content Include="Templates\creative\vendor\font-awesome\less\stacked.less" />
-    <Content Include="Templates\creative\vendor\font-awesome\less\variables.less" />
-    <Content Include="Templates\creative\vendor\font-awesome\scss\font-awesome.scss" />
-    <Content Include="Templates\creative\vendor\font-awesome\scss\_animated.scss" />
-    <Content Include="Templates\creative\vendor\font-awesome\scss\_bordered-pulled.scss" />
-    <Content Include="Templates\creative\vendor\font-awesome\scss\_core.scss" />
-    <Content Include="Templates\creative\vendor\font-awesome\scss\_fixed-width.scss" />
-    <Content Include="Templates\creative\vendor\font-awesome\scss\_icons.scss" />
-    <Content Include="Templates\creative\vendor\font-awesome\scss\_larger.scss" />
-    <Content Include="Templates\creative\vendor\font-awesome\scss\_list.scss" />
-    <Content Include="Templates\creative\vendor\font-awesome\scss\_mixins.scss" />
-    <Content Include="Templates\creative\vendor\font-awesome\scss\_path.scss" />
-    <Content Include="Templates\creative\vendor\font-awesome\scss\_rotated-flipped.scss" />
-    <Content Include="Templates\creative\vendor\font-awesome\scss\_screen-reader.scss" />
-    <Content Include="Templates\creative\vendor\font-awesome\scss\_stacked.scss" />
-    <Content Include="Templates\creative\vendor\font-awesome\scss\_variables.scss" />
-    <Content Include="Templates\creative\vendor\jquery\jquery.js" />
-    <Content Include="Templates\creative\vendor\jquery\jquery.min.js" />
-    <Content Include="Templates\creative\vendor\magnific-popup\jquery.magnific-popup.js" />
-    <Content Include="Templates\creative\vendor\magnific-popup\jquery.magnific-popup.min.js" />
-    <Content Include="Templates\creative\vendor\magnific-popup\magnific-popup.css" />
-    <Content Include="Templates\creative\vendor\scrollreveal\scrollreveal.js" />
-    <Content Include="Templates\creative\vendor\scrollreveal\scrollreveal.min.js" />
     <Content Include="wwwroot\css\mixins.less" />
     <Content Include="wwwroot\css\site.less" />
     <Content Include="wwwroot\css\variables.less" />
@@ -100,14 +79,9 @@
     <Content Include="wwwroot\img\portfolio\thumbnails\5.jpg" />
     <Content Include="wwwroot\img\portfolio\thumbnails\6.jpg" />
     <Content Include="wwwroot\js\GrafikaApp.ts" />
-    <Content Include="wwwroot\js\GrafikaApp.Types.d.ts" />
     <Content Include="wwwroot\js\GrafikaApp.Types.ts" />
     <Content Include="wwwroot\js\home\GrafikaApp.Home.ts" />
     <Content Include="wwwroot\js\GrafikaApp.Partials.ts" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Templates\creative\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.1.1" />
