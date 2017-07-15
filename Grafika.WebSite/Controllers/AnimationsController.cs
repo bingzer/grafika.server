@@ -2,8 +2,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Grafika.Services;
 using Grafika.WebSite.ViewModels;
-using Microsoft.Extensions.Options;
-using Grafika.Configurations;
 using Microsoft.AspNetCore.Authorization;
 
 namespace Grafika.WebSite.Controllers
@@ -39,16 +37,31 @@ namespace Grafika.WebSite.Controllers
         }
 
         [Route("{animationId}")]
-        public async Task<IActionResult> Detail([FromServices] IOptions<ServerConfiguration> serverOpts, [FromRoute] string animationId)
+        public async Task<IActionResult> Detail([FromRoute] string animationId)
         {
             var animation = await _service.Get(animationId);
             var model = new AnimationViewModel
             {
-                ApiUrl = serverOpts.Value.Url,
                 Animation = animation
             };
 
             return View(model);
+        }
+
+        [Route("{animationId}/related")]
+        public async Task<IActionResult> Related([FromRoute] string animationId, AnimationQueryOptions options = null)
+        {
+            if (options == null)
+                options = new AnimationQueryOptions();
+            options.RelatedToAnimationId = animationId;
+
+            var animations = await _service.List(options);
+            var model = new AnimationsViewModel
+            {
+                Animations = animations
+            };
+
+            return PartialView("_RelatedAnimations", model);
         }
     }
 }

@@ -1,0 +1,10 @@
+@model AnimationsViewModel
+
+<ul class="list-group" style="max-width: 350px">
+    @foreach (var anim in Model.Animations)
+    {
+        <li class="list-group-item">
+            @await Html.PartialAsync("_ThumbnailSmall", anim)
+        </li>
+    }
+</ul>

@@ -1,47 +1,55 @@
 @model AnimationViewModel
 
 @{ 
-    var animUrl = Utility.CombineUrl(Model.ApiUrl, "animations", Model.Animation.Id);
-    var animThumbnailUrl = Utility.CombineUrl(animUrl, "thumbnail");
-    var framesUrl = Utility.CombineUrl(animUrl, "frames");
-
-    var userUrl = Utility.CombineUrl(Model.ApiUrl, "users", Model.Animation.UserId);
-    var userThumnailUrl = Utility.CombineUrl(userUrl, "avatar");
-
     var landscape = Model.Animation.Width >= Model.Animation.Height ? "landscape" : "portrait";
 }
 
 <header class="bg-dark" style="min-height: 51px"></header>
 <section class="page-wrapper" style="margin-top: -51px;">
-    <div>
-        <div id="player" class="player player-width landscape">
-            <div id="player-container" class="player-container player-width player-height @landscape">
-                <canvas id="player-canvas"></canvas>
-            </div>
-            <div id="player-controls" class="player-controls hidden">
-                <div class="player-buttons">
-                    <a href="javascript: void(0)" class="btn btn-sm" onclick="grafika.togglePlay(this)">
-                        <i class="play fa fa-play"></i>
-                        <i class="pause fa fa-pause fa-spin" style="display: none"></i>
-                    </a>
-                    <a href="javascript: void(0)" class="btn btn-sm" onclick="grafika.nextFrame()">
-                        <i class="fa fa-arrow-left"></i>
-                    </a>
-                    <a href="javascript: void(0)" class="btn btn-sm" onclick="grafika.previousFrame()">
-                        <i class="fa fa-arrow-right"></i>
-                    </a>
+    <div id="watch-main">
+        <div id="watch-content">
+            <div id="player" class="player player-width landscape">
+                <div id="player-container" class="player-container player-width player-height @landscape">
+                    <canvas id="player-canvas"></canvas>
+                </div>
+                <div id="player-controls" class="player-controls hidden">
+                    <div class="player-buttons">
+                        <a href="javascript: void(0)" class="btn btn-sm" onclick="grafika.togglePlay(this)">
+                            <i class="play fa fa-play"></i>
+                            <i class="pause fa fa-pause fa-spin" style="display: none"></i>
+                        </a>
+                        <a href="javascript: void(0)" class="btn btn-sm" onclick="grafika.nextFrame()">
+                            <i class="fa fa-arrow-left"></i>
+                        </a>
+                        <a href="javascript: void(0)" class="btn btn-sm" onclick="grafika.previousFrame()">
+                            <i class="fa fa-arrow-right"></i>
+                        </a>
+                    </div>
                 </div>
             </div>
+            <div>
+                <h1 class="animation-title">@Model.Animation.Name</h1>
+                <h3 class="animation-author">
+                    <img class="img-circle user-avatar user-avatar-lg" src="@Model.Animation.GetAuthorThumbnail()" alt="@Model.Animation.Author" />
+                    <a href="@Model.Animation.GetAuthorUrl()">
+                        @Model.Animation.Author
+                    </a>
+                </h3>
+                <p class="animation-description">@Model.Animation.Description</p>
+            </div>
         </div>
-        <div>
-            <h1 class="animation-title">@Model.Animation.Name</h1>
-            <h3 class="animation-author">
-                <img class="img-circle user-avatar user-avatar-lg" src="@userThumnailUrl" alt="@Model.Animation.Author"/>
-                <a href="@userUrl">
-                    @Model.Animation.Author
-                </a>
-            </h3>
-            <p class="animation-description">@Model.Animation.Description</p>
+        <div id="watch-sidebar" style="max-width: 350px; ">
+            <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation" class="active"><a href="#related" aria-controls="home" role="tab" data-toggle="tab">Related</a></li>
+                <li role="presentation"><a href="#comments" aria-controls="profile" role="tab" data-toggle="tab">Comments</a></li>
+            </ul>            
+            <!-- Tab panes -->
+            <div class="tab-content" style="border-left: 1px solid #ddd; border-right: 1px solid #ddd; border-bottom: 1px solid #ddd;">
+                <div role="tabpanel" class="tab-pane active" id="related" data-partial="tab" data-url="/animations/@Model.Animation.Id/related?pageSize=5">
+                    Loading...
+                </div>
+                <div role="tabpanel" class="tab-pane" id="comments">...</div>
+            </div>
         </div>
     </div>
 </section>
@@ -65,8 +73,8 @@
             }
             grafika.initialize('#player-canvas', { debugMode: true, useCarbonCopy: false, useNavigationText: false, loop: true });
 
-            var qAnim = $.ajax({ url: '@animUrl' });
-            var qFrames = $.ajax({ url: '@framesUrl' });
+            var qAnim = $.ajax({ url: '@Model.Animation.GetUrl()' });
+            var qFrames = $.ajax({ url: '@Model.Animation.GetFramesUrl()' });
             $.when(qAnim, qFrames).done(function (resAnim, resFrames) {
                 grafika.setAnimation(resAnim[0]);
                 grafika.setFrames(resFrames[0]);
@@ -78,6 +86,23 @@
 
 @section styles {
     <style>
+        #watch-main {
+            margin-left: 64px;
+            margin-right: 64px;
+        }
+
+        #watch-content {
+            display: inline-block;
+        }
+
+        #watch-sidebar {
+            display: inline;
+            vertical-align: top;
+            margin-left: 16px;
+            position: absolute;
+        }
+
+
         .animation-title {
             margin-bottom: 4px;
         }
@@ -129,42 +154,42 @@
         }
         
         .player-height {
-            max-height: 360px;
+            height: 360px;
         }
 
         .player-width {
-            max-width: 202px;
+            width: 202px;
         }
         .player-width.landscape {
-            max-width: 640px;
+            width: 640px;
         }
 
         @@media screen and (max-width: 656px) {
             .player-height {
-                max-height: 240px;
+                height: 240px;
             }
         }
 
         @@media screen and (max-width: 656px) {
             .player-width {
-                max-width: 135px;
+                width: 135px;
             }
             .player-width.landscape {
-                max-width: 426px;
+                width: 426px;
             }
         }
 
         @@media screen and (min-height: 630px) and (min-width: 1294px){
             .player-height {
-                max-height: 480px;
+                height: 480px;
             }
         }
         @@media screen and (min-height: 630px) and (min-width: 1294px){
             .player-width.landscape {
-                max-width: 269px;
+                width: 269px;
             }
             .player-width.landscape {
-                max-width: 854px;
+                width: 854px;
             }
         }
     </style>

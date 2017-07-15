@@ -13,7 +13,7 @@ var del = require('del');
 gulp.task('default', ['install', 'scripts', 'styles']);
 
 gulp.task('watch', function () {
-    gulp.watch('Templates/GrafikaApp/**/*.ts', function (event) {
+    gulp.watch(['Templates/creative/**/*.js'], function (event) {
         gulp.run('scripts');
     });
 
@@ -104,7 +104,7 @@ gulp.task('styles', ['less', 'copy-fonts'], function (callback) {
     console.log('Running task styles');
     callback();
 });
-gulp.task('scripts', ['ts', 'copy-js'], function (callback) {
+gulp.task('scripts', ['copy-js'], function (callback) {
     console.log('Running task scripts');
     callback();
 });

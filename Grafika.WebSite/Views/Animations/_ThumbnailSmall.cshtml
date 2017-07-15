@@ -1,0 +1,25 @@
+@model Animation
+@{
+    var linkUrl = $"/animations/{Model.Id}";
+}
+<div class="media">
+    <div class="media-left">
+        <a href="@linkUrl">
+            <img src="@Model.GetThumbnailUrl()" alt="@Model.Name" style="max-height: 48px; width: 64px;">
+        </a>
+    </div>
+    <div class="media-body">
+        <h4 class="media-heading">
+            <a href="@linkUrl" class="font-stronger">
+                @Model.Name
+            </a>
+        </h4>
+        <h6 style="margin-top: 0">
+            <img src="@Model.GetAuthorThumbnail()" alt="@Model.Author" class="img-circle user-avatar" />
+            <a href="/users/@Model.UserId">
+                @Model.Author
+            </a>
+        </h6>
+        <p>@Model.Description</p>
+    </div>
+</div>

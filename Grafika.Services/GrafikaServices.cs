@@ -23,11 +23,14 @@ using Grafika.Services.Syncs;
 using Grafika.Services.Users;
 using Grafika.Services.Backgrounds;
 using Grafika.Utilities;
+using System;
 
 namespace Grafika.Services
 {
     public static class GrafikaServices
     {
+        internal static IServiceProvider ServiceProvider { get; private set; }
+
         public static void AddGrafikaServices(this IServiceCollection services)
         {
             // -- Grafika.Data.MongoDB
@@ -136,6 +139,8 @@ namespace Grafika.Services
 
         public static void UseGrafikaServices(this IApplicationBuilder app)
         {
+            ServiceProvider = app.ApplicationServices;
+
             app.ApplicationServices.UseMongoDb();
 
             app.ApplicationServices.Get<IConnectionManager>().Register<IAwsConnectionHub>();
