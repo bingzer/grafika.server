@@ -3,12 +3,12 @@
     var linkUrl = $"/animations/{Model.Id}";
 }
 
-<div class="thumbnail" style="height: 284px">
-    <a href="@linkUrl">
-        <img src="@Model.GetThumbnailUrl()" alt="@Model.Name" style="max-height: 138px">
+<div class="thumbnail" style="height: 272px; position: relative; padding: 0">
+    <a href="@linkUrl" style="height: 138px">
+        <img src="@Model.GetThumbnailUrl()" alt="@Model.Name" style="height: 138px; max-height: 138px; width: 100%">
     </a>
     <div class="caption" style="font-size: smaller">
-        <h4 style="margin-bottom: 2px">
+        <h4 style="margin-bottom: 2px; margin-top: 2px">
             <a href="@linkUrl" class="font-stronger">
                 @Model.Name
             </a>
@@ -19,6 +19,20 @@
                 @Model.Author
             </a>
         </h6>
-        <p>@Model.Description</p>
+        <p>
+            @if (Model.Description.IsNullOrEmptyOrWhitespace())
+            {
+                <span class="text-muted">(no description)</span>
+            }
+            else
+            {
+                @Model.Description
+            }
+        </p>
+        <div style="position: absolute; bottom: 8px; right: 8px">
+            <span class="font-smaller text-muted">
+                @Model.TotalFrame frames &#8226; @Model.Views views
+            </span>
+        </div>
     </div>
 </div>

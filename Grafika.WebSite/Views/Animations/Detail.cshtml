@@ -27,7 +27,7 @@
                     </div>
                 </div>
             </div>
-            <div>
+            <div style="">
                 <h1 class="animation-title">@Model.Animation.Name</h1>
                 <h3 class="animation-author">
                     <img class="img-circle user-avatar user-avatar-lg" src="@Model.Animation.GetAuthorThumbnail()" alt="@Model.Animation.Author" />
@@ -35,6 +35,17 @@
                         @Model.Animation.Author
                     </a>
                 </h3>
+                <h4 class="animation-details">
+                    <span style="margin-right: 8px">
+                        <i class="text-muted fa fa-eye"></i>&nbsp;@Model.Animation.Views
+                    </span>
+                    <span style="margin-right: 8px">
+                        <i class="text-muted fa fa-image"></i>&nbsp;@Model.Animation.TotalFrame
+                    </span>
+                    <span style="margin-right: 8px">
+                        <i class="text-muted fa fa-calendar"></i>&nbsp;@Model.Animation.DateTimeModified
+                    </span>
+                </h4>
                 <p class="animation-description">@Model.Animation.Description</p>
             </div>
         </div>
@@ -104,7 +115,16 @@
 
 
         .animation-title {
+            margin-top: 8px;
             margin-bottom: 4px;
+            display: inline-block;
+        }
+
+        .animation-details {
+            margin-top: 0;
+            color: #879CAB;
+            font-weight: 700;
+            font-size: smaller;
         }
 
         .animation-author {
