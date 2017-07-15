@@ -19,7 +19,7 @@ namespace Grafika.WebSite.Controllers
         }
 
         [Route("")]
-        public async Task<IActionResult> Index([FromServices] IOptions<ServerConfiguration> serverOpts, AnimationQueryOptions options)
+        public async Task<IActionResult> Index(AnimationQueryOptions options)
         {
             if (options == null)
                 options = new AnimationQueryOptions();
@@ -31,12 +31,24 @@ namespace Grafika.WebSite.Controllers
             var animations = await _service.List(options);
             var model = new AnimationsViewModel
             {
-                ApiUrl = serverOpts.Value.Url,
                 Animations = animations,
                 Options = options
             };
 
-            return View("Index", model);
+            return View(model);
+        }
+
+        [Route("{animationId}")]
+        public async Task<IActionResult> Detail([FromServices] IOptions<ServerConfiguration> serverOpts, [FromRoute] string animationId)
+        {
+            var animation = await _service.Get(animationId);
+            var model = new AnimationViewModel
+            {
+                ApiUrl = serverOpts.Value.Url,
+                Animation = animation
+            };
+
+            return View(model);
         }
     }
 }

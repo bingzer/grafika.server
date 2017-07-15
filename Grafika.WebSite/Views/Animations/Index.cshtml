@@ -6,18 +6,8 @@
 <header class="bg-dark" style="min-height: 51px">
 </header>
 <section style="margin-top: -51px">
-
     @foreach(var anim in Model.Animations)
     {
-        <div class="col-sm-6 col-md-2">
-            <div class="thumbnail">
-                <img src="@Utility.CombineUrl(Model.ApiUrl, "animations", anim.Id, "thumbnail")" alt="...">
-                <div class="caption" style="font-size: smaller">
-                    <h3>@anim.Name</h3>
-                    <p>@anim.Description</p>
-                    <p><a href="#" class="btn btn-primary" role="button">Button</a> <a href="#" class="btn btn-default" role="button">Button</a></p>
-                </div>
-            </div>
-        </div>
+        await Html.RenderPartialAsync("_AnimationThumbnail", anim);
     }
 </section>

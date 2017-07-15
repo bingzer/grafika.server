@@ -102,6 +102,7 @@ gulp.task('install', ['clean', 'bower', 'typings'], function (callback) {
 });
 gulp.task('styles', ['less', 'copy-fonts'], function (callback) {
     console.log('Running task styles');
+    callback();
 });
 gulp.task('scripts', ['ts', 'copy-js'], function (callback) {
     console.log('Running task scripts');

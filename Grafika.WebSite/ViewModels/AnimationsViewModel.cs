@@ -8,7 +8,6 @@ namespace Grafika.WebSite.ViewModels
 {
     public class AnimationsViewModel
     {
-        public string ApiUrl { get; set; }
         public IEnumerable<Animation> Animations { get; set; }
         public AnimationQueryOptions Options { get; set; }
     }
