@@ -13,6 +13,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot/css\bootstrap.css" />
+    <Content Remove="wwwroot/css\font-awesome.css" />
+    <Content Remove="wwwroot/css\site.css" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Include="Templates\creative\.gitignore" />
     <Content Include="Templates\creative\css\creative.css" />
     <Content Include="Templates\creative\css\creative.min.css" />
@@ -77,6 +83,9 @@
     <Content Include="Templates\creative\vendor\magnific-popup\magnific-popup.css" />
     <Content Include="Templates\creative\vendor\scrollreveal\scrollreveal.js" />
     <Content Include="Templates\creative\vendor\scrollreveal\scrollreveal.min.js" />
+    <Content Include="wwwroot\css\mixins.less" />
+    <Content Include="wwwroot\css\site.less" />
+    <Content Include="wwwroot\css\variables.less" />
     <Content Include="wwwroot\img\header.jpg" />
     <Content Include="wwwroot\img\portfolio\fullsize\1.jpg" />
     <Content Include="wwwroot\img\portfolio\fullsize\2.jpg" />
@@ -90,6 +99,11 @@
     <Content Include="wwwroot\img\portfolio\thumbnails\4.jpg" />
     <Content Include="wwwroot\img\portfolio\thumbnails\5.jpg" />
     <Content Include="wwwroot\img\portfolio\thumbnails\6.jpg" />
+    <Content Include="wwwroot\js\GrafikaApp.ts" />
+    <Content Include="wwwroot\js\GrafikaApp.Types.d.ts" />
+    <Content Include="wwwroot\js\GrafikaApp.Types.ts" />
+    <Content Include="wwwroot\js\home\GrafikaApp.Home.ts" />
+    <Content Include="wwwroot\js\GrafikaApp.Partials.ts" />
   </ItemGroup>
 
   <ItemGroup>

@@ -13,11 +13,11 @@ var del = require('del');
 gulp.task('default', ['install', 'scripts', 'styles']);
 
 gulp.task('watch', function () {
-    gulp.watch(['Templates/creative/**/*.js'], function (event) {
+    gulp.watch(['wwwroot/js/**/*.ts'], function (event) {
         gulp.run('scripts');
     });
 
-    gulp.watch('Templates/creative/**/*.less', function (event) {
+    gulp.watch('wwwroot/css/**/*.less', function (event) {
         gulp.run('styles');
     });
 });
@@ -59,13 +59,13 @@ gulp.task('less', function () {
     return gulp.src([
             'bower_components/bootstrap/less/bootstrap.less',
             'bower_components/font-awesome/less/font-awesome.less',
-            'Templates/creative/less/creative.less'
+            'wwwroot/css/site.less'
         ])
         .pipe(less({
             paths: [
                 'bower_components/bootstrap/less',
                 'bower_components/font-awesome/less',
-                'Templates/creative/less'
+                'wwwroot/css'
             ]
         }))
         .pipe(gulp.dest('./wwwroot/css'))
@@ -84,8 +84,7 @@ gulp.task('copy-js', function () {
     return gulp.src([
         'bower_components/grafika-js/dist/grafika.js',
         'bower_components/grafika-js/dist/grafika.random-drawing.js',
-        'bower_components/grafika-js/dist/grafika.demo.js',
-        'Templates/creative/js/creative.js',
+        'bower_components/grafika-js/dist/grafika.demo.js'
     ])
     .pipe(gulp.dest('wwwroot/js'));
 });
@@ -104,7 +103,7 @@ gulp.task('styles', ['less', 'copy-fonts'], function (callback) {
     console.log('Running task styles');
     callback();
 });
-gulp.task('scripts', ['copy-js'], function (callback) {
+gulp.task('scripts', ['ts', 'copy-js'], function (callback) {
     console.log('Running task scripts');
     callback();
 });
