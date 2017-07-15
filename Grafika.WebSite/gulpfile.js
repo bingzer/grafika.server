@@ -26,8 +26,8 @@ gulp.task('watch', function () {
 
 gulp.task('clean', function (callback) {
     del.sync([
-        "wwwroot/js",
-        "wwwroot/css",
+        "wwwroot/js/**/*.js",
+        "wwwroot/css/**/*.css",
         "wwwroot/fonts",
         "wwwroot/less",
         "wwwroot/scss",
