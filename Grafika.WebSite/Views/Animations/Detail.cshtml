@@ -1,0 +1,171 @@
+@model AnimationViewModel
+
+@{ 
+    var animUrl = Utility.CombineUrl(Model.ApiUrl, "animations", Model.Animation.Id);
+    var animThumbnailUrl = Utility.CombineUrl(animUrl, "thumbnail");
+    var framesUrl = Utility.CombineUrl(animUrl, "frames");
+
+    var userUrl = Utility.CombineUrl(Model.ApiUrl, "users", Model.Animation.UserId);
+    var userThumnailUrl = Utility.CombineUrl(userUrl, "avatar");
+
+    var landscape = Model.Animation.Width >= Model.Animation.Height ? "landscape" : "portrait";
+}
+
+<header class="bg-dark" style="min-height: 51px"></header>
+<section class="page-wrapper" style="margin-top: -51px;">
+    <div>
+        <div id="player" class="player player-width landscape">
+            <div id="player-container" class="player-container player-width player-height @landscape">
+                <canvas id="player-canvas"></canvas>
+            </div>
+            <div id="player-controls" class="player-controls hidden">
+                <div class="player-buttons">
+                    <a href="javascript: void(0)" class="btn btn-sm" onclick="grafika.togglePlay(this)">
+                        <i class="play fa fa-play"></i>
+                        <i class="pause fa fa-pause fa-spin" style="display: none"></i>
+                    </a>
+                    <a href="javascript: void(0)" class="btn btn-sm" onclick="grafika.nextFrame()">
+                        <i class="fa fa-arrow-left"></i>
+                    </a>
+                    <a href="javascript: void(0)" class="btn btn-sm" onclick="grafika.previousFrame()">
+                        <i class="fa fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div>
+            <h1 class="animation-title">@Model.Animation.Name</h1>
+            <h3 class="animation-author">
+                <img class="img-circle user-avatar user-avatar-lg" src="@userThumnailUrl" alt="@Model.Animation.Author"/>
+                <a href="@userUrl">
+                    @Model.Animation.Author
+                </a>
+            </h3>
+            <p class="animation-description">@Model.Animation.Description</p>
+        </div>
+    </div>
+</section>
+
+@section scripts {
+    <script type="text/javascript" src="~/js/grafika.js"></script>
+    <script type="text/javascript" defer>
+        window.grafika = new Grafika();
+        $(document).ready(function () {
+            grafika.togglePlay = function (elem) {
+                if (grafika.isPlaying()) {
+                    $(elem).find('i.play').show();
+                    $(elem).find('i.pause').hide();
+                    grafika.pause();
+                }
+                else {
+                    $(elem).find('i.pause').show();
+                    $(elem).find('i.play').hide();
+                    grafika.play();
+                }
+            }
+            grafika.initialize('#player-canvas', { debugMode: true, useCarbonCopy: false, useNavigationText: false, loop: true });
+
+            var qAnim = $.ajax({ url: '@animUrl' });
+            var qFrames = $.ajax({ url: '@framesUrl' });
+            $.when(qAnim, qFrames).done(function (resAnim, resFrames) {
+                grafika.setAnimation(resAnim[0]);
+                grafika.setFrames(resFrames[0]);
+                $('#player-controls').removeClass('hidden');
+            });
+        });
+    </script>
+}
+
+@section styles {
+    <style>
+        .animation-title {
+            margin-bottom: 4px;
+        }
+
+        .animation-author {
+            margin-top: 0px;
+        }
+
+
+        .player {
+            border: 1px solid lightgray;
+        }
+
+        .player-container {
+            display: flex;
+            margin-right: auto;
+            margin-left: auto;
+        }
+        .player-container > #player-canvas-wrapper {
+            margin-right: auto;
+            margin-left: auto;
+            border-left: 1px solid lightgray;
+            border-right: 1px solid lightgray;
+        }
+
+        .player-controls {
+            height: 48px;
+            margin-top: -48px;
+            background-color: rgba(0, 0, 0, 0.50);
+            position: relative;
+            z-index: 30;
+        }
+
+        .player-controls > .player-buttons {
+            padding: 10px;
+        }
+
+        .player-controls > .player-buttons .btn {
+            background-color: Transparent;
+            background-repeat: no-repeat;
+            border: none;
+            overflow: hidden;
+            outline: none;
+            color: white;
+        }
+
+        .player-controls > .player-buttons .btn:hover {
+            color: rgb(26, 137, 130)
+        }
+        
+        .player-height {
+            max-height: 360px;
+        }
+
+        .player-width {
+            max-width: 202px;
+        }
+        .player-width.landscape {
+            max-width: 640px;
+        }
+
+        @@media screen and (max-width: 656px) {
+            .player-height {
+                max-height: 240px;
+            }
+        }
+
+        @@media screen and (max-width: 656px) {
+            .player-width {
+                max-width: 135px;
+            }
+            .player-width.landscape {
+                max-width: 426px;
+            }
+        }
+
+        @@media screen and (min-height: 630px) and (min-width: 1294px){
+            .player-height {
+                max-height: 480px;
+            }
+        }
+        @@media screen and (min-height: 630px) and (min-width: 1294px){
+            .player-width.landscape {
+                max-width: 269px;
+            }
+            .player-width.landscape {
+                max-width: 854px;
+            }
+        }
+    </style>
+}
