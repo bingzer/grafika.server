@@ -40,10 +40,12 @@
     <meta name="twitter:title" content="Grafika" />
     <meta name="twitter:description" content="Grafika - Super simple animation maker for web and Android" />
     <script type="text/javascript">
-        @inject Microsoft.Extensions.Options.IOptions<ServerConfiguration> opts
-        var GrafikaOptions = function () {
-            this.apiUrl = '@opts.Value.Url';
-        };
+        var GrafikaApp;
+        (function (GrafikaApp) {
+            GrafikaApp.Configuration = {
+                baseApiUrl: '@AppEnvironment.Default.Server.Url.TrimEnd("/".ToCharArray())'
+            };
+        })(GrafikaApp || (GrafikaApp = {}));
     </script>
 </head>
 <body id="page-top">

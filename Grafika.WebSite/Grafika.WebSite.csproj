@@ -9,15 +9,23 @@
     <Compile Remove="Templates\**" />
     <Compile Remove="typings\**" />
     <Compile Remove="wwwroot\fonts\**" />
+    <Compile Remove="wwwroot\js\NewFolder1\**" />
+    <Compile Remove="wwwroot\js\NewFolder\**" />
     <Content Remove="Templates\**" />
     <Content Remove="typings\**" />
     <Content Remove="wwwroot\fonts\**" />
+    <Content Remove="wwwroot\js\NewFolder1\**" />
+    <Content Remove="wwwroot\js\NewFolder\**" />
     <EmbeddedResource Remove="Templates\**" />
     <EmbeddedResource Remove="typings\**" />
     <EmbeddedResource Remove="wwwroot\fonts\**" />
+    <EmbeddedResource Remove="wwwroot\js\NewFolder1\**" />
+    <EmbeddedResource Remove="wwwroot\js\NewFolder\**" />
     <None Remove="Templates\**" />
     <None Remove="typings\**" />
     <None Remove="wwwroot\fonts\**" />
+    <None Remove="wwwroot\js\NewFolder1\**" />
+    <None Remove="wwwroot\js\NewFolder\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -47,8 +55,13 @@
     <Content Remove="wwwroot/js\grafika.js" />
     <Content Remove="wwwroot/js\grafika.random-drawing.js" />
     <Content Remove="wwwroot/js\GrafikaApp.js" />
+    <Content Remove="wwwroot/js\GrafikaApp.js.map" />
     <Content Remove="wwwroot/js\GrafikaApp.Partials.js" />
+    <Content Remove="wwwroot/js\GrafikaApp.Partials.js.map" />
+    <Content Remove="wwwroot/js\GrafikaApp.Player.js" />
+    <Content Remove="wwwroot/js\GrafikaApp.Player.js.map" />
     <Content Remove="wwwroot/js\GrafikaApp.Types.js" />
+    <Content Remove="wwwroot/js\GrafikaApp.Types.js.map" />
     <Content Remove="wwwroot/js\home\GrafikaApp.Home.js" />
     <Content Remove="wwwroot/js\jquery.js" />
     <Content Remove="wwwroot/js\jquery.magnific-popup.js" />
@@ -78,6 +91,7 @@
     <Content Include="wwwroot\img\portfolio\thumbnails\4.jpg" />
     <Content Include="wwwroot\img\portfolio\thumbnails\5.jpg" />
     <Content Include="wwwroot\img\portfolio\thumbnails\6.jpg" />
+    <Content Include="wwwroot\js\GrafikaApp.Player.ts" />
     <Content Include="wwwroot\js\GrafikaApp.ts" />
     <Content Include="wwwroot\js\GrafikaApp.Types.ts" />
     <Content Include="wwwroot\js\home\GrafikaApp.Home.ts" />

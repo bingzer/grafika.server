@@ -12,16 +12,16 @@
                 <div id="player-container" class="player-container player-width player-height @landscape">
                     <canvas id="player-canvas"></canvas>
                 </div>
-                <div id="player-controls" class="player-controls hidden">
+                <div id="player-controls" class="player-controls" style="display: none">
                     <div class="player-buttons">
-                        <a href="javascript: void(0)" class="btn btn-sm" onclick="grafika.togglePlay(this)">
+                        <a href="javascript: void(0)" class="btn btn-sm" onclick="player.togglePlay().then(player.togglePlayCallback)">
                             <i class="play fa fa-play"></i>
                             <i class="pause fa fa-pause fa-spin" style="display: none"></i>
                         </a>
-                        <a href="javascript: void(0)" class="btn btn-sm" onclick="grafika.nextFrame()">
+                        <a href="javascript: void(0)" class="btn btn-sm" onclick="player.grafika.nextFrame()">
                             <i class="fa fa-arrow-left"></i>
                         </a>
-                        <a href="javascript: void(0)" class="btn btn-sm" onclick="grafika.previousFrame()">
+                        <a href="javascript: void(0)" class="btn btn-sm" onclick="player.grafika.previousFrame()">
                             <i class="fa fa-arrow-right"></i>
                         </a>
                     </div>
@@ -70,29 +70,24 @@
 
 @section scripts {
     <script type="text/javascript" src="~/js/grafika.js"></script>
+    <script type="text/javascript" src="~/js/GrafikaApp.Player.js"></script>
     <script type="text/javascript" defer>
-        window.grafika = new Grafika();
-        $(document).ready(function () {
-            grafika.togglePlay = function (elem) {
-                if (grafika.isPlaying()) {
-                    $(elem).find('i.play').show();
-                    $(elem).find('i.pause').hide();
-                    grafika.pause();
+        $(document).ready(() => {
+            var player = new GrafikaApp.Player('#player-canvas');
+            window.player = player;
+
+            player.togglePlayCallback = function (res) {
+                if (res.isPlaying) {
+                    $('i.fa-play').hide();
+                    $('i.fa-pause').show();
                 }
                 else {
-                    $(elem).find('i.pause').show();
-                    $(elem).find('i.play').hide();
-                    grafika.play();
+                    $('i.fa-play').show();
+                    $('i.fa-pause').hide();
                 }
             }
-            grafika.initialize('#player-canvas', { debugMode: true, useCarbonCopy: false, useNavigationText: false, loop: true });
-
-            var qAnim = $.ajax({ url: '@Model.Animation.GetUrl()' });
-            var qFrames = $.ajax({ url: '@Model.Animation.GetFramesUrl()' });
-            $.when(qAnim, qFrames).done(function (resAnim, resFrames) {
-                grafika.setAnimation(resAnim[0]);
-                grafika.setFrames(resFrames[0]);
-                $('#player-controls').removeClass('hidden');
+            player.loadAnimation('@Model.Animation.Id').then(function () {
+                $('#player-controls').show();
             });
         });
     </script>

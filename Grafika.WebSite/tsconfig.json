@@ -2,8 +2,6 @@
   "compileOnSave": true,
   "compilerOptions": {
     "target": "es5",
-    "outDir": "Templates/GrafikaApp/output",
-    "mapRoot": "Tempaltes/GrafikaApp/output",
     "sourceMap": true,
     "allowJs": false
   },

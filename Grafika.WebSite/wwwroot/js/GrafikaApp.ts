@@ -1,5 +1,7 @@
 ﻿
 module GrafikaApp {
+    export var Configuration: GrafikaApp.IGrafikaAppConfig;
+
     // Highlight the top nav as scrolling occurs
     $('body').scrollspy({
         target: '.navbar-fixed-top',
@@ -14,7 +16,7 @@ module GrafikaApp {
     // Offset for Main Navigation
     $('#mainNav').affix({
         offset: {
-            top: 100
+            top: 100 
         }
     })
 
@@ -40,4 +42,10 @@ module GrafikaApp {
     $(document).ready(() => {
         GrafikaApp.Partials.loadElements();
     });
+
+
+
+    export interface IGrafikaAppConfig {
+        baseApiUrl: string;
+    }
 }
