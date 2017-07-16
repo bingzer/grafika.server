@@ -1,0 +1,98 @@
+﻿@import "variables.less";
+
+.player {
+    border: @border;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.player-container {
+    display: flex;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.player-container > #player-canvas-wrapper {
+    border-right: @border;
+    border-left: @border;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+/*.player-container.portrait > #player-canvas-wrapper {
+    border: @border;
+}*/
+
+.player-controls {
+    height: 48px;
+    margin-top: -48px;
+    margin-right: 1px;
+    margin-left: 1px;
+    background-color: rgba(0, 0, 0, 0.50);
+    position: relative;
+    z-index: 30;
+}
+
+.player-controls > .player-buttons {
+    padding: 10px;
+}
+
+.player-controls > .player-buttons .btn {
+    background-color: transparent;
+    background-repeat: no-repeat;
+    border: none;
+    overflow: hidden;
+    outline: none;
+    color: white;
+}
+
+.player-controls > .player-buttons .btn:hover {
+    color: rgb(26, 137, 130)
+}
+
+.player-height {
+    height: 360px;
+}
+
+.player-width {
+    width: 100%;
+}
+/*.player-width {
+    width: 202px;
+}
+
+.player-width.landscape {
+    width: 640px;
+}*/
+
+@media screen and (max-width: 656px) {
+    .player-height {
+        height: 240px;
+    }
+}
+
+/*@media screen and (max-width: 656px) {
+    .player-width {
+        width: 135px;
+    }
+
+    .player-width.landscape {
+        width: 426px;
+    }
+}*/
+
+@media screen and (min-height: 630px) and (min-width: 1294px) {
+    .player-height {
+        height: 396px;
+    }
+}
+
+/*@media screen and (min-height: 630px) and (min-width: 1294px) {
+    .player-width.landscape {
+        width: 269px;
+    }
+
+    .player-width.landscape {
+        width: 854px;
+    }
+}*/

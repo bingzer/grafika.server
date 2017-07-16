@@ -6,8 +6,8 @@
 
 <header class="bg-dark" style="min-height: 51px"></header>
 <section class="page-wrapper" style="margin-top: -51px;">
-    <div id="watch-main">
-        <div id="watch-content">
+    <div id="watch-main" class="container-fluid">
+        <div id="watch-content" class="col-lg-7">
             <div id="player" class="player player-width landscape">
                 <div id="player-container" class="player-container player-width player-height @landscape">
                     <canvas id="player-canvas"></canvas>
@@ -49,8 +49,8 @@
                 <p class="animation-description">@Model.Animation.Description</p>
             </div>
         </div>
-        <div id="watch-sidebar" style="width: 350px; ">
-            <div id="watch-ads" style="width: 350px; height: 100px; border: 1px solid #ddd; margin-bottom: 16px">
+        <div id="watch-sidebar" class="col-lg-5">
+            <div id="watch-ads">
                 {{ This is ads }}
             </div>
             <ul class="nav nav-tabs" role="tablist">
@@ -68,6 +68,10 @@
     </div>
 </section>
 
+@section styles {
+    <link href="~/css/player.css" type="text/css" rel="stylesheet" />
+    <link href="~/css/animation-detail.css" type="text/css" rel="stylesheet" />
+}
 @section scripts {
     <script type="text/javascript" src="~/js/grafika.js"></script>
     <script type="text/javascript" src="~/js/GrafikaApp.Player.js"></script>
@@ -91,124 +95,4 @@
             });
         });
     </script>
-}
-
-@section styles {
-    <style>
-        #watch-main {
-            margin-left: 64px;
-            margin-right: 64px;
-        }
-
-        #watch-content {
-            display: inline-block;
-        }
-
-        #watch-sidebar {
-            display: inline;
-            vertical-align: top;
-            margin-left: 16px;
-            position: absolute;
-        }
-
-
-        .animation-title {
-            margin-top: 8px;
-            margin-bottom: 4px;
-            display: inline-block;
-        }
-
-        .animation-details {
-            margin-top: 0;
-            color: #879CAB;
-            font-weight: 700;
-            font-size: smaller;
-        }
-
-        .animation-author {
-            margin-top: 0px;
-        }
-
-
-        .player {
-            border: 1px solid lightgray;
-        }
-
-        .player-container {
-            display: flex;
-            margin-right: auto;
-            margin-left: auto;
-        }
-        .player-container > #player-canvas-wrapper {
-            margin-right: auto;
-            margin-left: auto;
-            border-left: 1px solid lightgray;
-            border-right: 1px solid lightgray;
-        }
-
-        .player-controls {
-            height: 48px;
-            margin-top: -48px;
-            background-color: rgba(0, 0, 0, 0.50);
-            position: relative;
-            z-index: 30;
-        }
-
-        .player-controls > .player-buttons {
-            padding: 10px;
-        }
-
-        .player-controls > .player-buttons .btn {
-            background-color: Transparent;
-            background-repeat: no-repeat;
-            border: none;
-            overflow: hidden;
-            outline: none;
-            color: white;
-        }
-
-        .player-controls > .player-buttons .btn:hover {
-            color: rgb(26, 137, 130)
-        }
-        
-        .player-height {
-            height: 360px;
-        }
-
-        .player-width {
-            width: 202px;
-        }
-        .player-width.landscape {
-            width: 640px;
-        }
-
-        @@media screen and (max-width: 656px) {
-            .player-height {
-                height: 240px;
-            }
-        }
-
-        @@media screen and (max-width: 656px) {
-            .player-width {
-                width: 135px;
-            }
-            .player-width.landscape {
-                width: 426px;
-            }
-        }
-
-        @@media screen and (min-height: 630px) and (min-width: 1294px){
-            .player-height {
-                height: 480px;
-            }
-        }
-        @@media screen and (min-height: 630px) and (min-width: 1294px){
-            .player-width.landscape {
-                width: 269px;
-            }
-            .player-width.landscape {
-                width: 854px;
-            }
-        }
-    </style>
 }

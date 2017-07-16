@@ -30,11 +30,15 @@
 
   <ItemGroup>
     <Content Remove="wwwroot/css\angular-material.css" />
+    <Content Remove="wwwroot/css\animation-detail.css" />
     <Content Remove="wwwroot/css\bootstrap.css" />
     <Content Remove="wwwroot/css\font-awesome.css" />
     <Content Remove="wwwroot/css\magnific-popup.css" />
+    <Content Remove="wwwroot/css\mixins.css" />
+    <Content Remove="wwwroot/css\player.css" />
     <Content Remove="wwwroot/css\site.css" />
     <Content Remove="wwwroot/css\spectrum.css" />
+    <Content Remove="wwwroot/css\variables.css" />
     <Content Remove="wwwroot/js\angular-animate.js" />
     <Content Remove="wwwroot/js\angular-aria.js" />
     <Content Remove="wwwroot/js\angular-cookies.js" />
@@ -63,6 +67,7 @@
     <Content Remove="wwwroot/js\GrafikaApp.Types.js" />
     <Content Remove="wwwroot/js\GrafikaApp.Types.js.map" />
     <Content Remove="wwwroot/js\home\GrafikaApp.Home.js" />
+    <Content Remove="wwwroot/js\home\GrafikaApp.Home.js.map" />
     <Content Remove="wwwroot/js\jquery.js" />
     <Content Remove="wwwroot/js\jquery.magnific-popup.js" />
     <Content Remove="wwwroot/js\jquery.validate.js" />
@@ -75,7 +80,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="wwwroot\css\animation-detail.less" />
     <Content Include="wwwroot\css\mixins.less" />
+    <Content Include="wwwroot\css\player.less" />
     <Content Include="wwwroot\css\site.less" />
     <Content Include="wwwroot\css\variables.less" />
     <Content Include="wwwroot\img\header.jpg" />

@@ -12,14 +12,9 @@ var del = require('del');
 
 gulp.task('default', ['install', 'scripts', 'styles']);
 
-gulp.task('watch', function () {
-    gulp.watch(['wwwroot/js/**/*.ts'], function (event) {
-        gulp.run('scripts');
-    });
-
-    gulp.watch('wwwroot/css/**/*.less', function (event) {
-        gulp.run('styles');
-    });
+gulp.task('watch', ['scripts', 'styles'], function () {
+    gulp.watch('wwwroot/js/**/*.ts', ['scripts']);
+    gulp.watch('wwwroot/css/**/*.less', ['styles']);
 });
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -59,7 +54,7 @@ gulp.task('less', function () {
     return gulp.src([
             'bower_components/bootstrap/less/bootstrap.less',
             'bower_components/font-awesome/less/font-awesome.less',
-            'wwwroot/css/site.less'
+            'wwwroot/css/**/*.less'
         ])
         .pipe(less({
             paths: [
