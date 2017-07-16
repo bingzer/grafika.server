@@ -47,5 +47,6 @@ module GrafikaApp {
 
     export interface IGrafikaAppConfig {
         baseApiUrl: string;
+        shouldInflateFrame: boolean;
     }
 }

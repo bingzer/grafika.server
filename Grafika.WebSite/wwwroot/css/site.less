@@ -58,11 +58,11 @@ p {
     color: fade(white, 70%);
 }
 
-section {
+section.landing {
     padding: 100px 0;
 }
 
-aside {
+aside.landing {
     padding: 50px 0;
 }
 
@@ -222,6 +222,10 @@ header {
     #header-canvas {
         width: 100%;
         height: 350px;
+    }
+
+    #header-canvas-wrapper {
+        height: 100%;
     }
 
     .header-content {
@@ -425,10 +429,25 @@ body {
 }
 
 // --------------- page
+.page-heading {
+    min-height: 51px;
+    height: 51px;
+}
+
+.page-title {
+    margin-top: -72px;
+    margin-left: 0;
+    margin-right: 0;
+    padding-right: 32px;
+    padding-left: 32px;
+    padding-top: 100px;
+    padding-bottom: 50px;
+}
 
 .page-wrapper {
     margin-left: 16px;
     margin-right: 16px;
+    padding-top: 16px;
 }
 
 @media (min-width: 768px) {
@@ -438,6 +457,7 @@ body {
     }
 }
 
+// --------------- user
 .user-avatar {
     display: inline;
     width: 16px;

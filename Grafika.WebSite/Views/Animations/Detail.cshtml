@@ -4,8 +4,8 @@
     var landscape = Model.Animation.Width >= Model.Animation.Height ? "landscape" : "portrait";
 }
 
-<header class="bg-dark" style="min-height: 51px"></header>
-<section class="page-wrapper" style="margin-top: -51px;">
+<header class="bg-dark page-heading"></header>
+<section class="page-wrapper">
     <div id="watch-main" class="container-fluid">
         <div id="watch-content" class="col-lg-7">
             <div id="player" class="player player-width landscape">
@@ -76,7 +76,7 @@
     <script type="text/javascript" src="~/js/grafika.js"></script>
     <script type="text/javascript" src="~/js/GrafikaApp.Player.js"></script>
     <script type="text/javascript" defer>
-        $(document).ready(() => {
+        $(document).ready(function () {
             var player = new GrafikaApp.Player('#player-canvas');
             window.player = player;
 

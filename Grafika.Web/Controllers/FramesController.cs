@@ -22,7 +22,7 @@ namespace Grafika.Web.Controllers
         [HttpGet("{animationId}/frames")]
         public async Task<IActionResult> GetFrameData(string animationId)
         {
-            var shouldInflateData = !Request.AcceptEncodings("deflate") && Request.HasHeader("X-inflate-frames");
+            var shouldInflateData = !Request.AcceptEncodings("deflate") || Request.HasHeader("X-inflate-frames") || Request.Query.ContainsKey("X-inflate-frames");
             var contentEncoding = shouldInflateData ? null : "deflate";
             var frameData = await _service.GetFrameData(animationId, new FrameData { ContentEncoding = contentEncoding });
 

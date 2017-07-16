@@ -26,9 +26,10 @@
         }
 
         loadAnimation(animationId: string): Q.IPromise<any> {
+            let shouldInflateFrames = GrafikaApp.Configuration.shouldInflateFrame ? "?X-inflate-frames=true" : "";
             let animUrl = `${GrafikaApp.Configuration.baseApiUrl}/animations/${animationId}`;
             let qAnim = jQuery.ajax({ url: `${animUrl}` });
-            let qFrames = jQuery.ajax({ url: `${animUrl}/frames` });
+            let qFrames = jQuery.ajax({ url: `${animUrl}/frames${shouldInflateFrames}` });
             return jQuery.when(qAnim, qFrames).done((resAnim, resFrames) => {
                 this.grafika.setAnimation(resAnim[0]);
                 this.grafika.setFrames(resFrames[0]);
