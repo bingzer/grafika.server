@@ -1,0 +1,90 @@
+@model CommentDisqusViewModel
+
+<div style="background-color: #F5F5F5">
+    <div id="disqus_thread"></div>
+</div>
+
+<script type="text/javascript">
+    var params;
+    var disqus_url;
+    var disqus_title;
+    var disqus_shortname;
+    var disqus_identifier;
+    var disqus_config;
+
+    window.onload = function () {
+        var match,
+            pattern = /\+/g,
+            search = /([^&=]+)=?([^&]*)/g,
+            decode = function (s) { return decodeURIComponent(s.replace(pattern, " ")); },
+            query = window.location.search.substring(1);
+        params = {};
+        while (match = search.exec(query))
+            params[decode(match[1])] = decode(match[2]);
+
+        if (params["shortname"] === undefined || params["url"] === undefined || params["title"] === undefined) {
+            alert("Required arguments missing");
+        }
+        else {
+            // loadComments(params["shortname"], params["url"], params["postUrl"], params["title"], params["identifier"], params["pub"], params["disqusToken"], params["jwtToken"]);
+            loadComments('@Model.ShortName', '@Model.Url', '@Model.PostUrl', '@Model.Title', '@Model.Identifier', '@Model.Pub', '@Model.DisqusToken', '@Model.JwtToken');
+        }
+    };
+
+    function loadComments(shortname, url, postUrl, title, identifier, pub, disqusToken, jwtToken) {
+        disqus_url = url;
+        disqus_title = title;
+        disqus_shortname = shortname;
+
+        if (identifier !== undefined)
+            disqus_identifier = identifier;
+        else
+            disqus_identifier = "";
+
+
+        /*
+        var disqus_config = function() {
+
+                this.callbacks.onNewComment = [function(comment) {
+
+                    $.post("php/sendnotification.php", { comment: comment.id, post: "123456" }, function(result){
+
+                        alert(result);
+
+                    });
+
+                }];
+            };
+        */
+
+        disqus_config = function () {
+            this.page.api_key = pub;
+            this.page.remote_auth_s3 = disqusToken;
+            this.callbacks.onNewComment = [function (comment) {
+                var url = postUrl + '?token=' + jwtToken;
+                postAjax(url, comment, function (text) {
+                    console.log('postComment: ' + text);
+                });
+            }];
+        };
+
+        (function () {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = false;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    }
+    function postAjax(url, data, success) {
+        var xhr = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
+        xhr.open('POST', url);
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState > 3 && xhr.status == 200) { success(xhr.responseText); }
+        };
+        xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+        xhr.setRequestHeader('Access-Control-Allow-Origin', '*');
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.send(JSON.stringify(data));
+        return xhr;
+    }
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>

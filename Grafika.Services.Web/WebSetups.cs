@@ -27,8 +27,8 @@ namespace Grafika.Services.Web
             services.AddAuthentication();
             services.AddAuthorization((auth) =>
             {
-                auth.AddPolicy("User", builder => builder.RequireAuthenticatedUser().AddAuthenticationSchemes("jwt-bearer"));
-                auth.AddPolicy("Administrator", builder => builder.RequireAuthenticatedUser().AddAuthenticationSchemes("jwt-bearer").RequireRole(Roles.Administrator));
+                auth.AddPolicy("User", builder => builder.RequireAuthenticatedUser().AddAuthenticationSchemes("cookie-auth").AddAuthenticationSchemes("jwt-bearer"));
+                auth.AddPolicy("Administrator", builder => builder.RequireAuthenticatedUser().AddAuthenticationSchemes("cookie-auth").AddAuthenticationSchemes("jwt-bearer").RequireRole(Roles.Administrator));
             });
 
             var mvcBuilder = services.AddMvc(config =>
@@ -46,6 +46,7 @@ namespace Grafika.Services.Web
 
             services.Configure<IdentityOptions>((opt) =>
             {
+                opt.Cookies.ApplicationCookie.AuthenticationScheme = "cookie-auth";
                 opt.Cookies.ApplicationCookie.AutomaticChallenge = false;
                 opt.Tokens.ProviderMap.Add(AccountTokenProvider.ProviderKey, AccountTokenProvider.ProviderDescriptor);
                 opt.Tokens.ChangeEmailTokenProvider = AccountTokenProvider.ProviderKey;
@@ -66,6 +67,7 @@ namespace Grafika.Services.Web
             app.UseGoogleOAuth();
             app.UseFacebookOAuth();
             app.UseJwtOAuth();
+            app.UseCookieOAuth();
 
             app.UseMvc(routes =>
             {

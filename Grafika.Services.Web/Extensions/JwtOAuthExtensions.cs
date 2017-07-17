@@ -32,14 +32,7 @@ namespace Grafika.Services.Web.Extensions
                 AutomaticAuthenticate = false,
                 AutomaticChallenge = false,
                 AuthenticationScheme = "jwt-bearer",
-                TokenValidationParameters = new TokenValidationParameters
-                {
-                    IssuerSigningKey = tokenProvider.SecurityKey,
-                    ValidateAudience = false,
-                    ValidateIssuer = false,
-                    ValidateLifetime = false,
-                    AuthenticationType = "Bearer"
-                },
+                TokenValidationParameters = tokenProvider.ValidationParameters,
                 Events = new JwtBearerEvents { OnMessageReceived = FindToken }
             };
             options.SecurityTokenValidators.Clear();

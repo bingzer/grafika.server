@@ -90,7 +90,7 @@ gulp.task('copy-fonts', function () {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-gulp.task('install', ['clean', 'bower', 'typings'], function (callback) {
+gulp.task('install', ['clean', 'bower', 'typings', 'styles', 'scripts'], function (callback) {
     console.log('Running install');
     callback();
 });

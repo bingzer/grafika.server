@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Grafika.WebSite.Controllers
 {
-    [Route("/animations"), AllowAnonymous]
+    [Route("/animations")]
     public class AnimationsController : Controller
     {
         private readonly IAnimationService _service;
@@ -16,7 +16,7 @@ namespace Grafika.WebSite.Controllers
             _service = animationService;
         }
 
-        [Route("")]
+        [Route(""), AllowAnonymous]
         public async Task<IActionResult> Index(AnimationQueryOptions options)
         {
             if (options == null)
@@ -36,7 +36,22 @@ namespace Grafika.WebSite.Controllers
             return View(model);
         }
 
-        [Route("{animationId}")]
+        [Route("mine")]
+        public async Task<IActionResult> Mine()
+        {
+            var userIdentity = new UserIdentity(User);
+            var options = new AnimationQueryOptions { UserId = userIdentity.Id, IsRemoved = false };
+            var animations = await _service.List(options);
+            var model = new AnimationsViewModel
+            {
+                Animations = animations,
+                Options = options
+            };
+
+            return View(model);
+        }
+
+        [Route("{animationId}"), AllowAnonymous]
         public async Task<IActionResult> Detail([FromRoute] string animationId)
         {
             var animation = await _service.Get(animationId);
@@ -48,7 +63,7 @@ namespace Grafika.WebSite.Controllers
             return View(model);
         }
 
-        [Route("{animationId}/related")]
+        [Route("{animationId}/related"), AllowAnonymous]
         public async Task<IActionResult> Related([FromRoute] string animationId, AnimationQueryOptions options = null)
         {
             if (options == null)

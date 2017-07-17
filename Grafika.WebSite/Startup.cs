@@ -10,6 +10,8 @@ using Microsoft.Extensions.Logging;
 using Grafika.Services;
 using Grafika.Services.Web;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using System.Security.Claims;
 
 namespace Grafika.WebSite
 {
@@ -50,7 +52,6 @@ namespace Grafika.WebSite
             }
 
             app.UseStaticFiles();
-
             app.UseGrafikaMvc();
         }
     }

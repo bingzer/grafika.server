@@ -24,7 +24,7 @@ namespace Grafika.Services.Users
 
         public void Dispose()
         {
-            throw new NotImplementedException();
+            // - nothing
         }
 
         public Task<UserRole> FindByIdAsync(string roleId, CancellationToken cancellationToken)

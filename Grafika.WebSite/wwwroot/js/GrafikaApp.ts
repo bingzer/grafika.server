@@ -41,9 +41,11 @@ module GrafikaApp {
     // ---------------- document ready ----------- //
     $(document).ready(() => {
         GrafikaApp.Partials.loadElements();
+        GrafikaApp.Dialog.loadElements();
     });
 
 
+    // ---------------- Interface ----------- //
 
     export interface IGrafikaAppConfig {
         baseApiUrl: string;

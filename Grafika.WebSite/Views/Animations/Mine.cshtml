@@ -1,0 +1,18 @@
+@model AnimationsViewModel
+@{
+    ViewBag.Title = "My Animations";
+}
+
+<header class="bg-dark page-heading"></header>
+<section class="bg-dark page-title">
+    <h1>My Animations</h1>
+    <p>These are your animations</p>
+</section>
+<section class="page-wrapper">
+    @foreach(var anim in Model.Animations)
+    {
+        <div class="col-sm-6 col-md-4 col-lg-2">
+            @await Html.PartialAsync("_Thumbnail", anim)
+        </div>
+    }
+</section>
