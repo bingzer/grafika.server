@@ -16,6 +16,7 @@
             font-family: roboto;
         }
 
+        .loginmodal-container a.loginmodal-submit,
         .loginmodal-container input[type=submit] {
             width: 100%;
             display: block;
@@ -53,9 +54,6 @@
         font-weight: 700;
         height: 36px;
         padding: 0 8px;
-        /* border-radius: 3px; */
-        /* -webkit-user-select: none;
-  user-select: none; */
     }
 
     .loginmodal-submit {
@@ -70,13 +68,13 @@
         /* background-image: -webkit-gradient(linear, 0 0, 0 100%,   from(#4d90fe), to(#4787ed)); */
     }
 
-        .loginmodal-submit:hover {
-            /* border: 1px solid #2f5bb7; */
-            border: 0px;
-            text-shadow: 0 1px rgba(0,0,0,0.3);
-            background-color: #357ae8;
-            /* background-image: -webkit-gradient(linear, 0 0, 0 100%,   from(#4d90fe), to(#357ae8)); */
-        }
+    .loginmodal-submit:hover {
+        /* border: 1px solid #2f5bb7; */
+        border: 0px;
+        text-shadow: 0 1px rgba(0,0,0,0.3);
+        background-color: #357ae8;
+        /* background-image: -webkit-gradient(linear, 0 0, 0 100%,   from(#4d90fe), to(#357ae8)); */
+    }
 
     .loginmodal-container a {
         text-decoration: none;
@@ -95,13 +93,14 @@
 
 <div class="loginmodal-container">
     <h1>Login to Your Account</h1><br>
-    <form action="/accounts/login?url=/" method="post">
+    <form action="/accounts/login" method="post">
         <input type="text" name="email" placeholder="Email Address">
         <input type="password" name="password" placeholder="Password">
         <input type="submit" name="login" class="login loginmodal-submit" value="Login">
     </form>
 
-    <a href="http://localhost:3000/accounts/google" type="button" class="btn btn-danger" value="Google">Google</a>
+    <a href="@Utility.CombineUrl(AppEnvironment.Default.Server.Url, "accounts/google")" type="button" class="login loginmodal-submit">Google</a>
+    <a href="@Utility.CombineUrl(AppEnvironment.Default.Server.Url, "accounts/facebook")" type="button" class="login loginmodal-submit">Facebook</a>
 
     <div class="login-help">
         <a href="#">Register</a> - <a href="#">Forgot Password</a>

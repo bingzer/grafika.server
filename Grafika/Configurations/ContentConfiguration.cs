@@ -3,6 +3,7 @@
     public class ContentConfiguration
     {
         public string Url { get; set; }
+        public string OAuthCallbackPath { get; set; }
 
         public string PrivacyPath { get; set; }
         public string EulaPath { get; set; }

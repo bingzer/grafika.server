@@ -84,7 +84,7 @@ namespace Grafika.Web.Controllers
 
             var token = await _accountService.Login(userIdentity);
 
-            var url = $"{contentConfig.Value.Url}?action=authenticate&token={Utility.UrlEncode(token.Token)}";
+            var url = $"{Utility.CombineUrl(contentConfig.Value.Url, contentConfig.Value.OAuthCallbackPath)}?action=authenticate&token={Utility.UrlEncode(token.Token)}";
             return Redirect(url);
         }
 

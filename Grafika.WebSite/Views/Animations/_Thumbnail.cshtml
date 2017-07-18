@@ -9,9 +9,11 @@
     </a>
     <div class="caption" style="font-size: smaller">
         <h4 style="margin-bottom: 2px; margin-top: 2px">
-            <a href="@linkUrl" class="font-stronger">
-                @Model.Name
-            </a>
+            <a href="@linkUrl" class="font-stronger">@Model.Name</a>
+            @if (Model.IsPublic == false)
+            {
+                <i class="fa fa-lock font-smaller text-muted" title="This animation is private. Can only be viewed by you"></i>
+            }
         </h4>
         <h6 style="margin-top: 0">
             <img src="@Model.GetAuthorThumbnail()" alt="@Model.Author" class="img-circle user-avatar"/>

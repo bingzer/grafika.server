@@ -28,7 +28,13 @@
                 </div>
             </div>
             <div style="">
-                <h1 class="animation-title">@Model.Animation.Name</h1>
+                <h1 class="animation-title">
+                    @Model.Animation.Name
+                    @if (Model.Animation.IsPublic == false)
+                    {
+                        <i class="fa fa-lock font-smaller" title="This animation is private. Can only be viewed by you"></i>
+                    }
+                </h1>
                 <h3 class="animation-author">
                     <img class="img-circle user-avatar user-avatar-lg" src="@Model.Animation.GetAuthorThumbnail()" alt="@Model.Animation.Author" />
                     <a href="@Model.Animation.GetAuthorUrl()">

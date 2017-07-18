@@ -1,0 +1,19 @@
+@{
+    ViewData["Title"] = "Login to Grafika";
+}
+<header style="background: none">
+    <div id="header-canvas-container">
+        <canvas id="header-canvas"></canvas>
+    </div>
+    <div id="header-content" class="header-content">
+        <div class="header-content-inner">
+            @await Html.PartialAsync("_LoginForm")
+        </div>
+    </div>
+</header>
+
+@section scripts {
+    <script type="text/javascript" src="~/js/grafika.js"></script>
+    <script type="text/javascript" src="~/js/grafika.demo.js"></script>
+    <script type="text/javascript" src="~/js/GrafikaApp.Player.js"></script>
+}

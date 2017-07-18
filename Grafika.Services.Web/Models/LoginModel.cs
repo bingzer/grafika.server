@@ -9,6 +9,8 @@ namespace Grafika.Web.Models
         [Required]
         public string Password { get; set; }
 
+        public string Token { get; set; }
+
         /// <summary>
         /// Alias for email,
         /// other app may use this field instead of email

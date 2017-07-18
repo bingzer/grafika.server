@@ -54,12 +54,11 @@
     <Content Remove="wwwroot/js\angular.js" />
     <Content Remove="wwwroot/js\angulartics-ga.js" />
     <Content Remove="wwwroot/js\angulartics.js" />
+    <Content Remove="wwwroot/js\bootbox.js" />
     <Content Remove="wwwroot/js\bootstrap.js" />
     <Content Remove="wwwroot/js\grafika.demo.js" />
     <Content Remove="wwwroot/js\grafika.js" />
     <Content Remove="wwwroot/js\grafika.random-drawing.js" />
-    <Content Remove="wwwroot/js\GrafikaApp.Dialog.js" />
-    <Content Remove="wwwroot/js\GrafikaApp.Dialog.js.map" />
     <Content Remove="wwwroot/js\GrafikaApp.js" />
     <Content Remove="wwwroot/js\GrafikaApp.js.map" />
     <Content Remove="wwwroot/js\GrafikaApp.Partials.js" />
@@ -100,7 +99,6 @@
     <Content Include="wwwroot\img\portfolio\thumbnails\4.jpg" />
     <Content Include="wwwroot\img\portfolio\thumbnails\5.jpg" />
     <Content Include="wwwroot\img\portfolio\thumbnails\6.jpg" />
-    <Content Include="wwwroot\js\GrafikaApp.Dialog.ts" />
     <Content Include="wwwroot\js\GrafikaApp.Player.ts" />
     <Content Include="wwwroot\js\GrafikaApp.ts" />
     <Content Include="wwwroot\js\GrafikaApp.Types.ts" />
@@ -128,9 +126,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Grafika.Services.Web\Grafika.Services.Web.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Views\Accounts\" />
   </ItemGroup>
 
 </Project>
