@@ -50,6 +50,18 @@ namespace Grafika.WebSite.Controllers
             return View(model);
         }
 
+        [Route("{animationId}/player"), AllowAnonymous]
+        public async Task<IActionResult> Player([FromRoute] string animationId)
+        {
+            var animation = await _service.Get(animationId);
+            var model = new AnimationViewModel
+            {
+                Animation = animation
+            };
+
+            return PartialView("_Player", model);
+        }
+
         [Route("list"), AllowAnonymous]
         public async Task<IActionResult> List(AnimationQueryOptions options)
         {

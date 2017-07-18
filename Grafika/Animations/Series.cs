@@ -36,6 +36,9 @@ namespace Grafika.Animations
         [BsonElement("animationIds")]
         public IEnumerable<string> AnimationIds { get; set; }
 
+        [BsonIgnore]
+        public IEnumerable<Animation> Animations { get; set; }
+
         #region IEquatable
         public bool Equals(Series other)
         {

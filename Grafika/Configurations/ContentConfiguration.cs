@@ -1,4 +1,6 @@
-﻿namespace Grafika.Configurations
+﻿using System.Collections.Generic;
+
+namespace Grafika.Configurations
 {
     public class ContentConfiguration
     {
@@ -11,5 +13,7 @@
 
         public string DefaultAvatarPath { get; set; }
         public string DefaultBackdropPath { get; set; }
+
+        public IEnumerable<string> HandpickedAnimationIds { get; set; }
     }
 }

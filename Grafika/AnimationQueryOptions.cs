@@ -1,7 +1,11 @@
-﻿namespace Grafika
+﻿using System.Collections.Generic;
+
+namespace Grafika
 {
     public class AnimationQueryOptions : SearchQueryOptions
     {
+        public IEnumerable<string> Ids { get; set; }
+
         public string UserId { get; set; }
         public string SeriesId { get; set; }
         public bool? IsRemoved { get; set; }

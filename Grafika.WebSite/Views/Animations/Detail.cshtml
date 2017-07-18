@@ -8,25 +8,7 @@
 <section class="page-wrapper">
     <div id="watch-main" class="container-fluid">
         <div id="watch-content" class="col-lg-7">
-            <div id="player" class="player player-width landscape">
-                <div id="player-container" class="player-container player-width player-height @landscape">
-                    <canvas id="player-canvas"></canvas>
-                </div>
-                <div id="player-controls" class="player-controls" style="display: none">
-                    <div class="player-buttons">
-                        <a href="javascript: void(0)" class="btn btn-sm" onclick="player.togglePlay().then(player.togglePlayCallback)">
-                            <i class="play fa fa-play"></i>
-                            <i class="pause fa fa-pause fa-spin" style="display: none"></i>
-                        </a>
-                        <a href="javascript: void(0)" class="btn btn-sm" onclick="player.grafika.nextFrame()">
-                            <i class="fa fa-arrow-left"></i>
-                        </a>
-                        <a href="javascript: void(0)" class="btn btn-sm" onclick="player.grafika.previousFrame()">
-                            <i class="fa fa-arrow-right"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
+            @await Html.PartialAsync("_Player", Model)
             <div style="">
                 <h1 class="animation-title">
                     @Model.Animation.Name
@@ -83,30 +65,5 @@
 </section>
 
 @section styles {
-    <link href="~/css/player.css" type="text/css" rel="stylesheet" />
     <link href="~/css/animation-detail.css" type="text/css" rel="stylesheet" />
-}
-@section scripts {
-    <script type="text/javascript" src="~/js/grafika.js"></script>
-    <script type="text/javascript" src="~/js/GrafikaApp.Player.js"></script>
-    <script type="text/javascript" defer>
-        $(document).ready(function () {
-            var player = new GrafikaApp.Player('#player-canvas');
-            window.player = player;
-
-            player.togglePlayCallback = function (res) {
-                if (res.isPlaying) {
-                    $('i.fa-play').hide();
-                    $('i.fa-pause').show();
-                }
-                else {
-                    $('i.fa-play').show();
-                    $('i.fa-pause').hide();
-                }
-            }
-            player.loadAnimation('@Model.Animation.Id').then(function () {
-                $('#player-controls').show();
-            });
-        });
-    </script>
 }

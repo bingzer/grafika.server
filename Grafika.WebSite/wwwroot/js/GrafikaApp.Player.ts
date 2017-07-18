@@ -26,8 +26,9 @@
         }
 
         loadAnimation(animationId: string): Q.IPromise<any> {
-            let shouldInflateFrames = GrafikaApp.Configuration.shouldInflateFrame ? "?X-inflate-frames=true" : "";
-            let animUrl = `${GrafikaApp.Configuration.baseApiUrl}/animations/${animationId}`;
+            let config = this.getConfiguration();
+            let shouldInflateFrames = (config.shouldInflateFrame) ? "?X-inflate-frames=true" : "";
+            let animUrl = `${config.baseApiUrl}/animations/${animationId}`;
             let qAnim = jQuery.ajax({ url: `${animUrl}` });
             let qFrames = jQuery.ajax({ url: `${animUrl}/frames${shouldInflateFrames}` });
             return jQuery.when(qAnim, qFrames).done((resAnim, resFrames) => {
@@ -39,6 +40,23 @@
 
         destroy() {
             this.grafika.destroy();
+        }
+
+        private getConfiguration(): GrafikaApp.IGrafikaAppConfig {
+            if (GrafikaApp && GrafikaApp.Configuration)
+                return GrafikaApp.Configuration;
+            return new GrafikaApp.DefaultConfiguration();
+        }
+    }
+
+    export class DefaultConfiguration implements GrafikaApp.IGrafikaAppConfig {
+        baseApiUrl: string = "http://localhost:3000";
+        shouldInflateFrame: boolean = true;
+        getAuthenticationToken(): string {
+            throw new Error('Method not implemented.');
+        }
+        setAuthenticationToken(token: string): void {
+            throw new Error('Method not implemented.');
         }
     }
 }

@@ -1,5 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+using Grafika.Services;
+using System.Threading.Tasks;
+using Grafika.WebSite.ViewModels;
 
 namespace Grafika.WebSite.Controllers
 {
@@ -7,9 +10,14 @@ namespace Grafika.WebSite.Controllers
     public class HomeController : Controller
     {
         [Route("/"), AllowAnonymous]
-        public IActionResult Index()
+        public async Task<IActionResult> Index([FromServices] ISeriesService seriesService)
         {
-            return View();
+            var model = new HomeViewModel
+            {
+                HandpickedSeries = await seriesService.GetHandpickedSeries()
+            };
+
+            return View("Index", model);
         }
 
         [Route("/stickdraw"), AllowAnonymous]

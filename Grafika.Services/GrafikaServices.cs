@@ -24,7 +24,8 @@ using Grafika.Services.Users;
 using Grafika.Services.Backgrounds;
 using Grafika.Utilities;
 using System;
-using Grafika.Services.Series;
+using Grafika.Services.AnimationSeries;
+using System.Threading.Tasks;
 
 namespace Grafika.Services
 {
@@ -162,6 +163,8 @@ namespace Grafika.Services
                 connection.EnsureReady().GetAwaiter().GetResult();
                 connection.Dispose();
             }
+
+            app.ApplicationServices.Get<ISeriesService>().EnsureHandpickedSeriesCreated().GetAwaiter().GetResult();
         }
     }
 }

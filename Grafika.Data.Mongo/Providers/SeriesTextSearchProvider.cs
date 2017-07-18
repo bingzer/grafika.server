@@ -14,6 +14,8 @@ namespace Grafika.Data.Mongo.Providers
 
             if (!string.IsNullOrEmpty(options.Id))
                 filter &= Builders<Series>.Filter.Eq(s => s.Id, options.Id);
+            if (!string.IsNullOrEmpty(options.Name))
+                filter &= Builders<Series>.Filter.Eq(s => s.Name, options.Name);
             if (!string.IsNullOrEmpty(options.AnimationId))
                 filter &= Builders<Series>.Filter.AnyEq(s => s.AnimationIds, options.AnimationId);
             if (!string.IsNullOrEmpty(options.UserId))
