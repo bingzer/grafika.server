@@ -1,0 +1,46 @@
+@model AnimationViewModel
+
+@{
+    var landscape = Model.Animation.Width >= Model.Animation.Height ? "landscape" : "portrait";
+}
+
+<div id="player" class="player player-width landscape">
+    <div id="player-container" class="player-container player-width player-height @landscape">
+        <canvas id="player-canvas"></canvas>
+    </div>
+    <div id="player-controls" class="player-controls" style="display: none">
+        <div class="player-buttons">
+            <a href="javascript: void(0)" class="btn btn-sm" onclick="player.togglePlay().then(player.togglePlayCallback)">
+                <i class="play fa fa-play"></i>
+                <i class="pause fa fa-pause fa-spin" style="display: none"></i>
+            </a>
+            <a href="javascript: void(0)" class="btn btn-sm" onclick="player.grafika.nextFrame()">
+                <i class="fa fa-arrow-left"></i>
+            </a>
+            <a href="javascript: void(0)" class="btn btn-sm" onclick="player.grafika.previousFrame()">
+                <i class="fa fa-arrow-right"></i>
+            </a>
+        </div>
+    </div>
+    <script type="text/javascript" src="~/js/grafika.js" defer></script>
+    <script type="text/javascript" src="~/js/GrafikaApp.Player.js" defer></script>
+    <script type="text/javascript" defer>
+        var player = new GrafikaApp.Player('#player-canvas');
+        window.player = player;
+
+        player.togglePlayCallback = function (res) {
+            if (res.isPlaying) {
+                $('i.fa-play').hide();
+                $('i.fa-pause').show();
+            }
+            else {
+                $('i.fa-play').show();
+                $('i.fa-pause').hide();
+            }
+        }
+        player.loadAnimation('@Model.Animation.Id').then(function () {
+            $('#player-controls').show();
+        });
+    </script>
+    <noscript>Unable to preview</noscript>
+</div>
