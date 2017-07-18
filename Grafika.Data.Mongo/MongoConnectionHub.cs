@@ -22,6 +22,7 @@ namespace Grafika.Data.Mongo
             return Task.WhenAll(
                 _context.Animations.ToMongoDataSet().EnsureIndex(),
                 _context.Users.ToMongoDataSet().EnsureIndex(),
+                _context.Series.ToMongoDataSet().EnsureIndex(),
                 _context.Backgrounds.ToMongoDataSet().EnsureIndex()
             );
         }

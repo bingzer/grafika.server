@@ -10,8 +10,9 @@ namespace Grafika.Data.Mongo
         private readonly IMongoDatabase _db;
 
         public IDataSet<Animation> Animations { get; private set; }
-        public IDataSet<User> Users { get; private set; }
         public IDataSet<Background> Backgrounds { get; private set; }
+        public IDataSet<Series> Series { get; private set; }
+        public IDataSet<User> Users { get; private set; }
 
         public MongoDataContext(IMongoConnector dbConnector)
         {
@@ -19,6 +20,7 @@ namespace Grafika.Data.Mongo
 
             Animations = new AnimationDataSet(_db);
             Backgrounds = new BackgroundDataSet(_db);
+            Series = new SeriesDataSet(_db);
             Users = new UserDataSet(_db);
         }
 
@@ -26,10 +28,12 @@ namespace Grafika.Data.Mongo
         {
             if (typeof(TEntity) == typeof(Animation))
                 return (IDataSet<TEntity>)Animations;
+            if (typeof(TEntity) == typeof(Background))
+                return (IDataSet<TEntity>)Backgrounds;
+            if (typeof(TEntity) == typeof(Series))
+                return (IDataSet<TEntity>)Series;
             if (typeof(TEntity) == typeof(User))
                 return (IDataSet<TEntity>)Users;
-            if (typeof(TEntity) == typeof(Background))
-                return (IDataSet<TEntity>) Backgrounds;
 
             throw new NotImplementedException("Not implemented " + typeof(TEntity));
         }

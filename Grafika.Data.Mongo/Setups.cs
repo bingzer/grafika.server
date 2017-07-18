@@ -29,6 +29,7 @@ namespace Grafika.Data.Mongo
                 .AddScoped<IBulkRemoveProvider<Animation>, AnimationBulkRemoveProvider>()
                 .AddScoped<ITextSearchProvider<Background, BackgroundQueryOptions>, BackgroundTextSearchProvider>()
                 .AddScoped<IBulkRemoveProvider<Background>, BackgroundBulkRemoveProvider>()
+                .AddScoped<ITextSearchProvider<Series, SeriesQueryOptions>, SeriesTextSearchProvider>()
                 .AddScoped<ITextSearchProvider<User, UserQueryOptions>, UserTextSearchProvider>()
                 .AddSingleton<IMongoConnectionHub, MongoConnectionHub>()
                 .AddSingleton<IEntityIdValidator, MongoEntityIdValidator>()

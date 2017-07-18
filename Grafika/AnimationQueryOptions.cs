@@ -3,6 +3,7 @@
     public class AnimationQueryOptions : SearchQueryOptions
     {
         public string UserId { get; set; }
+        public string SeriesId { get; set; }
         public bool? IsRemoved { get; set; }
         public bool? IsPublic { get; set; }
 

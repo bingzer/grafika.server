@@ -66,5 +66,30 @@ namespace Grafika.Data.Mongo.Supports
 
             return findFluent;
         }
+
+        /// <summary>
+        /// Background OrderBy by sort options
+        /// </summary>
+        /// <param name="findFluent"></param>
+        /// <param name="sortOptions"></param>
+        /// <returns></returns>
+        internal static IFindFluent<Series, Series> OrderBy(this IFindFluent<Series, Series> findFluent, SortOptions sortOptions)
+        {
+            // order by
+            switch (sortOptions?.Name)
+            {
+                case "lastModified" when sortOptions.Direction == SortDirection.Ascending:
+                    findFluent = findFluent.SortBy(q => q.DateModified);
+                    break;
+                case "lastModified" when sortOptions.Direction == SortDirection.Descending:
+                    findFluent = findFluent.SortByDescending(q => q.DateModified);
+                    break;
+                default:
+                    findFluent = findFluent.SortByDescending(q => q.DateModified);
+                    break;
+            }
+
+            return findFluent;
+        }
     }
 }

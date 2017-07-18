@@ -24,6 +24,7 @@ using Grafika.Services.Users;
 using Grafika.Services.Backgrounds;
 using Grafika.Utilities;
 using System;
+using Grafika.Services.Series;
 
 namespace Grafika.Services
 {
@@ -61,6 +62,13 @@ namespace Grafika.Services
                 .AddScoped<IBackgroundService, BackgroundService>()
                 .AddScoped<IBackgroundRepository, BackgroundRepository>()
                 .AddSingleton<IBackgroundValidator, BackgroundValidator>()
+                ;
+
+            // -- Series
+            services
+                .AddScoped<ISeriesService, SeriesService>()
+                .AddScoped<ISeriesRepository, SeriesRepository>()
+                .AddScoped<ISeriesValidator, SeriesValidator>()
                 ;
 
             // -- Aws
