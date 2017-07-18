@@ -1,4 +1,4 @@
-@model AnimationsViewModel
+@model AnimationQueryOptions
 @{
     ViewBag.Title = "Public Animations";
 }
@@ -8,11 +8,6 @@
     <h1>Public Animations</h1>
     <p>Here you can find animations</p>
 </section>
-<section class="page-wrapper">
-    @foreach(var anim in Model.Animations)
-    {
-        <div class="col-sm-6 col-md-4 col-lg-2">
-            @await Html.PartialAsync("_Thumbnail", anim)
-        </div>
-    }
+<section class="page-wrapper" data-partial="auto" data-url="/animations/list" data-data="@Model.ToJson()">
+    Loading...
 </section>

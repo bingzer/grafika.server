@@ -67,6 +67,8 @@ namespace Grafika.Test.Services.Users
         [InlineData("userId", "backdrop", "//custom-backdrop", "http://me.com/custom-backdrop")]
         [InlineData("userId", "avatar", null, "http://me.com/default/avatar")]
         [InlineData("userId", "backdrop", null, "http://me.com/default/backdrop")]
+        [InlineData("userId", "backdrop", "asset/backdrop.png", "http://me.com/asset/backdrop.png")]
+        [InlineData("userId", "avatar", "asset/avatar.png", "http://me.com/asset/avatar.png")]
         [InlineData("userId", "avatar", "http://example.com/avatar.jpg", "http://example.com/avatar.jpg")]
         [InlineData("userId", "backdrop", "http://example.com/backdrop.jpg", "http://example.com/backdrop.jpg")]
         public async void TestGetAvatarOrBackdropUrl(string userId, string type, string prefValue, string urlExpected)

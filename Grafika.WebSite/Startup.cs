@@ -12,6 +12,8 @@ using Grafika.Services.Web;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Rewrite;
+using System.Net;
 
 namespace Grafika.WebSite
 {
@@ -51,6 +53,9 @@ namespace Grafika.WebSite
                 app.UseExceptionHandler("/Home/Error");
             }
 
+            app.UseRewriter(new RewriteOptions()
+                .AddRedirect(@"^assets/(.*)", "/$1", (int) HttpStatusCode.MovedPermanently)
+            );
             app.UseStaticFiles();
             app.UseGrafikaMvc();
         }

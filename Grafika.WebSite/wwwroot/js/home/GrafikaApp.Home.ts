@@ -4,15 +4,19 @@ module GrafikaApp {
         public animPlayer: GrafikaApp.Player;
 
         public loadRandomAnimation(): Q.IPromise<any> {
+            jQuery('#btn-random-animation').attr('disabled', 'disabled');
+
             if (!this.animPlayer)
                 this.animPlayer = new GrafikaApp.Player('#header-canvas');
             var element = jQuery('#animation-author');
-            if (element.text().trim().length > 0) element.fadeOut();
+            if (element.text().trim().length > 0)
+                element.fadeOut();
 
             return jQuery.ajax({ url: `${GrafikaApp.Configuration.baseApiUrl}/animations?isRandom=true&isPublic=true`, cache: false }).done((res) => {
                 var animation = res[0] as Grafika.IAnimation;
                 element.html(`<a href="/animations/${animation._id}" title="View this animation">${animation.name} by ${animation.author}</a>`).fadeIn();
                 return this.animPlayer.loadAnimation(animation._id).then(() => {
+                    jQuery('#btn-random-animation').removeAttr('disabled');
                     return this.animPlayer.play();
                 });
             });

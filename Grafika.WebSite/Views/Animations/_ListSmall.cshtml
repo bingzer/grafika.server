@@ -1,0 +1,34 @@
+@model AnimationsViewModel
+@{
+    Layout = null;
+}
+
+<ul class="list-group" style="max-width: 350px">
+    @foreach (var anim in Model.Animations)
+    {
+        var linkUrl = $"/animations/{anim.Id}";
+        <li class="list-group-item">
+            <div class="media">
+                <div class="media-left">
+                    <a href="@linkUrl">
+                        <img src="@anim.GetThumbnailUrl()" alt="@anim.Name" style="max-height: 48px; width: 64px;">
+                    </a>
+                </div>
+                <div class="media-body">
+                    <h4 class="media-heading">
+                        <a href="@linkUrl" class="font-stronger">
+                            @anim.Name
+                        </a>
+                    </h4>
+                    <h6 style="margin-top: 0">
+                        <img src="@anim.GetAuthorThumbnail()" alt="@anim.Author" class="img-circle user-avatar" />
+                        <a href="/users/@anim.UserId">
+                            @anim.Author
+                        </a>
+                    </h6>
+                    <p>@anim.Description</p>
+                </div>
+            </div>
+        </li>
+    }
+</ul>

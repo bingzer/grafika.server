@@ -37,7 +37,7 @@
                 </h1>
                 <h3 class="animation-author">
                     <img class="img-circle user-avatar user-avatar-lg" src="@Model.Animation.GetAuthorThumbnail()" alt="@Model.Animation.Author" />
-                    <a href="@Model.Animation.GetAuthorUrl()">
+                    <a href="/users/@Model.Animation.UserId">
                         @Model.Animation.Author
                     </a>
                 </h3>
@@ -65,7 +65,15 @@
             </ul>            
             <!-- Tab panes -->
             <div class="tab-content" style="border-left: 1px solid #ddd; border-right: 1px solid #ddd; border-bottom: 1px solid #ddd;">
-                <div role="tabpanel" class="tab-pane active" id="related" data-partial="tab" data-url="/animations/@Model.Animation.Id/related?pageSize=5">
+                @{ 
+                    var relatedAnimationQueryOptions = new AnimationQueryOptions
+                    {
+                        RelatedToAnimationId = Model.Animation.Id,
+                        TemplateName = "_ListSmall",
+                        PageSize = 5
+                    };
+                }
+                <div role="tabpanel" class="tab-pane active" id="related" data-partial="tab" data-url="/animations/list" data-data="@relatedAnimationQueryOptions.ToJson()">
                     Loading...
                 </div>
                 <div role="tabpanel" class="tab-pane" id="comments">...</div>

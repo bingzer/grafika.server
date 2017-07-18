@@ -48,6 +48,8 @@ namespace Grafika.Services.Users
             // fixed stupid relative url
             if (url.StartsWith("/") || url.StartsWith("//"))
                 url = Utility.CombineUrl(_contentConfig.Url, url);
+            if (!url.StartsWith("http", StringComparison.CurrentCultureIgnoreCase))
+                url = Utility.CombineUrl(_contentConfig.Url, url);
 
             return url;
         }

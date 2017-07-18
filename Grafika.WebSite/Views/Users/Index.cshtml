@@ -1,0 +1,25 @@
+@model UserViewModel
+@{
+    ViewBag.Title = Model.User.Username;
+
+    var userIdentity = User.Identity as IUserIdentity;
+    var userOptions = new AnimationQueryOptions
+    {
+        UserId = Model.User.Id,
+        IsRemoved = false
+    };
+
+    if (userIdentity.Id != Model.User.Id)
+    {
+        userOptions.IsPublic = true;
+    }
+}
+
+<header class="bg-transparent page-heading"></header>
+<section class="bg-primary page-title" style="background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.0)), url(@Model.BackdropUrl) no-repeat; -webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover; background-size: cover; ">
+    <h1>@Model.User.Username</h1>
+    <p>These are your animations</p>
+</section>
+<section class="page-wrapper" data-partial="auto" data-url="/animations/list" data-data="@userOptions.ToJson()">
+    Loading...
+</section>

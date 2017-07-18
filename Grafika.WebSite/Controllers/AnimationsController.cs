@@ -17,7 +17,7 @@ namespace Grafika.WebSite.Controllers
         }
 
         [Route(""), AllowAnonymous]
-        public async Task<IActionResult> Index(AnimationQueryOptions options)
+        public IActionResult Index(AnimationQueryOptions options)
         {
             if (options == null)
                 options = new AnimationQueryOptions();
@@ -26,29 +26,16 @@ namespace Grafika.WebSite.Controllers
             else
                 options = AnimationQueryOptions.PublicAnimations(options);
 
-            var animations = await _service.List(options);
-            var model = new AnimationsViewModel
-            {
-                Animations = animations,
-                Options = options
-            };
-
-            return View(model);
+            return View(options);
         }
 
         [Route("mine")]
-        public async Task<IActionResult> Mine()
+        public IActionResult Mine()
         {
             var userIdentity = new UserIdentity(User);
             var options = new AnimationQueryOptions { UserId = userIdentity.Id, IsRemoved = false };
-            var animations = await _service.List(options);
-            var model = new AnimationsViewModel
-            {
-                Animations = animations,
-                Options = options
-            };
 
-            return View(model);
+            return View(options);
         }
 
         [Route("{animationId}"), AllowAnonymous]
@@ -63,20 +50,20 @@ namespace Grafika.WebSite.Controllers
             return View(model);
         }
 
-        [Route("{animationId}/related"), AllowAnonymous]
-        public async Task<IActionResult> Related([FromRoute] string animationId, AnimationQueryOptions options = null)
+        [Route("list"), AllowAnonymous]
+        public async Task<IActionResult> List(AnimationQueryOptions options)
         {
-            if (options == null)
-                options = new AnimationQueryOptions();
-            options.RelatedToAnimationId = animationId;
+            if (string.IsNullOrEmpty(options.TemplateName))
+                options.TemplateName = "_List";
 
             var animations = await _service.List(options);
             var model = new AnimationsViewModel
             {
-                Animations = animations
+                Animations = animations,
+                Options = options
             };
 
-            return PartialView("_RelatedAnimations", model);
+            return PartialView(options.TemplateName, model);
         }
     }
 }
