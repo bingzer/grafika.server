@@ -2,13 +2,19 @@
 
 @{ 
     var landscape = Model.Animation.Width >= Model.Animation.Height ? "landscape" : "portrait";
+    var playerViewModel = new AnimationPlayerViewModel
+    {
+        Animation = Model.Animation,
+        AnimationId = Model.Animation.Id,
+        AutoPlay = false
+    };
 }
 
 <header class="bg-dark page-heading"></header>
 <section class="page-wrapper">
     <div id="watch-main" class="container-fluid">
         <div id="watch-content" class="col-lg-7">
-            @await Html.PartialAsync("_Player", Model)
+            @await Html.PartialAsync("_Player", playerViewModel)
             <div style="">
                 <h1 class="animation-title">
                     @Model.Animation.Name

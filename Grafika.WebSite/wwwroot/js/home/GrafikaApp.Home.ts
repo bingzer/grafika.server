@@ -1,4 +1,20 @@
 module GrafikaApp {
+    // Initialize and Configure Magnific Popup Lightbox Plugin
+    $('.popup-gallery').magnificPopup({
+        delegate: 'a',
+        type: 'ajax',
+        closeMarkup: '<button title= "%title%" type= "button" class="mfp-close" style="margin-top: -40px; margin-right: -16px; color: white" >&#215;</button>',
+        mainClass: 'preview-animation-popup'
+    });
+
+    // jQuery for page scrolling feature - requires jQuery Easing plugin
+    $(document).on('click', 'a.page-scroll', function (event) {
+        let $anchor = $(this);
+        $('html, body').stop().animate({
+            scrollTop: ($($anchor.attr('href')).offset().top - 50)
+        }, 1250, 'easeInOutExpo');
+        event.preventDefault();
+    });
 
     export class Home {
         public animPlayer: GrafikaApp.Player;
@@ -22,22 +38,6 @@ module GrafikaApp {
             });
         }
     }
-
-    // jQuery for page scrolling feature - requires jQuery Easing plugin
-    $(document).on('click', 'a.page-scroll', function (event) {
-        let $anchor = $(this);
-        $('html, body').stop().animate({
-            scrollTop: ($($anchor.attr('href')).offset().top - 50)
-        }, 1250, 'easeInOutExpo');
-        event.preventDefault();
-    });
-
-    // Initialize and Configure Magnific Popup Lightbox Plugin
-    $('.popup-gallery').magnificPopup({
-        delegate: 'a',
-        type: 'ajax',
-        mainClass: 'preview-animation-popup'
-    });
 
     $(document).ready(() => {
         var home = new GrafikaApp.Home();
