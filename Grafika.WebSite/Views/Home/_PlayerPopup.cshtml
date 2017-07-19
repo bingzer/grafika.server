@@ -1,0 +1,12 @@
+@model AnimationViewModel
+
+@{
+    var landscape = Model.Animation.Width >= Model.Animation.Height ? "landscape" : "portrait";
+}
+
+<div class="bg-transparent">
+    @await Html.PartialAsync("~/Views/Animations/_Player.cshtml", Model)
+    <div class="row margin text-center">
+        <a href="/animations/@Model.Animation.Id" class="btn btn-xl btn-danger">Go to Animation</a>
+    </div>
+</div>

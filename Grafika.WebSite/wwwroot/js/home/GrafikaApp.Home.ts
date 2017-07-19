@@ -35,7 +35,8 @@ module GrafikaApp {
     // Initialize and Configure Magnific Popup Lightbox Plugin
     $('.popup-gallery').magnificPopup({
         delegate: 'a',
-        type: 'ajax'
+        type: 'ajax',
+        mainClass: 'preview-animation-popup'
     });
 
     $(document).ready(() => {

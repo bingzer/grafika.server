@@ -51,7 +51,7 @@ namespace Grafika.WebSite.Controllers
         }
 
         [Route("{animationId}/player"), AllowAnonymous]
-        public async Task<IActionResult> Player([FromRoute] string animationId)
+        public async Task<IActionResult> Player([FromRoute] string animationId, string templateName = "_Player")
         {
             var animation = await _service.Get(animationId);
             var model = new AnimationViewModel
@@ -59,7 +59,7 @@ namespace Grafika.WebSite.Controllers
                 Animation = animation
             };
 
-            return PartialView("_Player", model);
+            return PartialView(templateName, model);
         }
 
         [Route("list"), AllowAnonymous]

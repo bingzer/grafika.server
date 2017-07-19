@@ -25,21 +25,23 @@
     <script type="text/javascript" src="~/js/grafika.js" defer></script>
     <script type="text/javascript" src="~/js/GrafikaApp.Player.js" defer></script>
     <script type="text/javascript" defer>
-        var player = new GrafikaApp.Player('#player-canvas');
-        window.player = player;
+        $(document).ready(function () {
+            var player = new GrafikaApp.Player('#player-canvas');
+            window.player = player;
 
-        player.togglePlayCallback = function (res) {
-            if (res.isPlaying) {
-                $('i.fa-play').hide();
-                $('i.fa-pause').show();
+            player.togglePlayCallback = function (res) {
+                if (res.isPlaying) {
+                    $('i.fa-play').hide();
+                    $('i.fa-pause').show();
+                }
+                else {
+                    $('i.fa-play').show();
+                    $('i.fa-pause').hide();
+                }
             }
-            else {
-                $('i.fa-play').show();
-                $('i.fa-pause').hide();
-            }
-        }
-        player.loadAnimation('@Model.Animation.Id').then(function () {
-            $('#player-controls').show();
+            player.loadAnimation('@Model.Animation.Id').then(function () {
+                $('#player-controls').show();
+            });
         });
     </script>
     <noscript>Unable to preview</noscript>
