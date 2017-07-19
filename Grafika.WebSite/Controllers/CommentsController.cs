@@ -1,16 +1,16 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
+using Grafika.WebSite.ViewModels;
 
 namespace Grafika.WebSite.Controllers
 {
+    [Route("comments")]
     public class CommentsController : Controller
     {
-        public IActionResult Index()
+        [Route(""), AllowAnonymous]
+        public IActionResult Index(CommentDisqusViewModel model)
         {
-            return View();
+            return PartialView(model.TemplateName, model);
         }
     }
 }

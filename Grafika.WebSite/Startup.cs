@@ -55,9 +55,11 @@ namespace Grafika.WebSite
 
             app.UseRewriter(new RewriteOptions()
                 .AddRedirect(@"^assets/(.*)", "/$1", (int) HttpStatusCode.MovedPermanently)
+                .AddRewrite(@"^app/content/comment.html", "/comments", true)
             );
-            app.UseStaticFiles();
+
             app.UseGrafikaMvc();
+            app.UseStaticFiles();
         }
     }
 }

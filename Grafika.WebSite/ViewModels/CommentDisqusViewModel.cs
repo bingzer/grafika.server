@@ -24,5 +24,7 @@ namespace Grafika.WebSite.ViewModels
         public string DisqusToken { get; set; }
 
         public string JwtToken { get; set; }
+
+        public string TemplateName { get; set; } = "_DisqusComment";
     }
 }

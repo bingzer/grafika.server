@@ -40,7 +40,7 @@ namespace Grafika.Services.Comments
 
             return new AuthenticationToken
             {
-                Id = _disqusConfig.Id,
+                Id = _disqusConfig?.Id,
                 Token = GenerateSsoPayload(userdata.ToJson())
             };
         }

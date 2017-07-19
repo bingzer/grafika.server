@@ -81,6 +81,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="wwwroot\comment.html" />
     <Content Include="wwwroot\css\animation-detail.less" />
     <Content Include="wwwroot\css\mixins.less" />
     <Content Include="wwwroot\css\player.less" />
@@ -129,6 +130,7 @@
     <ProjectReference Include="..\Grafika.Services.Web\Grafika.Services.Web.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Views\Comments\" />
     <Folder Include="Views\Users\" />
   </ItemGroup>
 

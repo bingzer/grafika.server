@@ -39,10 +39,6 @@ namespace Grafika.Web
 
             app.UseGrafikaMvc();
             app.UseStaticFiles();
-
-            //app.UseScratch();
-
-            app.UseGrafikaServices();
         }
     }
 }

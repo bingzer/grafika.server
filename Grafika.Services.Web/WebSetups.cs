@@ -58,16 +58,16 @@ namespace Grafika.Services.Web
 
         public static void UseGrafikaMvc(this IApplicationBuilder app)
         {
-            app.UseGrafikaServices();
-
-            app.UseCors(builder => builder.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin().AllowCredentials());
             app.UseMiddleware<ExceptionHandlingMiddleware>();
-            app.UseIdentity();
+            app.UseCors(builder => builder.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin().AllowCredentials());
 
+            app.UseIdentity();
             app.UseGoogleOAuth();
             app.UseFacebookOAuth();
             app.UseJwtOAuth();
             app.UseCookieOAuth();
+
+            app.UseGrafikaServices();
 
             app.UseMvc(routes =>
             {

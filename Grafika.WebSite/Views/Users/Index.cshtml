@@ -9,7 +9,7 @@
         IsRemoved = false
     };
 
-    if (userIdentity.Id != Model.User.Id)
+    if (userIdentity?.Id != Model.User.Id)
     {
         userOptions.IsPublic = true;
     }

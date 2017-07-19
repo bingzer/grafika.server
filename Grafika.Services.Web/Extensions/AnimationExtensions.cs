@@ -10,6 +10,10 @@ namespace Grafika.Services.Web.Extensions
         {
             return Utility.CombineUrl(AppEnvironment.Default.Server.Url, "animations", animation.Id);
         }
+        public static string GetCommentUrl(this Animation animation)
+        {
+            return Utility.CombineUrl(GetUrl(animation), "comments");
+        }
 
         public static string GetThumbnailUrl(this Animation animation)
         {

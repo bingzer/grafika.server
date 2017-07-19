@@ -52,7 +52,7 @@
                 <li role="presentation"><a href="#comments" aria-controls="profile" role="tab" data-toggle="tab">Comments</a></li>
             </ul>            
             <!-- Tab panes -->
-            <div class="tab-content" style="border-left: 1px solid #ddd; border-right: 1px solid #ddd; border-bottom: 1px solid #ddd;">
+            <div class="tab-content">
                 @{ 
                     var relatedAnimationQueryOptions = new AnimationQueryOptions
                     {
@@ -64,7 +64,9 @@
                 <div role="tabpanel" class="tab-pane active" id="related" data-partial="tab" data-url="/animations/list" data-data="@relatedAnimationQueryOptions.ToJson()">
                     Loading...
                 </div>
-                <div role="tabpanel" class="tab-pane" id="comments">...</div>
+                <div role="tabpanel" class="tab-pane" id="comments" data-partial="tab" data-url="@Model.Animation.GetCommentUrl()" style="padding: 8px;">
+                    Loading Comments...
+                </div>
             </div>
         </div>
     </div>
