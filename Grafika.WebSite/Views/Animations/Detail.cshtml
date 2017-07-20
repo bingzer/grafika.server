@@ -11,61 +11,77 @@
 }
 
 <header class="bg-dark page-heading"></header>
+<section class="no-padding">
+    <div id="player-wrapper" class="player-wrapper">
+        @await Html.PartialAsync("_Player", playerViewModel)
+    </div>
+</section>
+<section class="bg-dark">
+    <div id="title-wrapper" class="title-container padding">
+        <h1 class="animation-title">
+            @Model.Animation.Name
+            @if (Model.Animation.IsPublic == false)
+            {
+                <i class="fa fa-lock font-smaller" title="This animation is private. Can only be viewed by you"></i>
+            }
+        </h1>
+        <h3 class="animation-author">
+            <img class="img-circle user-avatar user-avatar-lg" src="@Model.Animation.GetAuthorThumbnail()" alt="@Model.Animation.Author" />
+            <a href="/users/@Model.Animation.UserId">
+                @Model.Animation.Author
+            </a>
+        </h3>
+        <h4 class="animation-details">
+            <span style="margin-right: 8px">
+                <i class="fa fa-eye"></i>&nbsp;@Model.Animation.Views
+            </span>
+            <span style="margin-right: 8px">
+                <i class="fa fa-image"></i>&nbsp;@Model.Animation.TotalFrame
+            </span>
+            <span style="margin-right: 8px">
+                <i class="fa fa-calendar"></i>&nbsp;@Model.Animation.DateTimeModified
+            </span>
+        </h4>
+        <p class="animation-description">@Model.Animation.Description</p>
+    </div>
+
+</section>
 <section class="page-wrapper">
-    <div id="watch-main" class="container-fluid">
-        <div id="watch-content" class="col-lg-7">
-            @await Html.PartialAsync("_Player", playerViewModel)
-            <div style="">
-                <h1 class="animation-title">
-                    @Model.Animation.Name
-                    @if (Model.Animation.IsPublic == false)
-                    {
-                        <i class="fa fa-lock font-smaller" title="This animation is private. Can only be viewed by you"></i>
-                    }
-                </h1>
-                <h3 class="animation-author">
-                    <img class="img-circle user-avatar user-avatar-lg" src="@Model.Animation.GetAuthorThumbnail()" alt="@Model.Animation.Author" />
-                    <a href="/users/@Model.Animation.UserId">
-                        @Model.Animation.Author
-                    </a>
-                </h3>
-                <h4 class="animation-details">
-                    <span style="margin-right: 8px">
-                        <i class="text-muted fa fa-eye"></i>&nbsp;@Model.Animation.Views
-                    </span>
-                    <span style="margin-right: 8px">
-                        <i class="text-muted fa fa-image"></i>&nbsp;@Model.Animation.TotalFrame
-                    </span>
-                    <span style="margin-right: 8px">
-                        <i class="text-muted fa fa-calendar"></i>&nbsp;@Model.Animation.DateTimeModified
-                    </span>
-                </h4>
-                <p class="animation-description">@Model.Animation.Description</p>
+    <div id="comment-wrapper" class="container-fluid">
+        <div id="info-comment" class="col-md-8 col-lg-7">
+            <div id="comment" data-partial="lazy" data-url="@Model.Animation.GetCommentUrl()">
+                <div class="margin-xl">
+                    <button onclick="GrafikaApp.Partials.renderPartial('#comment')" class="btn btn-xl btn-default">
+                        Load comment
+                    </button>
+                </div>
             </div>
         </div>
-        <div id="watch-sidebar" class="col-lg-5">
-            <div id="watch-ads">
+        <div id="info-sidebar" class="col-md-4 col-lg-5">
+            <div id="info-ads">
                 {{ This is ads }}
             </div>
-            <ul class="nav nav-tabs" role="tablist">
-                <li role="presentation" class="active"><a href="#related" aria-controls="home" role="tab" data-toggle="tab">Related</a></li>
-                <li role="presentation"><a href="#comments" aria-controls="profile" role="tab" data-toggle="tab">Comments</a></li>
-            </ul>            
-            <!-- Tab panes -->
-            <div class="tab-content">
-                @{ 
-                    var relatedAnimationQueryOptions = new AnimationQueryOptions
-                    {
-                        RelatedToAnimationId = Model.Animation.Id,
-                        TemplateName = "_ListSmall",
-                        PageSize = 5
-                    };
-                }
-                <div role="tabpanel" class="tab-pane active" id="related" data-partial="tab" data-url="/animations/list" data-data="@relatedAnimationQueryOptions.ToJson()">
-                    Loading...
-                </div>
-                <div role="tabpanel" class="tab-pane" id="comments" data-partial="tab" data-url="@Model.Animation.GetCommentUrl()" style="padding: 8px;">
-                    Loading Comments...
+            <div id="watch-sidebar">
+                <ul class="nav nav-tabs" role="tablist">
+                    <li role="presentation" class="active"><a href="#related" aria-controls="related" role="tab" data-toggle="tab">Related</a></li>
+                    <li role="presentation"><a href="#more" aria-controls="more" role="tab" data-toggle="tab">More</a></li>
+                </ul>
+                <!-- Tab panes -->
+                <div class="tab-content">
+                    @{
+                        var relatedAnimationQueryOptions = new AnimationQueryOptions
+                        {
+                            RelatedToAnimationId = Model.Animation.Id,
+                            TemplateName = "_ListSmall",
+                            PageSize = 5
+                        };
+                    }
+                    <div role="tabpanel" class="tab-pane active" id="related" data-partial="tab" data-url="/animations/list" data-data="@relatedAnimationQueryOptions.ToJson()">
+                        Loading...
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="more"style="padding: 8px;">
+                        Loading Comments...
+                    </div>
                 </div>
             </div>
         </div>

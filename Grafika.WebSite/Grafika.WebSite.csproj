@@ -33,6 +33,7 @@
     <Content Remove="wwwroot/css\animation-detail.css" />
     <Content Remove="wwwroot/css\bootstrap.css" />
     <Content Remove="wwwroot/css\font-awesome.css" />
+    <Content Remove="wwwroot/css\home.css" />
     <Content Remove="wwwroot/css\magnific-popup.css" />
     <Content Remove="wwwroot/css\mixins.css" />
     <Content Remove="wwwroot/css\player.css" />
@@ -83,6 +84,7 @@
   <ItemGroup>
     <Content Include="wwwroot\comment.html" />
     <Content Include="wwwroot\css\animation-detail.less" />
+    <Content Include="wwwroot\css\home.less" />
     <Content Include="wwwroot\css\mixins.less" />
     <Content Include="wwwroot\css\player.less" />
     <Content Include="wwwroot\css\site.less" />
