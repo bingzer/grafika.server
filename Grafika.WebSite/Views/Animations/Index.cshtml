@@ -3,20 +3,19 @@
     ViewBag.Title = "Public Animations";
 }
 
-<header class="bg-dark page-heading"></header>
-<section class="page-wrapper">
-    <header class="bg-dark page-title text-center">
-        <h1>Public Animations</h1>
-        <p>Here you can find animations</p>
-    </header>
-    <article class="page-content" id="animations">
+<header class="bg-dark page-heading page-heading-lg text-center">
+    <h1>Public Animations</h1>
+    <p>Here you can find animations</p>
+</header>
+<div class="page-wrapper">
+    <div class="page-content" id="animations">
         <div id="animation-thumbnails-container">
             @foreach (var anim in Model.Animations)
             {
                 @await Html.PartialAsync("_Thumbnail", anim)
             }
         </div>
-        <aside class="text-center" style="display: inline-block; padding: 24px; width: 100%">
+        <article class="text-center" style="display: inline-block; padding: 24px; width: 100%">
             <button id="more-button"
                     class="btn btn-danger"
                     onclick="GrafikaApp.Partials.renderPartial(this)"
@@ -25,11 +24,11 @@
                     data-target="#animation-thumbnails-container"
                     data-callback="var d = $('#more-button').data();d.data.pageNumber++;$('#more-button').attr('data-data', JSON.stringify(d))"
                     data-data="@Model.Options.NextPage().ToJson()">
-                More..
+                <h6>More..</h6>
             </button>
-        </aside>
-    </article>
-</section>
+        </article>
+    </div>
+</div>
 
 @section styles {
     <link href="~/css/animation-list.css" rel="stylesheet" type="text/css" />

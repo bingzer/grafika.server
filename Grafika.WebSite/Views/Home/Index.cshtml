@@ -12,7 +12,7 @@
             <img src="~/img/logo.png" alt="Grafika Logo" height="100" />
         </div>
         <div class="header-content-inner">
-            <h1 id="homeHeading">A simpler animation maker</h1>
+            <h1>A simpler animation maker</h1>
             <hr>
             <p class="font-larger">
                 Create a simple stop-motion animation using your device.<br/>
@@ -78,8 +78,21 @@
         </div>
     </header>
     <section style="margin-top: 32px">
-        <article class="container">
+        <div class="container">
             <div class="row">
+
+                <div class="col-lg-4 text-center">
+                    <h3 class="section-heading">
+                        <i class="fa fa-star sr-icons"></i>
+                        Create Animations
+                    </h3>
+                    <p class="text-faded font-larger">
+                        Create and your own<br />
+                        Make it from scratch.
+                        Fun!<br />
+                    </p>
+                </div>
+
                 <div class="col-lg-4 text-center">
                     <h3 class="section-heading">
                         <i class="fa fa-share-alt sr-icons"></i>
@@ -102,34 +115,25 @@
                         Fun!<br />
                     </p>
                 </div>
-
-                <div class="col-lg-4 text-center">
-                    <h3 class="section-heading">
-                        <i class="fa fa-star sr-icons"></i>
-                        Free
-                    </h3>
-                    <p class="text-faded font-larger">
-                        Leave feedback and comments<br />
-                        Fun!<br />
-                    </p>
-                </div>
             </div>
-        </article>
-        <aside class="text-center">
-            <a href="#services" class="page-scroll btn btn-default btn-xl sr-button">Join Now</a>
-        </aside>
+        </div>
+        <div class="text-center" style="margin-top: 24px">
+            <a href="#services" class="page-scroll btn btn-default btn-xl sr-button">
+                Join Now
+            </a>
+        </div>
     </section>
 </section>
 
 <section id="about" class="landing">
-    <div class="container">
+    <header class="container text-dark">
         <div class="row">
             <div class="col-lg-12 text-center">
                 <h2 class="section-heading">About this little project</h2>
                 <hr class="primary">
             </div>
         </div>
-    </div>
+    </header>
     <div class="container">
         <div class="row text-center">
             <article class="col-lg-4 col-md-6 text-center">
@@ -176,40 +180,46 @@
 
 @section footer {
 <section class="landing" id="contact">
-    <div class="container">
+    <header class="container text-dark">
         <div class="row">
-            <div class="col-lg-8 col-lg-offset-2 text-center">
+            <div class="col-lg-12 text-center">
                 <h2 class="section-heading">Let's Get Social</h2>
                 <hr class="primary">
                 <p class="font-larger">Keep the community growing by joining our networks over in social media</p>
             </div>
-            <div class="col-lg-3 col-md-6 text-center">
+        </div>
+    </header>
+    <div class="container">
+        <div class="row">
+            <article class="col-lg-3 col-md-6 text-center">
                 <i class="fa fa-facebook fa-2x sr-contact"></i>
-                <p class="font-larger">Grafika App</p>
-            </div>
-            <div class="col-lg-3 col-md-6 text-center">
+                <h3 class="font-larger"><a href="mailto:your-email@your-domain.com">@@grafikapp</a></h3>
+            </article>
+            <article class="col-lg-3 col-md-6 text-center">
                 <i class="fa fa-twitter fa-2x sr-contact"></i>
-                <p class="font-larger"><a href="mailto:your-email@your-domain.com">@@grafikapp</a></p>
-            </div>
-            <div class="col-lg-3 col-md-6 text-center">
+                <h3 class="font-larger"><a href="mailto:your-email@your-domain.com">@@grafikapp</a></h3>
+            </article>
+            <article class="col-lg-3 col-md-6 text-center">
                 <i class="fa fa-google-plus fa-2x sr-contact"></i>
-                <p class="font-larger"><a href="mailto:your-email@your-domain.com">@@grafikapp</a></p>
-            </div>
-            <div class="col-lg-3 col-md-6 text-center">
+                <h3 class="font-larger"><a href="mailto:your-email@your-domain.com">@@grafikapp</a></h3>
+            </article>
+            <article class="col-lg-3 col-md-6 text-center">
                 <i class="fa fa-envelope fa-2x sr-contact"></i>
-                <p class="font-larger"><a href="mailto:your-email@your-domain.com">@@grafikapp</a></p>
-            </div>
+                <h3 class="font-larger"><a href="mailto:your-email@your-domain.com">@@grafikapp</a></h3>
+            </article>
         </div>
     </div>
 </section>
 }
 
 @section scripts {
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
+    <script type="text/javascript" src="~/js/jquery.magnific-popup.js"></script>
     <script type="text/javascript" src="~/js/grafika.js"></script>
-    <script type="text/javascript" src="~/js/grafika.demo.js"></script>
-    <script type="text/javascript" src="~/js/GrafikaApp.Player.js"></script>
+    <script type="text/javascript" src="~/js/GrafikaApp.Player.js" ></script>
     <script type="text/javascript" src="~/js/home/GrafikaApp.Home.js"></script>
 }
 @section styles {
+    <link href="~/css/magnific-popup.css" rel="stylesheet">
     <link href="~/css/home.css" rel="stylesheet" type="text/css" />
 }

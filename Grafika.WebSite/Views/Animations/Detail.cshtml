@@ -8,16 +8,22 @@
         AnimationId = Model.Animation.Id,
         AutoPlay = false
     };
+    var relatedAnimationQueryOptions = new AnimationQueryOptions
+    {
+        RelatedToAnimationId = Model.Animation.Id,
+        TemplateName = "_ListSmall",
+        PageSize = 5
+    };
 }
 
-<header class="bg-dark page-heading"></header>
+<div class="bg-dark page-heading"></div>
 <article id="watch" class="no-padding">
     <div id="player-wrapper" class="player-wrapper">
         @await Html.PartialAsync("_Player", playerViewModel)
     </div>
 </article>
-<section id="title" class="bg-dark">
-    <header id="title-wrapper" class="title-container">
+<header id="title" class="bg-dark">
+    <div id="title-wrapper" class="title-container">
         <h1 class="animation-title">
             @Model.Animation.Name
             @if (Model.Animation.IsPublic == false)
@@ -25,14 +31,14 @@
                 <i class="fa fa-lock font-smaller" title="This animation is private. Can only be viewed by you"></i>
             }
         </h1>
-    </header>
-    <p class="animation-author font-larger">
+    </div>
+    <h2 class="animation-author font-larger">
         <img class="img-circle user-avatar user-avatar-md" src="@Model.Animation.GetAuthorThumbnail()" alt="@Model.Animation.Author" />
         <a href="/users/@Model.Animation.UserId">
             @Model.Animation.Author
         </a>
-    </p>
-    <p class="animation-details">
+    </h2>
+    <h2 class="animation-details">
         <span style="margin-right: 8px">
             <i class="fa fa-eye"></i>&nbsp;@Model.Animation.Views
         </span>
@@ -42,12 +48,12 @@
         <span style="margin-right: 8px">
             <i class="fa fa-calendar"></i>&nbsp;@Model.Animation.DateTimeModified
         </span>
-    </p>
+    </h2>
     <p class="animation-description">@Model.Animation.Description</p>
-</section>
-<section id="comment" class="page-wrapper">
+</header>
+<div id="comment" class="page-wrapper">
     <div id="comment-wrapper" class="row">
-        <div id="info-comment" class="col-md-8 col-lg-7">
+        <article id="info-comment" class="col-md-8 col-lg-7">
             <header>
                 <h2>Comments</h2>
             </header>
@@ -58,8 +64,11 @@
                     </button>
                 </div>
             </div>
-        </div>
+        </article>
         <aside id="info-sidebar" class="col-md-4 col-lg-5">
+            <header>
+                <h2 class="text-muted">Related</h2>
+            </header>
             <div id="info-ads">
                 {{ This is ads }}
             </div>
@@ -69,26 +78,18 @@
                     <li role="presentation"><a href="#more" aria-controls="more" role="tab" data-toggle="tab">More</a></li>
                 </ul>
                 <!-- Tab panes -->
-                <div class="tab-content">
-                    @{
-                        var relatedAnimationQueryOptions = new AnimationQueryOptions
-                        {
-                            RelatedToAnimationId = Model.Animation.Id,
-                            TemplateName = "_ListSmall",
-                            PageSize = 5
-                        };
-                    }
+                <article class="tab-content">
                     <div role="tabpanel" class="tab-pane active" id="related" data-partial="tab" data-url="/animations/list" data-data="@relatedAnimationQueryOptions.ToJson()">
                         Loading...
                     </div>
                     <div role="tabpanel" class="tab-pane" id="more"style="padding: 8px;">
                         Loading Comments...
                     </div>
-                </div>
+                </article>
             </div>
         </aside>
     </div>
-</section>
+</div>
 
 @section styles {
     <link href="~/css/animation-detail.css" type="text/css" rel="stylesheet" />

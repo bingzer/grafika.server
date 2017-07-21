@@ -42,6 +42,7 @@ aside.landing {
     background-repeat: no-repeat;
     background-position-x: center;
     background-position-y: center;
+    border: 1px solid @gray-dark;
 
     .portfolio-box-caption {
         color: white;
@@ -185,6 +186,10 @@ body {
 header {
     text-align: center;
     color: white;
+    
+    @media (min-width: @media-sm) {
+        min-height: 100%;
+    }
 }
 
 p {

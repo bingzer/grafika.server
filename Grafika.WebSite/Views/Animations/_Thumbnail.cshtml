@@ -4,24 +4,28 @@
     var linkUrl = $"/animations/{Model.Id}";
 }
 <article class="col-sm-6 col-md-4 col-lg-3 col-xl-2">
-    <figure class="thumbnail" style="height: 272px; position: relative; padding: 0">
-        <a href="@linkUrl" style="height: 138px">
-            <img src="@Model.GetThumbnailUrl()" alt="@Model.Name" style="height: 138px; max-height: 138px; width: 100%">
-        </a>
-        <figcaption class="caption" style="font-size: smaller">
-            <h4 style="margin-bottom: 2px; margin-top: 2px">
-                <a href="@linkUrl" class="font-stronger">@Model.Name</a>
-                @if (Model.IsPublic == false)
-                {
-                    <i class="fa fa-lock font-smaller text-muted" title="This Model.tion is private. Can only be viewed by you"></i>
-                }
-            </h4>
-            <h6 style="margin-top: 0">
+    <div class="thumbnail" style="height: 272px; position: relative; padding: 0">
+        <figure>
+            <a href="@linkUrl" style="height: 138px">
+                <img src="@Model.GetThumbnailUrl()" alt="@Model.Name" style="height: 138px; max-height: 138px; width: 100%">
+            </a>
+        </figure>
+        <div class="caption" style="font-size: smaller">
+            <header>
+                <h4 style="margin-bottom: 2px; margin-top: 2px">
+                    <a href="@linkUrl" class="font-stronger">@Model.Name</a>
+                    @if (Model.IsPublic == false)
+                    {
+                        <i class="fa fa-lock font-smaller text-muted" title="This Model.tion is private. Can only be viewed by you"></i>
+                    }
+                </h4>
+            </header>
+            <p style="margin-top: 0">
                 <img src="@Model.GetAuthorThumbnail()" alt="@Model.Author" class="img-circle user-avatar" />
                 <a href="/users/@Model.UserId">
                     @Model.Author
                 </a>
-            </h6>
+            </p>
             <p style="word-wrap: break-word">
                 @if (Model.Description.IsNullOrEmptyOrWhitespace())
                 {
@@ -37,6 +41,6 @@
                     @Model.TotalFrame frames &#8226; @Model.Views views
                 </span>
             </p>
-        </figcaption>
-    </figure>
+        </div>
+    </div>
 </article>
