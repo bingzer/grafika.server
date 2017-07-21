@@ -17,7 +17,7 @@ namespace Grafika.WebSite.Controllers
         }
 
         [Route(""), AllowAnonymous]
-        public IActionResult Index(AnimationQueryOptions options)
+        public async Task<IActionResult> Index(AnimationQueryOptions options)
         {
             if (options == null)
                 options = new AnimationQueryOptions();
@@ -26,7 +26,14 @@ namespace Grafika.WebSite.Controllers
             else
                 options = AnimationQueryOptions.PublicAnimations(options);
 
-            return View(options);
+            var animations = await _service.List(options);
+            var model = new AnimationsViewModel
+            {
+                Animations = animations,
+                Options = options
+            };
+
+            return View(model);
         }
 
         [Route("mine")]

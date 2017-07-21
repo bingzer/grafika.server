@@ -42,6 +42,12 @@ namespace Grafika
 
             return this;
         }
+
+        public QueryOptions NextPage()
+        {
+            PageNumber++;
+            return this;
+        }
     }
 
     public class SearchQueryOptions : QueryOptions
