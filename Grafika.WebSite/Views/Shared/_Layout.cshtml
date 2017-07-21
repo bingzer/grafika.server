@@ -11,6 +11,7 @@
     <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Roboto:400,500,700" />
     <!-- Bootstrap Core CSS -->
     <link href="~/css/bootstrap.css" rel="stylesheet">
+    <link href="~/css/bootstrap-xl.css" rel="stylesheet" />
     <!-- Custom Fonts -->
     <link href="~/css/font-awesome.css" rel="stylesheet" type="text/css">
     <!-- Plugin CSS -->
@@ -112,7 +113,9 @@
         </div>
         <!-- /.container-fluid -->
     </nav>
+    
     @RenderBody()
+    @RenderSection("footer", false)
 
     <!-- jQuery -->
     <script src="~/js/bootstrap.js"></script>

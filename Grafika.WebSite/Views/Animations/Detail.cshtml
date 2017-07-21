@@ -11,13 +11,13 @@
 }
 
 <header class="bg-dark page-heading"></header>
-<section class="no-padding">
+<article id="watch" class="no-padding">
     <div id="player-wrapper" class="player-wrapper">
         @await Html.PartialAsync("_Player", playerViewModel)
     </div>
-</section>
-<section class="bg-dark">
-    <div id="title-wrapper" class="title-container padding">
+</article>
+<section id="title" class="bg-dark">
+    <header id="title-wrapper" class="title-container">
         <h1 class="animation-title">
             @Model.Animation.Name
             @if (Model.Animation.IsPublic == false)
@@ -25,39 +25,41 @@
                 <i class="fa fa-lock font-smaller" title="This animation is private. Can only be viewed by you"></i>
             }
         </h1>
-        <h3 class="animation-author">
-            <img class="img-circle user-avatar user-avatar-lg" src="@Model.Animation.GetAuthorThumbnail()" alt="@Model.Animation.Author" />
-            <a href="/users/@Model.Animation.UserId">
-                @Model.Animation.Author
-            </a>
-        </h3>
-        <h4 class="animation-details">
-            <span style="margin-right: 8px">
-                <i class="fa fa-eye"></i>&nbsp;@Model.Animation.Views
-            </span>
-            <span style="margin-right: 8px">
-                <i class="fa fa-image"></i>&nbsp;@Model.Animation.TotalFrame
-            </span>
-            <span style="margin-right: 8px">
-                <i class="fa fa-calendar"></i>&nbsp;@Model.Animation.DateTimeModified
-            </span>
-        </h4>
-        <p class="animation-description">@Model.Animation.Description</p>
-    </div>
-
+    </header>
+    <p class="animation-author font-larger">
+        <img class="img-circle user-avatar user-avatar-md" src="@Model.Animation.GetAuthorThumbnail()" alt="@Model.Animation.Author" />
+        <a href="/users/@Model.Animation.UserId">
+            @Model.Animation.Author
+        </a>
+    </p>
+    <p class="animation-details">
+        <span style="margin-right: 8px">
+            <i class="fa fa-eye"></i>&nbsp;@Model.Animation.Views
+        </span>
+        <span style="margin-right: 8px">
+            <i class="fa fa-image"></i>&nbsp;@Model.Animation.TotalFrame
+        </span>
+        <span style="margin-right: 8px">
+            <i class="fa fa-calendar"></i>&nbsp;@Model.Animation.DateTimeModified
+        </span>
+    </p>
+    <p class="animation-description">@Model.Animation.Description</p>
 </section>
-<section class="page-wrapper">
-    <div id="comment-wrapper" class="container-fluid">
+<section id="comment" class="page-wrapper">
+    <div id="comment-wrapper" class="row">
         <div id="info-comment" class="col-md-8 col-lg-7">
-            <div id="comment" data-partial="lazy" data-url="@Model.Animation.GetCommentUrl()">
-                <div class="margin-xl">
-                    <button onclick="GrafikaApp.Partials.renderPartial('#comment')" class="btn btn-xl btn-default">
+            <header>
+                <h2>Comments</h2>
+            </header>
+            <div id="comments-container" data-partial="lazy" data-url="@Model.Animation.GetCommentUrl()">
+                <div class="text-center">
+                    <button onclick="GrafikaApp.Partials.renderPartial('#comments-container')" class="btn btn-xl btn-default" title="Click to load comments">
                         Load comment
                     </button>
                 </div>
             </div>
         </div>
-        <div id="info-sidebar" class="col-md-4 col-lg-5">
+        <aside id="info-sidebar" class="col-md-4 col-lg-5">
             <div id="info-ads">
                 {{ This is ads }}
             </div>
@@ -84,10 +86,14 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </aside>
     </div>
 </section>
 
 @section styles {
     <link href="~/css/animation-detail.css" type="text/css" rel="stylesheet" />
+}
+
+@section footer {
+    @await Html.PartialAsync("_Footer")
 }

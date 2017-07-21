@@ -31,6 +31,8 @@
   <ItemGroup>
     <Content Remove="wwwroot/css\angular-material.css" />
     <Content Remove="wwwroot/css\animation-detail.css" />
+    <Content Remove="wwwroot/css\animation-list.css" />
+    <Content Remove="wwwroot/css\bootstrap-xl.css" />
     <Content Remove="wwwroot/css\bootstrap.css" />
     <Content Remove="wwwroot/css\font-awesome.css" />
     <Content Remove="wwwroot/css\home.css" />
@@ -84,6 +86,7 @@
   <ItemGroup>
     <Content Include="wwwroot\comment.html" />
     <Content Include="wwwroot\css\animation-detail.less" />
+    <Content Include="wwwroot\css\bootstrap-xl.less" />
     <Content Include="wwwroot\css\home.less" />
     <Content Include="wwwroot\css\mixins.less" />
     <Content Include="wwwroot\css\player.less" />

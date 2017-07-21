@@ -1,0 +1,55 @@
+﻿@import "../../bower_components/bootstrap/less/variables";
+@import "../../bower_components/bootstrap/less/mixins";
+
+// XL for Bootstrap 3
+// Huge screen / massive desktop
+// Inspired from: https://github.com/christhomas/bootstrap/commit/09c94ab34a497785f3112a5951f225c21aec6aaa
+// Note: whoever didn't think of this in bootstrap needs slapping
+@screen-xl: 1600px;
+@screen-xl-min: @screen-xl;
+@screen-xl-desktop: @screen-xl-min;
+
+@screen-lg-max: (@screen-xl-min - 1);
+
+.visible-xl {
+    .responsive-invisibility();
+}
+
+.visible-xl-inline-block {
+    display: none !important;
+}
+
+.visible-xl {
+    @media (min-width: @screen-xl-min) {
+        .responsive-visibility();
+    }
+}
+
+.visible-xl-block {
+    @media (min-width: @screen-xl-min) {
+        display: block !important;
+    }
+}
+
+.visible-xl-inline {
+    @media (min-width: @screen-xl-min) {
+        display: inline !important;
+    }
+}
+
+.visible-xl-inline-block {
+    @media (min-width: @screen-xl-min) {
+        display: inline-block !important;
+    }
+}
+
+.hidden-xl {
+    @media (min-width: @screen-xl-min) {
+        .responsive-invisibility();
+    }
+}
+
+// eXtra Large screen / massive desktop
+@container-huge-desktop: ((1540px + @grid-gutter-width));
+// For '@screen-xl-min' and up.
+@container-xl: @container-huge-desktop;

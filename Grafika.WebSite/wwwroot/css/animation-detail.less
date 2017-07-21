@@ -1,7 +1,10 @@
 ﻿@import "variables.less";
 
-#title-wrapper {
+#title {
     padding: 16px 24px 16px 24px;
+    @media (min-width: 768px) {
+        padding: 24px 64px 24px 64px;
+    }
 
     .animation-details {
         margin-top: 0;
@@ -23,13 +26,19 @@
     .animation-author {
         margin-top: 0px;
     }
+}
+
+#comment {
+    padding: 8px 24px 8px 24px;
 
     @media (min-width: 768px) {
-        padding: 24px 64px 24px 64px;
+        padding: 16px 64px 16px 64px;
     }
 }
 
 #comment-wrapper {
+    min-height: 500px;
+
     #info-ads {
         background-color: @theme-accent;
         width: 100%;

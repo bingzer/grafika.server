@@ -197,8 +197,6 @@ header {
     width: 100%;
     min-height: auto;
     .background-cover;
-    text-align: center;
-    color: white;
 
     #header-content {
         z-index: 20;
@@ -284,6 +282,10 @@ header {
 }
 
 // --------------- page
+.page-wrapper {
+    min-height: 100%;
+}
+
 .page-heading {
     min-height: 51px;
     height: 51px;
@@ -299,17 +301,26 @@ header {
     padding-bottom: 50px;
 }
 
-.page-wrapper {
+.page-content {
     margin-left: 16px;
     margin-right: 16px;
     padding-top: 16px;
-}
-
-@media (min-width: @media-sm) {
-    .page-wrapper {
+    @media (min-width: @media-sm) {
         margin-left: 32px;
         margin-right: 32px;
     }
+}
+
+// --------------- footer
+.footer {
+    display: inline-block;
+    width: 100%;
+    padding: 64px;
+    height: 124px;
+    max-height: 124px;
+    position: relative;
+    bottom: 0;
+    left: 0;
 }
 
 // --------------- user
@@ -318,8 +329,19 @@ header {
     width: 16px;
     height: 16px;
 }
-
+.user-avatar-md {
+    width: 24px;
+    height: 24px;
+}
 .user-avatar-lg {
     width: 32px;
     height: 32px
+}
+
+// --------------- animation-thumbnails-container (thumbnails)
+.animation-thumbnails-container {
+    @media (max-width: @media-sm) {
+        padding-right: 96px;
+        padding-left: 96px;
+    }
 }

@@ -18,12 +18,13 @@
                 Create a simple stop-motion animation using your device.<br/>
                 <span id="animation-author" class="font-smaller" style="margin: 8px; font-weight: 700"></span>
             </p>
-            <a href="#series" class="btn btn-danger btn-xl page-scroll">Explore More</a>
+            <a href="#featured" class="btn btn-danger btn-xl page-scroll">Explore More</a>
             <a id="btn-random-animation" href="javascript: void(0)" class="btn btn-default btn-xl" onclick="home.loadRandomAnimation()">Next Animation</a>
         </div>
     </div>
 </header>
-<aside class="bg-dark no-padding" id="series" style="padding-bottom: 50px">
+
+<section id="featured" class="bg-dark no-padding" style="padding-bottom: 50px">
     <div class="container-fluid">
         <div class="row no-gutter popup-gallery">
             @foreach (var animation in Model.HandpickedSeries.Animations.PickRandom(6))
@@ -46,6 +47,7 @@
             }
         </div>
         <div class="row text-center">
+            <h2>Animations</h2>
             <hr class="light">
             <p class="text-faded font-larger">
                 Animations are editable and viewable in any modern browser that supports HTML5.<br/>
@@ -56,26 +58,68 @@
             </p>
         </div>
     </div>
-</aside>
-<section class="bg-primary landing" id="about">
-    <div class="container">
+</section>
+
+<section id="highlight" class="bg-primary landing">
+    <header class="container">
         <div class="row">
-            <div class="col-lg-8 col-lg-offset-2 text-center">
-                <i class="fa fa-4x fa-share-alt sr-icons sr-contact"></i>
-                <h2 class="section-heading">Share everything!</h2>
-                <p style="font-size: smaller">Or not</p>
+            <div class="col-lg-12 text-center">
+                <i class="fa fa-4x fa-globe sr-icons"></i>
+                <h2 class="section-heading">Global Community</h2>
                 <hr class="light">
                 <p class="text-faded font-larger">
-                    It's up to you to decide.<br/>
-                    You own your animations and share them with the world or keep them private.<br/>
-                    You can also comment or rate other animations as you wish
+                    Join our growing community of animators<br />
+                    More than XX animations...<br />
+                    More than XX users and counting...
                 </p>
-                <a href="#services" class="page-scroll btn btn-default btn-xl sr-button">Get Started!</a>
             </div>
         </div>
-    </div>
+    </header>
+    <section style="margin-top: 32px">
+        <article class="container">
+            <div class="row">
+                <div class="col-lg-4 text-center">
+                    <h3 class="section-heading">
+                        <i class="fa fa-share-alt sr-icons"></i>
+                        Share Everything
+                        <span style="font-size: smaller">Or not</span>
+                    </h3>
+                    <p class="text-faded font-larger">
+                        It's up to you to decide.<br />
+                        You own your animations and share them with the world or keep them private.<br />
+                    </p>
+                </div>
+
+                <div class="col-lg-4 text-center">
+                    <h3 class="section-heading">
+                        <i class="fa fa-comments sr-icons"></i>
+                        Comments &amp; Ratings
+                    </h3>
+                    <p class="text-faded font-larger">
+                        Leave feedback, comments and rate others animations<br />
+                        Fun!<br />
+                    </p>
+                </div>
+
+                <div class="col-lg-4 text-center">
+                    <h3 class="section-heading">
+                        <i class="fa fa-star sr-icons"></i>
+                        Free
+                    </h3>
+                    <p class="text-faded font-larger">
+                        Leave feedback and comments<br />
+                        Fun!<br />
+                    </p>
+                </div>
+            </div>
+        </article>
+        <aside class="text-center">
+            <a href="#services" class="page-scroll btn btn-default btn-xl sr-button">Join Now</a>
+        </aside>
+    </section>
 </section>
-<section id="services" class="landing">
+
+<section id="about" class="landing">
     <div class="container">
         <div class="row">
             <div class="col-lg-12 text-center">
@@ -86,7 +130,7 @@
     </div>
     <div class="container">
         <div class="row text-center">
-            <div class="col-lg-4 col-md-6 text-center">
+            <article class="col-lg-4 col-md-6 text-center">
                 <div class="service-box">
                     <i class="fa fa-4x fa-globe text-primary sr-icons sr-contact"></i>
                     <h3>Community</h3>
@@ -95,8 +139,8 @@
                         More than XX users and counting...
                     </p>
                 </div>
-            </div>
-            <div class="col-lg-4 col-md-6 text-center">
+            </article>
+            <article class="col-lg-4 col-md-6 text-center">
                 <div class="service-box">
                     <i class="fa fa-4x fa-cubes text-primary sr-icons sr-contact"></i>
                     <h3>Cross-Platform</h3>
@@ -104,8 +148,8 @@
                         Everything is BETA. We're still cooking the Web and Android app, but feel free to test it out.
                     </p>
                 </div>
-            </div>
-            <div class="col-lg-4 col-md-12 text-center">
+            </article>
+            <article class="col-lg-4 col-md-12 text-center">
                 <div class="service-box">
                     <i class="fa fa-4x fa-code text-primary sr-icons sr-contact"></i>
                     <h3>Contribute</h3>
@@ -113,10 +157,11 @@
                         Many ways to contribute to better this project. Find out how!
                     </p>
                 </div>
-            </div>
+            </article>
         </div>
     </div>
 </section>
+
 <aside class="bg-dark landing">
     <div class="container text-center">
         <div class="call-to-action">
@@ -126,6 +171,8 @@
         </div>
     </div>
 </aside>
+
+@section footer {
 <section class="landing" id="contact">
     <div class="container">
         <div class="row">
@@ -153,6 +200,7 @@
         </div>
     </div>
 </section>
+}
 
 @section scripts {
     <script type="text/javascript" src="~/js/grafika.js"></script>
