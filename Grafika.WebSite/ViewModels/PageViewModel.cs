@@ -2,8 +2,9 @@
 {
     public class PageViewModel
     {
-        public string Title { get; set; }
-        public string Description { get; set; }
+        public string Title { get; set; } = "Grafika Animation";
+        public string Description { get; set; } = "Super simple animation maker for web and Android";
+        public string Keyword { get; set; } = "grafika,animation,animation maker,animation creator";
 
         // optional can be blank
         public string ThumbnailUrl { get; set; }
@@ -14,5 +15,6 @@
         public string TwitterHandle => "@grafikapp";
         public string SiteName => "Grafika";
         public string SiteUrl => "https://grafika.bingzer.com";
+        public string SiteAuthor => "Grafika Team";
     }
 }
