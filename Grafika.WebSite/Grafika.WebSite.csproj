@@ -5,6 +5,10 @@
     <PackageTargetFallback>portable-net45+win8</PackageTargetFallback>
   </PropertyGroup>
   <ItemGroup>
+    <None Include="wwwroot\css\**\*.less" />
+    <None Include="wwwroot\js\**\*.ts" />
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.1.1" />
     <PackageReference Include="Microsoft.AspNetCore" Version="1.1.2" />
     <PackageReference Include="Microsoft.AspNetCore.Identity" Version="1.1.2" />

@@ -44,6 +44,14 @@ aside.landing {
     background-position-y: center;
     border: 1px solid @gray-dark;
 
+    @media (min-width: @media-sm) {
+        height: 150px;
+    }
+
+    @media (min-width: @media-md) {
+        height: 296px;
+    }
+
     .portfolio-box-caption {
         color: white;
         opacity: 0;
@@ -103,18 +111,6 @@ aside.landing {
                 }
             }
         }
-    }
-}
-
-@media (min-width: 768px) {
-    .portfolio-box {
-        height: 250px;
-    }
-}
-
-@media (min-width: 992px) {
-    .portfolio-box {
-        height: 350px;
     }
 }
 
