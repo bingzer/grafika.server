@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Grafika.Services;
 using Grafika.WebSite.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using Grafika.Services.Web.Extensions;
 
 namespace Grafika.WebSite.Controllers
 {
@@ -42,6 +43,12 @@ namespace Grafika.WebSite.Controllers
             var userIdentity = new UserIdentity(User);
             var options = new AnimationQueryOptions { UserId = userIdentity.Id, IsRemoved = false };
 
+            ViewBag.Page = new PageViewModel
+            {
+                Title = $"My Animations",
+                Description = $"List of my animations - Grafika Animation"
+            };
+
             return View(options);
         }
 
@@ -52,6 +59,13 @@ namespace Grafika.WebSite.Controllers
             var model = new AnimationViewModel
             {
                 Animation = animation
+            };
+
+            ViewBag.Page = new PageViewModel
+            {
+                Title = $"{animation.Name} - Grafika",
+                Description = $"{animation.Name} by {animation.Author} - Grafika Animation",
+                ThumbnailUrl = animation.GetThumbnailUrl()
             };
 
             return View(model);

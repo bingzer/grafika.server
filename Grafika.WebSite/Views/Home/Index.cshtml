@@ -1,8 +1,5 @@
 @model HomeViewModel
 
-@{
-    ViewData["Title"] = "Index";
-}
 <header style="background: none">
     <div id="header-canvas-container">
         <canvas id="header-canvas"></canvas>
@@ -60,30 +57,37 @@
             <p class="font-larger">
                 <a href="/animations" class="btn btn-xl btn-danger">Browse more animations</a>
             </p>
+            <p>
+                <a href="#highlight" class="btn btn-lg btn-default page-scroll" title="Scroll for more">
+                    <i class="fa fa-arrow-down sr-icons"></i>
+                </a>
+            </p>
         </div>
     </div>
 </section>
 
-<section id="highlight" class="bg-primary landing">
-    <header class="container">
-        <div class="row">
-            <div class="col-lg-12 text-center">
-                <i class="fa fa-4x fa-globe sr-icons"></i>
-                <h2 class="section-heading">Global Community</h2>
-                <hr class="light">
-                <p class="text-faded font-larger">
-                    Join our growing community of animators<br />
-                    More than XX animations...<br />
-                    More than XX users and counting...
-                </p>
+<section id="highlight" class="bg-transparent no-padding no-gutter">
+    <div class="bg-primary padding-xl">
+        <header class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <i class="fa fa-4x fa-globe sr-icons"></i>
+                    <h2 class="section-heading">Global Community</h2>
+                    <hr class="light">
+                    <p class="text-faded font-larger">
+                        Join our growing community of animators<br />
+                        More than <strong>@Model.AnimationsCount</strong> animations...<br />
+                        More than <strong>@Model.UsersCount</strong> users and counting...
+                    </p>
+                </div>
             </div>
-        </div>
-    </header>
-    <section style="margin-top: 32px">
+        </header>
+    </div>
+    <section class="bg-primary padding-xl" style="padding-top: 0">
         <div class="container">
             <div class="row">
 
-                <div class="col-lg-4 text-center">
+                <div class="col-lg-4 text-center padding-xl">
                     <h3 class="section-heading">
                         <i class="fa fa-star sr-icons"></i>
                         Create Animations
@@ -95,11 +99,11 @@
                     </p>
                 </div>
 
-                <div class="col-lg-4 text-center">
+                <div class="col-lg-4 text-center padding-xl">
                     <h3 class="section-heading">
                         <i class="fa fa-share-alt sr-icons"></i>
                         Share Everything
-                        <span style="font-size: smaller">Or not</span>
+                        <span style="font-size: small">Or not</span>
                     </h3>
                     <p class="text-faded font-larger">
                         It's up to you to decide.<br />
@@ -107,7 +111,7 @@
                     </p>
                 </div>
 
-                <div class="col-lg-4 text-center">
+                <div class="col-lg-4 text-center padding-xl">
                     <h3 class="section-heading">
                         <i class="fa fa-comments sr-icons"></i>
                         Comments &amp; Ratings
@@ -140,11 +144,10 @@
         <div class="row text-center">
             <article class="col-lg-4 col-md-6 text-center">
                 <div class="service-box">
-                    <i class="fa fa-4x fa-globe text-primary sr-icons sr-contact"></i>
-                    <h3>Community</h3>
+                    <i class="fa fa-4x fa-question text-primary sr-icons sr-contact"></i>
+                    <h3>Why?</h3>
                     <p class="text-muted font-larger">
-                        More than XX animations...<br/>
-                        More than XX users and counting...
+                        Why we make this app?<br/>
                     </p>
                 </div>
             </article>
@@ -174,8 +177,8 @@
     <div class="container text-center">
         <div class="call-to-action">
             <h2>Try Grafika now!</h2>
-            <a href="http://startbootstrap.com/template-overviews/creative/" class="btn btn-default btn-xl sr-button">Google Play Store</a>
-            <a href="http://startbootstrap.com/template-overviews/creative/" class="btn btn-default btn-xl sr-button">Online</a>
+            <a href="https://play.google.com/store/apps/details?id=com.bingzer.android.grafika" class="btn btn-default btn-xl sr-button">Google Play Store</a>
+            <a href="/animations/create?isAnonymous=true" class="btn btn-default btn-xl sr-button">Online</a>
         </div>
     </div>
 </aside>
@@ -193,21 +196,25 @@
     </header>
     <div class="container">
         <div class="row">
-            <article class="col-lg-3 col-md-6 text-center">
-                <i class="fa fa-facebook fa-2x sr-contact"></i>
-                <h3 class="font-larger"><a href="mailto:your-email@your-domain.com">@@grafikapp</a></h3>
+            <article class="col-lg-offset-3 col-lg-2 col-md-4 text-center">
+                <a href="https://www.facebook.com/grafikaapp" title="Grafika at Facebook">
+                    <i class="fa fa-facebook fa-2x sr-contact"></i>
+                    <h3 class="font-larger">
+                        grafikapp
+                    </h3>
+                </a>
             </article>
-            <article class="col-lg-3 col-md-6 text-center">
-                <i class="fa fa-twitter fa-2x sr-contact"></i>
-                <h3 class="font-larger"><a href="mailto:your-email@your-domain.com">@@grafikapp</a></h3>
+            <article class="col-lg-2 col-md-4 text-center">
+                <a href="https://twitter.com/grafikaapp">
+                    <i class="fa fa-twitter fa-2x sr-contact"></i>
+                    <h3 class="font-larger">@@grafikapp</h3>
+                </a>
             </article>
-            <article class="col-lg-3 col-md-6 text-center">
-                <i class="fa fa-google-plus fa-2x sr-contact"></i>
-                <h3 class="font-larger"><a href="mailto:your-email@your-domain.com">@@grafikapp</a></h3>
-            </article>
-            <article class="col-lg-3 col-md-6 text-center">
-                <i class="fa fa-envelope fa-2x sr-contact"></i>
-                <h3 class="font-larger"><a href="mailto:your-email@your-domain.com">@@grafikapp</a></h3>
+            <article class="col-lg-2 col-md-4 text-center">
+                <a href="mailto:grafika@bingzer.com">
+                    <i class="fa fa-envelope fa-2x sr-contact"></i>
+                    <h3 class="font-larger">grafika@bingzer.com</h3>
+                </a>
             </article>
         </div>
     </div>

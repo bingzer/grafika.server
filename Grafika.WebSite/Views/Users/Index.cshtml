@@ -1,7 +1,5 @@
 @model UserViewModel
 @{
-    ViewBag.Title = Model.User.Username;
-
     var userIdentity = User.Identity as IUserIdentity;
     var userOptions = new AnimationQueryOptions
     {

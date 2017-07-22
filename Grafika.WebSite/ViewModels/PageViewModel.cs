@@ -2,8 +2,8 @@
 {
     public class PageViewModel
     {
-        public string Title { get; set; } = "Grafika Animation";
-        public string Description { get; set; } = "Super simple animation maker for web and Android";
+        public string Title { get; set; } = "Grafika Animations";
+        public string Description { get; set; } = "A super simple animation maker, viewer, sharer and community for the web and Android by creators like you provided by Grafika";
         public string Keyword { get; set; } = "grafika,animation,animation maker,animation creator";
 
         // optional can be blank

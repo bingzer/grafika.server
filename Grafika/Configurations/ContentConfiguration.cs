@@ -15,5 +15,7 @@ namespace Grafika.Configurations
         public string DefaultBackdropPath { get; set; }
 
         public IEnumerable<string> HandpickedAnimationIds { get; set; }
+        public int UsersCount { get; set; }
+        public int AnimationsCount { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 using Grafika.Configurations;
 using Grafika.Services;
+using Grafika.Services.Web.Extensions;
 using Grafika.Utilities;
 using Grafika.WebSite.ViewModels;
 using Microsoft.AspNetCore.Authorization;
@@ -30,6 +31,13 @@ namespace Grafika.WebSite.Controllers
                 User = user,
                 AvatarUrl = Utility.CombineUrl(serverOpts.Value.Url, "users", user.Id, "avatar"),
                 BackdropUrl = Utility.CombineUrl(serverOpts.Value.Url, "users", user.Id, "backdrop")
+            };
+
+            ViewBag.Page = new PageViewModel
+            {
+                Title = $"{user.Username} - Grafika",
+                Description = $"List of all grafika animations created by {user.Username} - Grafika Animation",
+                ThumbnailUrl = user.GetUserAvatarUrl()
             };
 
             return View(model);
