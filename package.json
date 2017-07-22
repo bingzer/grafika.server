@@ -2,7 +2,7 @@
   "name": "grafika",
   "version": "1.0.12",
   "engines": {
-    "node": "5.2.0"
+    "node": "6.11.1"
   },
   "description": "",
   "repository": {
