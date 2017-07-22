@@ -129,9 +129,6 @@
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="1.0.0" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="tsconfig.json" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Grafika.Services.Web\Grafika.Services.Web.csproj" />
   </ItemGroup>
   <ItemGroup>
