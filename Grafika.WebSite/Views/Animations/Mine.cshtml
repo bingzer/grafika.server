@@ -3,11 +3,14 @@
     var userIdentity = (User.Identity as IUserIdentity);
 }
 
-<header class="bg-transparent page-heading"></header>
-<section class="bg-primary page-title" style="background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.0)), url(@userIdentity.GetUserBackdropUrl()) no-repeat; -webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover; background-size: cover; ">
+
+<header class="bg-transparent page-heading page-heading-lg text-center text-white"
+        style="background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.0)), url('@userIdentity.GetUserBackdropUrl()') no-repeat; -webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover; background-size: cover; ">
     <h1>Animations by @userIdentity.Username</h1>
     <p>These are your animations</p>
-</section>
-<section class="page-wrapper" data-partial="auto" data-url="/animations/list" data-data="@Model.ToJson()">
-    Loading...
-</section>
+</header>
+<div class="page-wrapper">
+    <div class="page-content" data-partial="auto" data-url="/animations/list" data-data="@Model.ToJson()">
+        Loading...
+    </div>
+</div>

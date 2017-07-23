@@ -1,6 +1,6 @@
 ﻿
 module GrafikaApp {
-    export var Configuration: GrafikaApp.IGrafikaAppConfig;
+    export var Configuration: GrafikaApp.IGrafikaAppConfiguration;
 
     export function getQueryString(name: string, url: string = null): string {
         if (!url) url = window.location.href;
@@ -89,7 +89,7 @@ module GrafikaApp {
         window.localStorage.setItem('token', token);
     }
 
-    export interface IGrafikaAppConfig {
+    export interface IGrafikaAppConfiguration {
         baseApiUrl?: string;
         shouldInflateFrame?: boolean;
 

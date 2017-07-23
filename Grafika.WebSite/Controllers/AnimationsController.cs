@@ -71,6 +71,36 @@ namespace Grafika.WebSite.Controllers
             return View(model);
         }
 
+        [Route("create"), AllowAnonymous]
+        public IActionResult Create()
+        {
+            var model = new AnimationDrawingViewModel();
+
+            ViewBag.Page = new PageViewModel
+            {
+                Title = $"Create Animation - Grafika"
+            };
+
+            return View("Edit", model);
+        }
+
+        [Route("{animationId}/edit")]
+        public async Task<IActionResult> Edit(string animationId = null)
+        {
+            var model = new AnimationDrawingViewModel();
+            if (animationId != null)
+                model.Animation = await _service.Get(animationId);
+
+            ViewBag.Page = new PageViewModel
+            {
+                Title = $"{model.Animation.Name} - Grafika",
+                Description = $"{model.Animation.Name} by {model.Animation.Author} - Grafika Animation",
+                ThumbnailUrl = model.Animation.GetThumbnailUrl()
+            };
+
+            return View("Edit", model);
+        }
+
         [Route("{animationId}/player"), AllowAnonymous]
         public async Task<IActionResult> Player(AnimationPlayerViewModel model)
         {

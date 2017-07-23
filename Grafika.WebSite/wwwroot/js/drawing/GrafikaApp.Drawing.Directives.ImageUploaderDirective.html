@@ -1,0 +1,23 @@
+<md-dialog>
+	<md-dialog-content>
+		<div class="md-dialog-content" layout="column" layout-align="center center">
+			<div layout="row" layout-padding>
+				<span class="md-caption" ng-bind="vm.message" ng-show="vm.message && vm.message.length > 0" flex></span>
+				<input id="image-file" class="md-caption text-center-vertical" type="file" 
+					onchange="angular.element(this).scope().vm.preview()" 
+					ng-hide="(vm.message && vm.message.length > 0) || !vm.canvasReady" 
+					ng-disabled="vm.uploading"
+					accept="image/*">
+			</div>
+			<md-progress-circular layout-margin class="md-hue-2" md-mode="indeterminate" ng-hide="vm.canvasReady"></md-progress-circular>
+			<canvas id="image-canvas" style="border: 1px solid lightgray" ng-show="vm.canvasReady"></canvas>
+		</div>
+	</md-dialog-content>
+	<md-dialog-actions layout="row">
+		<span flex></span>
+		<md-button class="md-mini md-warn" 
+			ng-click="vm.close()" 
+			ng-disabled="vm.uploading"
+			ng-hide="!vm.canvasReady">Close</md-button>
+	</md-dialog-actions>
+</md-dialog>

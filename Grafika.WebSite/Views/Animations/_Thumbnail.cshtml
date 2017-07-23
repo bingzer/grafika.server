@@ -2,6 +2,8 @@
 @{
     Layout = null;
     var linkUrl = $"/animations/{Model.Id}";
+    var userIdentity = User.Identity as IUserIdentity;
+    var canEdit = userIdentity?.Id == Model.UserId;
 }
 <article class="col-sm-6 col-md-4 col-lg-3 col-xl-2">
     <div class="thumbnail" style="height: 272px; position: relative; padding: 0">
@@ -36,7 +38,17 @@
                     @Model.Description
                 }
             </p>
-            <p style="position: absolute; bottom: 8px; right: 8px; margin-bottom: 0">
+            <p style="position: absolute; bottom: 8px; left: 8px; margin-bottom: 0;">
+                @if (canEdit)
+                {
+                    <span class="pull-left font-smaller text-muted">
+                        <a href="/animations/@Model.Id/edit" class="btn btn-xs btn-success">
+                            Edit
+                        </a>
+                    </span>
+                }
+            </p>
+            <p style="position: absolute; bottom: 8px; right: 8px; margin-bottom: 0;">
                 <span class="font-smaller text-muted">
                     @Model.TotalFrame frames &#8226; @Model.Views views
                 </span>

@@ -42,14 +42,14 @@
             this.grafika.destroy();
         }
 
-        private getConfiguration(): GrafikaApp.IGrafikaAppConfig {
+        private getConfiguration(): GrafikaApp.IGrafikaAppConfiguration {
             if (GrafikaApp && GrafikaApp.Configuration)
                 return GrafikaApp.Configuration;
             return new GrafikaApp.DefaultConfiguration();
         }
     }
 
-    export class DefaultConfiguration implements GrafikaApp.IGrafikaAppConfig {
+    export class DefaultConfiguration implements GrafikaApp.IGrafikaAppConfiguration {
         baseApiUrl: string = "http://localhost:3000";
         shouldInflateFrame: boolean = true;
         getAuthenticationToken(): string {
