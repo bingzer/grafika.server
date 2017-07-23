@@ -1,19 +1,32 @@
-@{
-    ViewData["Title"] = "Login to Grafika";
-}
-<header style="background: none">
-    <div id="header-canvas-container">
-        <canvas id="header-canvas"></canvas>
-    </div>
-    <div id="header-content" class="header-content">
-        <div class="header-content-inner">
-            @await Html.PartialAsync("_LoginForm")
-        </div>
-    </div>
-</header>
 
-@section scripts {
-    <script type="text/javascript" src="~/js/grafika.js"></script>
-    <script type="text/javascript" src="~/js/grafika.demo.js"></script>
-    <script type="text/javascript" src="~/js/GrafikaApp.Player.js"></script>
+<div class="bg-dark page-heading"></div>
+<div class="page-wrapper">
+    <div class="col-lg-offset-1 col-lg-6">
+        promotional stuffs
+    </div>
+    <div id="login-container" class="login-container col-lg-4">
+        <header class="login-header">
+            <h1>Login to Your Account</h1><br>
+        </header>
+        <hr />
+        <article>
+            <form action="/accounts/login?url=/animations/mine" method="post">
+                <input type="text" name="email" placeholder="Email Address">
+                <input type="password" name="password" placeholder="Password">
+                <input type="submit" name="login" class="login-submit" value="Login">
+            </form>
+
+            <div class="login-help">
+                <a href="#">Register</a> - <a href="#">Forgot Password</a>
+            </div>
+        </article>
+        <article>
+            <a href="@Utility.CombineUrl(AppEnvironment.Default.Server.Url, "accounts/google")" type="button" class="login login-submit">Google</a>
+            <a href="@Utility.CombineUrl(AppEnvironment.Default.Server.Url, "accounts/facebook")" type="button" class="login login-submit">Facebook</a>
+        </article>
+    </div>
+</div>
+
+@section styles {
+    <link rel="stylesheet" type="text/css" href="~/css/login.css" />
 }
