@@ -7,43 +7,7 @@
   <ItemGroup>
     <None Include="wwwroot\css\**\*.less" />
     <None Include="wwwroot\js\**\*.ts" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="wwwroot\js\drawing\drawing-context-menu.html" />
-    <Content Include="wwwroot\js\drawing\drawing-frame.html" />
-    <Content Include="wwwroot\js\drawing\drawing-graphics.html" />
-    <Content Include="wwwroot\js\drawing\drawing-toolbar.html" />
-    <Content Include="wwwroot\js\drawing\drawing.html" />
-    <Content Include="wwwroot\js\drawing\drawing.js" />
-    <Content Include="wwwroot\js\drawing\drawing.js.map" />
-    <Content Include="wwwroot\js\drawing\GrafikaApp.Drawing.AppCommon.js" />
-    <Content Include="wwwroot\js\drawing\GrafikaApp.Drawing.AppCommon.js.map" />
-    <Content Include="wwwroot\js\drawing\GrafikaApp.Drawing.AppHttpInterceptor.js" />
-    <Content Include="wwwroot\js\drawing\GrafikaApp.Drawing.AppHttpInterceptor.js.map" />
-    <Content Include="wwwroot\js\drawing\GrafikaApp.Drawing.Common.js" />
-    <Content Include="wwwroot\js\drawing\GrafikaApp.Drawing.Common.js.map" />
-    <Content Include="wwwroot\js\drawing\GrafikaApp.Drawing.Controllers.AuthController.js" />
-    <Content Include="wwwroot\js\drawing\GrafikaApp.Drawing.Controllers.AuthController.js.map" />
-    <Content Include="wwwroot\js\drawing\GrafikaApp.Drawing.Controllers.BaseAnimationController.js" />
-    <Content Include="wwwroot\js\drawing\GrafikaApp.Drawing.Controllers.BaseAnimationController.js.map" />
-    <Content Include="wwwroot\js\drawing\GrafikaApp.Drawing.Controllers.DrawingController.js" />
-    <Content Include="wwwroot\js\drawing\GrafikaApp.Drawing.Controllers.DrawingController.js.map" />
-    <Content Include="wwwroot\js\drawing\GrafikaApp.Drawing.Directives.ImageUploaderDirective.html" />
-    <Content Include="wwwroot\js\drawing\GrafikaApp.Drawing.DrawingController.js" />
-    <Content Include="wwwroot\js\drawing\GrafikaApp.Drawing.DrawingController.js.map" />
-    <Content Include="wwwroot\js\drawing\GrafikaApp.Drawing.HttpInterceptor.js" />
-    <Content Include="wwwroot\js\drawing\GrafikaApp.Drawing.HttpInterceptor.js.map" />
-    <Content Include="wwwroot\js\drawing\GrafikaApp.Drawing.Models.IUserPreference.js" />
-    <Content Include="wwwroot\js\drawing\GrafikaApp.Drawing.Models.IUserPreference.js.map" />
-    <Content Include="wwwroot\js\drawing\GrafikaApp.Drawing.Services.ApiService.js" />
-    <Content Include="wwwroot\js\drawing\GrafikaApp.Drawing.Services.ApiService.js.map" />
-    <Content Include="wwwroot\js\drawing\GrafikaApp.Drawing.Services.DrawingController.js" />
-    <Content Include="wwwroot\js\drawing\GrafikaApp.Drawing.Services.DrawingController.js.map" />
-    <Content Include="wwwroot\js\drawing\GrafikaAPxp.Drawing.Controllers.BaseAnimationController.js" />
-    <Content Include="wwwroot\js\drawing\GrafikaAPxp.Drawing.Controllers.BaseAnimationController.js.map" />
-    <Content Include="wwwroot\js\drawing\image-uploader.html" />
-    <Content Include="wwwroot\js\drawing\image-uploader.js" />
-    <Content Include="wwwroot\js\drawing\index.html" />
+    <None Include="wwwroot\js\drawing\**\*.html" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.1.1" />
