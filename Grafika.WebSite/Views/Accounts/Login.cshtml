@@ -1,29 +1,41 @@
 
 <div class="bg-dark page-heading"></div>
 <div class="page-wrapper">
-    <div class="col-lg-offset-1 col-lg-6">
-        promotional stuffs
-    </div>
-    <div id="login-container" class="login-container col-lg-4">
-        <header class="login-header">
-            <h1>Login to Your Account</h1><br>
-        </header>
-        <hr />
-        <article>
-            <form action="/accounts/login?url=/animations/mine" method="post">
-                <input type="text" name="email" placeholder="Email Address">
-                <input type="password" name="password" placeholder="Password">
-                <input type="submit" name="login" class="login-submit" value="Login">
-            </form>
-
-            <div class="login-help">
-                <a href="#">Register</a> - <a href="#">Forgot Password</a>
+    <div class="container-fluid">
+        <div id="login-form" class="login-form col-lg-4">
+            <div class="login-form-container">
+                <header class="login-header">
+                    <h1>Login to Your Account</h1><br>
+                </header>
+                <div class="row text-center">
+                    <a href="@Utility.CombineUrl(AppEnvironment.Default.Server.Url, "accounts/google")" type="button" class="login login-submit login-oauth">Google</a>
+                    <a href="@Utility.CombineUrl(AppEnvironment.Default.Server.Url, "accounts/facebook")" type="button" class="login login-submit login-oauth">Facebook</a>
+                </div>
+                <hr />
+                <div class="row">
+                    <form action="/accounts/login?url=/animations/mine" method="post">
+                        <input type="text" name="email" placeholder="Email Address">
+                        <input type="password" name="password" placeholder="Password">
+                        <div class="pull-right">
+                            <input type="submit" name="login" class="login-submit" value="Login">
+                        </div>
+                    </form>
+                </div>
+                <div class="row">
+                    <div class="login-help">
+                        <a href="#">Register</a> - <a href="#">Forgot Password</a>
+                    </div>
+                </div>
             </div>
-        </article>
-        <article>
-            <a href="@Utility.CombineUrl(AppEnvironment.Default.Server.Url, "accounts/google")" type="button" class="login login-submit">Google</a>
-            <a href="@Utility.CombineUrl(AppEnvironment.Default.Server.Url, "accounts/facebook")" type="button" class="login login-submit">Facebook</a>
-        </article>
+        </div>
+        <div id="login-promo" class="login-promo col-lg-8">
+            <div class="login-promo-container">
+                <header class="login-header">
+                    <h1>Why</h1><br>
+                </header>
+
+            </div>
+        </div>
     </div>
 </div>
 

@@ -1,17 +1,16 @@
-﻿
+﻿@import "variables.less";
+
 /****** LOGIN MODAL ******/
-.login-container {
-    padding: 30px;
+.login-form {
     max-width: 350px;
     width: 100% !important;
-    margin: 0 auto;
     overflow: hidden;
-    font-family: roboto;
+    margin-left: auto;
+    margin-right: auto;
 
     h1 {
         text-align: center;
         font-size: 1.8em;
-        font-family: roboto;
     }
 
     a {
@@ -25,7 +24,6 @@
     }
 
     .login-submit {
-        display: block;
         margin-bottom: 10px;
         padding: 8px;
         position: relative;
@@ -33,7 +31,6 @@
         color: #fff;
         text-shadow: 0 1px rgba(0,0,0,0.1);
         background-color: #4d90fe;
-        font-family: roboto;
         font-size: 14px;
     }
 
@@ -45,7 +42,7 @@
         /* background-image: -webkit-gradient(linear, 0 0, 0 100%,   from(#4d90fe), to(#357ae8)); */
     }
 
-    input[type=text], 
+    input[type=text],
     input[type=password] {
         height: 44px;
         font-size: 16px;
@@ -70,10 +67,19 @@
     }
 }
 
+.login-promo {
+    overflow: hidden;
+
+    .login-promo-container {
+        padding: 8px;
+        min-height: 100%;
+        border: @border;
+    }
+}
+
 .login {
     text-align: center;
     font-size: 14px;
-    font-family: 'Arial', sans-serif;
     font-weight: 700;
     height: 36px;
     padding: 0 8px;
@@ -81,4 +87,8 @@
 
 .login-help {
     font-size: 12px;
+}
+
+.page-wrapper {
+    margin: 16px 96px 16px 96px;
 }

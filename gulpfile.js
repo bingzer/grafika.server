@@ -53,27 +53,29 @@ gulp.task('bower', function (callback) {
 
 gulp.task('less', function () {
     return gulp.src([
-            'bower_components/bootstrap/less/bootstrap.less',
-            'bower_components/font-awesome/less/font-awesome.less',
-            'Grafika.WebSite/wwwroot/css/**/*.less'
-        ])
-        .pipe(less({
-            paths: [
-                'bower_components/bootstrap/less',
-                'bower_components/font-awesome/less',
-                'Grafika.WebSite/wwwroot/css'
-            ]
-        }))
-        .pipe(gulp.dest('./Grafika.WebSite/wwwroot/css'))
+        'bower_components/bootstrap/less/bootstrap.less',
+        'bower_components/font-awesome/less/font-awesome.less',
+        'Grafika.WebSite/wwwroot/css/**/*.less'
+    ])
+    .pipe(less({
+        paths: [
+            'bower_components/bootstrap/less',
+            'bower_components/font-awesome/less',
+            'Grafika.WebSite/wwwroot/css'
+        ]
+    }))
+    .on('error', logError)
+    .pipe(gulp.dest('./Grafika.WebSite/wwwroot/css'))
 
 });
 
 gulp.task('ts', function () {
     var tsProject = ts.createProject('./tsconfig.json');
     tsProject.src().pipe(tsProject({
-            'compiler': './node_modules/typescript/bin/tsc'
-        }))
-        .js.pipe(gulp.dest('./Grafika.WebSite/wwwroot/js'))
+        'compiler': './node_modules/typescript/bin/tsc'
+    }))
+    .on('error', logError)
+    .js.pipe(gulp.dest('./Grafika.WebSite/wwwroot/js'))
 });
 
 gulp.task('copy-js', function () {
@@ -103,3 +105,10 @@ gulp.task('scripts', ['ts', 'copy-js'], function (callback) {
     console.log('Running task scripts');
     callback();
 });
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+function logError(e) {
+    console.error(e);
+    this.emit('end');
+}
