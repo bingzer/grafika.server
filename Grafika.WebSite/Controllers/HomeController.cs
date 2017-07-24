@@ -10,7 +10,7 @@ namespace Grafika.WebSite.Controllers
     [Route("/")]
     public class HomeController : Controller
     {
-        [Route("/"), AllowAnonymous]
+        [Route(""), AllowAnonymous]
         public async Task<IActionResult> Index([FromServices] ISeriesService seriesService)
         {
             var model = new HomeViewModel
@@ -23,9 +23,35 @@ namespace Grafika.WebSite.Controllers
             return View("Index", model);
         }
 
-        [Route("/stickdraw"), AllowAnonymous]
+        [Route("stickdraw"), AllowAnonymous]
         public IActionResult StickDraw()
         {
+            ViewBag.Page = new PageViewModel{ Title = "StickDraw" };
+
+            return View();
+        }
+
+        [Route("about"), AllowAnonymous]
+        public IActionResult About()
+        {
+            ViewBag.Page = new PageViewModel { Title = "About - Grafika" };
+
+            return View();
+        }
+
+        [Route("eula"), AllowAnonymous]
+        public IActionResult Eula()
+        {
+            ViewBag.Page = new PageViewModel { Title = "EULA - Grafika" };
+
+            return View();
+        }
+
+        [Route("privacy-policy"), AllowAnonymous]
+        public IActionResult PrivacyPolicy()
+        {
+            ViewBag.Page = new PageViewModel { Title = "Privacy Policy - Grafika" };
+
             return View();
         }
     }
