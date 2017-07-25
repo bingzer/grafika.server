@@ -7,6 +7,7 @@
         public string Keyword { get; set; } = "grafika,animation,animation maker,animation creator";
 
         public bool UseNavigationBar { get; set; } = true;
+        public bool UseFooter { get; set; } = true;
 
         // optional can be blank
         public string ThumbnailUrl { get; set; }

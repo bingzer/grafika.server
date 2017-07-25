@@ -5,8 +5,12 @@ namespace Grafika.Services.Web.Extensions
 {
     public static class SeoFriendlyUrlExtensions
     {
-        // Slug generation taken from http://stackoverflow.com/questions/2920744/url-slugify-algorithm-in-c
         public static string GenerateSlug(this IHtmlHelper htmlHelper, string name)
+        {
+            return GenerateSlug(name);
+        }
+
+        public static string GenerateSlug(string name)
         {
             string phrase = name;
 
@@ -23,7 +27,7 @@ namespace Grafika.Services.Web.Extensions
 
         private static string RemoveAccent(string text)
         {
-            byte[] bytes = System.Text.Encoding.GetEncoding("Cyrillic").GetBytes(text);
+            byte[] bytes = System.Text.Encoding.GetEncoding("UTF-8").GetBytes(text);
             return System.Text.Encoding.ASCII.GetString(bytes);
         }
     }

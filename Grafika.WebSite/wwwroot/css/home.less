@@ -28,6 +28,26 @@ aside.landing {
     }
 }
 
+.navbar {
+    #logo {
+        visibility: collapse;
+    }
+
+    + header #logo-big {
+        visibility: visible;
+    }
+
+    &.affix {
+        #logo {
+            visibility: visible;
+        }
+
+        + header #logo-big {
+            visibility: collapse;
+        }
+    }
+}
+
 .popup-gallery > div {
     border-right: 1px solid @gray-dark;
     border-bottom: 1px solid @gray-dark;

@@ -34,5 +34,10 @@ namespace Grafika.Services.Web.Extensions
         {
             return Utility.CombineUrl(GetAuthorUrl(animation), "avatar");
         }
+
+        public static string GenerateSlugUrl(this Animation animation)
+        {
+            return SeoFriendlyUrlExtensions.GenerateSlug(animation?.Name);
+        }
     }
 }

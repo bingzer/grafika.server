@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -13,10 +14,11 @@ namespace Grafika.Services.Web.Extensions
             app.UseCookieAuthentication(new CookieAuthenticationOptions
             {
                 AuthenticationScheme = "cookie-auth",
-                LoginPath = new PathString("/account/login"),
-                AccessDeniedPath = new PathString("/account/forbidden"),
+                LoginPath = new PathString("/login"),
+                AccessDeniedPath = new PathString("/forbidden"),
                 AutomaticAuthenticate = true,
                 AutomaticChallenge = true,
+                ExpireTimeSpan = TimeSpan.FromDays(30),
                 Events = new CookieAuthenticationEvents
                 {
                     OnValidatePrincipal = (ctx) =>

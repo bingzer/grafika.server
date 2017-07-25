@@ -46,8 +46,6 @@ namespace Grafika.Services.Web
 
             services.Configure<IdentityOptions>((opt) =>
             {
-                opt.Cookies.ApplicationCookie.AuthenticationScheme = "cookie-auth";
-                opt.Cookies.ApplicationCookie.AutomaticChallenge = false;
                 opt.Tokens.ProviderMap.Add(AccountTokenProvider.ProviderKey, AccountTokenProvider.ProviderDescriptor);
                 opt.Tokens.ChangeEmailTokenProvider = AccountTokenProvider.ProviderKey;
                 opt.Tokens.EmailConfirmationTokenProvider = AccountTokenProvider.ProviderKey;

@@ -1,7 +1,7 @@
 ﻿@model Animation
 @{
     Layout = null;
-    var linkUrl = $"/animations/{Model.Id}";
+    var linkUrl = $"/animations/{Model.Id}/{Model.GenerateSlugUrl()}";
     var userIdentity = User.Identity as IUserIdentity;
     var canEdit = userIdentity?.Id == Model.UserId;
 }

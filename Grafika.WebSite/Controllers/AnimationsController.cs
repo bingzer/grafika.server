@@ -37,7 +37,7 @@ namespace Grafika.WebSite.Controllers
             return View(model);
         }
 
-        [Route("mine")]
+        [Route("mine"), Authorize(ActiveAuthenticationSchemes = "cookie-auth")]
         public IActionResult Mine()
         {
             var userIdentity = new UserIdentity(User);
@@ -52,8 +52,8 @@ namespace Grafika.WebSite.Controllers
             return View(options);
         }
 
-        [Route("{animationId}"), AllowAnonymous]
-        public async Task<IActionResult> Detail([FromRoute] string animationId)
+        [Route("{animationId}/{slug?}"), AllowAnonymous]
+        public async Task<IActionResult> Detail([FromRoute] string animationId, string slug = null)
         {
             var animation = await _service.Get(animationId);
             var model = new AnimationViewModel
@@ -79,7 +79,8 @@ namespace Grafika.WebSite.Controllers
             ViewBag.Page = new PageViewModel
             {
                 Title = $"Create Animation - Grafika",
-                UseNavigationBar = false
+                UseNavigationBar = false,
+                UseFooter = false
             };
 
             return View("Edit", model);
@@ -97,7 +98,8 @@ namespace Grafika.WebSite.Controllers
                 Title = $"{model.Animation.Name} - Grafika",
                 Description = $"{model.Animation.Name} by {model.Animation.Author} - Grafika Animation",
                 ThumbnailUrl = model.Animation.GetThumbnailUrl(),
-                UseNavigationBar = false
+                UseNavigationBar = false,
+                UseFooter = false
             };
 
             return View("Edit", model);

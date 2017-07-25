@@ -113,6 +113,12 @@ h6 {
     border-color: transparent;
     .sans-serif-font;
     .transition-all;
+    
+    .navbar-nav > .open > a, 
+    .navbar-nav > .open > a:hover, 
+    .navbar-nav > .open > a:focus .navbar-header .navbar-brand {
+        background-color: @theme-accent;
+    }
 
     .navbar-header .navbar-brand {
         color: @theme-primary;
@@ -131,6 +137,11 @@ h6 {
         font-size: 12px;
         color: @gray-darker;
         text-transform: uppercase;
+
+        &:hover,
+        &:focus {
+            background-color: @theme-primary;
+        }
     }
 
     .nav {
@@ -140,7 +151,7 @@ h6 {
                 text-transform: uppercase;
                 font-weight: 700;
                 font-size: 13px;
-                color: @gray-darker;
+                color: white;
 
                 &:hover {
                     color: @theme-primary;
@@ -161,7 +172,18 @@ h6 {
         }
     }
 
+    @media (max-width: @media-sm) {
+        background-color: @gray-darker;
+        border-color: @gray-darker;
+        color: white;
+
+        .navbar-toggle {
+            color: white !important;
+        }
+    }
+
     @media (min-width: @media-sm) {
+
         .navbar-header .navbar-brand {
             color: fade(white, 70%);
 
@@ -307,11 +329,15 @@ header {
 }
 
 .page-content {
-    margin-left: 16px;
-    margin-right: 16px;
-    padding-top: 16px;
+    margin: 16px 8px 16px 8px;
 
     @media (min-width: @media-sm) {
+        margin-left: 16px;
+        margin-right: 16px;
+        padding-top: 16px;
+    }
+
+    @media (min-width: @media-md) {
         margin-left: 32px;
         margin-right: 32px;
     }
@@ -333,6 +359,10 @@ header {
     bottom: -8px;
     left: 0;
 
+    @media (max-width: @media-sm) {
+        text-align: center;
+    }
+
     #social-medias i.fa {
         font-size: larger;
         margin: 4px;
@@ -340,6 +370,10 @@ header {
 
     nav {
         text-align: left;
+
+        @media (max-width: @media-md) {
+            text-align: center;
+        }
 
         @media (min-width: @media-md) {
             text-align: right;
@@ -360,12 +394,4 @@ header {
 .user-avatar-lg {
     width: 32px;
     height: 32px
-}
-
-// --------------- animation-thumbnails-container (thumbnails)
-.animation-thumbnails-container {
-    @media (max-width: @media-sm) {
-        padding-right: 96px;
-        padding-left: 96px;
-    }
 }

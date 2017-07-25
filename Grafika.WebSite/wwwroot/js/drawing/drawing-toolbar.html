@@ -146,9 +146,9 @@
                         </md-menu-item>
                     </md-menu-content>
                 </md-menu>
-                <div class="pull-right" layout="row" layout-align="end">
+                <div id="nav-menu" class="pull-right" layout="row" layout-align="end">
                     <input id="currentFrame" style="color: gray" type="number" min="1" max="{{vm.totalFrame + 1}}" ng-model="vm.currentFrame" ng-change="vm.grafika.navigateToFrame(vm.currentFrame - 1)">
-                    <span ng-bind="'of ' + vm.totalFrame"></span>
+                    <span id="totalFrame" ng-bind="'of ' + vm.totalFrame"></span>
                 </div>
             </md-menu-bar>
         </div>
