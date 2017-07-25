@@ -1,6 +1,7 @@
 ﻿using Grafika.Configurations;
 using Grafika.Utilities;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Primitives;
 using System;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -15,7 +16,7 @@ namespace Grafika.Services.Web.Extensions
         public static bool AcceptEncodings(this HttpRequest req, string encoding)
         {
             var acceptEncodingHeader = req.Headers.FirstOrDefault(h => "accept-encoding".EqualsIgnoreCase(h.Key));
-            return acceptEncodingHeader.Value.Contains("deflate", StringComparer.CurrentCultureIgnoreCase);
+            return acceptEncodingHeader.Value.Any(str => str.ContainsIgnoreCase("deflate"));
         }
 
         public static bool HasHeaderWithValue(this HttpRequest req, string key, string value)

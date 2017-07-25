@@ -1,0 +1,36 @@
+<div class="login-form">
+    <header id="login-header" class="login-header">
+        <h1>Login to Grafika</h1><br>
+    </header>
+    <div class="row text-center">
+        <a href="@Utility.CombineUrl(AppEnvironment.Default.Server.Url, "accounts/google")" type="button" class="login login-submit login-oauth login-google">
+            <img src="~/img/google_white.png" alt="Google Logo" />
+            Google
+        </a>
+        <a href="@Utility.CombineUrl(AppEnvironment.Default.Server.Url, "accounts/facebook")" type="button" class="login login-submit login-oauth login-facebook">
+            <img src="~/img/facebook_white.png" alt="Facebook Logo" />
+            Facebook
+        </a>
+    </div>
+    <hr />
+    <div class="row">
+        <div id="login-form-controls">
+            <form action="/accounts/login?url=/animations/mine" method="post">
+                <input type="text" name="email" placeholder="Email Address">
+                <input type="password" name="password" placeholder="Password">
+                <div class="pull-right">
+                    <input type="submit" name="login" class="login-submit login-login" value="Login">
+                    <a href="/signup" name="login" class="login-submit login-register" value="Register">Sign Up</a>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        <div class="login-help">
+            <p>
+                By signing in you agree to our <a href="/eula">license agreement</a><br />
+                <a href="#">Forgot password?</a>
+            </p>
+        </div>
+    </div>
+</div>

@@ -7,7 +7,7 @@
             return {
                 request: (config: any) => {
                     config.headers = config.headers || {};
-                    let token = $cookies.get('token');
+                    let token = GrafikaApp.Configuration.getAuthenticationToken();
                     if (!config.cors && token) {
                         config.headers.Authorization = 'Bearer ' + token;
                     }

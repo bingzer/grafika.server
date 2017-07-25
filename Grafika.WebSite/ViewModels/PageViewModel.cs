@@ -6,6 +6,8 @@
         public string Description { get; set; } = "A super simple animation maker, viewer, sharer and community for the web and Android by creators like you provided by Grafika";
         public string Keyword { get; set; } = "grafika,animation,animation maker,animation creator";
 
+        public bool UseNavigationBar { get; set; } = true;
+
         // optional can be blank
         public string ThumbnailUrl { get; set; }
 

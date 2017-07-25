@@ -78,7 +78,8 @@ namespace Grafika.WebSite.Controllers
 
             ViewBag.Page = new PageViewModel
             {
-                Title = $"Create Animation - Grafika"
+                Title = $"Create Animation - Grafika",
+                UseNavigationBar = false
             };
 
             return View("Edit", model);
@@ -95,7 +96,8 @@ namespace Grafika.WebSite.Controllers
             {
                 Title = $"{model.Animation.Name} - Grafika",
                 Description = $"{model.Animation.Name} by {model.Animation.Author} - Grafika Animation",
-                ThumbnailUrl = model.Animation.GetThumbnailUrl()
+                ThumbnailUrl = model.Animation.GetThumbnailUrl(),
+                UseNavigationBar = false
             };
 
             return View("Edit", model);

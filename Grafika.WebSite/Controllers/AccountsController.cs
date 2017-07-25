@@ -3,6 +3,7 @@ using Grafika.Services;
 using Grafika.Services.Accounts;
 using Grafika.Utilities;
 using Grafika.Web.Models;
+using Grafika.WebSite.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.Authentication;
 using Microsoft.AspNetCore.Mvc;
@@ -24,12 +25,29 @@ namespace Grafika.WebSite.Controllers
             _tokenProvider = tokenProvider;
         }
 
-        [Route("/login"), AllowAnonymous]
+        [Route("/signin"), AllowAnonymous]
         public IActionResult Login()
         {
-            return View("Login");
+            ViewBag.Page = new PageViewModel
+            {
+                Title = "Login to Grafika"
+            };
+
+            return View("SignIn");
         }
-        
+
+        [Route("/signup"), AllowAnonymous]
+        public IActionResult Register()
+        {
+            ViewBag.Page = new PageViewModel
+            {
+                Title = "Sign Up - Grafika"
+            };
+            ViewBag.IsRegistration = true;
+
+            return View("SignUp");
+        }
+
         [HttpPost, Route("login"), AllowAnonymous]
         public async Task<IActionResult> Authenticate(LoginModel model, string url = "/")
         {
@@ -56,16 +74,16 @@ namespace Grafika.WebSite.Controllers
             return Redirect(url);
         }
 
-        [Route("login/form"), AllowAnonymous]
+        [Route("forms/login"), AllowAnonymous]
         public IActionResult LoginForm()
         {
             return PartialView("_LoginForm");
         }
 
-        [Route("register/form"), AllowAnonymous]
-        public IActionResult RegisterForm()
+        [Route("forms/registration"), AllowAnonymous]
+        public IActionResult RegistrationForm()
         {
-            return PartialView("_Register");
+            return PartialView("_RegistrationForm");
         }
     }
 }

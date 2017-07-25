@@ -1,6 +1,47 @@
 @model AnimationDrawingViewModel
 
+<header id="mainNav" class="navbar navbar-default navbar-fixed-top">
+    <div class="container-fluid bg-dark">        
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header no-padding">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span> Menu <i class="fa fa-bars"></i>
+            </button>
+            <a class="navbar-brand" href="/" style="padding-left: 16px; font-weight: 800; padding-top: 8px;">
+                <h1 id="animation-title" style="margin: 0; padding: 0">Loading...</h1>
+            </a>
+        </div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <nav class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <h2 style="display: none">Navigation</h2>
+            <ul class="nav navbar-nav navbar-right">
+                @if (User.Identity.IsAuthenticated)
+                {
+                    var userIdentity = User.Identity as IUserIdentity;
+                    <li>
+                        <a href="javascript: void(0)" role="button">
+                            <img class="user-avatar user-avatar-md" src="@userIdentity.GetUserAvatarUrl()" alt="Avatar for @userIdentity.Email" />
+                            @User.Identity.Name
+                        </a>
+                    </li>
+                }
+                else
+                {
+                    <li>
+                        <a href="/signin" title="Login or register">Login</a>
+                    </li>
+                }
+            </ul>
+        </nav>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container-fluid -->
+</header>
+
 <section ng-app="app" ng-controller="DrawingController as vm" layout="row" style="min-height: 100%; background-color: #ddd">
+    <div id="progress-modal" layout-fill class="progress-modal" layout-align="center center">
+        <md-progress-circular md-mode="indeterminate" class="md-primary"></md-progress-circular>
+    </div>
     <div id="content" ui-view flex></div>
 </section>
 
@@ -60,8 +101,27 @@
 @section styles {
 <link rel="stylesheet" type="text/css" href="~/css/angular-material.css" />
 <style>
-    img#logo {
-        display: none !important;
+    /*-- Progress Modal --*/
+    .progress-modal {
+        position: fixed;
+        left: 0px;
+        top: 0px;
+        width: 100%;
+        height: 100%;
+        text-align: center;
+        z-index: 1000;
+        background-color: black;
+        opacity: 0.5;
+    }
+
+    .progress-modal > md-progress-circular {
+        position: absolute;
+        margin-right: auto;
+        margin-left: auto;
+        margin-top: auto;
+        top: 50%;
+        left: 0;
+        right: 0;
     }
 </style>
 }

@@ -63,6 +63,7 @@
                         this.grafikaReady = true;
                         return this.appCommon.$q.when(this.animation);
                     }).finally(() => {
+                        angular.element('#animation-title').html(this.animation.name);
                         this.appCommon.hideLoadingModal();
                     });
                 }

@@ -67,62 +67,65 @@
     <![endif]-->
 </head>
 <body id="page-top">
-    <header id="mainNav" class="navbar navbar-default navbar-fixed-top">
-        <div class="container-fluid">
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header no-padding">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                    <span class="sr-only">Toggle navigation</span> Menu <i class="fa fa-bars"></i>
-                </button>
-                <a class="navbar-brand" href="/" style="padding: 2px">
-                    <img id="logo" src="~/img/logo.png" alt="Grafika" title="Grafika" style="height: 48px" />
-                    <h2 style="display: none">Grafika</h2>
-                </a>
-            </div>
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <nav class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <h2 style="display: none">Navigation</h2>
-                <ul class="nav navbar-nav navbar-right">
-                    <li>
-                        <a href="/animations">Animations</a>
-                    </li>
-                    @if (User.Identity.IsAuthenticated)
-                    {
-                        var userIdentity = User.Identity as IUserIdentity;
+    @if (page.UseNavigationBar)
+    {
+        <header id="mainNav" class="navbar navbar-default navbar-fixed-top">
+            <div class="container-fluid">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header no-padding">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                        <span class="sr-only">Toggle navigation</span> Menu <i class="fa fa-bars"></i>
+                    </button>
+                    <a class="navbar-brand" href="/" style="padding: 2px">
+                        <img id="logo" src="~/img/logo.png" alt="Grafika" title="Grafika" style="height: 48px" />
+                        <h2 style="display: none">Grafika</h2>
+                    </a>
+                </div>
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <nav class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <h2 style="display: none">Navigation</h2>
+                    <ul class="nav navbar-nav navbar-right">
                         <li>
-                            <a href="javascript: void(0)" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">@User.Identity.Name <span class="caret"></span></a>
-                            <div class="dropdown-menu no-padding no-margin">
-                                <div class="panel panel-default no-padding no-margin" style="width: 250px">
-                                    <div class="panel-body text-center">
-                                        <img src="@userIdentity.GetUserAvatarUrl()" alt="User avatar" width="48"/>
-                                        <p class="row no-margin">
-                                            <a href="/users/@userIdentity.Id" class="font-larger">@userIdentity.Name</a><br/>
-                                            @userIdentity.Username
-                                        </p>
-                                    </div>
-                                    <div class="panel-footer">
-                                        <a href="/animations/mine">My Animations</a>
-                                    </div>
-                                    <div class="panel-footer">
-                                        <a href="/accounts/logout" data-confirm="Are you sure you want to log out?">Log out</a>
+                            <a href="/animations">Animations</a>
+                        </li>
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            var userIdentity = User.Identity as IUserIdentity;
+                            <li>
+                                <a href="javascript: void(0)" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">@User.Identity.Name <span class="caret"></span></a>
+                                <div class="dropdown-menu no-padding no-margin">
+                                    <div class="panel panel-default no-padding no-margin" style="width: 250px">
+                                        <div class="panel-body text-center">
+                                            <img src="@userIdentity.GetUserAvatarUrl()" alt="User avatar" width="48" />
+                                            <p class="row no-margin">
+                                                <a href="/users/@userIdentity.Id" class="font-larger">@userIdentity.Name</a><br />
+                                                @userIdentity.Username
+                                            </p>
+                                        </div>
+                                        <div class="panel-footer">
+                                            <a href="/animations/mine">My Animations</a>
+                                        </div>
+                                        <div class="panel-footer">
+                                            <a href="/accounts/logout" data-confirm="Are you sure you want to log out?">Log out</a>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </li>
-                    }
-                    else
-                    {
-                        <li>
-                            <a href="/login" title="Login or register">Login</a>
-                        </li>
-                    }
-                </ul>
-            </nav>
-            <!-- /.navbar-collapse -->
-        </div>
-        <!-- /.container-fluid -->
-    </header>
-    
+                            </li>
+                        }
+                        else
+                        {
+                            <li>
+                                <a href="/signin" title="Login or register">Login</a>
+                            </li>
+                        }
+                    </ul>
+                </nav>
+                <!-- /.navbar-collapse -->
+            </div>
+            <!-- /.container-fluid -->
+        </header>
+    }
+
     @RenderBody()
     @RenderSection("footer", false)
 

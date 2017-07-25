@@ -20,5 +20,11 @@ namespace Grafika.Utilities
             if (any == null && compare == null) return true;
             return any?.Equals(compare, StringComparison.CurrentCultureIgnoreCase) == true;
         }
+
+        public static bool ContainsIgnoreCase(this string any, string compare)
+        {
+            if (any == null && compare == null) return true;
+            return any?.IndexOf(compare, StringComparison.OrdinalIgnoreCase) >= 0;
+        }
     }
 }
