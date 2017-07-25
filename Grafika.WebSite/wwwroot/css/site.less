@@ -328,9 +328,7 @@ header {
 .footer {
     display: inline-block;
     width: 100%;
-    padding: 24px 64px 64px 64px;
-    height: 124px;
-    max-height: 124px;
+    padding: 24px 64px 8px 64px;
     position: relative;
     bottom: -8px;
     left: 0;
@@ -338,6 +336,14 @@ header {
     #social-medias i.fa {
         font-size: larger;
         margin: 4px;
+    }
+
+    nav {
+        text-align: left;
+
+        @media (min-width: @media-md) {
+            text-align: right;
+        }
     }
 }
 
