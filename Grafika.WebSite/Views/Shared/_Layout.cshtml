@@ -16,14 +16,20 @@
     <!-- Core CSS -->
     <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/icon?family=Material+Icons" />
     <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Roboto:400,500,700" />
+    <!-- Base CSS -->
+<environment names="Development">
     <link href="~/css/bootstrap.css" rel="stylesheet">
     <link href="~/css/bootstrap-xl.css" rel="stylesheet" />
     <link href="~/css/font-awesome.css" rel="stylesheet" type="text/css">
-    <!-- Base CSS -->
-    <link href="~/css/site.css" rel="stylesheet">
-    <link href="~/css/player.css" type="text/css" rel="stylesheet" />
-    <link rel="canonical" href="https://grafika.bingzer.com/" />
+    <link href="~/css/GrafikaApp.css" rel="stylesheet">
+    <link href="~/css/GrafikaApp.Player.css" type="text/css" rel="stylesheet" />
+</environment>
+<environment names="Production">
+    <link href="~/css/GrafikaApp.Bundle.Site.min.css" rel="stylesheet">
+</environment>
     @RenderSection("styles", false)
+
+    <link rel="canonical" href="https://grafika.bingzer.com/" />
 
     <meta itemprop="name" content="@page.SiteName" />
     <meta itemprop="description" content="@page.Description" />
@@ -41,7 +47,7 @@
     <meta name="twitter:title" content="@page.Title" />
     <meta name="twitter:description" content="@page.Description" />
 
-    <script type="text/javascript" src="~/js/jquery.js"></script>
+    <script src="//code.jquery.com/jquery-2.2.4.min.js"></script>
     <script type="text/javascript">
         var GrafikaApp;
         (function (GrafikaApp) {
@@ -140,14 +146,22 @@
         @await Html.PartialAsync("_Footer")
     }
 
-    <!-- Core js -->
-    <script type="text/javascript" src="~/js/bootstrap.js"></script>
+    <!-- bootstrap -->
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+<environment names="Development">
     <script type="text/javascript" src="~/js/bootbox.js"></script>
     <script type="text/javascript" src="~/js/scrollreveal.js"></script>
-    <!-- GrafikaApp.js stuffs -->
+    <script type="text/javascript" src="~/js/grafika.js"></script>
+
     <script type="text/javascript" src="~/js/GrafikaApp.js"></script>
     <script type="text/javascript" src="~/js/GrafikaApp.Partials.js"></script>
     <script type="text/javascript" src="~/js/GrafikaApp.Dialog.js"></script>
+    <script type="text/javascript" src="~/js/GrafikaApp.Player.js"></script>
+</environment>
+<environment names="Production">
+    <script type="text/javascript" src="~/js/GrafikaApp.Bundle.Site.min.js"></script>
+</environment>
 
     @RenderSection("scripts", false)
 </body>

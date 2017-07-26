@@ -92,5 +92,10 @@
 </div>
 
 @section styles {
-    <link href="~/css/animation-detail.css" type="text/css" rel="stylesheet" />
+<environment names="Development">
+    <link href="~/css/GrafikaApp.Animation.Detail.css" rel="stylesheet" type="text/css" />
+</environment>
+<environment names="Production">
+    <link href="~/css/GrafikaApp.Bundle.Animation.Detail.min.css" rel="stylesheet" type="text/css" />
+</environment>
 }

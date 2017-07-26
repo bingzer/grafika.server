@@ -3,7 +3,7 @@
         export module Controllers {
             export abstract class AuthController extends BaseController {
                 public static $inject = ['appCommon', 'authService'];
-                constructor(protected appCommon: AppCommon, protected authService: Services.AuthService) {
+                constructor(appCommon: AppCommon, protected authService: Services.AuthService) {
                     super(appCommon);
                 }
 

@@ -220,13 +220,22 @@
 </section>
 
 @section scripts {
+<environment names="Development">
     <script type="text/javascript" src="~/js/jquery.easing.js"></script>
     <script type="text/javascript" src="~/js/jquery.magnific-popup.js"></script>
-    <script type="text/javascript" src="~/js/grafika.js"></script>
-    <script type="text/javascript" src="~/js/GrafikaApp.Player.js" ></script>
-    <script type="text/javascript" src="~/js/home/GrafikaApp.Home.js"></script>
+    <script type="text/javascript" src="~/js/GrafikaApp.Home.js"></script>
+</environment>
+<environment names="Production">
+    <script type="text/javascript" src="~/js/GrafikaApp.Bundle.Home.min.js"></script>
+</environment>
 }
+
 @section styles {
-    <link href="~/css/magnific-popup.css" rel="stylesheet">
-    <link href="~/css/home.css" rel="stylesheet" type="text/css" />
+<environment names="Development">
+    <link href="~/css/magnific-popup.css" rel="stylesheet" type="text/css">
+    <link href="~/css/GrafikaApp.Home.css" rel="stylesheet" type="text/css" />
+</environment>
+<environment names="Production">
+    <link href="~/css/GrafikaApp.Bundle.Home.min.css" rel="stylesheet" type="text/css">
+</environment>
 }

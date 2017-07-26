@@ -28,5 +28,10 @@
 </div>
 
 @section styles {
-    <link href="~/css/animation-list.css" rel="stylesheet" type="text/css" />
+<environment names="Development">
+    <link href="~/css/GrafikaApp.Animation.List.css" rel="stylesheet" type="text/css" />
+</environment>
+<environment names="Production">
+    <link href="~/css/GrafikaApp.Bundle.Animation.List.min.css" rel="stylesheet" type="text/css" />
+</environment>
 }

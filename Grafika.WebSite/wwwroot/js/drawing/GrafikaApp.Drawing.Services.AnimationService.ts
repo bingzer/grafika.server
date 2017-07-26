@@ -18,7 +18,7 @@
                 }
                 get(_id: string): ng.IHttpPromise<Grafika.IAnimation> {
                     return this.apiService.get<Grafika.IAnimation>('animations/' + _id)
-                        .then((res) => this.injectResources(res));
+                        .then((res) => <ng.IHttpPromise<Grafika.IAnimation>> this.injectResources(res));
                 }
                 update(anim: Grafika.IAnimation): ng.IHttpPromise<any> {
                     return this.apiService.put('animations/' + anim._id, anim);

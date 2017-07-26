@@ -152,7 +152,7 @@
                     let currentFrameNumber = this.grafika.getFrame().index;
 
                     return this.resourceService.saveResource(this.animation, resource)
-                        .then((res) => this.resourceService.upload(res.data, { mime: res.data.mime, blob: imageData.blob() }))
+                        .then((res) => this.resourceService.upload(res.data, { mime: res.data.mime, blob: imageData.getBlob() }))
                         .then((res) => {
                             resource.url = this.resourceService.getResourceUrl(this.animation, resource);
                             this.grafika.addResource(resource);

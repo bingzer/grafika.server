@@ -9,8 +9,8 @@
                 }
 
                 get<TData>(path: string): ng.IHttpPromise<TData> {
-                    return this.$http.get(this.url(path))
-                        .catch(reason => this.log(reason));
+                    return <ng.IHttpPromise<TData>> this.$http.get(this.url(path))
+                        .catch(reason => <ng.IHttpPromise<TData>>this.log(reason));
                 }
 
                 post(path: string, data?: any): ng.IHttpPromise<any> {
@@ -19,7 +19,7 @@
                 }
 
                 put<TData>(path: string, data?: any | TData): ng.IHttpPromise<TData> {
-                    return this.$http.put(this.url(path), data)
+                    return <ng.IHttpPromise<TData>> this.$http.put(this.url(path), data)
                         .catch(reason => this.log(reason));
                 }
 

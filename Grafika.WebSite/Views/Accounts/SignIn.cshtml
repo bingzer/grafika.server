@@ -5,5 +5,10 @@
     </div>
 </div>
 @section styles {
-    <link rel="stylesheet" type="text/css" href="~/css/login.css" />
+<environment names="Development">
+    <link href="~/css/GrafikaApp.Login.css" rel="stylesheet" type="text/css" />
+</environment>
+<environment names="Production">
+    <link href="~/css/GrafikaApp.Bundle.Login.min.css" rel="stylesheet" type="text/css" />
+</environment>
 }
