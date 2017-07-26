@@ -10,40 +10,6 @@
     <None Include="wwwroot\js\drawing\**\*.html" />
   </ItemGroup>
   <ItemGroup>
-    <None Remove="wwwroot\css\GrafikaApp.Animation.Detail.less" />
-    <None Remove="wwwroot\css\GrafikaApp.Animation.List.less" />
-    <None Remove="wwwroot\css\GrafikaApp.Drawing.less" />
-    <None Remove="wwwroot\css\GrafikaApp.Home.less" />
-    <None Remove="wwwroot\css\GrafikaApp.less" />
-    <None Remove="wwwroot\css\GrafikaApp.Login.less" />
-    <None Remove="wwwroot\css\GrafikaApp.Player.less" />
-    <None Remove="wwwroot\js\GrafikaApp.Home.ts" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="wwwroot\css\GrafikaApp.Animation.Detail.css" />
-    <Content Include="wwwroot\css\GrafikaApp.Animation.Detail.less" />
-    <Content Include="wwwroot\css\GrafikaApp.Animation.Edit.css" />
-    <Content Include="wwwroot\css\GrafikaApp.Animation.Edit.less" />
-    <Content Include="wwwroot\css\GrafikaApp.Animation.List.css" />
-    <Content Include="wwwroot\css\GrafikaApp.Animation.List.less" />
-    <Content Include="wwwroot\css\GrafikaApp.css" />
-    <Content Include="wwwroot\css\GrafikaApp.Drawing.css" />
-    <Content Include="wwwroot\css\GrafikaApp.Drawing.less" />
-    <Content Include="wwwroot\css\GrafikaApp.Home.css" />
-    <Content Include="wwwroot\css\GrafikaApp.Home.less" />
-    <Content Include="wwwroot\css\GrafikaApp.less" />
-    <Content Include="wwwroot\css\GrafikaApp.Login.css" />
-    <Content Include="wwwroot\css\GrafikaApp.Login.less" />
-    <Content Include="wwwroot\css\GrafikaApp.Player.css" />
-    <Content Include="wwwroot\css\GrafikaApp.Player.less" />
-    <Content Include="wwwroot\js\GrafikaApp.Home.js">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="wwwroot\js\GrafikaApp.Home.ts">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.1.1" />
     <PackageReference Include="Microsoft.AspNetCore" Version="1.1.2" />
     <PackageReference Include="Microsoft.AspNetCore.Identity" Version="1.1.2" />

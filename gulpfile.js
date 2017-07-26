@@ -13,6 +13,7 @@ var concat = require('gulp-concat');
 var uglify = require('gulp-uglify');
 var pump = require('pump');
 var cleanCSS = require('gulp-clean-css');
+var runSequence = require('run-sequence');
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -108,8 +109,7 @@ gulp.task('copy-fonts', function () {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 gulp.task('install', ['clean', 'bower', 'typings', 'scripts', 'styles', 'minify'], function (callback) {
-    console.log('-- Done Running install');
-    callback();
+    runSequence('clean', 'bower', 'typings', 'scripts', 'styles', 'minify', callback);
 });
 gulp.task('styles', ['less', 'copy-fonts'], function (callback) {
     console.log('-- Done Running task styles');
@@ -120,7 +120,7 @@ gulp.task('scripts', ['ts', 'copy-js'], function (callback) {
     callback();
 });
 gulp.task('minify', ['scripts', 'styles'], function(callback) {
-    return gulp.start('min:css', 'min:js');
+    runSequence('min:js', 'min:css', callback);
 });
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
