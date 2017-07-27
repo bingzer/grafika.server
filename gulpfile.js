@@ -14,6 +14,7 @@ var uglify = require('gulp-uglify');
 var pump = require('pump');
 var cleanCSS = require('gulp-clean-css');
 var runSequence = require('run-sequence');
+var sourcemaps = require('gulp-sourcemaps');
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -108,7 +109,7 @@ gulp.task('copy-fonts', function () {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-gulp.task('install', ['clean', 'bower', 'typings', 'scripts', 'styles', 'minify'], function (callback) {
+gulp.task('install', function (callback) {
     runSequence('clean', 'bower', 'typings', 'scripts', 'styles', 'minify', callback);
 });
 gulp.task('styles', ['less', 'copy-fonts'], function (callback) {
@@ -119,7 +120,7 @@ gulp.task('scripts', ['ts', 'copy-js'], function (callback) {
     console.log('-- Done Running task scripts');
     callback();
 });
-gulp.task('minify', ['scripts', 'styles'], function(callback) {
+gulp.task('minify', function(callback) {
     runSequence('min:js', 'min:css', callback);
 });
 
@@ -178,7 +179,7 @@ gulp.task('min:js:GrafikaApp.Bundle.Drawing', function(callback) {
             'Grafika.WebSite/wwwroot/js/angular-material.js',
             'Grafika.WebSite/wwwroot/js/angular-ui-router.js',
             'Grafika.WebSite/wwwroot/js/angular-jwt.js',
-            'Grafika.WebSite/wwwroot/js/angular-spectrum-colorpicker.min.js',
+            'Grafika.WebSite/wwwroot/js/angular-spectrum-colorpicker.js',
             'Grafika.WebSite/wwwroot/js/drawing/GrafikaApp.Drawing.Theme.js',
             'Grafika.WebSite/wwwroot/js/drawing/GrafikaApp.Drawing.Base.js',
             'Grafika.WebSite/wwwroot/js/drawing/GrafikaApp.Drawing.AppCommon.js',
@@ -201,8 +202,10 @@ gulp.task('min:js:GrafikaApp.Bundle.Drawing', function(callback) {
             'Grafika.WebSite/wwwroot/js/drawing/GrafikaApp.Drawing.Controllers.DrawingController.js',
             'Grafika.WebSite/wwwroot/js/GrafikaApp.Drawing.js'
         ]),
+        sourcemaps.init(),
         concat('GrafikaApp.Bundle.Drawing.min.js'),
         uglify({ mangle: false }),
+        sourcemaps.write('./'),
         gulp.dest('Grafika.WebSite/wwwroot/js')
     ], callback)
 });
