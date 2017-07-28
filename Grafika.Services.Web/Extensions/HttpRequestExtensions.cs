@@ -38,6 +38,16 @@ namespace Grafika.Services.Web.Extensions
             return uriBuilder.Uri;
         }
 
+        public static Uri GetCurrentUrl(this HttpRequest request)
+        {
+            var uriBuilder = new UriBuilder(request.Scheme, request.Host.Host);
+            if (request.Host.Port.HasValue)
+                uriBuilder.Port = request.Host.Port.Value;
+            if (request.Path.HasValue)
+                uriBuilder.Path = request.Path.Value;
+            return uriBuilder.Uri;
+        }
+
         public static bool IsCrawler(this HttpRequest request, ClientConfiguration config)
         {
             var userAgent = request.Headers["User-Agent"];
