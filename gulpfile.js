@@ -104,7 +104,8 @@ gulp.task('copy-js', function () {
 });
 
 gulp.task('copy-fonts', function () {
-    return gulp.src('bower_components/font-awesome/fonts/*').pipe(gulp.dest('Grafika.WebSite/wwwroot/fonts'));
+    return gulp.src('bower_components/font-awesome/fonts/*')
+        .pipe(gulp.dest('Grafika.WebSite/wwwroot/fonts'));
 });
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
