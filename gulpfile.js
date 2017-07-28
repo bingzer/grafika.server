@@ -127,13 +127,12 @@ gulp.task('minify', function(callback) {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-gulp.task('min:js', [
-    'min:js:GrafikaApp.Bundle.Site',
-    'min:js:GrafikaApp.Bundle.Home',
-    'min:js:GrafikaApp.Bundle.Drawing'
-], function (callback) {
-    console.log('-- Done Running min:js');
-    callback();
+gulp.task('min:js', function (callback) {
+    runSequence(
+        'min:js:GrafikaApp.Bundle.Site',
+        'min:js:GrafikaApp.Bundle.Home',
+        'min:js:GrafikaApp.Bundle.Drawing',
+        callback);
 });
 
 gulp.task('min:js:GrafikaApp.Bundle.Site', function (callback) {
