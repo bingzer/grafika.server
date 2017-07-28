@@ -65,7 +65,7 @@ namespace Grafika.WebSite.Controllers
             {
                 Title = $"{animation.Name} - Grafika",
                 Description = $"{animation.Name} by {animation.Author} - Grafika Animation",
-                ThumbnailUrl = animation.GetThumbnailUrl()
+                Thumbnail = new ThumbnailViewModel(animation.GetThumbnailUrl(), animation.Width, animation.Height)
             };
 
             return View(model);
@@ -97,7 +97,7 @@ namespace Grafika.WebSite.Controllers
             {
                 Title = $"{model.Animation.Name} - Grafika",
                 Description = $"{model.Animation.Name} by {model.Animation.Author} - Grafika Animation",
-                ThumbnailUrl = model.Animation.GetThumbnailUrl(),
+                Thumbnail = new ThumbnailViewModel(model.Animation.GetThumbnailUrl(), model.Animation.Width, model.Animation.Height),
                 UseNavigationBar = false,
                 UseFooter = false
             };

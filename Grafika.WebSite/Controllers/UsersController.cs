@@ -37,7 +37,7 @@ namespace Grafika.WebSite.Controllers
             {
                 Title = $"{user.Username} - Grafika",
                 Description = $"List of all grafika animations created by {user.Username} - Grafika Animation",
-                ThumbnailUrl = user.GetUserAvatarUrl()
+                Thumbnail = new ThumbnailViewModel(user.GetUserAvatarUrl(), 100, 100)
             };
 
             return View(model);

@@ -10,7 +10,7 @@
         public bool UseFooter { get; set; } = true;
 
         // optional can be blank
-        public string ThumbnailUrl { get; set; }
+        public ThumbnailViewModel Thumbnail { get; set; }
 
         // TODO: MOVE ME
         public string FacebookAppId => "1742692282614357";
@@ -19,5 +19,19 @@
         public string SiteName => "Grafika";
         public string SiteUrl => "https://grafika.bingzer.com";
         public string SiteAuthor => "Grafika Team";
+    }
+
+    public class ThumbnailViewModel
+    {
+        public string Url { get; private set; }
+        public int Width { get; private set; }
+        public int Height { get; private set; }
+
+        public ThumbnailViewModel(string url, int? width, int? height)
+        {
+            Url = url;
+            Width = width ?? 800;
+            Height = height ?? 400;
+        }
     }
 }
