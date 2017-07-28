@@ -10,7 +10,7 @@
     "url": "https://bingzer.visualstudio.com/DefaultCollection/_git/grafika"
   },
   "scripts": {
-    "postinstall": "bower install && gulp install"
+    "postinstall": "bower install & gulp install & gulp minify"
   },
   "license": "UNLICENSED",
   "dependencies": {
