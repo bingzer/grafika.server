@@ -1,16 +1,19 @@
-﻿namespace Grafika.WebSite.ViewModels
+﻿using Grafika.Configurations;
+using Grafika.Utilities;
+
+namespace Grafika.WebSite.ViewModels
 {
     public class PageViewModel
     {
-        public string Title { get; set; } = "Grafika Animations";
-        public string Description { get; set; } = "A super simple animation maker, viewer, sharer and community for the web and Android by creators like you provided by Grafika";
-        public string Keyword { get; set; } = "grafika,animation,animation maker,animation creator";
+        public string Title { get; set; } = AppEnvironment.Default.Content.PageTitle;
+        public string Description { get; set; } = AppEnvironment.Default.Content.PageDescription;
+        public string Keyword { get; set; } = AppEnvironment.Default.Content.PageKeyword;
 
         public bool UseNavigationBar { get; set; } = true;
         public bool UseFooter { get; set; } = true;
 
         // optional can be blank
-        public ThumbnailViewModel Thumbnail { get; set; }
+        public ThumbnailViewModel Thumbnail { get; set; } = new ThumbnailViewModel(Utility.CombineUrl(AppEnvironment.Default.Content.Url, "/img/feature-graphics-min.png"), 1024, 500);
 
         // TODO: MOVE ME
         public string FacebookAppId => "1742692282614357";

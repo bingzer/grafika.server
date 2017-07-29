@@ -28,8 +28,8 @@ namespace Grafika.WebSite.Controllers
         [Route("animations/popup/{animationId}/{slug?}"), AllowAnonymous]
         public IActionResult PlayerPopup(string animationId, string slug)
         {
-            var templateName = "~/Views/Home/_PlayerPopup.cshtml";
-            return Redirect($"/animations/{animationId}/{slug}/player?autoPlay=true&templateName{templateName}");
+            var templateName = System.Net.WebUtility.UrlEncode("~/Views/Home/_PlayerPopup.cshtml");
+            return Redirect($"/animations/{animationId}/{slug}/player?autoPlay=true&templateName={templateName}");
         }
 
         [Route("stickdraw"), AllowAnonymous]

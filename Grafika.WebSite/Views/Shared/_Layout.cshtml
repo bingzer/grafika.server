@@ -1,7 +1,6 @@
 ﻿@{ 
     PageViewModel page = ViewBag.Page ?? new PageViewModel();
 }
-
 <!DOCTYPE html>
 <html lang="en" prefix="og:http://ogp.me/ns#" >
 <head>
@@ -12,7 +11,6 @@
     <meta name="keyword" content="@page.Keyword" />
     <meta name="author" content="@page.SiteAuthor">
     <title>@(ViewBag.Title ?? page.Title)</title>    
-    
     <!-- Core CSS -->
     <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/icon?family=Material+Icons" />
     <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Roboto:400,500,700" />
@@ -94,7 +92,7 @@
                     <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
                         <span class="sr-only">Toggle navigation</span> Menu <i class="fa fa-bars"></i>
                     </button>
-                    <a id="logo" class="navbar-brand logo-grafika" href="/" style="padding: 2px">
+                    <a id="logo" class="navbar-brand logo-grafika" href="/">
                         <h2 style="display: none">Grafika</h2>
                     </a>
                 </div>
@@ -172,7 +170,19 @@
 <environment names="Production">
     <script type="text/javascript" src="~/js/GrafikaApp.Bundle.Site.min.js"></script>
 </environment>
+@RenderSection("scripts", false)
+<environment names="Production">
+    <script type="text/javascript">
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date(); a = s.createElement(o),
+                m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
 
-    @RenderSection("scripts", false)
+        ga('create', 'UA-38178471-6', 'auto');
+        ga('send', 'pageview');
+    </script>
+</environment>
 </body>
 </html>
