@@ -41,8 +41,10 @@ module GrafikaApp {
 
     $(document).ready(() => {
         var home = new GrafikaApp.Home();
-        home.loadRandomAnimation();
-
         window['home'] = home;
+
+        setTimeout(() => {
+            home.loadRandomAnimation();
+        }, 1000);
     });
 }
