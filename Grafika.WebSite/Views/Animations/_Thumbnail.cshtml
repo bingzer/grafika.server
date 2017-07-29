@@ -1,7 +1,7 @@
 ﻿@model Animation
 @{
     Layout = null;
-    var linkUrl = $"/animations/{Model.Id}/{Model.GenerateSlugUrl()}";
+    var linkUrl = $"/animations/{Model.Id}/{Model.GetSlug()}";
     var userIdentity = User.Identity as IUserIdentity;
     var canEdit = userIdentity?.Id == Model.UserId;
 }
@@ -42,7 +42,7 @@
                 @if (canEdit)
                 {
                     <span class="pull-left font-smaller text-muted">
-                        <a href="/animations/@Model.Id/edit" class="btn btn-xs btn-success">
+                        <a href="@linkUrl/edit" class="btn btn-xs btn-success">
                             Edit
                         </a>
                     </span>

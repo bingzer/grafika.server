@@ -10,6 +10,7 @@ namespace Grafika.Services.Web.Extensions
         {
             return Utility.CombineUrl(AppEnvironment.Default.Server.Url, "animations", animation.Id);
         }
+
         public static string GetCommentUrl(this Animation animation)
         {
             return Utility.CombineUrl(GetUrl(animation), "comments");
@@ -35,7 +36,7 @@ namespace Grafika.Services.Web.Extensions
             return Utility.CombineUrl(GetAuthorUrl(animation), "avatar");
         }
 
-        public static string GenerateSlugUrl(this Animation animation)
+        public static string GetSlug(this Animation animation)
         {
             return SeoFriendlyUrlExtensions.GenerateSlug(animation?.Name);
         }

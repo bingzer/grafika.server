@@ -33,7 +33,7 @@
             @foreach (var animation in Model.HandpickedSeries.Animations.PickRandom(6))
             {
                 <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
-                    <a href="/animations/@animation.Id/player?autoPlay=true&templateName=%7E%2FViews%2FHome%2F_PlayerPopup.cshtml" 
+                    <a href="/animations/@animation.Id/@animation.GetSlug()/player?autoPlay=true&templateName=%7E%2FViews%2FHome%2F_PlayerPopup.cshtml" 
                        class="portfolio-box" style="background-image: linear-gradient(rgba(0, 0, 0, 0.0), rgba(0, 0, 0, 0.3)), url('@animation.GetThumbnailUrl()')">
                         <div class="portfolio-box-caption">
                             <div class="portfolio-box-caption-content">

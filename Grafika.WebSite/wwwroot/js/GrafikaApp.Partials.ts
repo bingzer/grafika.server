@@ -17,6 +17,7 @@
             let target = elem.data('target');
             let shouldAppend = elem.data('partial') === 'append';
             let callback = elem.data('callback');
+            let timeout = elem.data('timeout');
             let opts = {  
                 url: elem.data('url'),
                 method: elem.data('method'),
@@ -43,8 +44,16 @@
                     return onResult($(target || elem), res).then(() => invokeCallback(res, xhrReq));
                 });
             }
-
-            return doSend();
+            
+            if (timeout && timeout > 0) {
+                var deferred = jQuery.Deferred<any>();
+                setTimeout(() => {
+                    doSend().then((res, text, xhrReq) => deferred.resolve(res))
+                        .fail((err) => deferred.reject(err));
+                }, timeout);
+                return deferred.promise();
+            }
+            else return doSend();
         }
     }
 }

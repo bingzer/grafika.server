@@ -3,10 +3,10 @@
     Layout = null;
 }
 
-<ul class="list-group" style="max-width: 350px">
+<ul class="list-group">
     @foreach (var anim in Model.Animations)
     {
-        var linkUrl = $"/animations/{anim.Id}";
+        var linkUrl = $"/animations/{anim.Id}/{anim.GetSlug()}";
         <li class="list-group-item">
             <div class="media">
                 <div class="media-left">

@@ -28,7 +28,7 @@
             <h1 class="animation-title">
                 @Model.Animation.Name
                 @if (Model.Animation.IsPublic == false)
-            {
+                {
                     <i class="fa fa-lock font-smaller" title="This animation is private. Can only be viewed by you"></i>
                 }
             </h1>
@@ -47,7 +47,7 @@
                 <i class="fa fa-image"></i>&nbsp;@Model.Animation.TotalFrame
             </span>
             <span style="margin-right: 8px">
-                <i class="fa fa-calendar"></i>&nbsp;@Model.Animation.DateTimeModified
+                <i class="fa fa-calendar"></i>&nbsp;@Html.DisplayDateTime(Model.Animation.DateTimeModified)
             </span>
         </p>
         <p class="animation-description">@Model.Animation.Description</p>
@@ -71,27 +71,17 @@
             </div>
         </article>
         <aside id="info-sidebar" class="col-md-4 col-lg-5">
-            <header>
-                <h2 class="text-muted" style="display: none">Related</h2>
-            </header>
             <div id="info-ads">
                 {{ This is ads }}
             </div>
-            <div id="watch-sidebar">
-                <ul class="nav nav-tabs" role="tablist">
-                    <li role="presentation" class="active"><a href="#related" aria-controls="related" role="tab" data-toggle="tab">Related</a></li>
-                    <li role="presentation"><a href="#more" aria-controls="more" role="tab" data-toggle="tab">More</a></li>
-                </ul>
-                <!-- Tab panes -->
-                <article class="tab-content">
-                    <div role="tabpanel" class="tab-pane active" id="related" data-partial="tab" data-url="/animations/list" data-data="@relatedAnimationQueryOptions.ToJson()">
+            <header id="watch-sidebar">
+                <h2 class="text-smaller">Related</h2>
+                <div role="tabpanel" id="related" data-partial="auto" data-url="/animations/list" data-data="@relatedAnimationQueryOptions.ToJson()" data-timeout="1000">
+                    <p class="text-center">                        
                         Loading...
-                    </div>
-                    <div role="tabpanel" class="tab-pane" id="more"style="padding: 8px;">
-                        Loading Comments...
-                    </div>
-                </article>
-            </div>
+                    </p>
+                </div>
+            </header>
         </aside>
     </div>
 </div>
@@ -104,7 +94,7 @@
     <link href="~/css/GrafikaApp.Animation.Detail.css" rel="stylesheet" type="text/css" />
 </environment>
 <environment names="Production">
-    <link href="~/css/GrafikaApp.Bundle.Animation.Detail.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/css/GrafikaApp.Bundle.Animation.Detail.min.css" rel="stylesheet" type="text/css"/>
 </environment>
 <style>
     #st-4 {

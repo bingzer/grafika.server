@@ -10,7 +10,7 @@
         <h3>@Model.Animation.Name</h3>
         <h5>by <a href="/users/@Model.Animation.UserId">@Model.Animation.Author</a></h5>
         <p class="padding">
-            <a href="/animations/@Model.Animation.Id" class="btn btn-xl btn-danger">Go to Animation</a>
+            <a href="/animations/@Model.Animation.Id/@Model.Animation.GetSlug()" class="btn btn-xl btn-danger">Go to Animation</a>
         </p>
     </div>
 </div>

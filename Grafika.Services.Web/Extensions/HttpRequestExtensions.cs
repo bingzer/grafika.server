@@ -1,8 +1,10 @@
 ﻿using Grafika.Configurations;
 using Grafika.Utilities;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Primitives;
 using System;
+using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
 
@@ -54,6 +56,11 @@ namespace Grafika.Services.Web.Extensions
 
             var crawler = config.CrawlerRegex;
             return Regex.IsMatch(userAgent, crawler, RegexOptions.IgnoreCase);
+        }
+
+        public static CultureInfo GetCulture(this HttpRequest request)
+        {
+            return request.HttpContext.Features.Get<IRequestCultureFeature>().RequestCulture.Culture;
         }
     }
 }

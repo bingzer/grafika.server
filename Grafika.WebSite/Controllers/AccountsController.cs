@@ -30,7 +30,8 @@ namespace Grafika.WebSite.Controllers
         {
             ViewBag.Page = new PageViewModel
             {
-                Title = "Login to Grafika"
+                Title = "Login to Grafika",
+                UseFooter = false
             };
 
             return View("SignIn");
@@ -41,7 +42,8 @@ namespace Grafika.WebSite.Controllers
         {
             ViewBag.Page = new PageViewModel
             {
-                Title = "Sign Up - Grafika"
+                Title = "Sign Up - Grafika",
+                UseFooter = false
             };
             ViewBag.IsRegistration = true;
 

@@ -64,6 +64,7 @@ namespace Grafika.Services.Web
             app.UseFacebookOAuth();
             app.UseJwtOAuth();
             app.UseCookieOAuth();
+            app.UseGlobalization();
 
             app.UseGrafikaServices();
 

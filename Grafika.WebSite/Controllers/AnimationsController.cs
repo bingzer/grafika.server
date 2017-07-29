@@ -86,7 +86,7 @@ namespace Grafika.WebSite.Controllers
             return View("Edit", model);
         }
 
-        [Route("{animationId}/edit")]
+        [Route("{animationId}/{slug?}/edit")]
         public async Task<IActionResult> Edit(string animationId = null)
         {
             var model = new AnimationDrawingViewModel();
@@ -105,7 +105,7 @@ namespace Grafika.WebSite.Controllers
             return View("Edit", model);
         }
 
-        [Route("{animationId}/player"), AllowAnonymous]
+        [Route("{animationId}/{slug?}/player"), AllowAnonymous]
         public async Task<IActionResult> Player(AnimationPlayerViewModel model)
         {
             model.Animation = await _service.Get(model.AnimationId);
