@@ -34,6 +34,7 @@ namespace Grafika.WebSite
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddResponseCompression();
             services.AddGrafikaMvc();
             services.ConfigureGrafikaMvc(Configuration);
         }
@@ -58,6 +59,7 @@ namespace Grafika.WebSite
                 .AddRewrite(@"^app/content/comment.html", "/comments", true)
             );
 
+            app.UseResponseCompression();
             app.UseGrafikaMvc();
             app.UseStaticFiles();
         }
