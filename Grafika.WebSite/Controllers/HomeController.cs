@@ -25,6 +25,13 @@ namespace Grafika.WebSite.Controllers
             return View("Index", model);
         }
 
+        [Route("animations/popup/{animationId}/{slug?}"), AllowAnonymous]
+        public IActionResult PlayerPopup(string animationId, string slug)
+        {
+            var templateName = "~/Views/Home/_PlayerPopup.cshtml";
+            return Redirect($"/animations/{animationId}/{slug}/player?autoPlay=true&templateName{templateName}");
+        }
+
         [Route("stickdraw"), AllowAnonymous]
         public IActionResult StickDraw()
         {

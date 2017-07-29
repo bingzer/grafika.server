@@ -24,7 +24,7 @@ module GrafikaApp {
 
             if (!this.animPlayer)
                 this.animPlayer = new GrafikaApp.Player('#header-canvas');
-            var element = jQuery('#animation-author');
+            var element = jQuery('#random-animation-author');
             if (element.text().trim().length > 0)
                 element.fadeOut();
 
