@@ -147,6 +147,7 @@ gulp.task('min:scripts:GrafikaApp.Bundle.Site', function (callback) {
         'Grafika.WebSite/wwwroot/js/scrollreveal.js',
         'Grafika.WebSite/wwwroot/js/grafika.js',
         'Grafika.WebSite/wwwroot/js/GrafikaApp.js',
+        'Grafika.WebSite/wwwroot/js/GrafikaApp.Form.js',
         'Grafika.WebSite/wwwroot/js/GrafikaApp.Partials.js',
         'Grafika.WebSite/wwwroot/js/GrafikaApp.Dialog.js',
         'Grafika.WebSite/wwwroot/js/GrafikaApp.Player.js',
