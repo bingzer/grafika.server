@@ -6,12 +6,12 @@
 <ul class="list-group">
     @foreach (var anim in Model.Animations)
     {
-        var linkUrl = $"/animations/{anim.Id}/{anim.GetSlug()}";
+        var linkUrl = Html.AnimationUrl(anim);
         <li class="list-group-item">
             <div class="media">
                 <div class="media-left">
                     <a href="@linkUrl">
-                        <img src="@anim.GetThumbnailUrl()" alt="@anim.Name" style="max-height: 48px; width: 64px;">
+                        <img class="animation-thumbnail animation-thumbnail-sm" src="@anim.GetThumbnailUrl()" alt="@anim.Name">
                     </a>
                 </div>
                 <div class="media-body">

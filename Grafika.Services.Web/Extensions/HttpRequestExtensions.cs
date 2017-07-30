@@ -60,7 +60,18 @@ namespace Grafika.Services.Web.Extensions
 
         public static CultureInfo GetCulture(this HttpRequest request)
         {
-            return request.HttpContext.Features.Get<IRequestCultureFeature>().RequestCulture.Culture;
+            var feature = request.HttpContext.Features.Get<IRequestCultureFeature>();
+            if (feature == null)
+                return CultureInfo.CurrentCulture;
+            return feature.RequestCulture.Culture;
+        }
+
+        public static CultureInfo GetUICulture(this HttpRequest request)
+        {
+            var feature = request.HttpContext.Features.Get<IRequestCultureFeature>();
+            if (feature == null)
+                return CultureInfo.CurrentUICulture;
+            return feature.RequestCulture.UICulture;
         }
     }
 }

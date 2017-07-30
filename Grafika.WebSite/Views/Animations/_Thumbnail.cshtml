@@ -1,21 +1,22 @@
 ﻿@model Animation
 @{
     Layout = null;
-    var linkUrl = $"/animations/{Model.Id}/{Model.GetSlug()}";
+    var animationUrl = Html.AnimationUrl(Model);
+    var authorUrl = Html.UserUrl(Model?.UserId);
     var userIdentity = User.Identity as IUserIdentity;
     var canEdit = userIdentity?.Id == Model.UserId;
 }
 <article class="col-sm-6 col-md-4 col-lg-3 col-xl-2">
     <div class="thumbnail" style="height: 272px; position: relative; padding: 0">
         <figure>
-            <a href="@linkUrl" style="height: 138px">
-                <img src="@Model.GetThumbnailUrl()" alt="@Model.Name" style="height: 138px; max-height: 138px; width: 100%">
+            <a class="animation-thumbnail-link" href="@animationUrl">
+                <img class="animation-thumbnail" src="@Model.GetThumbnailUrl()" alt="@Model.Name">
             </a>
         </figure>
         <div class="caption" style="font-size: smaller">
             <header>
                 <h4 style="margin-bottom: 2px; margin-top: 2px">
-                    <a href="@linkUrl" class="font-stronger">@Model.Name</a>
+                    <a href="@animationUrl" class="font-stronger">@Model.Name</a>
                     @if (Model.IsPublic == false)
                     {
                         <i class="fa fa-lock font-smaller text-muted" title="This Model.tion is private. Can only be viewed by you"></i>
@@ -24,7 +25,7 @@
             </header>
             <p style="margin-top: 0">
                 <img src="@Model.GetAuthorThumbnail()" alt="@Model.Author" class="img-circle user-avatar" />
-                <a href="/users/@Model.UserId">
+                <a href="@authorUrl">
                     @Model.Author
                 </a>
             </p>
@@ -42,7 +43,7 @@
                 @if (canEdit)
                 {
                     <span class="pull-left font-smaller text-muted">
-                        <a href="@linkUrl/edit" class="btn btn-xs btn-success">
+                        <a href="@animationUrl/edit" class="btn btn-xs btn-success">
                             Edit
                         </a>
                     </span>
