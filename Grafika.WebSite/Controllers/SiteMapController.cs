@@ -26,7 +26,7 @@ namespace Grafika.WebSite.Controllers
                 new SitemapNode(Url.Action("Index", "Home")),
                 new SitemapNode(Url.Action("About", "Home")),
                 new SitemapNode(Url.Action("Eula", "Home")),
-                new SitemapNode(Url.Action("Privacy", "Home")),
+                new SitemapNode(Url.Action("PrivacyPolicy", "Home")),
                 new SitemapNode(Url.Action("StickDraw", "Home")),
                 //other nodes
             };

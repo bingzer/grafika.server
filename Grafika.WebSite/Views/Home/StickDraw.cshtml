@@ -2,35 +2,72 @@
 @{
     ViewBag.Title = "StickDraw";
 }
-
-<header class="bg-primary page-heading" style="background-color: #5C6BC0"></header>
-<section class="bg-dark page-title" style="background-color: #5C6BC0">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12 text-center">
-                <h1>Saying goodbye to StickDraw</h1>
-                <img src="~/img/stickdraw-logo.png" alt="StickDraw logo" width="250"/>
-                <hr class="primary">
-                <p class="text-faded font-larger">
-                    StickDraw is one of the first animation maker app ever wandered in Google Play Store. <br/>
-                    Due to limitation of its design, we have decided to deprecate the app. <br/>
-                    Although, it will still be around in the Play Store, the excitement and the time to maintain the application has <i>gone</i>.
-                </p>
-                <hr class="primary">
-                <p class="text-faded font-larger">
-                    We would like to thank the users and all of the positive and negative feedbacks.
-                </p>
-            </div>
+<header id="header">
+    <div id="header-content" class="header-content">
+        <div class="row text-center">
+            <h1>StickDraw</h1>
+            <p class="font-larger">Saying goodbye :(</p>
+            <hr class="primary">
+            <p class="text-faded font-larger">
+                StickDraw is one of the first animation maker app ever wandered in Google Play Store. <br />
+                Due to limitation of its design, we have decided to deprecate the app. <br />
+                Although, it will still be around in the Play Store, the excitement and the time to maintain the application has <i>gone</i>.
+            </p>
+            <p class="padding-xl">
+                <a href="https://play.google.com/store/apps/details?id=com.bingzer.android.stickdraw">
+                    <img src="~/img/google-play-badge.png" />
+                </a>
+                <a href="https://www.amazon.com/bingzer-StickDraw/dp/B007IWIOME">
+                    <img src="~/img/amazon-app-store-badge.png" />
+                </a>
+            </p>
+            <hr class="primary">
+            <p class="text-faded font-larger margin-xl">
+                We would like to thank the users and all of the positive and negative feedbacks. <br/>
+            </p>
+            <p class="margin-xl">
+                <a href="#youtube" class="btn btn-lg btn-default page-scroll" title="Scroll for more">
+                    <i class="fa fa-arrow-down sr-icons"></i>
+                </a>
+            </p>
         </div>
     </div>
+</header>
+<section id="youtube" class="bg-dark padding-xxl">
+    <div class="row">
+        <header class="col-lg-12 text-center">
+            <h2 class="text-faded">
+                Youtube Channels
+            </h2>
+            <p class="font-larger">
+                While the app is quietly being disbanded, these amazing users keep creating amazing animations.<br />
+                We compiled a list of animations published in YouTube created by StickDraw
+            </p>
+            <p class="text-faded font-larger">
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/videoseries?list=PLqadUo4AdKXyx9zDy5MJ00JqeHOkPnTHT" frameborder="0" allowfullscreen></iframe>
+            </p>
+        </header>
+    </div>
 </section>
-<section class="bg-primary landing">
+<section id="migration" class="padding-xxl">
+    <div class="row">
+        <header class="col-lg-12 text-center">
+            <h2>
+                Export animations to Grafika
+            </h2>
+            <p class="font-larger">
+                In the future we will provide an export functionality from StickDraw animations to Grafika animations
+            </p>
+        </header>
+    </div>
+</section>
+<section class="bg-primary padding-xxl">
     <div class="container">
         <div class="row">
             <div class="col-lg-12 text-center">
-                <p class="text-faded font-larger">
-                    But you should try
-                </p>
+                <h1 class="text-faded">
+                    Ready to switch?
+                </h1>
                 <p>
                     <a href="/">
                         <img src="~/img/logo.png" alt="Grafika logo" width="250">
@@ -43,3 +80,23 @@
         </div>
     </div>
 </section>
+
+@section styles {
+    <environment names="Development">
+        <link href="~/css/GrafikaApp.StickDraw.css" rel="stylesheet" type="text/css">
+    </environment>
+    <environment names="Production">
+        <link href="~/css/GrafikaApp.StickdDraw.min.css" rel="stylesheet" type="text/css">
+    </environment>
+}
+
+
+@section scripts {
+    <environment names="Development">
+        <script type="text/javascript" src="~/js/jquery.easing.js"></script>
+        <script type="text/javascript" src="~/js/GrafikaApp.Stickdraw.js"></script>
+    </environment>
+    <environment names="Production">
+        <script type="text/javascript" src="~/js/GrafikaApp.Bundle.StickDraw.min.js"></script>
+    </environment>
+}

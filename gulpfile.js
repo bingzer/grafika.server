@@ -137,6 +137,7 @@ gulp.task('min:scripts', function (callback) {
         'min:scripts:GrafikaApp.Bundle.Site',
         'min:scripts:GrafikaApp.Bundle.Home',
         'min:scripts:GrafikaApp.Bundle.Drawing',
+        'min:scripts:GrafikaApp.Bundle.StickDraw',
         callback);
 });
 
@@ -164,6 +165,16 @@ gulp.task('min:scripts:GrafikaApp.Bundle.Home', function (callback) {
     .pipe(concat('GrafikaApp.Bundle.Home.min.js'))
     .pipe(uglify())
     .pipe(gulp.dest('Grafika.WebSite/wwwroot/js'));
+});
+
+gulp.task('min:scripts:GrafikaApp.Bundle.StickDraw', function (callback) {
+    return gulp.src([
+        'Grafika.WebSite/wwwroot/js/jquery.easing.js',
+        'Grafika.WebSite/wwwroot/js/GrafikaApp.StickDraw.js',
+    ])
+        .pipe(concat('GrafikaApp.Bundle.StickDraw.min.js'))
+        .pipe(uglify())
+        .pipe(gulp.dest('Grafika.WebSite/wwwroot/js'));
 });
 
 gulp.task('min:scripts:GrafikaApp.Bundle.Drawing', function (callback) {
@@ -218,6 +229,7 @@ gulp.task('min:styles', function (callback) {
         'min:styles:GrafikaApp.Bundle.Drawing',
         'min:styles:GrafikaApp.Bundle.Animation.List',
         'min:styles:GrafikaApp.Bundle.Animation.Detail',
+        'min:styles:GrafikaApp.Bundle.StickDraw',
         callback);
 });
 
@@ -279,4 +291,13 @@ gulp.task('min:styles:GrafikaApp.Bundle.Drawing', function(callback) {
     .pipe(concat('GrafikaApp.Bundle.Drawing.min.css'))
     .pipe(cleanCSS())
     .pipe(gulp.dest('Grafika.WebSite/wwwroot/css'));
+});
+
+gulp.task('min:styles:GrafikaApp.Bundle.StickDraw', function (callback) {
+    return gulp.src([
+        'Grafika.WebSite/wwwroot/css/GrafikaApp.Stickdraw.css'
+    ])
+        .pipe(concat('GrafikaApp.Bundle.StickDraw.min.css'))
+        .pipe(cleanCSS())
+        .pipe(gulp.dest('Grafika.WebSite/wwwroot/css'));
 });
