@@ -273,7 +273,9 @@ gulp.task('min:styles:GrafikaApp.Bundle.StickDraw', function (callback) {
         'Grafika.WebSite/wwwroot/css/GrafikaApp.Stickdraw.css'
     ])
         .pipe(concat('GrafikaApp.Bundle.StickDraw.min.css'))
-        .pipe(cleanCSS())
+        .pipe(cleanCSS({ debug: true }, function (details) {
+            console.log(details);
+        }))
         .pipe(gulp.dest('Grafika.WebSite/wwwroot/css'));
 });
 
