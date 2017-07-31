@@ -4,6 +4,7 @@ Click here to learn more. https://go.microsoft.com/fwlink/?LinkId=518007
 */
 
 var gulp = require('gulp');
+var gutil = require('gulp-util');
 var less = require('gulp-less');
 var typings = require('gulp-typings');
 var mainBowerFiles = require('main-bower-files');
@@ -274,7 +275,7 @@ gulp.task('min:styles:GrafikaApp.Bundle.StickDraw', function (callback) {
     ])
         .pipe(concat('GrafikaApp.Bundle.StickDraw.min.css'))
         .pipe(cleanCSS({ debug: true }, function (details) {
-            console.log(details);
+            gutil.log(details);
         }))
         .pipe(gulp.dest('Grafika.WebSite/wwwroot/css'));
 });
