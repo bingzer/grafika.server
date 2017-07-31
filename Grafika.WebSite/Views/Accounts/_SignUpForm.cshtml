@@ -1,11 +1,11 @@
 <div class="login-form">
-    <header class="login-header">
+    <header class="login-header text-center">
         <h1>Sign up now for free!</h1>
-        <p>
-            Use your Google or Facebook account to register
-        </p>
     </header>
     <div class="row text-center">
+        <p class="font-smaller">
+            Use your Google or Facebook account to register
+        </p>
         <a href="@Utility.CombineUrl(AppEnvironment.Default.Server.Url, "accounts/google")" type="button" class="login login-submit login-oauth login-google">
             <img src="~/img/google_white.png" alt="Google Logo" />
             Google
@@ -34,9 +34,7 @@
     <div class="row">
         <div class="login-help">
             <p>
-                By registering you agree to our <a href="/eula">license agreement</a>
-            </p>
-            <p>
+                By registering you agree to our <a href="/eula">license agreement</a> <br/>
                 Already have an account? <a href="/signin">Login here</a>
             </p>
         </div>

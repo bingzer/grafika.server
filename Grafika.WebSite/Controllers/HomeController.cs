@@ -4,6 +4,7 @@ using Grafika.Services;
 using System.Threading.Tasks;
 using Grafika.WebSite.ViewModels;
 using Grafika.Configurations;
+using Grafika.Utilities;
 
 namespace Grafika.WebSite.Controllers
 {
@@ -35,8 +36,7 @@ namespace Grafika.WebSite.Controllers
         [Route("stickdraw"), AllowAnonymous]
         public IActionResult StickDraw()
         {
-            ViewBag.Page = new PageViewModel{ Title = "StickDraw" };
-
+            ViewBag.Page = PageViewModel.StickDrawPageViewModel;
             return View();
         }
 
@@ -52,6 +52,14 @@ namespace Grafika.WebSite.Controllers
         public IActionResult Eula()
         {
             ViewBag.Page = new PageViewModel { Title = "EULA - Grafika" };
+
+            return View();
+        }
+
+        [Route("feedback"), AllowAnonymous]
+        public IActionResult Feedback()
+        {
+            ViewBag.Page = new PageViewModel { Title = "Feedback - Grafika" };
 
             return View();
         }

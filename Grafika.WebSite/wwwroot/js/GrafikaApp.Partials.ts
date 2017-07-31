@@ -11,49 +11,15 @@
 
         public static renderPartial(elem: any): JQueryPromise<any> {
             elem = $(elem);
-            if (!elem.data('url')) throw new Error('Expecting data-url');
-            if (elem.data('loaded')) return jQuery.when();
-
-            let target = elem.data('target');
             let shouldAppend = elem.data('partial') === 'append';
-            let callback = elem.data('callback');
-            let timeout = elem.data('timeout');
-            let opts = {  
-                url: elem.data('url'),
-                method: elem.data('method'),
-                data: elem.data('data'),
+
+            let onResult: IAjaxResultCallback = (err: Error, result: any, elem: JQuery): JQueryPromise<any> => {
+                if (shouldAppend) elem.append(result);
+                else elem.html(result);
+                return jQuery.when(result);
             };
 
-            let onResult = (target: JQuery, res: any): JQueryPromise<any> => {
-                if (shouldAppend) target.append(res);
-                else target.html(res);
-                return jQuery.when(res);
-            };
-
-            let invokeCallback = (res: any, xhrReq: any): JQueryPromise<any> => {
-                if (callback) {
-                    let $res = res;
-                    let $xhr = xhrReq;
-                    eval(callback);
-                }
-                return jQuery.when(res);
-            }
-
-            let doSend = (): JQueryPromise<any> => {
-                return jQuery.ajax(opts).done((res, textStatus, xhrReq) => {
-                    return onResult($(target || elem), res).then(() => invokeCallback(res, xhrReq));
-                });
-            }
-            
-            if (timeout && timeout > 0) {
-                var deferred = jQuery.Deferred<any>();
-                setTimeout(() => {
-                    doSend().then((res, text, xhrReq) => deferred.resolve(res))
-                        .fail((err) => deferred.reject(err));
-                }, timeout);
-                return deferred.promise();
-            }
-            else return doSend();
+            return GrafikaApp.sendAjax(elem, onResult);
         }
     }
 }

@@ -22,6 +22,15 @@ namespace Grafika.WebSite.ViewModels
         public string SiteName => "Grafika";
         public string SiteUrl => "https://grafika.bingzer.com";
         public string SiteAuthor => "Grafika Team";
+
+        public static PageViewModel StickDrawPageViewModel => new PageViewModel
+        {
+            Title = "StickDraw",
+            Description = "An animation maker app for Android that is super easy to learn or use. Get your animation up and running within seconds. StickDraw is great for animating your Stick Figure / Stick Person drawings or a simple stop motion animation.",
+            Keyword = "StickDraw, animation maker, StickDraw android",
+            Thumbnail = new ThumbnailViewModel(Utility.CombineUrl(AppEnvironment.Default.Content.Url, "/img/stickdraw-background-min.png"), 1025, 500),
+        };
+
     }
 
     public class ThumbnailViewModel

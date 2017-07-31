@@ -115,6 +115,11 @@ h6 {
     background-size: contain;
     min-width: 96px;
 }
+.no-link {
+    &:hover, &:active, &:visited {
+        text-decoration: none !important;
+    }
+}
 
 // Navigation
 
@@ -275,10 +280,10 @@ h6 {
 // --------------- footer
 .footer {
     width: 100%;
-    padding: 24px 64px 0 64px;
     position: relative;
     bottom: 0;
     left: 0;
+    .page-padding;
 
     @media (max-width: @media-sm) {
         text-align: center;

@@ -105,7 +105,8 @@ gulp.task('copy-js', function () {
         'bower_components/grafika-js/dist/grafika.js',
         'bower_components/grafika-js/dist/grafika.random-drawing.js',
         'bower_components/grafika-js/dist/grafika.demo.js',
-        'bower_components/angular-spectrum-colorpicker/dist/angular-spectrum-colorpicker.js'
+        'bower_components/angular-spectrum-colorpicker/dist/angular-spectrum-colorpicker.js',
+        'bower_components/jquery-serialize-object/jquery.serialize-object.js'
     ])
     .pipe(gulp.dest('Grafika.WebSite/wwwroot/js'));
 });
@@ -145,6 +146,7 @@ gulp.task('min:scripts:GrafikaApp.Bundle.Site', function (callback) {
     return gulp.src([
         'Grafika.WebSite/wwwroot/js/bootbox.js',
         'Grafika.WebSite/wwwroot/js/scrollreveal.js',
+        'Grafika.WebSite/wwwroot/js/jquery.serialize-object.js',
         'Grafika.WebSite/wwwroot/js/grafika.js',
         'Grafika.WebSite/wwwroot/js/GrafikaApp.js',
         'Grafika.WebSite/wwwroot/js/GrafikaApp.Form.js',

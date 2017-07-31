@@ -1,27 +1,36 @@
-﻿module GrafikaApp {
+﻿interface JQuery {
+    serializeObject(): JQuery;
+    serializeJSON(): JQuery;
+}
+
+module GrafikaApp {
+
     export class Form {
-        public static submit(elem) {
+        /**
+         * Call on the <form>
+         * @param elem
+         */
+        public static onSubmit(elem): boolean {
+            GrafikaApp.Form.submit(elem);
+            return false;
+        }
+
+        /**
+         * Invoke the actual form.submit()
+         * @param elem
+         */
+        public static submit(elem: any, e?: JQueryEventObject) {
+            if (e) e.preventDefault();
             let form = $(elem).closest('form');
             if (!form) throw new Error('no form found');
 
-            form.submit((e) => {
-                e.preventDefault();
+            let type = form.data('type') || 'application/x-www-form-urlencoded';
+            form.data('url', form.attr('action') || form.data('url'));
+            form.data('method', form.attr('method') || form.data('method'));
+            form.data('data', (type == 'application/json' ? form.serializeJSON() : form.serialize()));
+            form.data('type', type);
 
-                let callback = form.data('callback');
-                let type = form.data('type') || 'application/x-www-form-urlencoded'
-                let options: JQueryAjaxSettings = {
-                    url: form.attr('action') || form.data('url'),
-                    method: form.attr('method') || form.data('method'),
-                    data: (type == 'application/json' ? form.serializeArray() : form.serialize()),
-                    dataType: type,
-                };
-                return jQuery.ajax(options).done((res, textStatus, xhr) => {
-                    let $result = res;
-                    let $textStatus = textStatus;
-                    let $xhr = xhr;
-                    eval(callback);
-                });
-            });
+            return GrafikaApp.sendAjax(form);
         }
     }
 }
