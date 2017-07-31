@@ -25,6 +25,24 @@ namespace Grafika.WebSite.Controllers
             _tokenProvider = tokenProvider;
         }
 
+        [Route("")]
+        public IActionResult Index()
+        {
+            var userIdentity = User.Identity as IUserIdentity;
+            ViewBag.Page = new PageViewModel
+            {
+                Title = $"{userIdentity.Name} - Grafika",
+                Description = $"Account profile page for {userIdentity.Name}"
+            };
+
+            var model = new AccountViewModel
+            {
+                User = userIdentity
+            };
+
+            return View(model);
+        }
+
         [Route("/signin"), AllowAnonymous]
         public IActionResult Login()
         {

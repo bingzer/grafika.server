@@ -1,0 +1,106 @@
+@model AccountViewModel
+@{
+}
+
+<header class="bg-transparent page-heading page-heading-lg text-center text-white"
+        style="background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.0)), url(@Model.User.GetUserBackdropUrl()) no-repeat; -webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover; background-size: cover; ">
+    <h1>@Model.User.Username</h1>
+    <p class="font-smaller">
+        <a href="#">Change username</a>
+    </p>
+</header>
+<div class="page-wrapper">
+    <div class="page-content page-content-article">
+        <article class="padding-xl">
+            <header>
+                <h2>Profile</h2>
+            </header>
+            <form class="form-horizontal">
+                <div class="form-group">
+                    <label class="control-label col-sm-2">Email</label>
+                    <div class="col-sm-8">
+                        @Html.EditorFor(m => m.User.Email, new { htmlAttributes = new { @class = "form-control", disabled = "disabled" } })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-2">Password</label>
+                    <div class="col-sm-8">
+                        <button class="btn btn-danger">Set/Change Password</button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-2">Name</label>
+                    <div class="col-sm-8">
+                        <span class="col-sm-4 no-padding">
+                            @Html.EditorFor(m => m.User.FirstName, new { htmlAttributes = new { @class = "form-control" } })
+                        </span>
+                        <span class="col-sm-6">
+                            @Html.EditorFor(m => m.User.LastName, new { htmlAttributes = new { @class = "form-control" } })
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-2">Username</label>
+                    <div class="col-sm-6">
+                        <span class="col-sm-10 no-padding">
+                            @Html.EditorFor(m => m.User.Username, new { htmlAttributes = new { @class = "form-control" } })
+                        </span>
+                        <span class="col-sm-2">
+                            <button class="btn btn-info">Check</button>
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-2">Accounts</label>
+                    <div class="bgn-group col-sm-6" data-toggle="buttons">
+                        <label class="btn btn-danger active">
+                            <input type="checkbox" autocomplete="off" checked> Google
+                        </label>
+                        <label class="btn btn-primary active">
+                            <input type="checkbox" autocomplete="off" checked> Facebook
+                        </label>
+                    </div>
+                </div>
+            </form>
+        </article>
+
+        <article class="padding-xl">
+            <header>
+                <h2>Settings</h2>
+            </header>
+            <form class="form-horizontal">
+                <div class="form-group">
+                    <label class="control-label col-sm-2">Public Animations</label>
+                    <div class="col-sm-8">
+                        <button type="button" class="btn btn-primary" data-toggle="button" aria-pressed="false" autocomplete="off">
+                            Default to Public
+                        </button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-2">Author</label>
+                    <div class="col-sm-8">
+                        @Html.EditorFor(m => m.Preference.DrawingAuthor, new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-2">Timer</label>
+                    <div class="col-sm-8">
+                        @Html.EditorFor(m => m.Preference.DrawingTimer, new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-2">Loop Playback</label>
+                    <div class="col-sm-8">
+                        @Html.EditorFor(m => m.Preference.PlaybackLoop, new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-2">Email Notifications</label>
+                    <div class="col-sm-8">
+                    </div>
+                </div>
+            </form>
+        </article>
+    </div>
+</div>
