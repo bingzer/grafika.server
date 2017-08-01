@@ -89,6 +89,28 @@ namespace Grafika.WebSite.Controllers
             return View();
         }
 
+        [Route("online"), AllowAnonymous]
+        public IActionResult Online()
+        {
+            ViewBag.Page = new PageViewModel
+            {
+                Title = "Online app - Grafika"
+            };
+
+            return View();
+        }
+
+        [Route("ios"), AllowAnonymous]
+        public IActionResult IOS()
+        {
+            ViewBag.Page = new PageViewModel
+            {
+                Title = "iOS app - Grafika"
+            };
+
+            return View();
+        }
+
         [Route("privacy-policy"), AllowAnonymous]
         public IActionResult PrivacyPolicy()
         {

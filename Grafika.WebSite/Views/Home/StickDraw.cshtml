@@ -1,6 +1,6 @@
 @model AnimationsViewModel
 
-<header id="header">
+<header id="header" class="stickdraw">
     <div id="header-content" class="header-content">
         <div class="row text-center">
             <h1 style="visibility: hidden">
@@ -89,7 +89,9 @@
         <link href="~/css/GrafikaApp.StickDraw.css" rel="stylesheet" type="text/css">
     </environment>
     <environment names="Production">
-        <link href="~/css/GrafikaApp.Bundle.StickDraw.min.css" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="~/css/GrafikaApp.Bundle.StickDraw.min.css"
+              asp-fallback-href="~/css/GrafikaApp.StickDraw.css"
+              asp-fallback-test-class="btn" asp-fallback-test-property="border" asp-fallback-test-value="none" />
     </environment>
 }
 

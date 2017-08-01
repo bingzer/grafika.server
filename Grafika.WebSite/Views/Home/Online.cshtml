@@ -1,0 +1,42 @@
+@model AnimationsViewModel
+
+<div class="bg-transparent page-heading"></div>
+<header id="header" class="page-wrapper padding-xxl">
+    <div class="row col-lg-4">
+        <h1 style="visibility: collapse">Grafika - Animation Maker</h1>
+        <p id="grafika-logo" class="logo-grafika logo-grafika-md logo-grafika-center"></p>
+        <hr class="primary">
+        <ul class="font-larger">
+            <li>Online Editor</li>
+            <li>Community</li>
+            <li>Comments and ratings</li>
+        </ul>
+    </div>
+    <div class="col-lg-8 text-center">
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/rZB1oH7iCdw" frameborder="0" allowfullscreen></iframe>
+        <p class="padding-xl">
+            <a href="/animations/create" title="Try now" class="btn btn-xl btn-default">
+                Try it now
+            </a>
+        </p>
+    </div>
+</header>
+
+@section styles {
+    <environment names="Development">
+        <link href="~/css/GrafikaApp.Platforms.css" rel="stylesheet" type="text/css">
+    </environment>
+    <environment names="Production">
+        <link href="~/css/GrafikaApp.Bundle.Platforms.min.css" rel="stylesheet" type="text/css">
+    </environment>
+}
+
+@section scripts {
+    <environment names="Development">
+        <script type="text/javascript" src="~/js/jquery.easing.js"></script>
+        <script type="text/javascript" src="~/js/GrafikaApp.Platforms.js"></script>
+    </environment>
+    <environment names="Production">
+        <script type="text/javascript" src="~/js/GrafikaApp.Bundle.Platforms.min.js"></script>
+    </environment>
+}
