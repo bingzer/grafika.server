@@ -38,7 +38,7 @@ namespace Grafika.Services.Web.Extensions
 
         public static string GetSlug(this Animation animation)
         {
-            return SeoFriendlyUrlExtensions.GenerateSlug(animation?.Name);
+            return SeoFriendlyUrlExtensions.GenerateSlug(animation?.Name, "animation");
         }
     }
 }

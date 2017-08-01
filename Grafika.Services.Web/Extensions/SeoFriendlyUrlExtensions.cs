@@ -10,7 +10,7 @@ namespace Grafika.Services.Web.Extensions
             return GenerateSlug(name);
         }
 
-        public static string GenerateSlug(string name)
+        public static string GenerateSlug(string name, string defaultIfEmpty = "unknown")
         {
             string phrase = name;
 
@@ -22,6 +22,10 @@ namespace Grafika.Services.Web.Extensions
             // cut and trim 
             str = str.Substring(0, str.Length <= 45 ? str.Length : 45).Trim();
             str = Regex.Replace(str, @"\s", "-"); // hyphens   
+
+            if (string.IsNullOrEmpty(str))
+                str = defaultIfEmpty;
+
             return str;
         }
 

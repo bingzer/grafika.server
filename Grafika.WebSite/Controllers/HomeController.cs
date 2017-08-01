@@ -11,6 +11,7 @@ namespace Grafika.WebSite.Controllers
     [Route("/")]
     public class HomeController : Controller
     {
+        [ResponseCache(VaryByHeader = "User-Agent", Duration = 86400)]
         [Route(""), AllowAnonymous]
         public async Task<IActionResult> Index([FromServices] ISeriesService seriesService)
         {
@@ -36,6 +37,7 @@ namespace Grafika.WebSite.Controllers
             return Redirect($"/animations/{animationId}/{slug}/player?autoPlay=true&templateName={templateName}");
         }
 
+        [ResponseCache(VaryByHeader = "User-Agent", Duration = 86400)]
         [Route("stickdraw"), AllowAnonymous]
         public IActionResult StickDraw()
         {
@@ -43,6 +45,7 @@ namespace Grafika.WebSite.Controllers
             return View();
         }
 
+        [ResponseCache(VaryByHeader = "User-Agent", Duration = 86400)]
         [Route("about"), AllowAnonymous]
         public IActionResult About()
         {
@@ -51,6 +54,7 @@ namespace Grafika.WebSite.Controllers
             return View();
         }
 
+        [ResponseCache(VaryByHeader = "User-Agent", Duration = 86400)]
         [Route("eula"), AllowAnonymous]
         public IActionResult Eula()
         {
@@ -59,6 +63,7 @@ namespace Grafika.WebSite.Controllers
             return View();
         }
 
+        [ResponseCache(VaryByHeader = "User-Agent", Duration = 86400)]
         [Route("feedback"), AllowAnonymous]
         public IActionResult Feedback()
         {
@@ -67,6 +72,7 @@ namespace Grafika.WebSite.Controllers
             return View();
         }
 
+        [ResponseCache(VaryByHeader = "User-Agent", Duration = 86400)]
         [Route("platforms"), AllowAnonymous]
         public IActionResult Platforms()
         {
@@ -78,6 +84,7 @@ namespace Grafika.WebSite.Controllers
             return View();
         }
 
+        [ResponseCache(VaryByHeader = "User-Agent", Duration = 86400)]
         [Route("android"), AllowAnonymous]
         public IActionResult Android()
         {
@@ -89,6 +96,7 @@ namespace Grafika.WebSite.Controllers
             return View();
         }
 
+        [ResponseCache(VaryByHeader = "User-Agent", Duration = 86400)]
         [Route("online"), AllowAnonymous]
         public IActionResult Online()
         {
@@ -100,6 +108,7 @@ namespace Grafika.WebSite.Controllers
             return View();
         }
 
+        [ResponseCache(VaryByHeader = "User-Agent", Duration = 86400)]
         [Route("ios"), AllowAnonymous]
         public IActionResult IOS()
         {
@@ -111,6 +120,7 @@ namespace Grafika.WebSite.Controllers
             return View();
         }
 
+        [ResponseCache(VaryByHeader = "User-Agent", Duration = 86400)]
         [Route("privacy-policy"), AllowAnonymous]
         public IActionResult PrivacyPolicy()
         {
