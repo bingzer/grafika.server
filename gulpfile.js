@@ -140,6 +140,8 @@ gulp.task('min:scripts', function (callback) {
         'min:scripts:GrafikaApp.Bundle.Home',
         'min:scripts:GrafikaApp.Bundle.Drawing',
         'min:scripts:GrafikaApp.Bundle.StickDraw',
+        'min:scripts:GrafikaApp.Bundle.Platforms',
+        'min:scripts:GrafikaApp.Bundle.Android',
         callback);
 });
 
@@ -177,6 +179,25 @@ gulp.task('min:scripts:GrafikaApp.Bundle.StickDraw', function (callback) {
         'Grafika.WebSite/wwwroot/js/GrafikaApp.StickDraw.js',
     ])
         .pipe(concat('GrafikaApp.Bundle.StickDraw.min.js'))
+        .pipe(uglify())
+        .pipe(gulp.dest('Grafika.WebSite/wwwroot/js'));
+});
+
+gulp.task('min:scripts:GrafikaApp.Bundle.Platforms', function (callback) {
+    return gulp.src([
+        'Grafika.WebSite/wwwroot/js/jquery.easing.js',
+        'Grafika.WebSite/wwwroot/js/GrafikaApp.Platforms.js',
+    ])
+        .pipe(concat('GrafikaApp.Bundle.Platforms.min.js'))
+        .pipe(uglify())
+        .pipe(gulp.dest('Grafika.WebSite/wwwroot/js'));
+});
+
+gulp.task('min:scripts:GrafikaApp.Bundle.Android', function (callback) {
+    return gulp.src([
+        'Grafika.WebSite/wwwroot/js/GrafikaApp.Android.js',
+    ])
+        .pipe(concat('GrafikaApp.Bundle.Android.min.js'))
         .pipe(uglify())
         .pipe(gulp.dest('Grafika.WebSite/wwwroot/js'));
 });
@@ -230,6 +251,8 @@ gulp.task('min:styles', function (callback) {
         'min:styles:GrafikaApp.Bundle.Site',
         'min:styles:GrafikaApp.Bundle.Home',
         'min:styles:GrafikaApp.Bundle.Login',
+        'min:styles:GrafikaApp.Bundle.Platforms',
+        'min:styles:GrafikaApp.Bundle.Android',
         'min:styles:GrafikaApp.Bundle.StickDraw',
         'min:styles:GrafikaApp.Bundle.Animation.List',
         'min:styles:GrafikaApp.Bundle.Animation.Detail',
@@ -269,15 +292,31 @@ gulp.task('min:styles:GrafikaApp.Bundle.Login', function(callback) {
     .pipe(gulp.dest('Grafika.WebSite/wwwroot/css'));
 });
 
+gulp.task('min:styles:GrafikaApp.Bundle.Platforms', function (callback) {
+    return gulp.src([
+        'Grafika.WebSite/wwwroot/css/GrafikaApp.Platforms.css'
+    ])
+    .pipe(concat('GrafikaApp.Bundle.Platforms.min.css'))
+    .pipe(cleanCSS())
+    .pipe(gulp.dest('Grafika.WebSite/wwwroot/css'));
+});
+
+gulp.task('min:styles:GrafikaApp.Bundle.Android', function (callback) {
+    return gulp.src([
+        'Grafika.WebSite/wwwroot/css/GrafikaApp.Android.css'
+    ])
+    .pipe(concat('GrafikaApp.Bundle.Android.min.css'))
+    .pipe(cleanCSS())
+    .pipe(gulp.dest('Grafika.WebSite/wwwroot/css'));
+});
+
 gulp.task('min:styles:GrafikaApp.Bundle.StickDraw', function (callback) {
     return gulp.src([
         'Grafika.WebSite/wwwroot/css/GrafikaApp.Stickdraw.css'
     ])
-        .pipe(concat('GrafikaApp.Bundle.StickDraw.min.css'))
-        .pipe(cleanCSS({ debug: true }, function (details) {
-            gutil.log(details);
-        }))
-        .pipe(gulp.dest('Grafika.WebSite/wwwroot/css'));
+    .pipe(concat('GrafikaApp.Bundle.StickDraw.min.css'))
+    .pipe(cleanCSS())
+    .pipe(gulp.dest('Grafika.WebSite/wwwroot/css'));
 });
 
 gulp.task('min:styles:GrafikaApp.Bundle.Animation.List', function (callback) {

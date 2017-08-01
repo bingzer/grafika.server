@@ -1,0 +1,79 @@
+@model AnimationsViewModel
+@{
+    ViewBag.Title = "StickDraw";
+}
+
+<div class="bg-transparent page-heading"></div>
+<header id="header" class="page-wrapper padding-xxl">
+    <div class="row text-center col-lg-4">
+        <h1 style="visibility: collapse">Grafika - Animation Maker</h1>
+        <p id="grafika-logo" class="logo-grafika"></p>
+        <hr class="primary">
+        <p class="text-faded font-larger">
+            Available now for Android!
+        </p>
+    </div>
+    <div class="col-lg-8">
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/rZB1oH7iCdw" frameborder="0" allowfullscreen></iframe>
+        <p class="padding-xl">
+            <a href="https://play.google.com/store/apps/details?id=com.bingzer.android.grafika" title="Get it from Google Play Store">
+                <img src="~/img/google-play-badge.png" />
+            </a>
+        </p>
+    </div>
+</header>
+<section id="migration" class="padding-xxl">
+    <div class="row">
+        <header class="col-lg-12 text-center">
+            <i class="fa fa-4x fa-upload sr-icons"></i>
+            <h2>
+                Export animations to Grafika
+            </h2>
+            <p class="font-larger">
+                In the future we will provide an export functionality from StickDraw animations to Grafika animations
+            </p>
+        </header>
+    </div>
+</section>
+<section class="bg-primary padding-xxl">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <h1 class="text-faded">
+                    Ready to switch?
+                </h1>
+                <p>
+                    <a href="/">
+                        <img src="~/img/logo.png" alt="Grafika logo" width="250">
+                    </a>
+                </p>
+                <p class="text-faded font-larger">
+                    A cross-platform and simpler animation maker app
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section styles {
+    <environment names="Development">
+        <link href="~/css/GrafikaApp.Platforms.css" rel="stylesheet" type="text/css">
+        <link href="~/css/GrafikaApp.Android.css" rel="stylesheet" type="text/css">
+    </environment>
+    <environment names="Production">
+        <link href="~/css/GrafikaApp.Bundle.Platforms.min.css" rel="stylesheet" type="text/css">
+        <link href="~/css/GrafikaApp.Bundle.Android.min.css" rel="stylesheet" type="text/css">
+    </environment>
+}
+
+@section scripts {
+    <environment names="Development">
+        <script type="text/javascript" src="~/js/jquery.easing.js"></script>
+        <script type="text/javascript" src="~/js/GrafikaApp.Platforms.js"></script>
+        <script type="text/javascript" src="~/js/GrafikaApp.Android.js"></script>
+    </environment>
+    <environment names="Production">
+        <script type="text/javascript" src="~/js/GrafikaApp.Bundle.Platforms.min.js"></script>
+        <script type="text/javascript" src="~/js/GrafikaApp.Bundle.Android.min.js"></script>
+    </environment>
+}

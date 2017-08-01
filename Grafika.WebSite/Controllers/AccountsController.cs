@@ -94,18 +94,6 @@ namespace Grafika.WebSite.Controllers
             return Redirect(url);
         }
 
-        [Route("forms/login"), AllowAnonymous]
-        public IActionResult LoginForm()
-        {
-            return PartialView("_LoginForm");
-        }
-
-        [Route("forms/registration"), AllowAnonymous]
-        public IActionResult RegistrationForm()
-        {
-            return PartialView("_RegistrationForm");
-        }
-
         [Route("recovery"), AllowAnonymous]
         public IActionResult ForgetPassword()
         {

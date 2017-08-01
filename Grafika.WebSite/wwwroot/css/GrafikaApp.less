@@ -21,13 +21,43 @@ hr {
 hr.light {
     border-color: white;
 }
- 
+
 a {
     .transition-all;
     color: @theme-primary;
+    text-decoration: none;
+
     &:hover,
     &:focus {
         color: darken(@theme-primary, 10%);
+        text-decoration: none;
+    }
+
+    i.fa {
+        .transition-all;
+
+        &:hover,
+        &:focus {
+            color: darken(@theme-primary, 10%);
+        }
+    }
+
+    &.static-link {
+        color: inherit !important;
+
+        &:hover,
+        &:focus {
+            color: darken(@theme-primary, 10%);
+        }
+
+        i.fa {
+            .transition-all;
+
+            &:hover,
+            &:focus {
+                color: inherit !important;
+            }
+        }
     }
 }
 
@@ -115,17 +145,13 @@ h6 {
     background-size: contain;
     min-width: 96px;
 }
-.no-link {
-    &:hover, &:active, &:visited {
-        text-decoration: none !important;
-    }
-}
 
 // Navigation
 
 .navbar-default {
     background-color: transparent;
     border-color: transparent;
+    padding-right: 25px;
     .sans-serif-font;
     .transition-all;
     

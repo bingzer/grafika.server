@@ -1,0 +1,51 @@
+@model AnimationsViewModel
+
+<div class="bg-transparent page-heading"></div>
+<div class="page-wrapper padding-xxl">
+    <header class="text-center">
+        <h1>Grafika is Available in different platforms/environments</h1>
+        <p class="font-larger">
+            Click on each different platform to find out more!
+        </p>
+    </header>
+    <article class="col-sm-6 col-lg-4">
+        <header class="padding-xl">
+            <i class="fa fa-5x fa-cloud"></i>
+            <h2>Online</h2>
+        </header>
+    </article>
+    <article class="col-sm-6 col-lg-4">
+        <header class="padding-xl">
+            <a class="static-link" href="/android">
+                <i class="fa fa-5x fa-android"></i>
+                <h2>Android</h2>
+            </a>
+        </header>
+    </article>
+    <article class="col-sm-6 col-lg-4">
+        <header class="padding-xl">
+            <i class="fa fa-5x fa-apple"></i>
+            <h2>iOS</h2>
+        </header>
+    </article>
+</div>
+
+@section styles {
+    <environment names="Development">
+        <link href="~/css/GrafikaApp.Platforms.css" rel="stylesheet" type="text/css">
+    </environment>
+    <environment names="Production">
+        <link href="~/css/GrafikaApp.Bundle.Platforms.min.css" rel="stylesheet" type="text/css">
+    </environment>
+}
+
+
+@section scripts {
+    <environment names="Development">
+        <script type="text/javascript" src="~/js/jquery.easing.js"></script>
+        <script type="text/javascript" src="~/js/GrafikaApp.Platforms.js"></script>
+    </environment>
+    <environment names="Production">
+        <script type="text/javascript" src="~/js/GrafikaApp.Bundle.Platforms.min.js"></script>
+    </environment>
+}

@@ -42,6 +42,8 @@
         app.controller('DrawingController', GrafikaApp.Drawing.Controllers.DrawingController);
 
         window.onerror = (err) => console.error(err);
+
+        angular.element('#mainNav').click(() => angular.element('md-backdrop').click());
     }
 }
 

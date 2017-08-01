@@ -52,6 +52,33 @@ namespace Grafika.WebSite.Controllers
             return View(options);
         }
 
+        [Route("{animationId}/{slug?}/edit")]
+        public async Task<IActionResult> Edit(string animationId, string slug = null)
+        {
+            var model = new AnimationDrawingViewModel
+            {
+                Animation = await _service.Get(animationId)
+            };
+
+            ViewBag.Page = new PageViewModel
+            {
+                Title = $"{model.Animation.Name} - Grafika",
+                Description = $"{model.Animation.Name} by {model.Animation.Author} - Grafika Animation",
+                Thumbnail = new ThumbnailViewModel(model.Animation.GetThumbnailUrl(), model.Animation.Width, model.Animation.Height),
+                UseNavigationBar = false,
+                UseFooter = false
+            };
+
+            return View("Edit", model);
+        }
+
+        [Route("{animationId}/{slug?}/player"), AllowAnonymous]
+        public async Task<IActionResult> Player(AnimationPlayerViewModel model, string slug = null)
+        {
+            model.Animation = await _service.Get(model.AnimationId);
+            return PartialView(model.TemplateName, model);
+        }
+
         [Route("{animationId}/{slug?}"), AllowAnonymous]
         public async Task<IActionResult> Detail([FromRoute] string animationId, string slug = null)
         {
@@ -84,32 +111,6 @@ namespace Grafika.WebSite.Controllers
             };
 
             return View("Edit", model);
-        }
-
-        [Route("{animationId}/{slug?}/edit")]
-        public async Task<IActionResult> Edit(string animationId = null)
-        {
-            var model = new AnimationDrawingViewModel();
-            if (animationId != null)
-                model.Animation = await _service.Get(animationId);
-
-            ViewBag.Page = new PageViewModel
-            {
-                Title = $"{model.Animation.Name} - Grafika",
-                Description = $"{model.Animation.Name} by {model.Animation.Author} - Grafika Animation",
-                Thumbnail = new ThumbnailViewModel(model.Animation.GetThumbnailUrl(), model.Animation.Width, model.Animation.Height),
-                UseNavigationBar = false,
-                UseFooter = false
-            };
-
-            return View("Edit", model);
-        }
-
-        [Route("{animationId}/{slug?}/player"), AllowAnonymous]
-        public async Task<IActionResult> Player(AnimationPlayerViewModel model)
-        {
-            model.Animation = await _service.Get(model.AnimationId);
-            return PartialView(model.TemplateName, model);
         }
 
         [Route("list"), AllowAnonymous]

@@ -7,8 +7,8 @@
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
                 <span class="sr-only">Toggle navigation</span> Menu <i class="fa fa-bars"></i>
             </button>
-            <a class="navbar-brand" href="/" style="padding-left: 16px; font-weight: 800; padding-top: 8px;">
-                <h1 id="animation-title" style="margin: 0; padding: 0">Loading...</h1>
+            <a class="navbar-brand" href="/">
+                <h1 id="animation-title">Loading...</h1>
             </a>
         </div>
         <!-- Collect the nav links, forms, and other content for toggling -->
@@ -28,7 +28,7 @@
                 else
                 {
                     <li>
-                        <a href="/signin" title="Login or register">Login</a>
+                        <a href="/signin" title="Login or register to save your animation">Login | Register</a>
                     </li>
                 }
             </ul>
@@ -38,7 +38,7 @@
     <!-- /.container-fluid -->
 </header>
 
-<section ng-app="app" ng-controller="DrawingController as vm" layout="row" style="min-height: 100%; background-color: #ddd">
+<section id="drawing-section" ng-app="app" ng-controller="DrawingController as vm" layout="row" role="application">
     <div id="progress-modal" layout-fill class="progress-modal" layout-align="center center">
         <md-progress-circular md-mode="indeterminate" class="md-primary"></md-progress-circular>
     </div>
