@@ -27,7 +27,9 @@ namespace Grafika.WebSite.Controllers
                 new SitemapNode(Url.Action("About", "Home")),
                 new SitemapNode(Url.Action("Eula", "Home")),
                 new SitemapNode(Url.Action("PrivacyPolicy", "Home")),
-                new SitemapNode(Url.Action("StickDraw", "Home"))
+                new SitemapNode(Url.Action("StickDraw", "Home")),
+                new SitemapNode(Url.Action("Platforms", "Home")),
+                new SitemapNode(Url.Action("Android", "Home"))
                 //other nodes
             };
 
