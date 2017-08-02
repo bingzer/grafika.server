@@ -49,7 +49,7 @@ namespace Grafika.WebSite.Controllers
         [Route("about"), AllowAnonymous]
         public IActionResult About()
         {
-            ViewBag.Page = new PageViewModel { Title = "About - Grafika" };
+            ViewBag.Page = new PageViewModel { Title = "About | Grafika" };
 
             return View();
         }
@@ -58,7 +58,7 @@ namespace Grafika.WebSite.Controllers
         [Route("eula"), AllowAnonymous]
         public IActionResult Eula()
         {
-            ViewBag.Page = new PageViewModel { Title = "EULA - Grafika" };
+            ViewBag.Page = new PageViewModel { Title = "EULA | Grafika" };
 
             return View();
         }
@@ -67,7 +67,7 @@ namespace Grafika.WebSite.Controllers
         [Route("feedback"), AllowAnonymous]
         public IActionResult Feedback()
         {
-            ViewBag.Page = new PageViewModel { Title = "Feedback - Grafika" };
+            ViewBag.Page = new PageViewModel { Title = "Feedback | Grafika" };
 
             return View();
         }
@@ -78,7 +78,7 @@ namespace Grafika.WebSite.Controllers
         {
             ViewBag.Page = new PageViewModel
             {
-                Title = "Available Platforms - Grafika"
+                Title = "Available Platforms | Grafika"
             };
 
             return View();
@@ -90,7 +90,7 @@ namespace Grafika.WebSite.Controllers
         {
             ViewBag.Page = new PageViewModel
             {
-                Title = "Android app - Grafika"
+                Title = "Android app | Grafika"
             };
 
             return View();
@@ -102,7 +102,7 @@ namespace Grafika.WebSite.Controllers
         {
             ViewBag.Page = new PageViewModel
             {
-                Title = "Online app - Grafika"
+                Title = "Online app | Grafika"
             };
 
             return View();
@@ -114,7 +114,7 @@ namespace Grafika.WebSite.Controllers
         {
             ViewBag.Page = new PageViewModel
             {
-                Title = "iOS app - Grafika"
+                Title = "iOS app | Grafika"
             };
 
             return View();
@@ -124,7 +124,7 @@ namespace Grafika.WebSite.Controllers
         [Route("privacy-policy"), AllowAnonymous]
         public IActionResult PrivacyPolicy()
         {
-            ViewBag.Page = new PageViewModel { Title = "Privacy Policy - Grafika" };
+            ViewBag.Page = new PageViewModel { Title = "Privacy Policy | Grafika" };
 
             return View();
         }

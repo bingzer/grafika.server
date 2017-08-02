@@ -9,16 +9,17 @@
         <div id="animation-thumbnails-container">
             @await  Html.PartialAsync("_List")
         </div>
-        <article class="text-center" style="display: inline-block; padding: 24px; width: 100%">
+        <article id="more-button-container" class="text-center">
             <button id="more-button"
                     class="btn btn-danger"
                     onclick="GrafikaApp.Partials.renderPartial(this)"
+                    title="Load more..."
                     data-partial="append"
                     data-url="/animations/list"
                     data-target="#animation-thumbnails-container"
                     data-callback="var d = $('#more-button').data();d.data.pageNumber++;$('#more-button').attr('data-data', JSON.stringify(d));"
                     data-data="@Model.Options.NextPage().ToJson()">
-                <h6>More..</h6>
+                <i class="fa fa-arrow-down"></i>
             </button>
         </article>
     </div>

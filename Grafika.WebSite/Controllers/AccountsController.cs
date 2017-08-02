@@ -31,7 +31,7 @@ namespace Grafika.WebSite.Controllers
             var userIdentity = User.Identity as IUserIdentity;
             ViewBag.Page = new PageViewModel
             {
-                Title = $"{userIdentity.Name} - Grafika",
+                Title = $"{userIdentity.Name} | Grafika",
                 Description = $"Account profile page for {userIdentity.Name}"
             };
 
@@ -48,7 +48,7 @@ namespace Grafika.WebSite.Controllers
         {
             ViewBag.Page = new PageViewModel
             {
-                Title = "Login to Grafika",
+                Title = "Sign In | Grafika",
                 UseFooter = false
             };
 
@@ -60,7 +60,7 @@ namespace Grafika.WebSite.Controllers
         {
             ViewBag.Page = new PageViewModel
             {
-                Title = "Sign Up - Grafika",
+                Title = "Sign Up | Grafika",
                 UseFooter = false
             };
             ViewBag.IsRegistration = true;

@@ -62,8 +62,8 @@ namespace Grafika.WebSite.Controllers
                     {
                         new SitemapImage(animation.GetThumbnailUrl())
                         {
-                            Caption =  $"{animation.Name} by {animation.Author} - Grafika Animation",
-                            Title = $"{animation.Name} - Grafika Animation",
+                            Caption =  $"{animation.Name}. An animation by {animation.Author} | Grafika",
+                            Title = $"{animation.Name} | Grafika",
                             Url = animation.GetThumbnailUrl()
                         }
                         

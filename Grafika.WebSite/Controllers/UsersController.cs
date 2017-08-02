@@ -33,8 +33,8 @@ namespace Grafika.WebSite.Controllers
 
             ViewBag.Page = new PageViewModel
             {
-                Title = $"{user.Username} - Grafika",
-                Description = $"List of all grafika animations created by {user.Username} - Grafika Animation",
+                Title = $"{user.Username} | Grafika",
+                Description = $"List of all grafika animations created by {user.Username} | Grafika",
                 Thumbnail = new ThumbnailViewModel(user.GetUserAvatarUrl(), 100, 100)
             };
 

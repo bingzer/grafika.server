@@ -18,8 +18,8 @@ namespace Grafika.Configurations
         public int UsersCount { get; set; }
         public int AnimationsCount { get; set; }
 
-        public string PageTitle { get; set; } = "Grafika - Animation Maker";
-        public string PageDescription { get; set; } = "A super simple animation maker, viewer, sharer and community for the web and Android by creators like you provided by Grafika";
-        public string PageKeyword { get; set; } = "grafika,animation,animation maker,animation creator";
+        public string PageTitle { get; set; } = "A stop-motion animation maker | Grafika";
+        public string PageDescription { get; set; } = "A super simple stop-motion animation maker, viewer, sharer and community for the web and Android by animators like you provided by Grafika";
+        public string PageKeyword { get; set; } = "grafika, animation,stop-motion animation, stop-motion animation maker, online animation maker,animation creator";
     }
 }

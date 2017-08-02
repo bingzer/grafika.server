@@ -55,8 +55,8 @@ namespace Grafika.WebSite.Controllers
 
             ViewBag.Page = new PageViewModel
             {
-                Title = $"{model.Animation.Name} - Grafika",
-                Description = $"{model.Animation.Name} by {model.Animation.Author} - Grafika Animation",
+                Title = $"{model.Animation.Name} | Grafika",
+                Description = $"{model.Animation.Name}. An animation by {model.Animation.Author} | Grafika Animation",
                 Thumbnail = new ThumbnailViewModel(model.Animation.GetThumbnailUrl(), model.Animation.Width, model.Animation.Height),
                 UseNavigationBar = false,
                 UseFooter = false
@@ -83,8 +83,8 @@ namespace Grafika.WebSite.Controllers
 
             ViewBag.Page = new PageViewModel
             {
-                Title = $"{animation.Name} - Grafika",
-                Description = $"{animation.Name} by {animation.Author} - Grafika Animation",
+                Title = $"{animation.Name} | Grafika",
+                Description = $"{animation.Name} by {animation.Author} | Grafika Animation",
                 Thumbnail = new ThumbnailViewModel(animation.GetThumbnailUrl(), animation.Width, animation.Height)
             };
 
@@ -98,7 +98,7 @@ namespace Grafika.WebSite.Controllers
 
             ViewBag.Page = new PageViewModel
             {
-                Title = $"Create Animation - Grafika",
+                Title = $"Create Animation | Grafika",
                 UseNavigationBar = false,
                 UseFooter = false
             };
