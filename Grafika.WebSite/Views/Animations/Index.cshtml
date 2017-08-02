@@ -7,10 +7,7 @@
 <div class="page-wrapper">
     <div class="page-content" id="animations">
         <div id="animation-thumbnails-container">
-            @foreach (var anim in Model.Animations)
-            {
-                @await Html.PartialAsync("_Thumbnail", anim)
-            }
+            @await  Html.PartialAsync("_List")
         </div>
         <article class="text-center" style="display: inline-block; padding: 24px; width: 100%">
             <button id="more-button"
@@ -19,19 +16,10 @@
                     data-partial="append"
                     data-url="/animations/list"
                     data-target="#animation-thumbnails-container"
-                    data-callback="var d = $('#more-button').data();d.data.pageNumber++;$('#more-button').attr('data-data', JSON.stringify(d))"
+                    data-callback="var d = $('#more-button').data();d.data.pageNumber++;$('#more-button').attr('data-data', JSON.stringify(d));"
                     data-data="@Model.Options.NextPage().ToJson()">
                 <h6>More..</h6>
             </button>
         </article>
     </div>
 </div>
-
-@section styles {
-<environment names="Development">
-    <link href="~/css/GrafikaApp.Animation.List.css" rel="stylesheet" type="text/css" />
-</environment>
-<environment names="Production">
-    <link href="~/css/GrafikaApp.Bundle.Animation.List.min.css" rel="stylesheet" type="text/css" />
-</environment>
-}

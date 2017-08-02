@@ -38,18 +38,11 @@ namespace Grafika.WebSite.Controllers
         }
 
         [Route("mine"), Authorize(ActiveAuthenticationSchemes = "cookie-auth")]
-        public IActionResult Mine()
+        public async Task<IActionResult> Mine()
         {
             var userIdentity = new UserIdentity(User);
             var options = new AnimationQueryOptions { UserId = userIdentity.Id, IsRemoved = false };
-
-            ViewBag.Page = new PageViewModel
-            {
-                Title = $"My Animations",
-                Description = $"List of my animations - Grafika Animation"
-            };
-
-            return View(options);
+            return await Index(options);
         }
 
         [Route("{animationId}/{slug?}/edit")]

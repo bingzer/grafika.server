@@ -1,6 +1,6 @@
 ﻿namespace Grafika.WebSite.ViewModels
 {
-    public class UserViewModel
+    public class UserViewModel : AnimationsViewModel
     {
         public User User { get; set; }
 

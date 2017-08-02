@@ -22,22 +22,29 @@ namespace Grafika.WebSite.Controllers
 
         [Route("{userId}"), AllowAnonymous]
         public async Task<IActionResult> Index([FromServices] IOptions<ServerConfiguration> serverOpts,
+            [FromServices] IAnimationService animationService,
             AnimationQueryOptions options)
         {
+            var userIdentity = User.Identity as IUserIdentity;
             var user = await _service.Get(options.UserId);
-
-            var model = new UserViewModel
-            {
-                User = user,
-                AvatarUrl = Utility.CombineUrl(serverOpts.Value.Url, "users", user.Id, "avatar"),
-                BackdropUrl = Utility.CombineUrl(serverOpts.Value.Url, "users", user.Id, "backdrop")
-            };
+            options.IsRemoved = false;
+            options.IsPublic = (userIdentity?.Id != user.Id) ? (bool?) true : null;
+            var animations = await animationService.List(options);
 
             ViewBag.Page = new PageViewModel
             {
                 Title = $"{user.Username} - Grafika",
                 Description = $"List of all grafika animations created by {user.Username} - Grafika Animation",
                 Thumbnail = new ThumbnailViewModel(user.GetUserAvatarUrl(), 100, 100)
+            };
+
+            var model = new UserViewModel
+            {
+                Animations = animations,
+                Options = options,
+                User = user,
+                AvatarUrl = Utility.CombineUrl(serverOpts.Value.Url, "users", user.Id, "avatar"),
+                BackdropUrl = Utility.CombineUrl(serverOpts.Value.Url, "users", user.Id, "backdrop")
             };
 
             return View(model);

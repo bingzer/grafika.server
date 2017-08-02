@@ -353,10 +353,49 @@ h6 {
     }
 }
 
-// --------------- animation
-.animation-thumbnail-link {
-    height: 138px;
+// --------------- animation thumbnail
+div.thumbnail {
+    height: 272px;
+    position: relative;
+    border-radius: 0;
+    padding: 0;
+
+    .animation-thumbnail-link {
+        height: 138px;
+    }
+
+    .caption {
+        font-size: smaller;
+
+        h4 {
+            margin-bottom: 2px;
+            margin-top: 2px
+        }
+
+        p.animation-author {
+            margin-top: 0;
+        }
+
+        p.animation-description {
+            word-wrap: break-word
+        }
+
+        p.animation-edit {
+            position: absolute;
+            bottom: 8px;
+            left: 8px;
+            margin-bottom: 0;
+        }
+
+        p.animation-views {
+            position: absolute;
+            bottom: 8px;
+            right: 8px;
+            margin-bottom: 0;
+        }
+    }
 }
+
 .animation-thumbnail {
     height: 138px;
     max-height: 138px;
@@ -384,4 +423,14 @@ h6 {
 .user-avatar-lg {
     width: 32px;
     height: 32px
+}
+
+// -------------- more button
+article#more-button-container {
+    display: inline-block;
+    padding: 24px;
+    width: 100%;
+    button#more-button {
+
+    }
 }

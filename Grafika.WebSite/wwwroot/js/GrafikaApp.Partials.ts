@@ -12,10 +12,11 @@
         public static renderPartial(elem: any): JQueryPromise<any> {
             elem = $(elem);
             let shouldAppend = elem.data('partial') === 'append';
+            let target = $(elem.data('target') || elem);
 
             let onResult: IAjaxResultCallback = (err: Error, result: any, elem: JQuery): JQueryPromise<any> => {
-                if (shouldAppend) elem.append(result);
-                else elem.html(result);
+                if (shouldAppend) target.append(result);
+                else target.html(result);
                 return jQuery.when(result);
             };
 

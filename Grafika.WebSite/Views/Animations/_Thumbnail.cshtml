@@ -7,15 +7,15 @@
     var canEdit = userIdentity?.Id == Model.UserId;
 }
 <article class="col-sm-6 col-md-4 col-lg-3 col-xl-2">
-    <div class="thumbnail" style="height: 272px; position: relative; padding: 0">
+    <div class="thumbnail">
         <figure>
             <a class="animation-thumbnail-link" href="@animationUrl">
                 <img class="animation-thumbnail" src="@Model.GetThumbnailUrl()" alt="@Model.Name">
             </a>
         </figure>
-        <div class="caption" style="font-size: smaller">
+        <div class="caption">
             <header>
-                <h4 style="margin-bottom: 2px; margin-top: 2px">
+                <h4>
                     <a href="@animationUrl" class="font-stronger">@Model.Name</a>
                     @if (Model.IsPublic == false)
                     {
@@ -23,13 +23,13 @@
                     }
                 </h4>
             </header>
-            <p style="margin-top: 0">
+            <p class="animation-author">
                 <img src="@Model.GetAuthorThumbnail()" alt="@Model.Author" class="img-circle user-avatar" />
                 <a href="@authorUrl">
                     @Model.Author
                 </a>
             </p>
-            <p style="word-wrap: break-word">
+            <p class="animation-description">
                 @if (Model.Description.IsNullOrEmptyOrWhitespace())
                 {
                     <span class="text-muted">(no description)</span>
@@ -39,7 +39,7 @@
                     @Model.Description
                 }
             </p>
-            <p style="position: absolute; bottom: 8px; left: 8px; margin-bottom: 0;">
+            <p class="animation-edit">
                 @if (canEdit)
                 {
                     <span class="pull-left font-smaller text-muted">
@@ -49,7 +49,7 @@
                     </span>
                 }
             </p>
-            <p style="position: absolute; bottom: 8px; right: 8px; margin-bottom: 0;">
+            <p class="animation-views">
                 <span class="font-smaller text-muted">
                     @Model.TotalFrame frames &#8226; @Model.Views views
                 </span>
