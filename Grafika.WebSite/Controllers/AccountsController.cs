@@ -95,7 +95,7 @@ namespace Grafika.WebSite.Controllers
         }
 
         [Route("password"), AllowAnonymous]
-        public IActionResult ForgetPassword()
+        public IActionResult Password()
         {
             return PartialView("_Password");
         }
