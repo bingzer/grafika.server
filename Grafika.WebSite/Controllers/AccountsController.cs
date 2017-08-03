@@ -94,6 +94,12 @@ namespace Grafika.WebSite.Controllers
             return Redirect(url);
         }
 
+        [Route("password"), AllowAnonymous]
+        public IActionResult ForgetPassword()
+        {
+            return PartialView("_Password");
+        }
+
         [Route("recovery"), AllowAnonymous]
         public IActionResult ForgetPassword()
         {
