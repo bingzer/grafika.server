@@ -11,6 +11,7 @@ namespace Grafika.WebSite.ViewModels
 
         public bool UseNavigationBar { get; set; } = true;
         public bool UseFooter { get; set; } = true;
+        public bool UseAnalytic { get; set; } = true;
 
         // optional can be blank
         public ThumbnailViewModel Thumbnail { get; set; } = new ThumbnailViewModel(Utility.CombineUrl(AppEnvironment.Default.Content.Url, "/img/feature-graphics-min.png"), 1024, 500);

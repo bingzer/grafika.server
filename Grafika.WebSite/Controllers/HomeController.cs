@@ -12,7 +12,7 @@ namespace Grafika.WebSite.Controllers
     public class HomeController : Controller
     {
         [ResponseCache(VaryByHeader = "User-Agent", Duration = 86400)]
-        [Route(""), AllowAnonymous]
+        [Route(""), Route("r"), AllowAnonymous]
         public async Task<IActionResult> Index([FromServices] ISeriesService seriesService)
         {
             var model = new HomeViewModel
@@ -22,7 +22,10 @@ namespace Grafika.WebSite.Controllers
                 AnimationsCount = AppEnvironment.Default.Content.AnimationsCount
             };
 
-            ViewBag.Page = new PageViewModel { UseFooter = false };
+            ViewBag.Page = new PageViewModel
+            {
+                UseFooter = false
+            };
 
             return View("Index", model);
         }

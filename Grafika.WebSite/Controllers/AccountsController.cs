@@ -97,7 +97,11 @@ namespace Grafika.WebSite.Controllers
         [Route("password"), AllowAnonymous]
         public IActionResult Password(PasswordSetViewModel model)
         {
-            model.ApiPasswordUrl = Utility.CombineUrl(AppEnvironment.Default.Server.Url, "/api/accounts/pwd");
+            if (model.Hash != null)
+                model.ApiPasswordUrl = Utility.CombineUrl(AppEnvironment.Default.Server.Url, "/api/accounts/register");
+            else
+                model.ApiPasswordUrl = Utility.CombineUrl(AppEnvironment.Default.Server.Url, "/api/accounts/pwd");
+
             return PartialView("_Password", model);
         }
 
