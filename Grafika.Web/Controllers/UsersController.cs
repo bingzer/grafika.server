@@ -23,6 +23,7 @@ namespace Grafika.Web.Controllers
         }
 
         [Authorize(Roles = Roles.Developer)]
+        [HttpGet]
         public async Task<IActionResult> GetUsers([FromQuery] UserQueryOptions options, [FromQuery] int? skip, [FromQuery] int? limit)
         {
             if (options == null)
@@ -60,8 +61,10 @@ namespace Grafika.Web.Controllers
 
         [SkipModelValidation]
         [HttpPut("{userId}")]
-        public async Task<IActionResult> Update([FromBody] User user)
+        public async Task<IActionResult> Update(string userId, [FromBody] User user)
         {
+            user.Id = userId;
+
             var identity = User?.Identity as UserIdentity;
             if (identity?.Id == user.Id)
             {

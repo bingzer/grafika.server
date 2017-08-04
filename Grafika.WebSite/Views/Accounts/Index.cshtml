@@ -1,25 +1,37 @@
 @model AccountViewModel
-@{
+@{ 
+    var passwordTitle = Model.HasLocalAccount ? "Change Password" : "Set Password";
 }
 
 <header class="bg-transparent page-heading page-heading-lg text-center text-white"
         style="background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.0)), url(@Model.User.GetUserBackdropUrl()) no-repeat; -webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover; background-size: cover; ">
     <h1>@Model.User.Username</h1>
-    <p class="font-smaller">
-        <a href="#">Change username</a>
+    <p class="font-smaller text-white">
+        <a href="#">Change backdrop</a>
+    </p>
+    <p class="pull-right">
+        <button class="btn btn-success" onclick="$('#profile-form').submit()">Save Changes</button>
     </p>
 </header>
 <div class="page-wrapper">
-    <div class="page-content page-content-article">
-        <article class="padding-xl">
+    <form class="page-content page-content-article" 
+          id="profile-form" action="@Model.ApiSaveProfileUrl" method="put"
+          data-type="application/json"
+          data-callback="GrafikaApp.refreshPage()"
+          onsubmit="return GrafikaApp.Form.onSubmit(this)">
+        <article class="row">
             <header>
                 <h2>Profile</h2>
             </header>
-            <form class="form-horizontal">
+            <div class="form-horizontal">
+                <div class="form-group text-center">
+                    <img class="user-avatar-lg" src="@Model.User.GetUserAvatarUrl()" />
+                    <label class="control-label col-sm-2">Email</label>
+                </div>
                 <div class="form-group">
                     <label class="control-label col-sm-2">Email</label>
                     <div class="col-sm-8">
-                        @Html.EditorFor(m => m.User.Email, new { htmlAttributes = new { @class = "form-control", disabled = "disabled" } })
+                        @Html.EditorFor(m => m.Email, new { htmlAttributes = new { @class = "form-control", disabled = "disabled" } })
                     </div>
                 </div>
                 <div class="form-group">
@@ -27,18 +39,19 @@
                     <div class="col-sm-8">
                         <a href="#" class="btn btn-danger"
                            data-dialog
-                           data-url="/accounts/password"
-                           data-size="medium">Set/Change Password</a>
+                           data-title="@passwordTitle"
+                           data-url="/accounts/password?RequiresCurrentPassword=@Model.Local?.IsRegistered"
+                           data-size="medium">@passwordTitle</a>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="control-label col-sm-2">Name</label>
                     <div class="col-sm-8">
-                        <span class="col-sm-4 no-padding">
-                            @Html.EditorFor(m => m.User.FirstName, new { htmlAttributes = new { @class = "form-control" } })
+                        <span class="col-sm-2 no-padding">
+                            @Html.EditorFor(m => m.FirstName, new { htmlAttributes = new { @class = "form-control" } })
                         </span>
-                        <span class="col-sm-6">
-                            @Html.EditorFor(m => m.User.LastName, new { htmlAttributes = new { @class = "form-control" } })
+                        <span class="col-sm-8">
+                            @Html.EditorFor(m => m.LastName, new { htmlAttributes = new { @class = "form-control" } })
                         </span>
                     </div>
                 </div>
@@ -46,64 +59,77 @@
                     <label class="control-label col-sm-2">Username</label>
                     <div class="col-sm-6">
                         <span class="col-sm-10 no-padding">
-                            @Html.EditorFor(m => m.User.Username, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.EditorFor(m => m.Username, new { htmlAttributes = new { @class = "form-control" } })
                         </span>
                         <span class="col-sm-2">
-                            <button class="btn btn-info">Check</button>
+                            <button class="btn btn-default">Check</button>
                         </span>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="control-label col-sm-2">Accounts</label>
                     <div class="bgn-group col-sm-6" data-toggle="buttons">
+                        @{
+                            var googleAccount = Model?.Google?.Id != null ? "checked" : "";
+                            var fbAccount = Model?.Facebook?.Id != null ? "checked" : "";
+                        }
                         <label class="btn btn-danger active">
-                            <input type="checkbox" autocomplete="off" checked> Google
+                            <input type="checkbox" autocomplete="off" @googleAccount> Google
                         </label>
                         <label class="btn btn-primary active">
-                            <input type="checkbox" autocomplete="off" checked> Facebook
+                            <input type="checkbox" autocomplete="off" @fbAccount> Facebook
                         </label>
                     </div>
                 </div>
-            </form>
+            </div>
         </article>
 
-        <article class="padding-xl">
+        <article class="row">
             <header>
                 <h2>Settings</h2>
             </header>
-            <form class="form-horizontal">
+            <div class="form-horizontal">
                 <div class="form-group">
-                    <label class="control-label col-sm-2">Public Animations</label>
+                    <label class="control-label col-sm-2">Default Animation</label>
                     <div class="col-sm-8">
-                        <button type="button" class="btn btn-primary" data-toggle="button" aria-pressed="false" autocomplete="off">
-                            Default to Public
-                        </button>
+                        <select id="@Html.IdFor(m => m.Prefs.DrawingIsPublic)" name="@Html.NameFor(m => m.Prefs.DrawingIsPublic)" class="form-control">
+                            <option value="true" @(Model.Prefs.DrawingIsPublic == true ? "selected" : "")>Public</option>
+                            <option value="false" @(Model.Prefs.DrawingIsPublic == true ? "" : "selected")>Private</option>
+                        </select>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="control-label col-sm-2">Author</label>
+                    <label class="control-label col-sm-2">Default Author</label>
                     <div class="col-sm-8">
-                        @Html.EditorFor(m => m.Preference.DrawingAuthor, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.EditorFor(m => m.Prefs.DrawingAuthor, new { htmlAttributes = new { @class = "form-control" } })
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="control-label col-sm-2">Timer</label>
+                    <label class="control-label col-sm-2">Default Timer</label>
                     <div class="col-sm-8">
-                        @Html.EditorFor(m => m.Preference.DrawingTimer, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.EditorFor(m => m.Prefs.DrawingTimer, new { htmlAttributes = new { @class = "form-control" } })
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="control-label col-sm-2">Loop Playback</label>
+                    <label class="control-label col-sm-2">Playback</label>
                     <div class="col-sm-8">
-                        @Html.EditorFor(m => m.Preference.PlaybackLoop, new { htmlAttributes = new { @class = "form-control" } })
+                        <select id="@Html.IdFor(m => m.Prefs.PlaybackLoop)" name="@Html.NameFor(m => m.Prefs.PlaybackLoop)" class="form-control">
+                            <option value="true" @(Model.Prefs.PlaybackLoop == true ? "selected" : "")>Always loop</option>
+                            <option value="false" @(Model.Prefs.PlaybackLoop == true ? "" : "selected")>Don't loop</option>
+                        </select>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="control-label col-sm-2">Email Notifications</label>
+                    <label class="control-label col-sm-2">&nbsp;</label>
                     <div class="col-sm-8">
+                        <label>
+                            <input name="@Html.NameFor(m => m.Subscriptions.EmailOnComments)" type="checkbox" autocomplete="off"
+                                   @(Model.Subscriptions.EmailOnComments == true ? "checked" : "")>
+                            Notify me on new comments
+                        </label>
                     </div>
                 </div>
-            </form>
+            </div>
         </article>
-    </div>
+    </form>
 </div>

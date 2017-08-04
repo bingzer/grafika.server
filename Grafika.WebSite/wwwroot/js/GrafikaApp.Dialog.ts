@@ -10,10 +10,12 @@
 
         public static dialog(options: IDialogOptions): Q.IPromise<any> {
             if (options.url) {
-                return jQuery.ajax(options).then((data, status, xhr) => {
-                    options.message = data;
+                let onResult: GrafikaApp.IAjaxResultCallback = (err: Error, result: any, elem: JQuery) => {
+                    options.message = result;
                     return jQuery.when(bootbox.dialog(options));
-                });
+                };
+
+                return GrafikaApp.sendAjax(options, onResult);
             }
 
             return jQuery.when(bootbox.dialog(options));

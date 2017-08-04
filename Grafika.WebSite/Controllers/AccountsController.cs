@@ -7,8 +7,6 @@ using Grafika.WebSite.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.Authentication;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
-using System;
 using System.Threading.Tasks;
 
 namespace Grafika.WebSite.Controllers
@@ -26,9 +24,10 @@ namespace Grafika.WebSite.Controllers
         }
 
         [Route("")]
-        public IActionResult Index()
+        public async Task<IActionResult> Index([FromServices] IUserService userService)
         {
             var userIdentity = User.Identity as IUserIdentity;
+            var user = await userService.Get(userIdentity.Id);
             ViewBag.Page = new PageViewModel
             {
                 Title = $"{userIdentity.Name} | Grafika",
@@ -37,7 +36,8 @@ namespace Grafika.WebSite.Controllers
 
             var model = new AccountViewModel
             {
-                User = userIdentity
+                User = user,
+                ApiSaveProfileUrl = Utility.CombineUrl(AppEnvironment.Default.Server.Url, $"/api/users/{user.Id}")
             };
 
             return View(model);
@@ -95,9 +95,10 @@ namespace Grafika.WebSite.Controllers
         }
 
         [Route("password"), AllowAnonymous]
-        public IActionResult Password()
+        public IActionResult Password(PasswordSetViewModel model)
         {
-            return PartialView("_Password");
+            model.ApiPasswordUrl = Utility.CombineUrl(AppEnvironment.Default.Server.Url, "/api/accounts/pwd");
+            return PartialView("_Password", model);
         }
 
         [Route("recovery"), AllowAnonymous]

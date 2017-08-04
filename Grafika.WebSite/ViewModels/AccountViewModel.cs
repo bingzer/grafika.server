@@ -1,13 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace Grafika.WebSite.ViewModels
+﻿namespace Grafika.WebSite.ViewModels
 {
     public class AccountViewModel
     {
-        public IUser User { get; set; }
-        public UserPreference Preference { get; set; }
+        public string ApiSaveProfileUrl { get; set; }
+        public User User { get; set; }
+
+        public string Email => User.Email;
+        public string FirstName => User.FirstName;
+        public string LastName => User.LastName;
+        public string Username => User.Username;
+
+        public UserOAuth Google => User?.Google;
+        public UserOAuth Facebook => User?.Facebook;
+        public UserPreference Prefs => User?.Prefs;
+        public UserSubscriptions Subscriptions => User?.Subscriptions;
+        public UserLocal Local => User?.Local;
+
+        public bool HasLocalAccount => Local?.IsRegistered == true;
     }
 }

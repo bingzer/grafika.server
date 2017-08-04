@@ -1,11 +1,18 @@
-﻿interface JQuery {
+﻿declare var FormSerializer: any;
+interface JQuery {
     serializeObject(): JQuery;
     serializeJSON(): JQuery;
 }
 
 module GrafikaApp {
 
+    // -- use dot.net notaions
+    jQuery.extend(FormSerializer.patterns, {
+        validate: /^[a-z][a-z0-9_]*(?:\.[a-z0-9_]+)*(?:\[\])?$/i
+    });
+
     export class Form {
+
         /**
          * Call on the <form>
          * @param elem

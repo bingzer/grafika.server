@@ -1,6 +1,72 @@
 ﻿
 module GrafikaApp {
+    //---------------------------------------------------------------------------------------------------------//
+
+    // Highlight the top nav as scrolling occurs
+    $('body').scrollspy({
+        target: '.navbar-fixed-top',
+        offset: 51
+    });
+
+    // Closes the Responsive Menu on Menu Item Click
+    $('.navbar-collapse ul li a').click(() => {
+        $('.navbar-toggle:visible').click();
+    });
+
+    // Offset for Main Navigation
+    $('#mainNav').affix({
+        offset: {
+            top: 100
+        }
+    })
+
+    // Initialize and Configure Scroll Reveal Animation
+    let sr = ScrollReveal();
+    sr.reveal('.sr-icons', {
+        duration: 600,
+        scale: 0.3,
+        distance: '0px'
+    }, 200);
+    sr.reveal('.sr-button', {
+        duration: 1000,
+        delay: 200
+    });
+    sr.reveal('.sr-contact', {
+        duration: 600,
+        scale: 0.3,
+        distance: '0px'
+    }, 300);
+    window['sr'] = sr;
+
+    // ---------------- Ajax setup ----------- //
+    $.ajaxSetup({
+        beforeSend: function (xhr) {
+            let token = GrafikaApp.Configuration.getAuthenticationToken();
+            if (token) {
+                xhr.setRequestHeader('Authorization', `Bearer ${token}`);
+            }
+        }
+    });
+
+    // ---------------- document ready ----------- //
+    $(document).ready(() => {
+        GrafikaApp.loadElements();
+        GrafikaApp.Partials.loadElements();
+        GrafikaApp.Dialog.loadElements();
+    });
+
+    // ---------------- GrafikaApp.Configuration ----------- //
+
     export var Configuration: GrafikaApp.IGrafikaAppConfiguration;
+
+    GrafikaApp.Configuration.getAuthenticationToken = function () {
+        return window.localStorage.getItem('token');
+    }
+    GrafikaApp.Configuration.setAuthenticationToken = function (token: string) {
+        window.localStorage.setItem('token', token);
+    }
+
+    //---------------------------------------------------------------------------------------------------------//
 
     export function getQueryString(name: string, url: string = null): string {
         if (!url) url = window.location.href;
@@ -45,54 +111,16 @@ module GrafikaApp {
         }
     }
 
-    // Highlight the top nav as scrolling occurs
-    $('body').scrollspy({
-        target: '.navbar-fixed-top',
-        offset: 51
-    });
-
-    // Closes the Responsive Menu on Menu Item Click
-    $('.navbar-collapse ul li a').click(() => {
-        $('.navbar-toggle:visible').click();
-    });
-
-    // Offset for Main Navigation
-    $('#mainNav').affix({
-        offset: {
-            top: 100 
-        }
-    })
-
-    // Initialize and Configure Scroll Reveal Animation
-    let sr = ScrollReveal();
-    sr.reveal('.sr-icons', {
-        duration: 600,
-        scale: 0.3,
-        distance: '0px'
-    }, 200);
-    sr.reveal('.sr-button', {
-        duration: 1000,
-        delay: 200
-    });
-    sr.reveal('.sr-contact', {
-        duration: 600,
-        scale: 0.3,
-        distance: '0px'
-    }, 300);
-    window['sr'] = sr;
-
-    // ---------------- Ajax setup ----------- //
-    $.ajaxSetup({
-        beforeSend: function (xhr) {
-            let token = GrafikaApp.Configuration.getAuthenticationToken();
-            if (token) {
-                xhr.setRequestHeader('Authorization', `Bearer ${token}`);
-            }
-        }
-    });
+    export function refreshPage() {
+        window.location.reload();
+    }
 
     export function sendAjax(elem: any, onResult?: IAjaxResultCallback): JQueryPromise<any> {
-        elem = $(elem);
+        if (jQuery.isPlainObject(elem))
+            elem.data = (name) => elem[name];
+        else
+            elem = $(elem);
+
         if (!elem.data('url')) throw new Error('Expecting data-url');
         if (elem.data('loaded')) return jQuery.when();
         if (!onResult)
@@ -149,22 +177,6 @@ module GrafikaApp {
             return deferred.promise();
         }
         else return doSend();
-    }
-
-    // ---------------- document ready ----------- //
-    $(document).ready(() => {
-        GrafikaApp.loadElements();
-        GrafikaApp.Partials.loadElements();
-        GrafikaApp.Dialog.loadElements();
-    });
-
-    // ---------------- GrafikaApp.Configuration ----------- //
-
-    GrafikaApp.Configuration.getAuthenticationToken = function () {
-        return window.localStorage.getItem('token');
-    }
-    GrafikaApp.Configuration.setAuthenticationToken = function (token: string) {
-        window.localStorage.setItem('token', token);
     }
 
     // ---------------- Interface ----------- //
