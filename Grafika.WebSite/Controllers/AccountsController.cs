@@ -23,8 +23,17 @@ namespace Grafika.WebSite.Controllers
             _tokenProvider = tokenProvider;
         }
 
-        [Route("")]
-        public async Task<IActionResult> Index([FromServices] IUserService userService)
+        [Route(""), AllowAnonymous]
+        public IActionResult Index(PasswordFormViewModel model)
+        {
+            if (string.IsNullOrEmpty(model?.Hash))
+                return Unauthorized();
+
+            return View(model);
+        }
+
+        [HttpGet, Route("/me"), Route("profile")]
+        public async Task<IActionResult> Profile([FromServices] IUserService userService)
         {
             var userIdentity = User.Identity as IUserIdentity;
             var user = await userService.Get(userIdentity.Id);
@@ -34,13 +43,14 @@ namespace Grafika.WebSite.Controllers
                 Description = $"Account profile page for {userIdentity.Name}"
             };
 
-            var model = new AccountViewModel
+            var model = new AccountProfileViewModel
             {
                 User = user,
-                ApiSaveProfileUrl = Utility.CombineUrl(AppEnvironment.Default.Server.Url, $"/api/users/{user.Id}")
+                ApiSaveProfileUrl = Utility.CombineUrl(AppEnvironment.Default.Server.Url, $"/api/users/{user.Id}"),
+                ApiPasswordUrl = Utility.CombineUrl(AppEnvironment.Default.Server.Url, "/api/accounts/pwd")
             };
 
-            return View(model);
+            return View("Profile", model);
         }
 
         [Route("/signin"), AllowAnonymous]
@@ -68,6 +78,14 @@ namespace Grafika.WebSite.Controllers
             return View("SignUp");
         }
 
+        [Route("/signout"), Route("/logout")]
+        public async Task<IActionResult> Logout(string url = "/")
+        {
+            await HttpContext.Authentication.SignOutAsync("cookie-auth");
+            url += $"?action=deauthenticate";
+            return Redirect(url);
+        }
+
         [HttpPost, Route("login"), AllowAnonymous]
         public async Task<IActionResult> Authenticate(LoginModel model, string url = "/")
         {
@@ -86,29 +104,21 @@ namespace Grafika.WebSite.Controllers
             return Redirect(url);
         }
 
-        [Route("logout")]
-        public async Task<IActionResult> Logout(string url = "/")
+        [Route("forms/password"), AllowAnonymous]
+        public IActionResult GetPasswordForm(PasswordFormViewModel model)
         {
-            await HttpContext.Authentication.SignOutAsync("cookie-auth");
-            url += $"?action=deauthenticate";
-            return Redirect(url);
+            return PartialView("_PasswordForm", model);
         }
 
-        [Route("password"), AllowAnonymous]
-        public IActionResult Password(PasswordSetViewModel model)
+        [Route("forms/recovery"), AllowAnonymous]
+        public IActionResult GetPasswordRecoveryForm()
         {
-            if (model.Hash != null)
-                model.ApiPasswordUrl = Utility.CombineUrl(AppEnvironment.Default.Server.Url, "/api/accounts/register");
-            else
-                model.ApiPasswordUrl = Utility.CombineUrl(AppEnvironment.Default.Server.Url, "/api/accounts/pwd");
+            var model = new PasswordFormViewModel
+            {
+                ApiPasswordUrl = Utility.CombineUrl(AppEnvironment.Default.Server.Url, "/api/accounts/pwd/reset")
+            };
 
-            return PartialView("_Password", model);
-        }
-
-        [Route("recovery"), AllowAnonymous]
-        public IActionResult ForgetPassword()
-        {
-            return PartialView("_ForgetPassword");
+            return PartialView("_PasswordRecoveryForm", model);
         }
     }
 }

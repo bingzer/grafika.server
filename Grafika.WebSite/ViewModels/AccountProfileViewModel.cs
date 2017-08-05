@@ -1,8 +1,10 @@
 ﻿namespace Grafika.WebSite.ViewModels
 {
-    public class AccountViewModel
+    public class AccountProfileViewModel
     {
         public string ApiSaveProfileUrl { get; set; }
+        public string ApiPasswordUrl { get; set; }
+
         public User User { get; set; }
 
         public string Email => User.Email;

@@ -12,7 +12,7 @@ namespace Grafika.WebSite.Controllers
     public class HomeController : Controller
     {
         [ResponseCache(VaryByHeader = "User-Agent", Duration = 86400)]
-        [Route(""), Route("r"), AllowAnonymous]
+        [HttpGet, Route(""), AllowAnonymous]
         public async Task<IActionResult> Index([FromServices] ISeriesService seriesService)
         {
             var model = new HomeViewModel
@@ -28,6 +28,18 @@ namespace Grafika.WebSite.Controllers
             };
 
             return View("Index", model);
+        }
+
+        [HttpGet, Route("r"), AllowAnonymous]
+        public IActionResult Reroute([FromQuery] RerouteViewModel model)
+        {
+            switch (model?.Action?.ToLowerInvariant())
+            {
+                case RerouteViewModel.ResetPassword:
+                    return RedirectToAction(nameof(AccountsController.Index), "Accounts", model);
+                default:
+                    return RedirectToAction(nameof(Index));
+            }
         }
 
         [Route("animations/popup/{animationId}/{slug?}"), AllowAnonymous]

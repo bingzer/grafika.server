@@ -108,11 +108,6 @@ module GrafikaApp {
                 GrafikaApp.Configuration.setAuthenticationToken(token);
                 window.location.search = '';
                 break;
-            case "reset-pwd":
-                let hash = GrafikaApp.getQueryString("hash");
-                let user = GrafikaApp.getQueryString("user");
-                GrafikaApp.Dialog.dialog({ message: undefined, url: `/accounts/password?requiresCurrentPassword=false&hash=${hash}&user=${user}` });
-                break;
         }
     }
 
