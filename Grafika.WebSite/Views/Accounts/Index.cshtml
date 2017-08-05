@@ -1,10 +1,8 @@
 @model PasswordFormViewModel
 
 <div class="bg-dark page-heading"></div>
-<div class="page-wrapper">
-    <div class="page-content login-form">
-        @await Html.PartialAsync("_PasswordForm", Model)
-    </div>
+<div class="page-content login-form">
+    @await Html.PartialAsync("_PasswordForm", Model)
 </div>
 
 @section styles {

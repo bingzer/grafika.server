@@ -1,149 +1,147 @@
 <div class="bg-dark page-heading"></div>
-<div class="page-wrapper">
-    <div class="page-content page-content-article">
+<div class="page-content page-content-article">
 
-        <div id="about">
-            <header>
-                <h1>About Grafika</h1>
-            </header>
-            <p>
-                Grafika is a simple stop-motion animation maker.<br />
-                This web application provides a platform for users to upload/view/create/share
-                animations to the Interweb.
-            <p class="font-x-small">
-                Build with love<br />
-                {{app.buildTimestamp}}
-            </p>
-        </div>
-
-        <hr class="primary" />
-
-        <section id="about-animations">
-            <header>
-                <h2>Animations</h2>
-            </header>
-            <p>
-                Grafika uses JSON as the data structure for the animation.<br />
-                There are two types of animations:
-                <a href="#private">Private</a> and <a href="#public">Public</a><br />
-            </p>
-            <section>
-                <header>
-                    <h3>Data Structures</h3>
-                </header>
-                <p>                    
-                    Grafika uses JSON as the data structure for the animation.<br />
-                </p>
-                <ul>
-                    <li>
-                        <code>_id</code>
-                        A unique id. Every animation is assigned a unique id by the system<br />
-                        as an identifier
-                    </li>
-                    <li>
-                        <code>localId</code>
-                        A unique id per platform. This unique id is created by
-                        the platform (i.e: This web site or Android app) that
-                        creates the animation.
-                    </li>
-                    <li>
-                        <code>name</code>
-                        The user-friendly name of the animation. This can be changed anytime.
-                    </li>
-                    <li>
-                        <code>author</code>
-                        The author of this animation. This is usually taken from your username.
-                        However, a default user preference can override this value.
-                    </li>
-                    <li>
-                        <code>description</code>
-                        An optional descriptive sentences that describe the animation
-                    </li>
-                    <li>
-                        <code>width</code>
-                        The width of the animation in pixels
-                    </li>
-                    <li>
-                        <code>height</code>
-                        The height of the animation in pixels
-                    </li>
-                    <li>
-                        <code>isPublic</code>
-                        A flag to tell the system to differentiate private vs public
-                    </li>
-                </ul>
-            </section>
-            <section>
-                <header>
-                    <h3>Private Animations</h3>
-                </header>
-                <p>
-                    Private animations can only be viewed, play and shared by the owner.<br />
-                    Since this type of animation is only available to you, the commenting
-                    service will not be available.
-                </p>
-                <p>
-                    As the owner of this animation, you can make change a private animation
-                    to be a public by changing the <code>isPublic</code> flag.<br />
-                    Doing this will allow the animation to be accessible by everyone else.
-                </p>
-            </section>
-            <section>
-                <header>
-                    <h3>Public Animations</h3>
-                </header>
-                <p>
-                    Public animations can be viewed, play and shared by anyone accessing the system.
-                    By marking an animation public, you (as an author of that animation) are granting
-                    everyone else a view access to your animation.
-                </p>
-            </section>
-
-        </section>
-
-        <hr class="primary" />
-
-        <section id="about-platforms">
-            <header>
-                <h2>Platforms</h2>
-            </header>
-            <p>
-                As of right now, we're maintaining web and android platform.
-                Grafika is available on Google Play Store.
-            </p>
-            <section>
-                <header>
-                    <h3>Web</h3>
-                </header>
-                <p>
-                    Available in <a href="https://grafika.bingzer.com">https://grafika.bingzer.com</a>
-                </p>
-            </section>
-            <section>
-                <header>
-                    <h3>Android</h3>
-                </header>
-                <p>
-                    There three different channels to get the app<br />
-                </p>
-                <ul>
-                    <li>
-                        <strong>Alpha Testing Channel</strong>
-                        This channel is mostly unstable and released almost daily. Opened only for anybody that signed-up for alpha-testing
-                    </li>
-                    <li>
-                        <strong>BETA Testing Channel</strong>
-                        This channel is open for everybody to want to try the latest release before any feature gets to the production.
-                    </li>
-                    <li>
-                        <strong>Production Channel</strong>
-                        This channel is for everybody. The app is considered most stable in this channel.
-                    </li>
-                </ul>
-            </section>
-
-        </section>
-
-
+    <div id="about">
+        <header>
+            <h1>About Grafika</h1>
+        </header>
+        <p>
+            Grafika is a simple stop-motion animation maker.<br />
+            This web application provides a platform for users to upload/view/create/share
+            animations to the Interweb.
+        <p class="font-x-small">
+            Build with love<br />
+            {{app.buildTimestamp}}
+        </p>
     </div>
+
+    <hr class="primary" />
+
+    <section id="about-animations">
+        <header>
+            <h2>Animations</h2>
+        </header>
+        <p>
+            Grafika uses JSON as the data structure for the animation.<br />
+            There are two types of animations:
+            <a href="#private">Private</a> and <a href="#public">Public</a><br />
+        </p>
+        <section>
+            <header>
+                <h3>Data Structures</h3>
+            </header>
+            <p>                    
+                Grafika uses JSON as the data structure for the animation.<br />
+            </p>
+            <ul>
+                <li>
+                    <code>_id</code>
+                    A unique id. Every animation is assigned a unique id by the system<br />
+                    as an identifier
+                </li>
+                <li>
+                    <code>localId</code>
+                    A unique id per platform. This unique id is created by
+                    the platform (i.e: This web site or Android app) that
+                    creates the animation.
+                </li>
+                <li>
+                    <code>name</code>
+                    The user-friendly name of the animation. This can be changed anytime.
+                </li>
+                <li>
+                    <code>author</code>
+                    The author of this animation. This is usually taken from your username.
+                    However, a default user preference can override this value.
+                </li>
+                <li>
+                    <code>description</code>
+                    An optional descriptive sentences that describe the animation
+                </li>
+                <li>
+                    <code>width</code>
+                    The width of the animation in pixels
+                </li>
+                <li>
+                    <code>height</code>
+                    The height of the animation in pixels
+                </li>
+                <li>
+                    <code>isPublic</code>
+                    A flag to tell the system to differentiate private vs public
+                </li>
+            </ul>
+        </section>
+        <section>
+            <header>
+                <h3>Private Animations</h3>
+            </header>
+            <p>
+                Private animations can only be viewed, play and shared by the owner.<br />
+                Since this type of animation is only available to you, the commenting
+                service will not be available.
+            </p>
+            <p>
+                As the owner of this animation, you can make change a private animation
+                to be a public by changing the <code>isPublic</code> flag.<br />
+                Doing this will allow the animation to be accessible by everyone else.
+            </p>
+        </section>
+        <section>
+            <header>
+                <h3>Public Animations</h3>
+            </header>
+            <p>
+                Public animations can be viewed, play and shared by anyone accessing the system.
+                By marking an animation public, you (as an author of that animation) are granting
+                everyone else a view access to your animation.
+            </p>
+        </section>
+
+    </section>
+
+    <hr class="primary" />
+
+    <section id="about-platforms">
+        <header>
+            <h2>Platforms</h2>
+        </header>
+        <p>
+            As of right now, we're maintaining web and android platform.
+            Grafika is available on Google Play Store.
+        </p>
+        <section>
+            <header>
+                <h3>Web</h3>
+            </header>
+            <p>
+                Available in <a href="https://grafika.bingzer.com">https://grafika.bingzer.com</a>
+            </p>
+        </section>
+        <section>
+            <header>
+                <h3>Android</h3>
+            </header>
+            <p>
+                There three different channels to get the app<br />
+            </p>
+            <ul>
+                <li>
+                    <strong>Alpha Testing Channel</strong>
+                    This channel is mostly unstable and released almost daily. Opened only for anybody that signed-up for alpha-testing
+                </li>
+                <li>
+                    <strong>BETA Testing Channel</strong>
+                    This channel is open for everybody to want to try the latest release before any feature gets to the production.
+                </li>
+                <li>
+                    <strong>Production Channel</strong>
+                    This channel is for everybody. The app is considered most stable in this channel.
+                </li>
+            </ul>
+        </section>
+
+    </section>
+
+
 </div>

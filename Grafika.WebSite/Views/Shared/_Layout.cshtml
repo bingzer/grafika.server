@@ -55,8 +55,6 @@
         <meta name="twitter:image:width" content="@page.Thumbnail.Width" />
         <meta name="twitter:image:height" content="@page.Thumbnail.Height" />
     }
-
-
     <script src="//code.jquery.com/jquery-2.2.4.min.js"></script>
     <script type="text/javascript">
         var GrafikaApp;
@@ -72,7 +70,6 @@
         <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-
     <!--[if IE]>
     <script type="text/javascript">
         var GrafikaApp;
@@ -82,7 +79,7 @@
     </script>
     <![endif]-->
 </head>
-<body id="page-top">
+<body>
     @if (page.UseNavigationBar)
     {
         <div id="mainNav" class="navbar navbar-default navbar-fixed-top">
@@ -147,7 +144,10 @@
         </div>
     }
 
-    @RenderBody()
+    <div class="page-wrapper">
+        @RenderBody()
+        <div class="page-wrapper-push"></div>
+    </div>
 
     @if (page.UseFooter)
     {

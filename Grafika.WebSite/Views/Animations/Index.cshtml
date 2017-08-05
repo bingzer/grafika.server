@@ -4,23 +4,21 @@
     <h1>Public Animations</h1>
     <p>Here you can find animations</p>
 </header>
-<div class="page-wrapper">
-    <div class="page-content" id="animations">
-        <div id="animation-thumbnails-container">
-            @await  Html.PartialAsync("_List")
-        </div>
-        <article id="more-button-container" class="text-center">
-            <button id="more-button"
-                    class="btn btn-danger"
-                    onclick="GrafikaApp.Partials.renderPartial(this)"
-                    title="Load more..."
-                    data-partial="append"
-                    data-url="/animations/list"
-                    data-target="#animation-thumbnails-container"
-                    data-callback="var d = $('#more-button').data();d.data.pageNumber++;$('#more-button').attr('data-data', JSON.stringify(d));"
-                    data-data="@Model.Options.NextPage().ToJson()">
-                <i class="fa fa-arrow-down"></i>
-            </button>
-        </article>
+<div class="page-content" id="animations">
+    <div id="animation-thumbnails-container">
+        @await  Html.PartialAsync("_List")
     </div>
+    <article id="more-button-container" class="text-center">
+        <button id="more-button"
+                class="btn btn-danger"
+                onclick="GrafikaApp.Partials.renderPartial(this)"
+                title="Load more..."
+                data-partial="append"
+                data-url="/animations/list"
+                data-target="#animation-thumbnails-container"
+                data-callback="var d = $('#more-button').data();d.data.pageNumber++;$('#more-button').attr('data-data', JSON.stringify(d));"
+                data-data="@Model.Options.NextPage().ToJson()">
+            <i class="fa fa-arrow-down"></i>
+        </button>
+    </article>
 </div>

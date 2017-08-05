@@ -22,10 +22,7 @@ namespace Grafika.WebSite.Controllers
                 AnimationsCount = AppEnvironment.Default.Content.AnimationsCount
             };
 
-            ViewBag.Page = new PageViewModel
-            {
-                UseFooter = false
-            };
+            ViewBag.Page = new PageViewModel();
 
             return View("Index", model);
         }

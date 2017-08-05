@@ -1,16 +1,20 @@
 @import "variables.less";
 @import "mixins.less";
 
+@footer-height: 120px;
+@footer-height-sm: 156px;
+
 // Global Components
 html,
 body {
     height: 100%;
     width: 100%;
+    margin: 0;
+    padding: 0;
 }
 
 body {
     .serif-font;
-    overflow-x: hidden;
 }
 
 hr {
@@ -172,7 +176,6 @@ h6 {
 .navbar-default {
     background-color: transparent;
     border-color: transparent;
-    padding-right: 25px;
     .sans-serif-font;
     .transition-all;
     
@@ -285,7 +288,19 @@ h6 {
 .page-wrapper {
     min-height: 100%;
     min-width: 100%;
-    display: inline-block;
+    margin-bottom: -@footer-height;
+
+    .page-wrapper-push {
+        height: @footer-height;
+    }
+
+    @media (max-width: @media-sm) {
+        margin-bottom: -@footer-height-sm;
+
+        .page-wrapper-push {
+            height: @footer-height-sm;
+        }
+    }
 }
 
 .page-heading {
@@ -328,13 +343,12 @@ h6 {
 
 // --------------- footer
 .footer {
-    width: 100%;
-    position: relative;
-    bottom: 0;
-    left: 0;
+    height: @footer-height;
+    overflow: hidden;
     .page-padding;
 
     @media (max-width: @media-sm) {
+        height: @footer-height-sm;
         text-align: center;
     }
 

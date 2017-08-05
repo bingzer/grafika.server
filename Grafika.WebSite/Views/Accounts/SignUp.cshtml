@@ -1,9 +1,8 @@
 <div class="bg-dark page-heading"></div>
-<div class="page-wrapper">
-    <div class="container-fluid page-content">
-        @await Html.PartialAsync("_SignUpForm")
-    </div>
+<div class="container-fluid page-content">
+    @await Html.PartialAsync("_SignUpForm")
 </div>
+
 @section styles {
     <environment names="Development">
         <link href="~/css/GrafikaApp.Login.css" rel="stylesheet" type="text/css" />

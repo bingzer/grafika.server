@@ -8,23 +8,21 @@
     <h1>Animations by @Model.User.Username</h1>
     <p>These are your animations</p>
 </header>
-<div class="page-wrapper" >
-    <div class="page-content" id="animations">
-        <div id="animation-thumbnails-container">
-            @await Html.PartialAsync("~/Views/Animations/_List.cshtml")
-        </div>
-        <article id="more-button-container" class="text-center">
-            <button id="more-button"
-                    class="btn btn-danger"
-                    onclick="GrafikaApp.Partials.renderPartial(this)"
-                    title="Load more..."
-                    data-partial="append"
-                    data-url="/animations/list"
-                    data-target="#animation-thumbnails-container"
-                    data-callback="var d = $('#more-button').data();d.data.pageNumber++;$('#more-button').attr('data-data', JSON.stringify(d));"
-                    data-data="@Model.Options.NextPage().ToJson()">
-                <i class="fa fa-arrow-down"></i>
-            </button>
-        </article>
+<div class="page-content" id="animations">
+    <div id="animation-thumbnails-container">
+        @await Html.PartialAsync("~/Views/Animations/_List.cshtml")
     </div>
+    <article id="more-button-container" class="text-center">
+        <button id="more-button"
+                class="btn btn-danger"
+                onclick="GrafikaApp.Partials.renderPartial(this)"
+                title="Load more..."
+                data-partial="append"
+                data-url="/animations/list"
+                data-target="#animation-thumbnails-container"
+                data-callback="var d = $('#more-button').data();d.data.pageNumber++;$('#more-button').attr('data-data', JSON.stringify(d));"
+                data-data="@Model.Options.NextPage().ToJson()">
+            <i class="fa fa-arrow-down"></i>
+        </button>
+    </article>
 </div>

@@ -24,7 +24,13 @@ namespace Grafika.Services.Web.Extensions
         public static bool HasHeaderWithValue(this HttpRequest req, string key, string value)
         {
             var header = req.Headers.FirstOrDefault(h => h.Key.EqualsIgnoreCase(key));
-            return header.Value.ToString().EqualsIgnoreCase(key);
+            return header.Value.ToString().EqualsIgnoreCase(value);
+        }
+
+        public static bool HasHeaderWithValueContains(this HttpRequest req, string key, string value)
+        {
+            var header = req.Headers.FirstOrDefault(h => h.Key.EqualsIgnoreCase(key));
+            return header.Value.ToString().ContainsIgnoreCase(value);
         }
 
         public static bool HasHeader(this HttpRequest req, string key)
@@ -56,6 +62,20 @@ namespace Grafika.Services.Web.Extensions
 
             var crawler = config.CrawlerRegex;
             return Regex.IsMatch(userAgent, crawler, RegexOptions.IgnoreCase);
+        }
+
+        public static bool IsInternetExplorer(this HttpRequest request)
+        {
+            return request?.HasHeaderWithValueContains("User-Agent", "MSIE") == true ||
+                request?.HasHeaderWithValueContains("User-Agent", "Trident") == true;
+        }
+
+        public static bool SupportsDeflate(this HttpRequest request)
+        {
+            return request.AcceptEncodings("deflate") &&
+                    !request.HasHeader("X-inflate-frames") && 
+                    !request?.Query.ContainsKey("X-inflate-frames") == true &&
+                    !request.IsInternetExplorer();
         }
 
         public static CultureInfo GetCulture(this HttpRequest request)
