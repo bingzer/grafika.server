@@ -175,17 +175,19 @@ module GrafikaApp {
             method: elem.data('method'),
             data: elem.data('data'),
             contentType: elem.data('type'),
-            processData: elem.data('process-data') || false
+            processData: elem.data('process-data')
         };
 
         let evaluateData = (data) => {
             if (!data) return data;
             try {
+                let result = data;
                 let fn = eval(data);
                 if (typeof (fn) === 'function') {
-                    let result = fn();
-                    return JSON.stringify(result);
+                    result = fn();
+                    result = JSON.stringify(result);
                 }
+                return result;
             }
             catch (e) {
                 return data;
