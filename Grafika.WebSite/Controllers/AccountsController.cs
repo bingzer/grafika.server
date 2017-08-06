@@ -23,15 +23,6 @@ namespace Grafika.WebSite.Controllers
             _tokenProvider = tokenProvider;
         }
 
-        [Route(""), AllowAnonymous]
-        public IActionResult Index(PasswordFormViewModel model)
-        {
-            if (string.IsNullOrEmpty(model?.Hash))
-                return Unauthorized();
-
-            return View(model);
-        }
-
         [HttpGet, Route("/me"), Route("profile")]
         public async Task<IActionResult> Profile([FromServices] IUserService userService)
         {
@@ -53,9 +44,40 @@ namespace Grafika.WebSite.Controllers
             return View("Profile", model);
         }
 
+        [Route("verify"), AllowAnonymous]
+        public IActionResult Verify([FromQuery] PasswordFormViewModel model)
+        {
+            if (string.IsNullOrEmpty(model?.Hash))
+                return Unauthorized();
+
+            ViewBag.Page = new PageViewModel
+            {
+                Title = "Welcome | Grafika"
+            };
+
+            return View(model);
+        }
+
+        [Route("reset"), AllowAnonymous]
+        public IActionResult Reset([FromQuery] PasswordFormViewModel model)
+        {
+            if (string.IsNullOrEmpty(model?.Hash))
+                return Unauthorized();
+
+            ViewBag.Page = new PageViewModel
+            {
+                Title = "Reset Password | Grafika"
+            };
+
+            return View(model);
+        }
+
         [Route("/signin"), AllowAnonymous]
         public IActionResult Login()
         {
+            if (User.Identity?.IsAuthenticated == true)
+                return RedirectToAction(nameof(AnimationsController.Mine), "Animations");
+
             ViewBag.Page = new PageViewModel
             {
                 Title = "Sign In | Grafika"
@@ -82,13 +104,6 @@ namespace Grafika.WebSite.Controllers
             await HttpContext.Authentication.SignOutAsync("cookie-auth");
             url += $"?action=deauthenticate";
             return Redirect(url);
-        }
-
-        [HttpPost, Route("login"), AllowAnonymous]
-        public async Task<IActionResult> Authenticate(LoginModel model, string url = "/")
-        {
-            var authToken = await _service.Login(model.Email, model.Password);
-            return await Authenticate(authToken.Token, url);
         }
         
         [HttpGet, Route("login/callback"), AllowAnonymous]

@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace Grafika.WebSite.ViewModels
+﻿namespace Grafika.WebSite.ViewModels
 {
     public class RerouteViewModel
     {
         public const string ResetPassword = "reset-pwd";
+        public const string Verify = "verify";
 
         public string Action { get; set; }
         public string Hash { get; set; }

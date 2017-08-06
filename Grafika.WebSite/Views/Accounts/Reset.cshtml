@@ -1,0 +1,24 @@
+@model PasswordFormViewModel
+
+<div class="bg-dark page-heading"></div>
+<section class="page-content page-content-article login-form">
+    <header class="text-center">
+        <h3>Hi, @Model.User,</h3>
+        <p>
+            Please enter and confirm your new password
+        </p>
+        <hr class="primary" />
+    </header>
+    <div class="login-form">
+        @await Html.PartialAsync("_PasswordForm", Model)
+    </div>
+</section>
+
+@section styles {
+<environment names="Development">
+    <link href="~/css/GrafikaApp.Login.css" rel="stylesheet" type="text/css" />
+</environment>
+<environment names="Production">
+    <link href="~/css/GrafikaApp.Bundle.Login.min.css" rel="stylesheet" type="text/css" />
+</environment>
+}

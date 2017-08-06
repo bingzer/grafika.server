@@ -3,14 +3,11 @@
         <h1>Sign up now for free!</h1>
     </header>
     <div class="row text-center">
-        <p class="font-smaller">
-            Use your Google or Facebook account to register
-        </p>
-        <a href="@Utility.CombineUrl(AppEnvironment.Default.Server.Url, "accounts/google")" type="button" class="login login-submit login-oauth login-google">
+        <a href="@Utility.CombineUrl(AppEnvironment.Default.Server.Url, "accounts/google")" type="button" class="login login-button login-oauth login-google" title="Use your Google account">
             <img src="~/img/google_white.png" alt="Google Logo" />
             Google
         </a>
-        <a href="@Utility.CombineUrl(AppEnvironment.Default.Server.Url, "accounts/facebook")" type="button" class="login login-submit login-oauth login-facebook">
+        <a href="@Utility.CombineUrl(AppEnvironment.Default.Server.Url, "accounts/facebook")" type="button" class="login login-button login-oauth login-facebook" title="Use your Facebook account">
             <img src="~/img/facebook_white.png" alt="Facebook Logo" />
             Facebook
         </a>
@@ -26,7 +23,7 @@
                 <input type="text" name="name" placeholder="Full Name">
                 <input type="text" name="email" placeholder="Email Address">
                 <div class="pull-right">
-                    <input type="submit" name="login" class="login-submit login-login" value="Sign up!">
+                    <input type="submit" name="login" class="login-button login-login login-register" value="Sign up!">
                 </div>
             </form>
         </div>
@@ -35,7 +32,7 @@
         <div class="login-help">
             <p>
                 By registering you agree to our <a href="/eula">license agreement</a> <br/>
-                Already have an account? <a href="/signin">Login here</a>
+                Already have an account? <a href="/signin"><strong>Login here</strong>Login here</a>
             </p>
         </div>
     </div>

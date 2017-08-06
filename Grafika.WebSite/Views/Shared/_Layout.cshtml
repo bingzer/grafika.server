@@ -16,6 +16,7 @@
     <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Roboto:400,500,700" />
     <!-- Base CSS -->
 <environment names="Development">
+    <link href="~/css/toastr.css" rel="stylesheet">
     <link href="~/css/bootstrap.css" rel="stylesheet">
     <link href="~/css/bootstrap-xl.css" rel="stylesheet" />
     <link href="~/css/font-awesome.css" rel="stylesheet" type="text/css">
@@ -154,10 +155,13 @@
         @await Html.PartialAsync("_Footer")
     }
 
-    <!-- bootstrap -->
+    <!-- cdn -->
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 
 <environment names="Development">
+    <script type="text/javascript" src="~/js/jquery.validate.js"></script>
+    <script type="text/javascript" src="~/js/jquery.validate.unobtrusive.js"></script>
+    <script type="text/javascript" src="~/js/toastr.js"></script>
     <script type="text/javascript" src="~/js/bootbox.js"></script>
     <script type="text/javascript" src="~/js/scrollreveal.js"></script>
     <script type="text/javascript" src="~/js/jquery.serialize-object.js"></script>

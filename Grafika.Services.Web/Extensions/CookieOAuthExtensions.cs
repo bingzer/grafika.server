@@ -14,7 +14,7 @@ namespace Grafika.Services.Web.Extensions
             app.UseCookieAuthentication(new CookieAuthenticationOptions
             {
                 AuthenticationScheme = "cookie-auth",
-                LoginPath = new PathString("/login"),
+                LoginPath = new PathString("/signin"),
                 AccessDeniedPath = new PathString("/forbidden"),
                 AutomaticAuthenticate = true,
                 AutomaticChallenge = true,

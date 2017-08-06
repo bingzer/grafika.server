@@ -147,6 +147,9 @@ gulp.task('min:scripts', function (callback) {
 
 gulp.task('min:scripts:GrafikaApp.Bundle.Site', function (callback) {
     return gulp.src([
+        'Grafika.WebSite/wwwroot/js/jquery.validate.js',
+        'Grafika.WebSite/wwwroot/js/jquery.validate.unobtrusive.js',
+        'Grafika.WebSite/wwwroot/js/toastr.js',
         'Grafika.WebSite/wwwroot/js/bootbox.js',
         'Grafika.WebSite/wwwroot/js/scrollreveal.js',
         'Grafika.WebSite/wwwroot/js/jquery.serialize-object.js',
@@ -262,6 +265,7 @@ gulp.task('min:styles', function (callback) {
 
 gulp.task('min:styles:GrafikaApp.Bundle.Site', function (callback) {
     return gulp.src([
+        'Grafika.WebSite/wwwroot/css/toastr.css',
         'Grafika.WebSite/wwwroot/css/bootstrap.css',
         'Grafika.WebSite/wwwroot/css/font-awesome.css',
         'Grafika.WebSite/wwwroot/css/bootstrap-xl.css',

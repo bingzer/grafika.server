@@ -36,6 +36,7 @@ namespace Grafika.WebSite
         {
             services.AddResponseCompression();
             services.AddGrafikaMvc();
+            services.AddResponseCaching();
             services.ConfigureGrafikaMvc(Configuration);
         }
 
@@ -60,6 +61,7 @@ namespace Grafika.WebSite
             );
 
             app.UseResponseCompression();
+            app.UseResponseCaching();
             app.UseGrafikaMvc();
             app.UseStaticFiles();
         }

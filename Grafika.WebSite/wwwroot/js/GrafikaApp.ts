@@ -1,7 +1,7 @@
 ﻿
 module GrafikaApp {
     //---------------------------------------------------------------------------------------------------------//
-
+    window.onerror = (msg, url, lineNo, columnNo, error) => GrafikaApp.toastError(msg || error);
     // Highlight the top nav as scrolling occurs
     $('body').scrollspy({
         target: '.navbar-fixed-top',
@@ -38,9 +38,16 @@ module GrafikaApp {
     }, 300);
     window['sr'] = sr;
 
+    // ---------------- Toastr setup ----------- //
+    toastr.options = {
+        debug: false,
+        positionClass: "toast-bottom-right",
+    };
+
     // ---------------- Ajax setup ----------- //
     $.ajaxSetup({
-        beforeSend: function (xhr) {
+        error: (error) => GrafikaApp.toastError(error),
+        beforeSend: (xhr) => {
             let token = GrafikaApp.Configuration.getAuthenticationToken();
             if (token) {
                 xhr.setRequestHeader('Authorization', `Bearer ${token}`);
@@ -68,14 +75,42 @@ module GrafikaApp {
 
     //---------------------------------------------------------------------------------------------------------//
 
+    export function formatError(error: Error | any): IError {
+        if (error.message)
+            return { message: error.message };
+        if (error.status && error.statusText)
+            return { message: (error as JQueryXHR).statusText };
+        return { message: error };
+    }
+
+    export function clearQueryString() {
+        window.location.search = '';
+    }
+
+    export function refreshPage() {
+        window.location.reload();
+    }
+
+    export function navigateTo(url) {
+        window.location.href = url;
+    }
+
+    export function toastError(message: any, title?: string): JQuery {
+        return toastr.error(formatError(message).message, title);
+    }
+
+    export function toast(message: string, title?: string): JQuery {
+        return toastr.success(message, title);
+    }
+
     export function getQueryString(name: string, url: string = null): string {
         if (!url) url = window.location.href;
-        name = name.replace(/[\[\]]/g, "\\$&");
-        var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+        name = name.replace(/[\[\]]/ig, "\\$&");
+        var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)", "i"),
             results = regex.exec(url);
         if (!results) return null;
         if (!results[2]) return '';
-        return decodeURIComponent(results[2].replace(/\+/g, " "));
+        return decodeURIComponent(results[2].replace(/\+/ig, " "));
     }
 
     export function generateSlug(name: string, maxLength: number = 45): string {
@@ -102,17 +137,13 @@ module GrafikaApp {
             case "authenticate":
                 var token = GrafikaApp.getQueryString("token");
                 GrafikaApp.Configuration.setAuthenticationToken(token);
-                window.location.search = '';
+                clearQueryString();
                 break;
             case "deauthenticate":
                 GrafikaApp.Configuration.setAuthenticationToken(token);
-                window.location.search = '';
+                clearQueryString();
                 break;
         }
-    }
-
-    export function refreshPage() {
-        window.location.reload();
     }
 
     export function sendAjax(elem: any, onResult?: IAjaxResultCallback): JQueryPromise<any> {
@@ -191,5 +222,9 @@ module GrafikaApp {
 
     export interface IAjaxResultCallback {
         (err: Error, result: any, elem: JQuery): JQueryPromise<any>;
+    }
+
+    export interface IError {
+        message: string
     }
 }

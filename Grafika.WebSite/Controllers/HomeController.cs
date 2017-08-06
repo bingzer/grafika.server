@@ -32,8 +32,10 @@ namespace Grafika.WebSite.Controllers
         {
             switch (model?.Action?.ToLowerInvariant())
             {
+                case RerouteViewModel.Verify:
+                    return RedirectToAction(nameof(AccountsController.Verify), "Accounts", model);
                 case RerouteViewModel.ResetPassword:
-                    return RedirectToAction(nameof(AccountsController.Index), "Accounts", model);
+                    return RedirectToAction(nameof(AccountsController.Reset), "Accounts", model);
                 default:
                     return RedirectToAction(nameof(Index));
             }
