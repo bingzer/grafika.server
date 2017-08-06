@@ -20,6 +20,10 @@
 
             return jQuery.when(bootbox.dialog(options));
         }
+
+        public static close(elemOrSelected: any) {
+            return (jQuery(elemOrSelected).closest('.modal') as any).modal('hide');
+        }
     }
 
 

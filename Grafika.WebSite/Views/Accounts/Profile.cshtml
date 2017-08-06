@@ -1,6 +1,8 @@
 @model AccountProfileViewModel
 @{ 
     var passwordTitle = Model.HasLocalAccount ? "Change Password" : "Set Password";
+    var checkUsernameUrl = Utility.CombineUrl(AppEnvironment.Default.Server.Url, "/api/accounts/username-check");
+    var apiPasswordUrl = Utility.CombineUrl(AppEnvironment.Default.Server.Url, "/api/accounts/pwd");
 }
 
 <header class="bg-transparent page-heading page-heading-lg text-center text-white"
@@ -16,7 +18,7 @@
 <form class="page-content page-content-article" 
         id="profile-form" action="@Model.ApiSaveProfileUrl" method="put"
         data-type="application/json"
-        data-callback="GrafikaApp.refreshPage()"
+        data-callback="GrafikaApp.toast('Succesfully saved')"
         onsubmit="return GrafikaApp.Form.onSubmit(this)">
     <article class="row">
         <header>
@@ -36,11 +38,11 @@
             <div class="form-group">
                 <label class="control-label col-sm-2">Password</label>
                 <div class="col-sm-8">
-                    <a href="#" class="btn btn-danger"
+                    <button type="button" class="btn btn-danger"
                         data-dialog
                         data-title="@passwordTitle"
-                        data-url="/accounts/forms/password?RequiresCurrentPassword=@Model.Local?.IsRegistered"
-                        data-size="medium">@passwordTitle</a>
+                        data-url="/accounts/forms/password?RequiresCurrentPassword=@Model.Local?.IsRegistered&ApiPasswordUrl=@apiPasswordUrl"
+                        data-size="medium">@passwordTitle</button>
                 </div>
             </div>
             <div class="form-group">
@@ -61,7 +63,15 @@
                         @Html.EditorFor(m => m.Username, new { htmlAttributes = new { @class = "form-control" } })
                     </span>
                     <span class="col-sm-2">
-                        <button class="btn btn-default">Check</button>
+                        <button type="button" class="btn btn-default"
+                                data-callback="GrafikaApp.toast('Successfully changed your username')"
+                                data-data="(function() { return {email: '@Model.Email', username: $('#Username').val() } })"
+                                data-type="application/json"
+                                data-url="@checkUsernameUrl"
+                                data-method="post"
+                                onclick="GrafikaApp.sendAjax(this)">
+                            Check
+                            </button>
                     </span>
                 </div>
             </div>

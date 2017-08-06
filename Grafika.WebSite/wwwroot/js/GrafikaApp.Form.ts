@@ -35,6 +35,7 @@ module GrafikaApp {
             form.data('url', form.attr('action') || form.data('url'));
             form.data('method', form.attr('method') || form.data('method'));
             form.data('data', (type == 'application/json' ? form.serializeJSON() : form.serialize()));
+            form.data('process-data', true);
             form.data('type', type);
 
             return GrafikaApp.sendAjax(form);

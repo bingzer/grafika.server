@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -49,15 +50,16 @@ namespace Grafika.Services.Web.Middlewares
             if (exception is UserException)
                 message = exception.Message;
 
+            var detail = "";
             if (env.IsDevelopment())
             {
-                message = exception.ToString();
+                detail = exception.ToString();
             }
             
-            context.Response.ContentType = ContentTypes.Text;
+            context.Response.ContentType = ContentTypes.Json;
             context.Response.StatusCode = (int)code;
 
-            return context.Response.WriteAsync(message);
+            return context.Response.WriteAsync(JsonConvert.SerializeObject(new { message = message, detail = detail }));
         }
     }
 }

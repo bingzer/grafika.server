@@ -76,11 +76,19 @@ module GrafikaApp {
     //---------------------------------------------------------------------------------------------------------//
 
     export function formatError(error: Error | any): IError {
+        let objError = { message: '', detail: '' };
         if (error.message)
-            return { message: error.message };
-        if (error.status && error.statusText)
-            return { message: (error as JQueryXHR).statusText };
-        return { message: error };
+            objError = error;
+        else if (error.responseJSON && error.responseJSON.message)
+            objError = error.responseJSON;
+        else if (error.status && error.statusText)
+            objError.message = (error as JQueryXHR).statusText;
+
+        // last check
+        if (!objError.message)
+            objError.message = 'Unexpected error occured';
+
+        return objError;
     }
 
     export function clearQueryString() {
@@ -162,11 +170,26 @@ module GrafikaApp {
         let callback = elem.data('callback');
         let errorCallback = elem.data('error');
         let timeout = elem.data('timeout');
-        let opts = {
+        let opts: JQueryAjaxSettings = {
             url: elem.data('url'),
             method: elem.data('method'),
             data: elem.data('data'),
-            contentType: elem.data('type')
+            contentType: elem.data('type'),
+            processData: elem.data('process-data') || false
+        };
+
+        let evaluateData = (data) => {
+            if (!data) return data;
+            try {
+                let fn = eval(data);
+                if (typeof (fn) === 'function') {
+                    let result = fn();
+                    return JSON.stringify(result);
+                }
+            }
+            catch (e) {
+                return data;
+            }
         };
 
         let invokeCallback = (res: any, xhrReq: JQueryXHR): JQueryPromise<any> => {
@@ -196,6 +219,7 @@ module GrafikaApp {
                 return onResult(err, undefined, elem).then(() => invokeErrorCallback(err, xhr));
             }
 
+            opts.data = evaluateData(opts.data);
             return jQuery.ajax(opts).then(sucessCallback, failCallback)
         }
 
