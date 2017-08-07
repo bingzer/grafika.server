@@ -3,7 +3,6 @@
     var passwordTitle = Model.HasLocalAccount ? "Change Password" : "Set Password";
     var checkUsernameUrl = Utility.CombineUrl(AppEnvironment.Default.Server.Url, "/api/accounts/username-check");
     var apiPasswordUrl = Utility.CombineUrl(AppEnvironment.Default.Server.Url, "/api/accounts/pwd");
-    var apiUserAvatarUrl = Utility.CombineUrl(AppEnvironment.Default.Server.Url, "/api/users", Model.User.Id, "avatar");
     var apiUserBackdropUrl = Utility.CombineUrl(AppEnvironment.Default.Server.Url, "/api/users", Model.User.Id, "backdrop");
 }
 
@@ -34,7 +33,7 @@
                        data-url="/uploads/image" 
                        data-eval-data="false" 
                        data-method="get"
-                       data-data='{"uploadFunction" : "profileImageUpload"}'>
+                       data-data='{"uploadFunction" : "GrafikaApp.Account.uploadAvatar"}'>
                         <img class="border" height="100" width="100" src="@Model.User.GetUserAvatarUrl()" />
                     </a>
                 </div>
@@ -142,7 +141,7 @@
                 <div class="col-sm-8">
                     <label>
                         <input name="@Html.NameFor(m => m.Subscriptions.EmailOnComments)" type="checkbox" autocomplete="off"
-                                @(Model.Subscriptions.EmailOnComments == true ? "checked" : "")>
+                                @(Model.Subscriptions?.EmailOnComments == true ? "checked" : "")>
                         Notify me on new comments
                     </label>
                 </div>
@@ -151,13 +150,17 @@
     </article>
 </form>
 
-<script type="text/javascript">
-    function profileImageUpload(blob) {
-        var options = { url: '@apiUserAvatarUrl', data: { imageType: 'avatar', mime: blob.type }, method: 'post' };
-        GrafikaApp.sendAjax(options, function (err, result, elem) {
-            var signedUrl = result.signedUrl;
-            alert(signedUrl);
-            return jQuery.when(signedUrl);
-        });
-    }
-</script>
+@section scripts {
+<environment names="Development">
+    <script type="text/javascript" src="~/js/GrafikaApp.Account.js"></script>
+</environment>
+<environment names="Production">
+    <script type="text/javascript" src="~/js/GrafikaApp.Bundle.Account.min.js"></script>
+</environment>
+}
+@section styles {
+<environment names="Development">
+</environment>
+<environment names="Production">
+</environment>
+}

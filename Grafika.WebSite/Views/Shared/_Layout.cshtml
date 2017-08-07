@@ -1,5 +1,6 @@
 ﻿@{ 
     PageViewModel page = ViewBag.Page ?? new PageViewModel();
+    var userIdentity = (User.Identity as IUserIdentity);
 }
 <!DOCTYPE html>
 <html itemscope itemtype="http://schema.org/WebPage" lang="en" prefix="og:http://ogp.me/ns#" >
@@ -60,8 +61,14 @@
     <script type="text/javascript">
         var GrafikaApp;
         (function (GrafikaApp) {
+            @if (userIdentity != null)
+            {
+            <text>
+            GrafikaApp.User = @Html.Raw(new User(userIdentity).ToJson())
+            </text>
+            }
             GrafikaApp.Configuration = {
-                baseApiUrl: '@AppEnvironment.Default.Server.Url.TrimEnd("/".ToCharArray())'
+                baseApiUrl: '@AppEnvironment.Default.Server.Url.TrimEnd("/".ToCharArray())',
             };
         })(GrafikaApp || (GrafikaApp = {}));
     </script>    
@@ -103,7 +110,6 @@
                         </li>
                         @if (User.Identity.IsAuthenticated)
                         {
-                            var userIdentity = User.Identity as IUserIdentity;
                             <li>
                                 <a href="/animations/mine">My Animations</a>
                             </li>
@@ -117,7 +123,7 @@
                                         <div class="panel-body text-center">
                                             <img src="@userIdentity.GetUserAvatarUrl()" alt="User avatar" width="48" />
                                             <p class="row no-margin">
-                                                <a href="/users/@userIdentity.Id" class="font-larger">@userIdentity.Name</a><br />
+                                                <a href="/users/@userIdentity.Id" class="font-larger">@userIdentity.Email</a><br />
                                                 @userIdentity.Username
                                             </p>
                                         </div>

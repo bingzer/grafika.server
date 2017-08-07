@@ -142,6 +142,7 @@ gulp.task('min:scripts', function (callback) {
         'min:scripts:GrafikaApp.Bundle.StickDraw',
         'min:scripts:GrafikaApp.Bundle.Platforms',
         'min:scripts:GrafikaApp.Bundle.Android',
+        'min:scripts:GrafikaApp.Bundle.Account',
         callback);
 });
 
@@ -201,6 +202,15 @@ gulp.task('min:scripts:GrafikaApp.Bundle.Android', function (callback) {
         'Grafika.WebSite/wwwroot/js/GrafikaApp.Android.js',
     ])
         .pipe(concat('GrafikaApp.Bundle.Android.min.js'))
+        .pipe(uglify())
+        .pipe(gulp.dest('Grafika.WebSite/wwwroot/js'));
+});
+
+gulp.task('min:scripts:GrafikaApp.Bundle.Account', function (callback) {
+    return gulp.src([
+        'Grafika.WebSite/wwwroot/js/GrafikaApp.Account.js',
+    ])
+        .pipe(concat('GrafikaApp.Bundle.Account.min.js'))
         .pipe(uglify())
         .pipe(gulp.dest('Grafika.WebSite/wwwroot/js'));
 });

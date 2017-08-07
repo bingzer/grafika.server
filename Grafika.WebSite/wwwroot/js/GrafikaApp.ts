@@ -66,6 +66,7 @@ module GrafikaApp {
     // ---------------- GrafikaApp.Configuration ----------- //
 
     export var Configuration: GrafikaApp.IGrafikaAppConfiguration;
+    export var User: Grafika.IUser;
 
     GrafikaApp.Configuration.getAuthenticationToken = function () {
         return window.localStorage.getItem('token');
@@ -110,6 +111,42 @@ module GrafikaApp {
 
     export function isUndefined(any: any): boolean {
         return typeof (any) === 'undefined';
+    }
+
+    export function trimBoth(any: string, charlist: string = undefined): string {
+        return GrafikaApp.trimEnd(GrafikaApp.trimStart(any, charlist), charlist);
+    };
+
+    export function trimStart(any: string, charlist: string = undefined): string {
+        if (charlist === undefined)
+            charlist = "\s";
+
+        return any.replace(new RegExp("^[" + charlist + "]+"), "");
+    };
+
+    export function trimEnd(any: string, charlist: string = undefined): string {
+        if (charlist === undefined)
+            charlist = "\s";
+
+        return any.replace(new RegExp("[" + charlist + "]+$"), "");
+    };
+
+    export function combineUrl(url: string, ...others: string[]): string {
+        let combine = (url: string, other: string): string => {
+            if (GrafikaApp.isUndefined(url)) url = "";
+            if (GrafikaApp.isUndefined(other)) other = "";
+
+            url = GrafikaApp.trimEnd(url, '/');
+            other = GrafikaApp.trimStart(other, '/');
+
+            return GrafikaApp.trimBoth(`${url}/${other}`, '/');
+        }
+
+        for (let i = 0; i < others.length; i++) {
+            url = combine(url, others[i]);
+        }
+
+        return url;
     }
 
     export function toastError(message: any, title?: string): JQuery {
@@ -191,8 +228,10 @@ module GrafikaApp {
             url: elem.data('url'),
             method: elem.data('method') || 'get',
             data: elem.data('data'),
-            contentType: elem.data('type') || 'application/json',
-            processData: elem.data('process-data')
+            contentType: elem.data('type') || elem.data('contentType') || elem.data('content-type') || 'application/json',
+            processData: elem.data('process-data') || elem.data('processData'),
+            beforeSend: elem.data('beforeSend'),
+            headers: elem.data('headers')
         };
 
         let evaluateData = (data) => {
