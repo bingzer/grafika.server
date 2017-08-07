@@ -21,6 +21,11 @@
             return jQuery.when(bootbox.dialog(options));
         }
 
+        public static imageUploadDialog(options: IImageUploadDialogOptions): Q.IPromise<any> {
+            options.url = "/uploads/image";
+            return GrafikaApp.Dialog.dialog(options);
+        }
+
         public static close(elemOrSelected: any) {
             return (jQuery(elemOrSelected).closest('.modal') as any).modal('hide');
         }
@@ -28,6 +33,12 @@
 
 
     export interface IDialogOptions extends BootboxDialogOptions {
+        url?: string;
+    }
+    export interface IFileUploadDialogOptions extends IDialogOptions {
+        url?: string;
+    }
+    export interface IImageUploadDialogOptions extends IDialogOptions {
         url?: string;
     }
 }

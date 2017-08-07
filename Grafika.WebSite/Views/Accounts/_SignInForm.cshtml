@@ -23,7 +23,6 @@
     <div class="row">
         <div id="login-form-controls">
             <form id="signin-form" action="@loginUrl" method="post"
-                  data-type="application/json"
                   data-callback="GrafikaApp.navigateTo('/accounts/login/callback?token=' + $res.token + '&url=/animations/mine')"
                   onsubmit="return GrafikaApp.Form.onSubmit(this)">
                 <input type="email" name="email" placeholder="Email Address" required>

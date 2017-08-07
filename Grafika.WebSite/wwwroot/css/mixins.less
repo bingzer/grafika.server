@@ -1,3 +1,4 @@
+@import "variables.less";
 // Mixins
 
 .transition-all() {
@@ -63,5 +64,17 @@
 }
 
 .page-padding() {
-    padding: 24px 64px 0 64px;
+    padding: 24px 64px 24px 64px;
+
+    @media (max-width: @media-md) {
+        padding: 16px 24px 16px 24px;
+    }
+
+    @media (max-width: @media-sm) {
+        padding: 8px 8px 8px 8px;
+    }
+
+    @media (max-width: @media-xs) {
+        padding: 2px 2px 2px 2px;
+    }
 }

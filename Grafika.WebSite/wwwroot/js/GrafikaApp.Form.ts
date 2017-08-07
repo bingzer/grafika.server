@@ -31,10 +31,18 @@ module GrafikaApp {
             let form = $(elem).closest('form');
             if (!form) throw new Error('no form found');
 
-            let type = form.data('type') || 'application/x-www-form-urlencoded';
+            let type = form.data('type') || 'application/json';
+            function getData() {
+                if (type === 'application/json')
+                    return form.serializeJSON();
+                else if (type === 'application/x-www-form-urlencoded')
+                    return form.serialize();
+                return form.serializeObject();
+            }
+
             form.data('url', form.attr('action') || form.data('url'));
             form.data('method', form.attr('method') || form.data('method'));
-            form.data('data', (type == 'application/json' ? form.serializeJSON() : form.serialize()));
+            form.data('data', getData());
             form.data('process-data', true);
             form.data('type', type);
 

@@ -3,6 +3,8 @@
     var passwordTitle = Model.HasLocalAccount ? "Change Password" : "Set Password";
     var checkUsernameUrl = Utility.CombineUrl(AppEnvironment.Default.Server.Url, "/api/accounts/username-check");
     var apiPasswordUrl = Utility.CombineUrl(AppEnvironment.Default.Server.Url, "/api/accounts/pwd");
+    var apiUserAvatarUrl = Utility.CombineUrl(AppEnvironment.Default.Server.Url, "/api/users", Model.User.Id, "avatar");
+    var apiUserBackdropUrl = Utility.CombineUrl(AppEnvironment.Default.Server.Url, "/api/users", Model.User.Id, "backdrop");
 }
 
 <header class="bg-transparent page-heading page-heading-lg text-center text-white"
@@ -17,7 +19,6 @@
 </header>
 <form class="page-content page-content-article" 
         id="profile-form" action="@Model.ApiSaveProfileUrl" method="put"
-        data-type="application/json"
         data-callback="GrafikaApp.toast('Succesfully saved')"
         onsubmit="return GrafikaApp.Form.onSubmit(this)">
     <article class="row">
@@ -25,9 +26,18 @@
             <h2>Profile</h2>
         </header>
         <div class="form-horizontal">
-            <div class="form-group text-center">
-                <img class="user-avatar-lg" src="@Model.User.GetUserAvatarUrl()" />
-                <label class="control-label col-sm-2">Email</label>
+            <div class="form-group">
+                <label class="control-label col-sm-2">&nbsp;</label>
+                <div class="col-sm-8">
+                    <a href="javascript: void(0)" data-dialog 
+                       data-title="Avatar" 
+                       data-url="/uploads/image" 
+                       data-eval-data="false" 
+                       data-method="get"
+                       data-data='{"uploadFunction" : "profileImageUpload"}'>
+                        <img class="border" height="100" width="100" src="@Model.User.GetUserAvatarUrl()" />
+                    </a>
+                </div>
             </div>
             <div class="form-group">
                 <label class="control-label col-sm-2">Email</label>
@@ -66,7 +76,6 @@
                         <button type="button" class="btn btn-default"
                                 data-callback="GrafikaApp.toast('Username is available')"
                                 data-data="(function() { return {email: '@Model.Email', username: $('#Username').val() } })"
-                                data-type="application/json"
                                 data-url="@checkUsernameUrl"
                                 data-method="post"
                                 onclick="GrafikaApp.sendAjax(this)">
@@ -141,3 +150,14 @@
         </div>
     </article>
 </form>
+
+<script type="text/javascript">
+    function profileImageUpload(blob) {
+        var options = { url: '@apiUserAvatarUrl', data: { imageType: 'avatar', mime: blob.type }, method: 'post' };
+        GrafikaApp.sendAjax(options, function (err, result, elem) {
+            var signedUrl = result.signedUrl;
+            alert(signedUrl);
+            return jQuery.when(signedUrl);
+        });
+    }
+</script>

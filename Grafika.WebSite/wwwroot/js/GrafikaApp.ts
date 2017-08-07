@@ -1,7 +1,7 @@
 ﻿
 module GrafikaApp {
     //---------------------------------------------------------------------------------------------------------//
-    window.onerror = (msg, url, lineNo, columnNo, error) => GrafikaApp.toastError(msg || error);
+    //window.onerror = (msg, url, lineNo, columnNo, error) => GrafikaApp.toastError(msg || error);
     // Highlight the top nav as scrolling occurs
     $('body').scrollspy({
         target: '.navbar-fixed-top',
@@ -46,6 +46,7 @@ module GrafikaApp {
 
     // ---------------- Ajax setup ----------- //
     $.ajaxSetup({
+        cache: false,
         error: (error) => GrafikaApp.toastError(error),
         beforeSend: (xhr) => {
             let token = GrafikaApp.Configuration.getAuthenticationToken();
@@ -103,6 +104,14 @@ module GrafikaApp {
         window.location.href = url;
     }
 
+    export function isString(any: any): boolean {
+        return typeof (any) === 'string';
+    }
+
+    export function isUndefined(any: any): boolean {
+        return typeof (any) === 'undefined';
+    }
+
     export function toastError(message: any, title?: string): JQuery {
         return toastr.error(formatError(message).message, title);
     }
@@ -155,8 +164,15 @@ module GrafikaApp {
     }
 
     export function sendAjax(elem: any, onResult?: IAjaxResultCallback): JQueryPromise<any> {
-        if (jQuery.isPlainObject(elem))
-            elem.data = (name) => elem[name];
+        if (jQuery.isPlainObject(elem)) {
+            if (elem.data && !elem.rawData)
+                elem.rawData = elem.data;
+            elem.data = (name) => {
+                if (name == 'data')
+                    name = 'rawData';
+                return elem[name];
+            }
+        }
         else
             elem = $(elem);
 
@@ -167,30 +183,38 @@ module GrafikaApp {
 
         let target = elem.data('target');
         let shouldAppend = elem.data('partial') === 'append';
+        let shouldEvaluateData = GrafikaApp.isUndefined(elem.data('eval-data')) ? true : elem.data('eval-data');
         let callback = elem.data('callback');
         let errorCallback = elem.data('error');
         let timeout = elem.data('timeout');
         let opts: JQueryAjaxSettings = {
             url: elem.data('url'),
-            method: elem.data('method'),
+            method: elem.data('method') || 'get',
             data: elem.data('data'),
-            contentType: elem.data('type'),
+            contentType: elem.data('type') || 'application/json',
             processData: elem.data('process-data')
         };
 
         let evaluateData = (data) => {
             if (!data) return data;
+
+            let processDataPerMethod = (data) => {
+                if (opts.method.toUpperCase() === 'POST' && !GrafikaApp.isString(data))
+                    return JSON.stringify(data);
+                return data;
+            }
+
             try {
                 let result = data;
                 let fn = eval(data);
                 if (typeof (fn) === 'function') {
                     result = fn();
-                    result = JSON.stringify(result);
+                    return JSON.stringify(result);
                 }
-                return result;
+                return processDataPerMethod(data);
             }
             catch (e) {
-                return data;
+                return processDataPerMethod(data);
             }
         };
 
@@ -221,7 +245,9 @@ module GrafikaApp {
                 return onResult(err, undefined, elem).then(() => invokeErrorCallback(err, xhr));
             }
 
-            opts.data = evaluateData(opts.data);
+            if (shouldEvaluateData) {
+                opts.data = evaluateData(opts.data);
+            }
             return jQuery.ajax(opts).then(sucessCallback, failCallback)
         }
 
