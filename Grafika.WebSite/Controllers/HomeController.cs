@@ -44,7 +44,7 @@ namespace Grafika.WebSite.Controllers
         [HttpGet, Route("mine"), Authorize(ActiveAuthenticationSchemes = "cookie-auth")]
         public async Task<IActionResult> Mine([FromServices] IAnimationService animationService)
         {
-            var userIdentity = new UserIdentity(User);
+            var userIdentity = User.Identity as IUserIdentity;
             var options = new AnimationQueryOptions { UserId = userIdentity.Id, IsRemoved = false };
 
             var model = new AnimationsViewModel
@@ -53,7 +53,7 @@ namespace Grafika.WebSite.Controllers
                 Options = options
             };
 
-            return View("~/Views/Animations/Mine.cshtml", model);
+            return View("Mine", model);
         }
 
         [HttpGet, Route("r"), AllowAnonymous]
@@ -83,7 +83,13 @@ namespace Grafika.WebSite.Controllers
         [Route("try-it"), Route("try-grafika"), AllowAnonymous]
         public IActionResult Try()
         {
-            var model = new AnimationDrawingViewModel();
+            var model = new AnimationDrawingViewModel
+            {
+                Animation = new Animation
+                {
+                    Name = "New Animation",
+                }
+            };
 
             ViewBag.Page = new PageViewModel
             {

@@ -81,6 +81,7 @@
                                 Background Color
                                 <spectrum-colorpicker 
                                     format="'hex'"
+                                    style="margin-right: 4px"
                                     ng-model="vm.grafika.getOptions().backgroundColor"
                                     on-change="vm.setOptions({ backgroundColor: color})"/>
                             </md-button>
@@ -125,7 +126,7 @@
                                 Brush
                                 <spectrum-colorpicker 
                                     format="'hex'"
-                                    style="padding-bottom: 4px"
+                                    style="padding-bottom: 4px; margin-right: 4px"
                                     ng-model="vm.grafika.getOptions().foregroundColor"
                                     on-change="vm.setOptions({ foregroundColor: color})"/>
                             </md-button>

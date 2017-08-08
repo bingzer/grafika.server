@@ -355,6 +355,7 @@ gulp.task('min:styles:GrafikaApp.Bundle.Animation.Detail', function(callback) {
 
 gulp.task('min:styles:GrafikaApp.Bundle.Drawing', function(callback) {
     return gulp.src([
+        'Grafika.WebSite/wwwroot/css/spectrum.css',
         'Grafika.WebSite/wwwroot/css/angular-material.css',
         'Grafika.WebSite/wwwroot/css/GrafikaApp.Drawing.css'
     ])

@@ -50,7 +50,6 @@
                     return this.frameService.get(this.animation).then((res) => {
                         this.grafika.initialize('#canvas', { drawingMode: 'paint', useNavigationText: false }, this.animation);
                         this.grafika.setFrames(res.data);
-                        this.grafikaReady = true;
                         return this.appCommon.$q.when(this.animation);
                     }).catch((err) => {
                         if (!this.animation.width) {
@@ -60,11 +59,11 @@
                         // most likely this is a new animation
                         this.grafika.initialize('#canvas', { drawingMode: 'paint', useNavigationText: false }, this.animation);
                         this.grafika.setFrames(this.createFirstFrame());
-                        this.grafikaReady = true;
                         return this.appCommon.$q.when(this.animation);
                     }).finally(() => {
                         angular.element('#animation-title').html(this.animation.name);
                         this.appCommon.hideLoadingModal();
+                        this.grafikaReady = true;
                     });
                 }
 
@@ -101,6 +100,7 @@
                         })
                         .then((res) => {
                             if (exit) this.exit();
+                            this.grafika.save();
                             this.appCommon.toast('Successfully saved!');
                         });
                 }
@@ -124,12 +124,15 @@
                 }
 
                 setOptions(opts: Grafika.IOption) {
-                    this.grafika.setOptions(opts);
-                    this.update();
+                    if (this.grafikaReady) {
+                        this.grafika.setOptions(opts);
+                        this.update();
+                    }
                 }
 
                 exit() {
-                    this.appCommon.$state.go('my-animations');
+                    this.grafika.save();
+                    GrafikaApp.navigateTo('/');
                 }
 
                 update() {

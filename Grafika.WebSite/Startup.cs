@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Rewrite;
 using System.Net;
+using Microsoft.Net.Http.Headers;
 
 namespace Grafika.WebSite
 {
@@ -63,8 +64,20 @@ namespace Grafika.WebSite
 
             app.UseResponseCompression();
             app.UseResponseCaching();
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                OnPrepareResponse = (context) =>
+                {
+                    var headers = context.Context.Response.GetTypedHeaders();
+                    headers.CacheControl = new CacheControlHeaderValue()
+                    {
+                        MaxAge = TimeSpan.FromHours(1),
+                        Public = true,
+                    };
+                }
+            });
             app.UseGrafikaMvc();
-            app.UseStaticFiles();
+
         }
     }
 }

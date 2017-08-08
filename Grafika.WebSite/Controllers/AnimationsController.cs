@@ -40,14 +40,6 @@ namespace Grafika.WebSite.Controllers
             return View(model);
         }
 
-        [Route("mine"), Authorize(ActiveAuthenticationSchemes = "cookie-auth")]
-        public async Task<IActionResult> Mine()
-        {
-            var userIdentity = new UserIdentity(User);
-            var options = new AnimationQueryOptions { UserId = userIdentity.Id, IsRemoved = false };
-            return await Index(options);
-        }
-
         [Route("{animationId}/{slug?}/edit")]
         public async Task<IActionResult> Edit(string animationId, string slug = null)
         {
@@ -121,7 +113,7 @@ namespace Grafika.WebSite.Controllers
                 Author = user.Username,
                 LocalId = Utility.Guid(),
                 Width = 800,
-                Height = 400,
+                Height = 480,
                 Timer = user.Prefs.DrawingTimer,
                 IsPublic = user.Prefs.DrawingIsPublic,
                 Client = new Client

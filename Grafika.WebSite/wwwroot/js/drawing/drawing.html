@@ -2,7 +2,7 @@
 <ng-include src="'/js/drawing/drawing-context-menu.html'" onload="vm.contextMenuReady = true;"></ng-include>
 <div class="drawing" layout-fill layout="column">
     <!-- Toolbar -->
-    <ng-include src="'/js/drawing/drawing-toolbar.html'" ng-if="vm.grafikaReady"></ng-include>
+    <ng-include src="'/js/drawing/drawing-toolbar.html'"></ng-include>
     <!-- Canvas -->
     <div class="drawing" layout-padding layout="column" layout-align="top center" context-menu="drawing-context-menu" ng-if="vm.contextMenuReady" ng-init="vm.load()" flex>
         <md-card id="canvas-container" class="editor" style="padding: 0; margin: 0">

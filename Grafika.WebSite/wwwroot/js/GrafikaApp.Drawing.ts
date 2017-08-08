@@ -1,4 +1,6 @@
-﻿module GrafikaApp {
+﻿declare var grafika: Grafika.IGrafika;
+
+module GrafikaApp {
     export module Drawing {
         export const app = angular.module('app', [
             'ui.router',
@@ -41,9 +43,13 @@
         
         app.controller('DrawingController', GrafikaApp.Drawing.Controllers.DrawingController);
 
-        window.onerror = (err) => console.error(err);
-
         angular.element('#mainNav').click(() => angular.element('md-backdrop').click());
+
+        window.onerror = (err) => console.error(err);
+        window.onbeforeunload = () => {
+            if (grafika.isModified())
+                return true;
+        };
     }
 }
 

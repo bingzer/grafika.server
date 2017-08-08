@@ -15,24 +15,26 @@
         </figure>
         <div class="caption">
             <header>
-                <h4 class="pull-left">
+                <h4>
                     <a href="@animationUrl" class="font-stronger">@Model.Name</a>
                     @if (Model.IsPublic == false)
                     {
                         <i class="fa fa-lock font-smaller text-muted" title="This Model.tion is private. Can only be viewed by you"></i>
                     }
                 </h4>
+            </header>
+            <div>
+                <p class="animation-author pull-left">
+                    <img src="@Model.GetAuthorThumbnail()" alt="@Model.Author" class="img-circle user-avatar" />
+                    <a href="@authorUrl">
+                        @Model.Author
+                    </a>
+                </p>
                 <p class="animation-views pull-right font-smaller text-muted">
                     @Model.TotalFrame frames &#8226; @Model.Views views
                 </p>
-                <span class="clearfix"></span>
-            </header>
-            <p class="animation-author">
-                <img src="@Model.GetAuthorThumbnail()" alt="@Model.Author" class="img-circle user-avatar" />
-                <a href="@authorUrl">
-                    @Model.Author
-                </a>
-            </p>
+            </div>
+            <div class="clearfix"></div>
             <p class="animation-description text-muted">
                 @if (Model.Description.IsNullOrEmptyOrWhitespace())
                 {

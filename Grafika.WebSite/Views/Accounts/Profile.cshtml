@@ -1,5 +1,6 @@
 @model AccountProfileViewModel
 @{ 
+    var userIdentity = (User.Identity as IUserIdentity);
     var passwordTitle = Model.HasLocalAccount ? "Change Password" : "Set Password";
     var checkUsernameUrl = Utility.CombineUrl(AppEnvironment.Default.Server.Url, "/api/accounts/username-check");
     var userUrl = Utility.CombineUrl(AppEnvironment.Default.Content.Url, "u", Model.Username);
@@ -9,7 +10,17 @@
 
 <header class="bg-transparent page-heading page-heading-lg text-center text-white"
         style="background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.0)), url(@Model.User.GetUserBackdropUrl()) no-repeat; -webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover; background-size: cover; ">
-    <h1>@Model.User.Username</h1>
+    <h1>
+        <a href="javascript: void(0)" data-dialog
+           data-title="Avatar"
+           data-url="/uploads/image"
+           data-eval-data="false"
+           data-method="get"
+           data-data='{"uploadFunction" : "GrafikaApp.Account.uploadAvatar"}'>
+            <img class="user-avatar user-avatar-xl" src="@userIdentity.GetUserAvatarUrl()" />
+        </a>
+        @userIdentity.Username
+    </h1>
     <p>
         <a href="javascript: void(0)" 
            class="text-white font-smaller"
@@ -22,7 +33,7 @@
             Change Backdrop
         </a>
     </p>
-    <p class="pull-right">
+    <p class="page-toolbar">
         <button class="btn btn-sm btn-success" onclick="$('#profile-form').submit()">
             <i class="fa fa-cloud"></i>
             Save Changes
@@ -38,19 +49,6 @@
             <h2>Profile</h2>
         </header>
         <div class="form-horizontal">
-            <div class="form-group">
-                <label class="control-label col-sm-2">&nbsp;</label>
-                <div class="col-sm-8">
-                    <a href="javascript: void(0)" data-dialog 
-                       data-title="Avatar" 
-                       data-url="/uploads/image" 
-                       data-eval-data="false" 
-                       data-method="get"
-                       data-data='{"uploadFunction" : "GrafikaApp.Account.uploadAvatar"}'>
-                        <img class="border" height="100" width="100" src="@Model.User.GetUserAvatarUrl()" />
-                    </a>
-                </div>
-            </div>
             <div class="form-group">
                 <label class="control-label col-sm-2">Email</label>
                 <div class="col-sm-6">

@@ -5,17 +5,23 @@
 
 <header class="bg-transparent page-heading page-heading-lg text-center text-white"
         style="background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.0)), url('@userIdentity.GetUserBackdropUrl()') no-repeat; -webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover; background-size: cover; ">
-    <h1>Animations by @userIdentity.Username</h1>
-    <p>These are your animations</p>
-    <p class="pull-right">
+    <h1>
+        <img class="user-avatar user-avatar-xl" src="@userIdentity.GetUserAvatarUrl()"/>
+        @userIdentity.Username
+    </h1>
+    <p class="page-toolbar">
         <button class="btn btn-sm btn-danger"
                 data-dialog
-                data-title="New Animations"
+                data-title="New Animation"
                 data-size="medium"
                 data-url="/animations/forms/create">
             <i class="fa fa-plus"></i>
             Create Animation
         </button>
+        <a href="/me" class="btn btn-sm btn-default">
+            <i class="fa fa-user"></i>
+            My profile
+        </a>
     </p>
 </header>
 <div class="page-content page-content-gutter" id="animations">
@@ -27,7 +33,7 @@
     </div>
     <article id="more-button-container" class="text-center">
         <button id="more-button"
-                class="btn btn-danger"
+                class="btn btn-danger @(Model.Animations.Count() == Model.Options.PageSize ? "" : "hidden")"
                 onclick="GrafikaApp.Partials.renderPartial(this)"
                 data-partial="append"
                 data-url="/animations/list"

@@ -76,7 +76,7 @@ namespace Grafika.WebSite.Controllers
         public IActionResult Login()
         {
             if (User.Identity?.IsAuthenticated == true)
-                return RedirectToAction(nameof(AnimationsController.Mine), "Animations");
+                return Redirect("/");
 
             ViewBag.Page = new PageViewModel
             {
