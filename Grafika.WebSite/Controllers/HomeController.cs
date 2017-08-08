@@ -16,8 +16,14 @@ namespace Grafika.WebSite.Controllers
     public class HomeController : Controller
     {
         [HttpGet, Route(""), AllowAnonymous]
-        public async Task<IActionResult> Index([FromServices] IMemoryCache cache, [FromServices] ISeriesService seriesService)
+        public async Task<IActionResult> Index(
+            [FromServices] IAnimationService animationService,
+            [FromServices] IMemoryCache cache, 
+            [FromServices] ISeriesService seriesService)
         {
+            if (User?.Identity.IsAuthenticated == true)
+                return await Mine(animationService);
+
             var handpickedSeries = await cache.GetOrCreateAsync("HandpickedSeries", (entry) => {
                 entry.SlidingExpiration = TimeSpan.FromHours(1);
                 return seriesService.GetHandpickedSeries();
@@ -33,6 +39,21 @@ namespace Grafika.WebSite.Controllers
             ViewBag.Page = new PageViewModel();
 
             return View("Index", model);
+        }
+
+        [HttpGet, Route("mine"), Authorize(ActiveAuthenticationSchemes = "cookie-auth")]
+        public async Task<IActionResult> Mine([FromServices] IAnimationService animationService)
+        {
+            var userIdentity = new UserIdentity(User);
+            var options = new AnimationQueryOptions { UserId = userIdentity.Id, IsRemoved = false };
+
+            var model = new AnimationsViewModel
+            {
+                Animations = await animationService.List(options),
+                Options = options
+            };
+
+            return View("~/Views/Animations/Mine.cshtml", model);
         }
 
         [HttpGet, Route("r"), AllowAnonymous]

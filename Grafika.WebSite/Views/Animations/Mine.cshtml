@@ -22,7 +22,7 @@
     <div id="animation-thumbnails-container">
         @foreach (var anim in Model.Animations)
         {
-            @await Html.PartialAsync("_Thumbnail", anim)
+            @await Html.PartialAsync("~/Views/Animations/_Thumbnail.cshtml", anim)
         }
     </div>
     <article id="more-button-container" class="text-center">

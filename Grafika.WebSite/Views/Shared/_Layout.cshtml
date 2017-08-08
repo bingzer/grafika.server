@@ -111,9 +111,6 @@
                         @if (User.Identity.IsAuthenticated)
                         {
                             <li>
-                                <a href="/animations/mine">My Animations</a>
-                            </li>
-                            <li>
                                 <a href="javascript: void(0)" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                                     <img class="img-circle user-avatar user-avatar-md" src="@userIdentity.GetUserAvatarUrl()" alt="Avatar for @userIdentity.Email" style="margin-top: -2px" />
                                     @User.Identity.Name <span class="caret"></span>
