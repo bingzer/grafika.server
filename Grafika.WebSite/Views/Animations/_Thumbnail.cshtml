@@ -6,7 +6,7 @@
     var userIdentity = User.Identity as IUserIdentity;
     var canEdit = userIdentity?.Id == Model.UserId;
 }
-<article class="col-sm-6 col-md-4 col-lg-3 col-xl-2">
+<article class="col-xs-12 col-sm-6 col-md-4 col-lg-3 col-xl-1">
     <div class="thumbnail">
         <figure>
             <a class="animation-thumbnail-link" href="@animationUrl">
@@ -15,13 +15,17 @@
         </figure>
         <div class="caption">
             <header>
-                <h4>
+                <h4 class="pull-left">
                     <a href="@animationUrl" class="font-stronger">@Model.Name</a>
                     @if (Model.IsPublic == false)
                     {
                         <i class="fa fa-lock font-smaller text-muted" title="This Model.tion is private. Can only be viewed by you"></i>
                     }
                 </h4>
+                <p class="animation-views pull-right font-smaller text-muted">
+                    @Model.TotalFrame frames &#8226; @Model.Views views
+                </p>
+                <span class="clearfix"></span>
             </header>
             <p class="animation-author">
                 <img src="@Model.GetAuthorThumbnail()" alt="@Model.Author" class="img-circle user-avatar" />
@@ -29,10 +33,10 @@
                     @Model.Author
                 </a>
             </p>
-            <p class="animation-description">
+            <p class="animation-description text-muted">
                 @if (Model.Description.IsNullOrEmptyOrWhitespace())
                 {
-                    <span class="text-muted">(no description)</span>
+                    <text>(no description)</text>
                 }
                 else
                 {
@@ -48,11 +52,6 @@
                         </a>
                     </span>
                 }
-            </p>
-            <p class="animation-views">
-                <span class="font-smaller text-muted">
-                    @Model.TotalFrame frames &#8226; @Model.Views views
-                </span>
             </p>
         </div>
     </div>

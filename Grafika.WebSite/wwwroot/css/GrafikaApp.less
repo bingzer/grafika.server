@@ -368,6 +368,44 @@ h6 {
         max-width: 980px;
         width: 90%;
     }
+
+    &.page-content-gutter {
+        margin: 0px 32px 0px 32px;
+
+        @media (max-width: @media-xs) {
+            margin: 0px 2px 0px 2px;
+        }
+
+        @media (min-width: @media-xs) and (max-width: @media-sm) {
+            margin: 0px 24px 0px 24px;
+        }
+
+        @media (min-width: 450px) and (max-width: @media-sm) {
+            margin: 0px 48px 0px 48px;
+        }
+
+        @media (min-width: 500px) and (max-width: @media-sm) {
+            margin: 0px 72px 0px 72px;
+        }
+
+        @media (min-width: 550px) and (max-width: @media-sm) {
+            margin: 0px 128px 0px 128px;
+        }
+
+        @media (min-width: 600px) and (max-width: @media-sm) {
+            margin: 0px 136px 0px 136px;
+        }
+        /*@media (min-width: @media-xs) and (max-width: @media-sm) {
+            padding: 0px 96px 0px 96px;
+        }*/
+        /*@media (max-width: @media-xs) and (max-width: 500px) {
+            padding: 0px 24px 0px 24px;
+        }
+
+        @media (max-width: @media-xs) {
+            padding: 0px 2px 0px 2px;
+        }*/
+    }
 }
 
 // --------------- footer
@@ -400,59 +438,66 @@ h6 {
 }
 
 // --------------- animation thumbnail
+@thumbnail-height: 248px;
+@thumbnail-img-height: 164px;
+@thumbnail-img-height-sm: 48px;
+@thumbnail-img-width-sm: 48px;
+
 div.thumbnail {
-    height: 272px;
+    height: @thumbnail-height;
+    max-height: @thumbnail-height;
     position: relative;
     border-radius: 0;
     padding: 0;
 
     .animation-thumbnail-link {
-        height: 138px;
+        height: @thumbnail-img-height;
+        max-height: @thumbnail-img-height;
     }
 
     .caption {
         font-size: smaller;
+        border-top: 1px solid lighten(#ddd, 5%);
 
         h4 {
+            .one-line-text;
             margin-bottom: 2px;
             margin-top: 2px
         }
 
         p.animation-author {
             margin-top: 0;
+            margin-bottom: 4px;
         }
 
         p.animation-description {
-            word-wrap: break-word
+            .one-line-text;
         }
 
         p.animation-edit {
             position: absolute;
             bottom: 8px;
-            left: 8px;
+            right: 8px;
             margin-bottom: 0;
         }
 
         p.animation-views {
-            position: absolute;
-            bottom: 8px;
-            right: 8px;
-            margin-bottom: 0;
+            margin-top: 4px;
         }
     }
 }
 
 .animation-thumbnail {
-    height: 138px;
-    max-height: 138px;
-    min-height: 138px;
+    height: @thumbnail-img-height;
+    max-height: @thumbnail-img-height;
+    min-height: @thumbnail-img-height;
     width: 100%;
 
     &.animation-thumbnail-sm {
-        height: 48px;
-        max-height: 48px;
-        min-height: 48px;
-        width: 64px;
+        height: @thumbnail-img-height-sm;
+        max-height: @thumbnail-img-height-sm;
+        min-height: @thumbnail-img-height-sm;
+        width: @thumbnail-img-width-sm;
     }
 }
 
