@@ -7,6 +7,16 @@
         style="background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.0)), url('@userIdentity.GetUserBackdropUrl()') no-repeat; -webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover; background-size: cover; ">
     <h1>Animations by @userIdentity.Username</h1>
     <p>These are your animations</p>
+    <p class="pull-right">
+        <button class="btn btn-sm btn-danger"
+                data-dialog
+                data-title="New Animations"
+                data-size="medium"
+                data-url="/animations/forms/create">
+            <i class="fa fa-plus"></i>
+            Create Animation
+        </button>
+    </p>
 </header>
 <div class="page-content" id="animations">
     <div id="animation-thumbnails-container">

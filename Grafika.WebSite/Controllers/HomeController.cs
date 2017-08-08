@@ -59,6 +59,21 @@ namespace Grafika.WebSite.Controllers
             return Redirect($"/animations/{animationId}/{slug}/player?autoPlay=true&templateName={templateName}");
         }
 
+        [Route("try-it"), Route("try-grafika"), AllowAnonymous]
+        public IActionResult Try()
+        {
+            var model = new AnimationDrawingViewModel();
+
+            ViewBag.Page = new PageViewModel
+            {
+                Title = $"Create Animation | Grafika",
+                UseNavigationBar = false,
+                UseFooter = false
+            };
+
+            return View("~/Views/Animations/Edit.cshtml", model);
+        }
+
         [Route("stickdraw"), AllowAnonymous]
         public IActionResult StickDraw()
         {

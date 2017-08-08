@@ -91,21 +91,6 @@ namespace Grafika.WebSite.Controllers
             return View(model);
         }
 
-        [Route("create"), AllowAnonymous]
-        public IActionResult Create()
-        {
-            var model = new AnimationDrawingViewModel();
-
-            ViewBag.Page = new PageViewModel
-            {
-                Title = $"Create Animation | Grafika",
-                UseNavigationBar = false,
-                UseFooter = false
-            };
-
-            return View("Edit", model);
-        }
-
         [Route("list"), AllowAnonymous]
         public async Task<IActionResult> List(AnimationQueryOptions options)
         {
@@ -120,6 +105,12 @@ namespace Grafika.WebSite.Controllers
             };
 
             return PartialView(options.TemplateName, model);
+        }
+
+        [Route("forms/create")]
+        public IActionResult Create()
+        {
+            return PartialView("_Create");
         }
     }
 }

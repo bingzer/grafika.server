@@ -1,0 +1,39 @@
+@model AnimationCreateViewModel
+
+<form class="form-horizontal" id="create-form" action="" method="post"
+      data-callback="GrafikaApp.toast('Password is successfully set'); GrafikaApp.Dialog.close('#recovery-form')"
+      onsubmit="return GrafikaApp.Form.onSubmit(this)">
+    <div class="form-group">
+        @Html.LabelFor(m => m.Name, new { @class="control-label col-sm-4" })
+        <div class="col-sm-8">
+            @Html.EditorFor(m => m.Name, new { htmlAttributes = new { @class = "form-control" } })
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-sm-4">Orientation</label>
+        <div class="col-sm-4">
+            <select name="Orientation" class="form-control">
+                <option value="landscape">Landscape</option>
+                <option value="portrait">Portrait</option>
+            </select>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-sm-4">Type</label>
+        <div class="col-sm-4">
+            <select id="@Html.IdFor(m => m.IsPublic)" name="@Html.NameFor(m => m.IsPublic)" class="form-control">
+                <option value="true" @(Model.IsPublic == true ? "selected" : "")>Public</option>
+                <option value="false" @(Model.IsPublic == true ? "" : "selected")>Private</option>
+            </select>
+        </div>
+    </div>
+    <div class="form-group modal-footer">
+        <label class="control-label col-sm-4">
+            &nbsp;
+        </label>
+        <div class="col-sm-8 text-right">
+            <input id="submit" class="btn btn-primary" type="submit" value="Create" disabled="disabled" />
+        </div>
+    </div>
+</form>
+

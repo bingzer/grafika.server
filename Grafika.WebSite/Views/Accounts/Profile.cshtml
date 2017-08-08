@@ -10,10 +10,13 @@
         style="background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.0)), url(@Model.User.GetUserBackdropUrl()) no-repeat; -webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover; background-size: cover; ">
     <h1>@Model.User.Username</h1>
     <p class="font-smaller text-white">
-        <a href="#">Change backdrop</a>
+        <a href="#" class="text-white">Change backdrop</a>
     </p>
     <p class="pull-right">
-        <button class="btn btn-success" onclick="$('#profile-form').submit()">Save Changes</button>
+        <button class="btn btn-sm btn-success" onclick="$('#profile-form').submit()">
+            <i class="fa fa-cloud"></i>
+            Save Changes
+        </button>
     </p>
 </header>
 <form class="page-content page-content-article" 
