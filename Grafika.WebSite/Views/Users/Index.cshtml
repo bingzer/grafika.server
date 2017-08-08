@@ -1,12 +1,11 @@
 @model UserViewModel
-@{
-    var userIdentity = User.Identity as IUserIdentity;
-}
 
 <header class="bg-transparent page-heading page-heading-lg text-center text-white" 
     style="background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.0)), url(@Model.BackdropUrl) no-repeat; -webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover; background-size: cover; ">
-    <h1>Animations by @Model.User.Username</h1>
-    <p>These are your animations</p>
+    <h1>
+        <img class="user-avatar user-avatar-xl" src="@Model.AvatarUrl" />
+        @Model.User.Username
+    </h1>
 </header>
 <div class="page-content page-content-gutter" id="animations">
     <div id="animation-thumbnails-container">
@@ -14,7 +13,7 @@
     </div>
     <article id="more-button-container" class="text-center">
         <button id="more-button"
-                class="btn btn-danger"
+                class="btn btn-danger @(Model.Animations.Count() == Model.Options.PageSize ? "" : "hidden")"
                 onclick="GrafikaApp.Partials.renderPartial(this)"
                 title="Load more..."
                 data-partial="append"
