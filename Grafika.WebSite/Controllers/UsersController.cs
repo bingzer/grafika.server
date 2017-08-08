@@ -20,10 +20,11 @@ namespace Grafika.WebSite.Controllers
             _service = service;
         }
 
-        [Route("{userId}"), AllowAnonymous]
+        [Route("{userId}/{slug?}"), AllowAnonymous]
         public async Task<IActionResult> Index([FromServices] IOptions<ServerConfiguration> serverOpts,
             [FromServices] IAnimationService animationService,
-            AnimationQueryOptions options)
+            AnimationQueryOptions options,
+            string slug = null)
         {
             var userIdentity = User.Identity as IUserIdentity;
             var user = await _service.Get(options.UserId);

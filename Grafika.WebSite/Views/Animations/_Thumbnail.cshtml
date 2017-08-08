@@ -2,7 +2,7 @@
 @{
     Layout = null;
     var animationUrl = Html.AnimationUrl(Model);
-    var authorUrl = Html.UserUrl(Model?.UserId);
+    var authorUrl = Utility.CombineUrl("/users", Model.UserId, Html.GenerateSlug(Model.Author));
     var userIdentity = User.Identity as IUserIdentity;
     var canEdit = userIdentity?.Id == Model.UserId;
 }

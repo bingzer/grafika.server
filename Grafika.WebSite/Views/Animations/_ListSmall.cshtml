@@ -22,7 +22,7 @@
                     </h4>
                     <p style="margin-top: 0">
                         <img src="@anim.GetAuthorThumbnail()" alt="@anim.Author" class="img-circle user-avatar" />
-                        <a href="/users/@anim.UserId">
+                        <a href="@Utility.CombineUrl("/users", anim.UserId, Html.GenerateSlug(anim.Author))">
                             @anim.Author
                         </a>
                     </p>

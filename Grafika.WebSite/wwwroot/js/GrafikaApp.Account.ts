@@ -1,16 +1,27 @@
 ﻿module GrafikaApp {
     export class Account {
+        /**
+         * Upload backdrop image
+         * @param blob
+         */
+        public static uploadBackdrop(blob: Blob) {
+            GrafikaApp.Account.uploadResource("backdrop", blob);
+        }
 
         /**
          * Upload avatar image
          * @param blob
          */
         public static uploadAvatar(blob: Blob) {
-            let apiUserAvatarUrl = GrafikaApp.combineUrl(GrafikaApp.Configuration.baseApiUrl, '/api/users/', GrafikaApp.User._id, 'avatar');
-            var options = { url: apiUserAvatarUrl, data: { imageType: 'avatar', mime: blob.type }, method: 'post' };
+            GrafikaApp.Account.uploadResource("avatar", blob);
+        }
+
+        private static uploadResource(imageType: "avatar" | "backdrop", blob: Blob) {
+            let apiUserAvatarUrl = GrafikaApp.combineUrl(GrafikaApp.Configuration.baseApiUrl, '/api/users/', GrafikaApp.User._id, imageType);
+            var options = { url: apiUserAvatarUrl, data: { imageType: imageType, mime: blob.type }, method: 'post' };
             GrafikaApp.sendAjax(options, (err, result, elem) => {
                 return GrafikaApp.Account.uploadToAws(result as Grafika.ISignedUrl, blob)
-                    .then(() => GrafikaApp.toast('Successfully uploaded'));
+                    .then(() => GrafikaApp.toast(`Done. ${imageType} is successfully uploaded`));
             });
         }
 

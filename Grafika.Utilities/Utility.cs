@@ -26,7 +26,7 @@ namespace Grafika.Utilities
             url = url.TrimEnd('/');
             other = other.TrimStart('/');
 
-            return $"{url}/{other}".TrimStart('/').TrimEnd('/');
+            return $"{url}/{other}".TrimEnd('/');
         }
 
         public static string CombineUrl(Uri uri, string other)
