@@ -139,7 +139,7 @@ module GrafikaApp {
             url = GrafikaApp.trimEnd(url, '/');
             other = GrafikaApp.trimStart(other, '/');
 
-            return GrafikaApp.trimBoth(`${url}/${other}`, '/');
+            return GrafikaApp.trimEnd(`${url}/${other}`, '/');
         }
 
         for (let i = 0; i < others.length; i++) {
@@ -259,7 +259,7 @@ module GrafikaApp {
 
         let invokeCallback = (res: any, xhrReq: JQueryXHR): JQueryPromise<any> => {
             if (callback) {
-                let $res = res;
+                let $result = res;
                 let $xhr = xhrReq;
                 eval(callback);
             }

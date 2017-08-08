@@ -13,11 +13,19 @@ module GrafikaApp {
 
     export class Form {
 
+        public static validate(form: JQuery) {
+            form = jQuery(form).closest('form');
+            let submitButton = form.find('input[type=submit]');
+
+            if (form.valid()) submitButton.removeAttr('disabled');
+            else submitButton.attr('disabled', 'disabled');
+        }
+
         /**
          * Call on the <form>
          * @param elem
          */
-        public static onSubmit(elem): boolean {
+        public static onSubmit(elem: any): boolean {
             GrafikaApp.Form.submit(elem);
             return false;
         }

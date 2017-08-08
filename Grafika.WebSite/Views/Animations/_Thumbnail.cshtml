@@ -47,6 +47,15 @@
                 @if (canEdit)
                 {
                     <span class="pull-left font-smaller text-muted">
+                        <a href="javascript: void(0)" 
+                           class="btn btn-xs btn-danger"
+                           data-confirm="Are you sure you want to delete @Model.Name?" 
+                           data-confirmed="GrafikaApp.toast('Deleting...'); GrafikaApp.sendAjax($elem)"
+                           data-callback="GrafikaApp.refreshPage()"
+                           data-url="@Model.GetUrl()"
+                           data-method="delete">
+                            Delete
+                        </a>
                         <a href="@animationUrl/edit" class="btn btn-xs btn-success">
                             Edit
                         </a>

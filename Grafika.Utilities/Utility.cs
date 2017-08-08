@@ -48,5 +48,10 @@ namespace Grafika.Utilities
         {
             return rand.Next(min, max);
         }
+
+        public static string Guid()
+        {
+            return System.Guid.NewGuid().ToString();
+        }
     }
 }

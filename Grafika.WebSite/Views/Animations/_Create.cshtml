@@ -1,25 +1,36 @@
-@model AnimationCreateViewModel
+@model Animation
 
-<form class="form-horizontal" id="create-form" action="" method="post"
-      data-callback="GrafikaApp.toast('Password is successfully set'); GrafikaApp.Dialog.close('#recovery-form')"
+<form class="form-horizontal" id="create-form" action="@ViewBag.ApiCreateAnimationUrl" method="post"
+      data-callback="onCallback($result)"
       onsubmit="return GrafikaApp.Form.onSubmit(this)">
+    @Html.HiddenFor(m => m.Author)
+    @Html.HiddenFor(m => m.LocalId)
+    @Html.HiddenFor(m => m.Timer)
+    @Html.HiddenFor(m => m.Width)
+    @Html.HiddenFor(m => m.Height)
+    @Html.HiddenFor(m => m.Client.Name)
+    @Html.HiddenFor(m => m.Client.Browser)
+    @Html.HiddenFor(m => m.Client.Version)
     <div class="form-group">
-        @Html.LabelFor(m => m.Name, new { @class="control-label col-sm-4" })
+        @Html.LabelFor(m => m.Name, new { @class="control-label col-sm-3" })
         <div class="col-sm-8">
-            @Html.EditorFor(m => m.Name, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.EditorFor(m => m.Name, new { htmlAttributes = new { @class = "form-control", onkeyup = "GrafikaApp.Form.validate(this)", required = "required" } })
         </div>
     </div>
     <div class="form-group">
-        <label class="control-label col-sm-4">Orientation</label>
+        <label class="control-label col-sm-3">Orientation</label>
         <div class="col-sm-4">
-            <select name="Orientation" class="form-control">
+            <select id="orientation" class="form-control" 
+                    data-width="@Model.Width"
+                    data-height="@Model.Height"
+                    onchange="calculateAnimationSize()">
                 <option value="landscape">Landscape</option>
                 <option value="portrait">Portrait</option>
             </select>
         </div>
     </div>
     <div class="form-group">
-        <label class="control-label col-sm-4">Type</label>
+        <label class="control-label col-sm-3">Type</label>
         <div class="col-sm-4">
             <select id="@Html.IdFor(m => m.IsPublic)" name="@Html.NameFor(m => m.IsPublic)" class="form-control">
                 <option value="true" @(Model.IsPublic == true ? "selected" : "")>Public</option>
@@ -28,12 +39,24 @@
         </div>
     </div>
     <div class="form-group modal-footer">
-        <label class="control-label col-sm-4">
-            &nbsp;
-        </label>
-        <div class="col-sm-8 text-right">
+        <div class="col-sm-12 text-right">
             <input id="submit" class="btn btn-primary" type="submit" value="Create" disabled="disabled" />
         </div>
     </div>
 </form>
+<script type="text/javascript" defer>
+    function onCallback($result) {
+        GrafikaApp.toast('Please wait');
+        GrafikaApp.Dialog.close('#create-form');
+        var editUrl = GrafikaApp.combineUrl('/animations', $result._id, GrafikaApp.generateSlug($result.name), 'edit');
+        GrafikaApp.navigateTo(editUrl);
+    }
 
+    function calculateAnimationSize() {
+        var orientation = $('#orientation');
+        $('#@Html.IdFor(m => m.Width)').val(orientation.val() === 'landscape' ? orientation.data('width') : orientation.data('height'));
+        $('#@Html.IdFor(m => m.Height)').val(orientation.val() === 'landscape' ? orientation.data('height') : orientation.data('width'));
+    }
+
+    $('#create-form').validate();
+</script>

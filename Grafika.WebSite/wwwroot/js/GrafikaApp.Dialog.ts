@@ -1,9 +1,30 @@
 ﻿module GrafikaApp {
     export class Dialog {
         public static loadElements() {
+            $('[data-confirm]').each((index, elem) => {
+                $(elem).on('click', (e: Event) => {
+                    e.preventDefault();
+                    let $elem = $(elem);
+                    let options: IDialogConfirmOptions = {
+                        message: $elem.data('message') || $elem.data('confirm'),
+                        title: $elem.data('title') || "Confirmation",
+                        confirmed: $elem.data('confirmed'),
+                        href: $elem.attr('href'),
+                        callback: (result: boolean) => {
+                            if (result && options.confirmed) {
+                                if (options.confirmed === 'continue' || options.confirmed == 'href') {
+                                    GrafikaApp.navigateTo(options.href);
+                                }
+                                else eval($elem.data('confirmed'));
+                            }
+                        }
+                    };
+                    bootbox.confirm(options);
+                });
+            });
             $('a[data-dialog],button[data-dialog]').each((index, elem) => {
                 let options = $(elem).data() as IDialogOptions;
-                options.url = $(elem).data('url');
+                options.url = $(elem).data('url') || $(elem).attr('href');
                 $(elem).on('click', () => Dialog.dialog(options));
             });
         }
@@ -32,6 +53,10 @@
     }
 
 
+    export interface IDialogConfirmOptions extends BootboxConfirmOptions {
+        confirmed?: string;
+        href?: string;
+    }
     export interface IDialogOptions extends BootboxDialogOptions {
         url?: string;
     }

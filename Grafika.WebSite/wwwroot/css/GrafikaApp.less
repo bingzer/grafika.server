@@ -179,6 +179,12 @@ h6 {
     }
 }
 
+label.error {
+    font-weight: normal !important;
+    font-size: smaller !important;
+    color: @theme-accent !important;
+}
+
 .btn-file {
     position: relative;
     overflow: hidden;
@@ -537,10 +543,17 @@ iframe.youtube-embedd {
         border-radius: 2px;
     }
 
+    .modal-body {
+
+        .modal-footer {
+            margin-bottom: -12px;
+        }
+    }
+
     .modal-footer {
         border-top: 1px solid #ddd;
         padding: 16px 8px 8px 8px;
-        margin-bottom: -8px;
+        margin-bottom: 4px;
         margin-top: 48px;
     }
 }

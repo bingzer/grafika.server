@@ -4,6 +4,9 @@ using Grafika.Services;
 using Grafika.WebSite.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Grafika.Services.Web.Extensions;
+using Grafika.Configurations;
+using Grafika.Animations;
+using Grafika.Utilities;
 
 namespace Grafika.WebSite.Controllers
 {
@@ -108,9 +111,30 @@ namespace Grafika.WebSite.Controllers
         }
 
         [Route("forms/create")]
-        public IActionResult Create()
+        public async Task<IActionResult> Create([FromServices] IUserService userService)
         {
-            return PartialView("_Create");
+            var user = await userService.Get((User.Identity as IUserIdentity).Id);
+
+            var model = new Animation
+            {
+                UserId = user.Id,
+                Author = user.Username,
+                LocalId = Utility.Guid(),
+                Width = 800,
+                Height = 400,
+                Timer = user.Prefs.DrawingTimer,
+                IsPublic = user.Prefs.DrawingIsPublic,
+                Client = new Client
+                {
+                    Name = "GrafikaApp",
+                    Browser = Request.Headers["User-Agent"],
+                    Version = AppEnvironment.Default.AppVersion
+                }
+            };
+
+            ViewBag.ApiCreateAnimationUrl = Utility.CombineUrl(AppEnvironment.Default.Server.Url, "api/animations");
+
+            return PartialView("_Create", model);
         }
     }
 }
