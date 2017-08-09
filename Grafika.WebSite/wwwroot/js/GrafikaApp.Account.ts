@@ -1,5 +1,21 @@
 ﻿module GrafikaApp {
     export class Account {
+
+        public static toggleExternalLogin(id: string, name: string) {
+            let url = GrafikaApp.combineUrl(GrafikaApp.Configuration.baseApiUrl, '/api/accounts/', name);
+            if (id) {
+                let options = {
+                    url: url,
+                    method: 'delete',
+                    callback: GrafikaApp.refreshPage
+                };
+                GrafikaApp.sendAjax(options);
+            }
+            else {
+                GrafikaApp.navigateTo(url);
+            }
+        }
+
         /**
          * Upload backdrop image
          * @param blob

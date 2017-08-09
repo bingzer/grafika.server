@@ -105,6 +105,10 @@ module GrafikaApp {
         window.location.href = url;
     }
 
+    export function navigateHome() {
+        navigateTo('/');
+    }
+
     export function isString(any: any): boolean {
         return typeof (any) === 'string';
     }
@@ -261,7 +265,9 @@ module GrafikaApp {
             if (callback) {
                 let $result = res;
                 let $xhr = xhrReq;
-                eval(callback);
+                if (typeof callback === 'function')
+                    callback();
+                else eval(callback);
             }
             return jQuery.when(res);
         }
@@ -270,7 +276,9 @@ module GrafikaApp {
             if (errorCallback) {
                 let $err = err;
                 let $xhr = xhrReq;
-                eval(errorCallback);
+                if (typeof callback === 'function')
+                    callback();
+                else eval(callback);
             }
             return jQuery.when(err);
         }

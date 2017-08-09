@@ -11,7 +11,7 @@
     </header>
     <div class="login-form">
         <form class="form-horizontal" id="password-form" action="@ViewBag.ApiPasswordUrl" method="post"
-              data-callback="GrafikaApp.toast('Password is successfully set'); GrafikaApp.navigateTo('/signin')"
+              data-callback="onPasswordSet()"
               onsubmit="return GrafikaApp.Form.onSubmit(this)">
             <input type="hidden" name="email" value="@Model.User" />
             <input type="hidden" name="hash" value="@Model.Hash" />
@@ -22,6 +22,14 @@
 @section scripts {
     <script type="text/javascript">
         function onPasswordSet() {
+            GrafikaApp.toast('Password is successfully set');
+            bootbox.alert({
+                message: 'Your password is now set. You will now be taken to the login page.',
+                title: 'Password is set',
+                callback: function () {
+                    GrafikaApp.navigateTo('/signin');
+                }
+            });
         }
     </script>
 }

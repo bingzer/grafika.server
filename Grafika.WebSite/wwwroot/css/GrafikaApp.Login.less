@@ -44,6 +44,14 @@
         &[disabled] {
             background-color: @theme-primary-alpha;
         }
+
+        &.login-register {
+            background-color: @theme-primary;
+
+            &[disabled] {
+                background-color: lighten(@theme-primary, 10%);
+            }
+        }
     }
 
     input[type=text],
@@ -110,8 +118,4 @@
 
 .login-facebook {
     background-color: #3C5C95 !important;
-}
-
-.login-register {
-    background-color: @theme-primary !important;
 }

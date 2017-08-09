@@ -49,5 +49,5 @@
         else $('#signin-form input[type=submit]').attr('disabled', 'disabled');
     }
 
-    $('#signin-form input[type=password], #signin-form input[type=email]').keyup(validate);
+    $('#signin-form input[type=password], #signin-form input[type=email]').focus(validate).change(validate).keyup(validate);
 </script>

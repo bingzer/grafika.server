@@ -22,13 +22,13 @@
                 After signing up you will receive a verification email to verify your email address.
                 Inside the email, you will have a link to create your password.
             </p>
-            <form action="@signUpUrl" method="post"
+            <form id="signup-form" action="@signUpUrl" method="post"
                   data-callback="bootbox.alert({ message: 'Please check your email at ' + $('#email').val(), title: 'Verify your email' })"
                   onsubmit="return GrafikaApp.Form.onSubmit(this)">
-                <input type="text" name="name" placeholder="Full Name">
-                <input type="text" id="email" name="email" placeholder="Email Address">
+                <input type="text" name="name" placeholder="Full Name" required>
+                <input type="email" id="email" name="email" placeholder="Email Address" required>
                 <div class="pull-right">
-                    <input type="submit" name="login" class="login-button login-login login-register" value="Sign up!">
+                    <input type="submit" name="login" class="login-button login-login login-register" value="Sign up!" disabled="disabled">
                 </div>
             </form>
         </div>
@@ -42,3 +42,12 @@
         </div>
     </div>
 </div>
+<script type="text/javascript">
+    function validate() {
+        if ($('#signup-form').valid())
+            $('#signup-form input[type=submit]').removeAttr('disabled');
+        else $('#signup-form input[type=submit]').attr('disabled', 'disabled');
+    }
+
+    $('#signup-form input[type=password], #signup-form input[type=email]').focus(validate).change(validate).keyup(validate);
+</script>

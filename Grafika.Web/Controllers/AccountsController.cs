@@ -59,11 +59,25 @@ namespace Grafika.Web.Controllers
             return Challenge("Google");
         }
 
+        [HttpDelete("google")]
+        public async Task<IActionResult> GoogleLogout()
+        {
+            await _accountService.Detach((User.Identity as IUserIdentity), OAuthProvider.Google);
+            return Ok();
+        }
+
         [AllowAnonymous]
         [HttpGet("facebook")]
         public IActionResult FacebookLogin()
         {
             return Challenge("Facebook");
+        }
+
+        [HttpDelete("facebook")]
+        public async Task<IActionResult> FacebookLogout()
+        {
+            await _accountService.Detach((User.Identity as IUserIdentity), OAuthProvider.Facebook);
+            return Ok();
         }
 
         [HttpGet("disqus")]
