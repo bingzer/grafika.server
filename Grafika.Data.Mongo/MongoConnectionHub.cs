@@ -2,6 +2,8 @@
 using System.Threading.Tasks;
 using Grafika.Connections;
 using Grafika.Data.Mongo.Supports;
+using Grafika.Configurations;
+using MongoDB.Bson;
 
 namespace Grafika.Data.Mongo
 {
@@ -24,15 +26,16 @@ namespace Grafika.Data.Mongo
                 _context.Users.ToMongoDataSet().EnsureIndex(),
                 _context.Series.ToMongoDataSet().EnsureIndex(),
                 _context.Backgrounds.ToMongoDataSet().EnsureIndex()
-            );
+            ).ContinueWith((task) => CheckStatus());
         }
 
-        public override Task CheckStatus()
+        public override async Task CheckStatus()
         {
             if (_dbConnector.Client.Cluster.Description.State != MongoDB.Driver.Core.Clusters.ClusterState.Connected)
                 throw new Exception();
 
-            return Task.FromResult(0);
+            AppEnvironment.Default.Content.AnimationsCount = (int)await _context.Animations.ToMongoDataSet().Collection.CountAsync(new BsonDocument());
+            AppEnvironment.Default.Content.UsersCount = (int)await _context.Users.ToMongoDataSet().Collection.CountAsync(new BsonDocument());
         }
     }
 }
