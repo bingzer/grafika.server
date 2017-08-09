@@ -4,7 +4,6 @@
     var passwordTitle = Model.HasLocalAccount ? "Change Password" : "Set Password";
     var checkUsernameUrl = Utility.CombineUrl(AppEnvironment.Default.Server.Url, "/api/accounts/username-check");
     var userUrl = Utility.CombineUrl(AppEnvironment.Default.Content.Url, "u", Model.Username);
-    var apiPasswordUrl = Utility.CombineUrl(AppEnvironment.Default.Server.Url, "/api/accounts/pwd");
     var apiUserBackdropUrl = Utility.CombineUrl(AppEnvironment.Default.Server.Url, "/api/users", Model.User.Id, "backdrop");
 }
 
@@ -61,7 +60,7 @@
                     <button type="button" class="btn btn-danger"
                         data-dialog
                         data-title="@passwordTitle"
-                        data-url="/accounts/forms/password?RequiresCurrentPassword=@Model.Local?.IsRegistered&ApiPasswordUrl=@apiPasswordUrl"
+                        data-url="/accounts/password"
                         data-size="medium">@passwordTitle</button>
                 </div>
             </div>

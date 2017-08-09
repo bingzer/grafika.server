@@ -1,4 +1,4 @@
-@model PasswordFormViewModel
+@model RerouteViewModel
 
 <div class="bg-dark page-heading"></div>
 <section class="page-content page-content-article login-form">
@@ -10,10 +10,21 @@
         <hr class="primary" />
     </header>
     <div class="login-form">
-        @await Html.PartialAsync("_PasswordForm", Model)
+        <form class="form-horizontal" id="password-form" action="@ViewBag.ApiPasswordUrl" method="post"
+              data-callback="GrafikaApp.toast('Password is successfully set'); GrafikaApp.navigateTo('/signin')"
+              onsubmit="return GrafikaApp.Form.onSubmit(this)">
+            <input type="hidden" name="email" value="@Model.User" />
+            <input type="hidden" name="hash" value="@Model.Hash" />
+            @await Html.PartialAsync("_PasswordForm", new PasswordFormViewModel())
+        </form>
     </div>
 </section>
-
+@section scripts {
+    <script type="text/javascript">
+        function onPasswordSet() {
+        }
+    </script>
+}
 @section styles {
 <environment names="Development">
     <link href="~/css/GrafikaApp.Login.css" rel="stylesheet" type="text/css" />

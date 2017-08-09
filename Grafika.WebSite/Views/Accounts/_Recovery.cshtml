@@ -1,12 +1,11 @@
-﻿@model PasswordFormViewModel
-<section class="form-horizontal">
+﻿<section class="form-horizontal">
     <header>
         <p>
             It's okay, we all forget sometimes.<br />
             Simply, enter your email address that you used to register and we'll send you a recovery email.
         </p>
     </header>
-    <form id="recovery-form" action="@Model.ApiPasswordUrl" method="post"
+    <form id="recovery-form" action="@ViewBag.ApiRecoveryUrl" method="post"
           data-callback="GrafikaApp.Dialog.close('#recovery-form'); GrafikaApp.toast('Recovery email sent')"
           onsubmit="return GrafikaApp.Form.onSubmit(this)">
         <div class="form-group">

@@ -1,3 +1,6 @@
+@{
+    var signUpUrl = Utility.CombineUrl(AppEnvironment.Default.Server.Url, "/api/accounts/register");
+}
 <div class="login-form">
     <header class="login-header text-center">
         <h1>Sign up now for free!</h1>
@@ -19,9 +22,11 @@
                 After signing up you will receive a verification email to verify your email address.
                 Inside the email, you will have a link to create your password.
             </p>
-            <form action="/accounts/register" method="post">
+            <form action="@signUpUrl" method="post"
+                  data-callback="bootbox.alert({ message: 'Please check your email at ' + $('#email').val(), title: 'Verify your email' })"
+                  onsubmit="return GrafikaApp.Form.onSubmit(this)">
                 <input type="text" name="name" placeholder="Full Name">
-                <input type="text" name="email" placeholder="Email Address">
+                <input type="text" id="email" name="email" placeholder="Email Address">
                 <div class="pull-right">
                     <input type="submit" name="login" class="login-button login-login login-register" value="Sign up!">
                 </div>
