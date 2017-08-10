@@ -44,3 +44,14 @@
         </button>
     </article>
 </div>
+@section scripts {
+    <environment names="Development">
+        <script type="text/javascript" src="~/js/GrafikaApp.Animation.js"></script>
+    </environment>
+    <environment names="Production">
+        <script type="text/javascript" src="~/js/GrafikaApp.Bundle.Animation.min.js"></script>
+    </environment>
+    <script type="text/javascript" defer>
+        GrafikaApp.Animation.checkLocalAnimation();
+    </script>
+}

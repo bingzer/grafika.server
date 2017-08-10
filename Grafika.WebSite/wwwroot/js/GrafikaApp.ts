@@ -20,24 +20,6 @@ module GrafikaApp {
         }
     })
 
-    // Initialize and Configure Scroll Reveal Animation
-    let sr = ScrollReveal();
-    sr.reveal('.sr-icons', {
-        duration: 600,
-        scale: 0.3,
-        distance: '0px'
-    }, 200);
-    sr.reveal('.sr-button', {
-        duration: 1000,
-        delay: 200
-    });
-    sr.reveal('.sr-contact', {
-        duration: 600,
-        scale: 0.3,
-        distance: '0px'
-    }, 300);
-    window['sr'] = sr;
-
     // ---------------- Toastr setup ----------- //
     toastr.options = {
         debug: false,
@@ -67,6 +49,8 @@ module GrafikaApp {
 
     export var Configuration: GrafikaApp.IGrafikaAppConfiguration;
     export var User: Grafika.IUser;
+    export const StorageAnimationKey = "LocalAnimation";
+    export const StorageFramesKey = "LocalFrames";
 
     GrafikaApp.Configuration.getAuthenticationToken = function () {
         return window.localStorage.getItem('token');
@@ -161,6 +145,46 @@ module GrafikaApp {
         return toastr.success(message, title);
     }
 
+    export function putStorageItem(key: string, value: any): JQueryPromise<string> {
+        return GrafikaApp.defer<string>((defer) => {
+            if (GrafikaApp.isString(value)) {
+                value = JSON.stringify(value);
+            }
+            sessionStorage.setItem(key, value);
+            defer.resolve(key);
+        }).promise();
+    }
+
+    export function removeStorageItem(prefix?: string): JQueryPromise<any> {
+        return GrafikaApp.defer<any>((defer) => {
+            if (!prefix) {
+                sessionStorage.clear();
+                defer.resolve();
+            }
+            else {
+                let i = sessionStorage.length;
+                while (i--) {
+                    let key = sessionStorage.key(i);
+                    if (new RegExp(prefix).test(key))
+                        sessionStorage.removeItem(key);
+                }
+                defer.resolve();
+            }
+        }).promise();
+    }
+
+    export function getStorageItem<T>(key: string): JQueryPromise<T> {
+        return GrafikaApp.defer<T>((defer) => {
+            let item = sessionStorage.getItem(key);
+            if (!item) defer.resolve(null);
+            else return defer.resolve(JSON.parse(item));
+        }).promise();
+    }
+
+    export function hasStorageItem(key: string): boolean {
+        return sessionStorage.getItem(key) != null;
+    }
+
     export function getQueryString(name: string, url: string = null): string {
         if (!url) url = window.location.href;
         name = name.replace(/[\[\]]/ig, "\\$&");
@@ -169,6 +193,16 @@ module GrafikaApp {
         if (!results) return null;
         if (!results[2]) return '';
         return decodeURIComponent(results[2].replace(/\+/ig, " "));
+    }
+
+    export function defer<T>(action?: (deferred: JQueryDeferred<T>) => any): JQueryDeferred<T> {
+        let defer: any = jQuery.Deferred<T>();
+        defer.originalPromise = defer.promise;
+        defer.promise = (target?: any) => {
+            action(defer);
+            return defer.originalPromise(target);
+        };
+        return defer;
     }
 
     export function generateSlug(name: string, maxLength: number = 45): string {
@@ -299,12 +333,12 @@ module GrafikaApp {
         }
 
         if (timeout && timeout > 0) {
-            var deferred = jQuery.Deferred<any>();
-            setTimeout(() => {
-                doSend().then((res, text, xhrReq) => deferred.resolve(res))
-                    .fail((err) => deferred.reject(err));
-            }, timeout);
-            return deferred.promise();
+            return GrafikaApp.defer<any>((deferred) => {
+                setTimeout(() => {
+                    doSend().then((res, text, xhrReq) => deferred.resolve(res))
+                        .fail((err) => deferred.reject(err));
+                }, timeout);
+            }).promise();
         }
         else return doSend();
     }
@@ -312,6 +346,7 @@ module GrafikaApp {
     // ---------------- Interface ----------- //
 
     export interface IGrafikaAppConfiguration {
+
         baseApiUrl?: string;
         shouldInflateFrame?: boolean;
 

@@ -2,11 +2,11 @@
     export module Drawing {
         export module Controllers {
             export class DrawingController extends BaseAnimationController implements Grafika.ICallback {
+                grafikaReady: boolean = false;
                 grafika: Grafika.IGrafika = new Grafika();
                 currentFrame: number = 1;
                 totalFrame: number = 0;
                 canvas: JQuery;
-                grafikaReady: boolean = false;
                 graphics = ['freeform', 'line', 'rectangle', 'square', 'circle', 'oval', 'triangle', 'text'];
 
                 public static $inject = ['appCommon', 'authService', 'animationService', 'frameService', 'resourceService', '$rootScope'];
@@ -61,7 +61,6 @@
                         this.grafika.setFrames(this.createFirstFrames());
                         return this.appCommon.$q.when(this.animation);
                     }).finally(() => {
-                        angular.element('#animation-title').html(this.animation.name);
                         this.appCommon.hideLoadingModal();
                         this.grafikaReady = true;
                     });

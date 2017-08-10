@@ -2,9 +2,6 @@
     export module Drawing {
         export module Controllers {
             export class LocalDrawingController extends DrawingController {
-                static readonly StorageAnimationKey = "LocalAnimation";
-                static readonly StorageFramesKey = "LocalFrames";
-
                 public static $inject = ['appCommon', 'authService', 'animationService', 'frameService', 'resourceService', '$rootScope'];
                 constructor(
                     appCommon: AppCommon,
@@ -21,15 +18,15 @@
                     this.tryLoadFromStorage()
                         .catch(() => this.createNewAnimation())
                         .finally(() => {
-                            angular.element('#animation-title').html(this.animation.name);
                             this.grafikaReady = true;
                             this.appCommon.hideLoadingModal();
                         });
                 }
 
                 save(exit: boolean) {
-                    this.appCommon.putStorageItem(LocalDrawingController.StorageAnimationKey, this.grafika.getAnimation());
-                    this.appCommon.putStorageItem(LocalDrawingController.StorageFramesKey, this.grafika.getFrames());
+                    this.grafika.save();
+                    this.appCommon.putStorageItem(GrafikaApp.StorageAnimationKey, this.grafika.getAnimation());
+                    this.appCommon.putStorageItem(GrafikaApp.StorageFramesKey, this.grafika.getFrames());
 
                     this.appCommon.toast('Successfully saved!');
 
@@ -49,7 +46,7 @@
 
                 private tryLoadFromStorage(): ng.IPromise<any> {
                     let checkExistingPromise: ng.IPromise<any> = this.appCommon.$q((resolve, reject) => {
-                        if (this.appCommon.hasStorageItem(LocalDrawingController.StorageAnimationKey)) {
+                        if (this.appCommon.hasStorageItem(GrafikaApp.StorageAnimationKey)) {
                             bootbox.confirm({
                                 title: 'Unsaved Animation',
                                 message: 'Welcome back! <br/>It looks like you have unsaved animation.<br/> Would you like to reload it?',
@@ -62,8 +59,8 @@
                         else reject();
                     });
 
-                    let animPromise = this.appCommon.getStorageItem(LocalDrawingController.StorageAnimationKey);
-                    let framePromise = this.appCommon.getStorageItem(LocalDrawingController.StorageFramesKey);
+                    let animPromise = this.appCommon.getStorageItem(GrafikaApp.StorageAnimationKey);
+                    let framePromise = this.appCommon.getStorageItem(GrafikaApp.StorageFramesKey);
 
                     return checkExistingPromise
                         .then(() => animPromise)

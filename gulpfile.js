@@ -139,6 +139,7 @@ gulp.task('min:scripts', function (callback) {
     runSequence(
         'min:scripts:GrafikaApp.Bundle.Site',
         'min:scripts:GrafikaApp.Bundle.Home',
+        'min:scripts:GrafikaApp.Bundle.Animation',
         'min:scripts:GrafikaApp.Bundle.Drawing',
         'min:scripts:GrafikaApp.Bundle.StickDraw',
         'min:scripts:GrafikaApp.Bundle.Platforms',
@@ -175,6 +176,15 @@ gulp.task('min:scripts:GrafikaApp.Bundle.Home', function (callback) {
         'Grafika.WebSite/wwwroot/js/GrafikaApp.Home.js',
     ])
     .pipe(concat('GrafikaApp.Bundle.Home.min.js'))
+    .pipe(uglify())
+    .pipe(gulp.dest('Grafika.WebSite/wwwroot/js'));
+});
+
+gulp.task('min:scripts:GrafikaApp.Bundle.Animation', function (callback) {
+    return gulp.src([
+        'Grafika.WebSite/wwwroot/js/GrafikaApp.Animation.js',
+    ])
+    .pipe(concat('GrafikaApp.Bundle.Animation.min.js'))
     .pipe(uglify())
     .pipe(gulp.dest('Grafika.WebSite/wwwroot/js'));
 });
