@@ -61,18 +61,16 @@
                 return this.$mdDialog.show(confirm);
             }
             toastError(error: any, position?: string, delay?: number): ng.IPromise<any> {
-                return this.toast(this.formatErrorMessage(error), position, delay);
+                GrafikaApp.toastError(this.formatErrorMessage(error));
+                return this.$q.when(true);
             };
             toast(msg: string, position?: string, delay?: number): ng.IPromise<any> {
                 if (!position) position = 'top right';
                 if (!delay) delay = 3000;
                 this.$log.log(msg);
 
-                return this.$mdToast.show(
-                    this.$mdToast.simple().textContent(msg)
-                        .position(position)
-                        .hideDelay(delay)
-                );
+                GrafikaApp.toast(msg);
+                return this.$q.when(true);
             }
             showModalDialog(templateUrl: string, controller?: string | any, event?: MouseEvent, locals?: { [index: string]: any }, controllerAs?: string): ng.IPromise<any> {
                 return this.showDialog(templateUrl, controller, event, locals, controllerAs, true);
@@ -124,9 +122,10 @@
                 if (msg.statusText) return msg.statusText;
                 if (msg.config && msg.headers) msg = 'An HTTP error has occurred';
                 return msg;
-            };
+            }
+
             putStorageItem(key: string, value: any): ng.IPromise<string> {
-                return this.$q(function (resolve, reject) {
+                return this.$q((resolve, reject) => {
                     if (!angular.isString(value))
                         value = JSON.stringify(value);
                     this.$window.sessionStorage.setItem(key, value);
@@ -134,7 +133,7 @@
                 });
             }
             removeStorageItem(prefix?: string): ng.IPromise<any> {
-                return this.$q(function (resolve, reject) {
+                return this.$q((resolve, reject) => {
                     if (!prefix) {
                         this.$window.sessionStorage.clear();
                         resolve();
@@ -151,7 +150,7 @@
                 });
             };
             getStorageItem(key: string): ng.IPromise<any> {
-                return this.$q(function (resolve, reject) {
+                return this.$q((resolve, reject) => {
                     let item = this.$window.sessionStorage.getItem(key);
                     if (!item) resolve(null);
                     else return resolve(JSON.parse(item));
@@ -166,7 +165,7 @@
             }
             hideLoadingModal(): ng.IPromise<any> {
                 let deferred = this.$q.defer();
-                this.$timeout(function () {
+                this.$timeout(() => {
                     angular.element('#progress-modal').css('visibility', 'hidden');
                     deferred.resolve();
                 }, 500);

@@ -31,7 +31,11 @@
                 else
                 {
                     <li>
-                        <a href="/signin" title="Login or register to save your animation">Login | Register</a>
+                        <a href="#" title="Login or register to publish your animation"
+                           data-dialog
+                           data-url="/accounts/forms/signin">
+                            Login | Register
+                        </a>
                     </li>
                 }
             </ul>
@@ -41,7 +45,7 @@
     <!-- /.container-fluid -->
 </header>
 
-<section id="drawing-section" ng-app="app" ng-controller="DrawingController as vm" layout="row" role="application" layout-fill>
+<section id="drawing-section" ng-app="app" ng-controller="@(Model.DrawingControllerName) as vm" layout="row" role="application" layout-fill>
     <div id="progress-modal" layout-fill class="progress-modal" layout-align="center center">
         <md-progress-circular md-mode="indeterminate" class="md-primary"></md-progress-circular>
     </div>
@@ -92,6 +96,7 @@
     <script type="text/javascript" src="~/js/drawing/GrafikaApp.Drawing.Controllers.BaseAnimationController.js"></script>
     <script type="text/javascript" src="~/js/drawing/GrafikaApp.Drawing.Controllers.DialogController.js"></script>
     <script type="text/javascript" src="~/js/drawing/GrafikaApp.Drawing.Controllers.DrawingController.js"></script>
+    <script type="text/javascript" src="~/js/drawing/GrafikaApp.Drawing.Controllers.LocalDrawingController.js"></script>
     <script type="text/javascript" src="~/js/GrafikaApp.Drawing.js"></script>
 </environment>
 <environment names="Production">
@@ -103,6 +108,7 @@
     <link rel="stylesheet" type="text/css" href="~/css/spectrum.css"/>
     <link rel="stylesheet" type="text/css" href="~/css/angular-material.css" />
     <link rel="stylesheet" type="text/css" href="~/css/GrafikaApp.Drawing.css" />
+    <link rel="stylesheet" type="text/css" href="~/css/GrafikaApp.Login.css" />
 </environment>
 <environment names="Production">
     <link rel="stylesheet" type="text/css" href="~/css/GrafikaApp.Bundle.Drawing.min.css" />

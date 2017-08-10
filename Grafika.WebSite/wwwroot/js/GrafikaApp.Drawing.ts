@@ -42,6 +42,7 @@ module GrafikaApp {
         app.service('resourceService', GrafikaApp.Drawing.Services.ResourceService);
         
         app.controller('DrawingController', GrafikaApp.Drawing.Controllers.DrawingController);
+        app.controller('LocalDrawingController', GrafikaApp.Drawing.Controllers.LocalDrawingController);
 
         angular.element('#mainNav').click(() => angular.element('md-backdrop').click());
 

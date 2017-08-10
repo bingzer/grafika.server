@@ -17,9 +17,7 @@
                 $stateProvider
                     .state('drawing', {
                         url: '/:_id',
-                        controller: GrafikaApp.Drawing.Controllers.DrawingController,
                         templateUrl: '/js/drawing/drawing.html',
-                        controllerAs: 'vm',
                         data: {
                             roles: ['user']
                         }

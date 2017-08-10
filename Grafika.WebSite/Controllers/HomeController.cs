@@ -85,6 +85,7 @@ namespace Grafika.WebSite.Controllers
         {
             var model = new AnimationDrawingViewModel
             {
+                DrawingControllerName = "LocalDrawingController",
                 Animation = new Animation
                 {
                     Name = "New Animation",

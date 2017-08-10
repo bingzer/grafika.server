@@ -137,5 +137,11 @@ namespace Grafika.WebSite.Controllers
         {
             return PartialView("_PasswordForm", model);
         }
+
+        [Route("forms/signin"), AllowAnonymous]
+        public IActionResult SignInDialog()
+        {
+            return PartialView("_SignInDialogForm");
+        }
     }
 }

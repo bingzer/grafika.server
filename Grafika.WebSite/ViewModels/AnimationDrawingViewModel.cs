@@ -6,5 +6,6 @@ namespace Grafika.WebSite.ViewModels
     {
         public Animation Animation { get; set; }
         public bool IsNew => Animation == null;
+        public string DrawingControllerName { get; set; } = "DrawingController";
     }
 }

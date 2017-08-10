@@ -58,7 +58,7 @@
                         }
                         // most likely this is a new animation
                         this.grafika.initialize('#canvas', { drawingMode: 'paint', useNavigationText: false }, this.animation);
-                        this.grafika.setFrames(this.createFirstFrame());
+                        this.grafika.setFrames(this.createFirstFrames());
                         return this.appCommon.$q.when(this.animation);
                     }).finally(() => {
                         angular.element('#animation-title').html(this.animation.name);
@@ -196,12 +196,7 @@
 
                 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-                private captureContextMenu(event: JQueryMouseEventObject) {
-                    if (!this.canvas) return;
-                    this.canvas.attr('context-menu-x', event.offsetX).attr('context-menu-y', event.offsetY);
-                }
-
-                private createFirstFrame(): Grafika.IFrame[] {
+                protected createFirstFrames(): Grafika.IFrame[] {
                     return [{
                         id: Grafika.randomUid(),
                         index: 0,
@@ -219,6 +214,13 @@
                             }
                         ]
                     }];
+                }
+
+                ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+                private captureContextMenu(event: JQueryMouseEventObject) {
+                    if (!this.canvas) return;
+                    this.canvas.attr('context-menu-x', event.offsetX).attr('context-menu-y', event.offsetY);
                 }
             }
 

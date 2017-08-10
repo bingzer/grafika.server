@@ -251,6 +251,7 @@ gulp.task('min:scripts:GrafikaApp.Bundle.Drawing', function (callback) {
         'Grafika.WebSite/wwwroot/js/drawing/GrafikaApp.Drawing.Controllers.BaseAnimationController.js',
         'Grafika.WebSite/wwwroot/js/drawing/GrafikaApp.Drawing.Controllers.DialogController.js',
         'Grafika.WebSite/wwwroot/js/drawing/GrafikaApp.Drawing.Controllers.DrawingController.js',
+        'Grafika.WebSite/wwwroot/js/drawing/GrafikaApp.Drawing.Controllers.LocalDrawingController.js',
         'Grafika.WebSite/wwwroot/js/GrafikaApp.Drawing.js'
     ])
     .pipe(concat('GrafikaApp.Bundle.Drawing.min.js'))
@@ -357,7 +358,8 @@ gulp.task('min:styles:GrafikaApp.Bundle.Drawing', function(callback) {
     return gulp.src([
         'Grafika.WebSite/wwwroot/css/spectrum.css',
         'Grafika.WebSite/wwwroot/css/angular-material.css',
-        'Grafika.WebSite/wwwroot/css/GrafikaApp.Drawing.css'
+        'Grafika.WebSite/wwwroot/css/GrafikaApp.Drawing.css',
+        'Grafika.WebSite/wwwroot/css/GrafikaApp.Login.css'
     ])
     .pipe(concat('GrafikaApp.Bundle.Drawing.min.css'))
     .pipe(cleanCSS())
