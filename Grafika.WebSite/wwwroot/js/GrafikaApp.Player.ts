@@ -32,7 +32,18 @@
             let qAnim = jQuery.ajax({ url: `${animUrl}` });
             let qFrames = jQuery.ajax({ url: `${animUrl}/frames${shouldInflateFrames}` });
             return jQuery.when(qAnim, qFrames).done((resAnim, resFrames) => {
-                this.grafika.setAnimation(resAnim[0]);
+                let anim = resAnim[0] as Grafika.IAnimation;
+                if (anim.resources) {
+                    // -- inject background-image type
+                    anim.resources.forEach(res => {
+                        if (res.type == 'background-image') {
+                            (res as Grafika.IBackgroundImageResource).url = GrafikaApp.combineUrl(GrafikaApp.Configuration.baseApiUrl, "animations", anim._id, "resources", res.id);
+                        }
+                    });
+                }
+
+
+                this.grafika.setAnimation(anim);
                 this.grafika.setFrames(resFrames[0]);
                 return jQuery.when(0);
             });
