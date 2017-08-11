@@ -60,7 +60,7 @@
                     <button type="button" class="btn btn-danger"
                         data-dialog
                         data-title="@passwordTitle"
-                        data-url="/accounts/password"
+                        data-url="/accounts/password?RequiresCurrentPassword=@Model.HasLocalAccount"
                         data-size="medium">@passwordTitle</button>
                 </div>
             </div>

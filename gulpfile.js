@@ -247,6 +247,8 @@ gulp.task('min:scripts:GrafikaApp.Bundle.Drawing', function (callback) {
         'Grafika.WebSite/wwwroot/js/drawing/GrafikaApp.Drawing.AppAuthInterceptor.js',
         'Grafika.WebSite/wwwroot/js/drawing/GrafikaApp.Drawing.AppHttpInterceptor.js',
         'Grafika.WebSite/wwwroot/js/drawing/GrafikaApp.Drawing.AppRoutes.js',
+        'Grafika.WebSite/wwwroot/js/drawing/GrafikaApp.Drawing.Models.ImageData.js',
+        'Grafika.WebSite/wwwroot/js/drawing/GrafikaApp.Drawing.Models.User.js',
         'Grafika.WebSite/wwwroot/js/drawing/GrafikaApp.Drawing.Filters.CapitalizeFirstLetter.js',
         'Grafika.WebSite/wwwroot/js/drawing/GrafikaApp.Drawing.Directives.ContextMenuDirective.js',
         'Grafika.WebSite/wwwroot/js/drawing/GrafikaApp.Drawing.Directives.ImageUploaderDirective.js',

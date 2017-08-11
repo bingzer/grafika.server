@@ -119,10 +119,10 @@ namespace Grafika.WebSite.Controllers
         }
 
         [Route("password"), AllowAnonymous]
-        public IActionResult SetPassword()
+        public IActionResult SetPassword(PasswordFormViewModel model)
         {
             ViewBag.ApiPasswordUrl = Utility.CombineUrl(AppEnvironment.Default.Server.Url, "/api/accounts/pwd");
-            return PartialView("_SetPassword");
+            return PartialView("_SetPassword", model);
         }
 
         [Route("recovery"), AllowAnonymous]

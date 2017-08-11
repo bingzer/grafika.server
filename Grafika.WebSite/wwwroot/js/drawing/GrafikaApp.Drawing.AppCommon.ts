@@ -81,6 +81,7 @@
                 if (!modal) modal = false;
                 let useFullScreen = (this.$mdMedia('sm') || this.$mdMedia('xs'));
                 return this.$mdDialog.show({
+                    autoWrap: false,
                     fullscreen: useFullScreen,
                     controller: controller,
                     controllerAs: controllerAs,
@@ -90,7 +91,7 @@
                     targetEvent: event,
                     locals: locals,
                     multiple: true
-                });
+                } as angular.material.IDialogOptions );
             }
             refreshPage() {
                 return this.$location.path(this.$location.path());

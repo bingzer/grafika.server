@@ -8,6 +8,7 @@
                 totalFrame: number = 0;
                 canvas: JQuery;
                 graphics = ['freeform', 'line', 'rectangle', 'square', 'circle', 'oval', 'triangle', 'text'];
+                supportsResources: boolean = true;
 
                 public static $inject = ['appCommon', 'authService', 'animationService', 'frameService', 'resourceService', '$rootScope'];
                 constructor(
@@ -67,17 +68,18 @@
                 }
 
                 showProperties(ev: MouseEvent) {
-                    return this.appCommon.showDialog('/app/animation/edit.html', 'AnimationEditController', ev).then(() => this.load());
+                    let controller = new AnimationController(this.appCommon, this.grafika);
+                    return this.appCommon.showDialog('/js/drawing/drawing-animation.html', () => controller, ev);
                 }
 
                 showFrameProperties(ev: MouseEvent) {
                     let controller = new FrameController(this.appCommon, this.grafika);
-                    return this.appCommon.showDialog('/app/animation/drawing-frame.html', () => controller, ev);
+                    return this.appCommon.showDialog('/js/drawing/drawing-frame.html', () => controller, ev);
                 }
 
                 showGraphicsProperties(ev: MouseEvent) {
                     let controller = new GraphicController(this.appCommon, this.grafika);
-                    return this.appCommon.showDialog('/app/animation/drawing-graphics.html', () => controller, ev)
+                    return this.appCommon.showDialog('/js/drawing/drawing-graphics.html', () => controller, ev)
                         .then(() => this.grafika.refreshFrame());
                 }
 
@@ -168,7 +170,8 @@
                 }
 
                 existingResources(evt: MouseEvent) {
-                    return this.appCommon.showDialog("/app/animation/resources/list.html", "ResourceListController", evt, { resources: this.animation.resources, grafika: this.grafika }, "vm", true)
+                    let controller = new ResourceListController(this.appCommon, this.resourceService, this.animation.resources, this.grafika);
+                    return this.appCommon.showDialog("/js/drawing/drawing-resources.html", () => controller, evt, { resources: this.animation.resources, grafika: this.grafika }, "vm", true)
                         .then((resource) => {
                             if (resource)
                                 this.grafika.setFrameBackground(resource.id);
@@ -225,16 +228,33 @@
 
             ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+            class AnimationController extends DialogController {
+                protected animation: Grafika.IAnimation;
+
+                constructor(appCommon: AppCommon, protected grafika: Grafika.IGrafika) {
+                    super(appCommon);
+
+                    this.animation = this.grafika.getAnimation();
+                }
+
+                close(response?: any): ng.IPromise<any> {
+                    this.grafika.refreshFrame();
+                    return super.close();
+                }
+            }
+
+            ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
             class FrameController extends DialogController {
                 protected frame: Grafika.IFrame;
 
-                constructor(appCommon: AppCommon, protected grafika: Grafika.IGrafika | any) {
+                constructor(appCommon: AppCommon, protected grafika: Grafika.IGrafika) {
                     super(appCommon);
                     this.frame = this.grafika.getFrame();
                 }
 
                 close(response?: any): ng.IPromise<any> {
-                    this.grafika.refresh();
+                    this.grafika.refreshFrame();
                     return super.close();
                 }
             }
@@ -244,7 +264,7 @@
             class GraphicController extends FrameController {
                 protected graphics: Grafika.IGraphic[];
 
-                constructor(appCommon: AppCommon, grafika: Grafika.IGrafika | any) {
+                constructor(appCommon: AppCommon, grafika: Grafika.IGrafika) {
                     super(appCommon, grafika);
                     this.graphics = this.frame.layers[0].graphics
                 }
@@ -254,6 +274,43 @@
                 }
 
             }
+
+            ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+            export class ResourceListController extends DialogController {
+                public static $inject = ['appCommon', 'resourceService', 'resources', 'grafika'];
+                constructor(
+                    appCommon: AppCommon,
+                    private resourceService: GrafikaApp.Drawing.Services.ResourceService,
+                    private resources: Grafika.IResource[],
+                    private grafika: Grafika.IGrafika
+                ) {
+                    super(appCommon);
+                    this.list();
+                }
+
+                list() {
+                    if (!this.resources || this.resources.length <= 0) {
+                        this.appCommon.toastError('No resources available');
+                        this.close();
+                    }
+                }
+
+                select(resourceId: string) {
+                    let resource = this.resources.filter(r => r.id == resourceId)[0];
+                    this.close(resource);
+                }
+
+                deleteResource(resourceId) {
+                    this.resourceService.del(this.grafika.getAnimation(), resourceId).then(() => {
+                        this.grafika.deleteResource(resourceId);
+                        this.resources = this.grafika.getResources();
+                        this.list();
+                    });
+                }
+            }
+
+
         }
     }
 }

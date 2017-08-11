@@ -43,7 +43,7 @@
                         anim.resources.forEach(res => {
                             let resource: any = res;
                             if (resource.type == 'background-image' && (!resource.base64)) {
-                                resource.url = this.appCommon.appConfig.baseApiUrl + 'animations/' + anim._id + '/resources/' + resource.id;
+                                resource.url = GrafikaApp.combineUrl(this.appCommon.appConfig.baseApiUrl, 'animations', anim._id, 'resources', resource.id);
                             }
                         });
                     }

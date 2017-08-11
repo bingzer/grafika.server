@@ -50,6 +50,7 @@ module GrafikaApp {
     export const StorageAnimationKey = "LocalAnimation";
     export const StorageFramesKey = "LocalFrames";
     export const StorageThumbnailKey = "LocalAnimationThumbnail";
+    export const StorageResourcesKey = "LocalAnimationResources";
 
     GrafikaApp.Configuration.getAuthenticationToken = function () {
         return window.localStorage.getItem('token');

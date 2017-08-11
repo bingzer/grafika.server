@@ -1,0 +1,42 @@
+﻿<md-dialog style="min-width: 450px">
+    <form name="editAnimationForm">
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2 ng-bind="vm.animation.name"></h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="vm.cancel()">
+                    <i class="material-icons">close</i>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-dialog-content>
+            <div class="md-dialog-content">
+                <md-input-container class="md-block" flex-gt-sm>
+                    <label>Name</label>
+                    <input ng-model="vm.animation.name">
+                </md-input-container>
+                <md-input-container class="md-block" flex-gt-sm>
+                    <label>Author</label>
+                    <input ng-model="vm.animation.author">
+                </md-input-container>
+                <md-input-container class="md-block" flex-gt-sm>
+                    <label>Timer</label>
+                    <input ng-model="vm.animation.timer" type="number">
+                </md-input-container>
+                <md-input-container class="md-block" flex-gt-sm>
+                    <label>Description</label>
+                    <input ng-model="vm.animation.description">
+                </md-input-container>
+                <md-input-container class="md-block" flex-gt-sm>
+                    <md-checkbox ng-model="vm.animation.isPublic">Public Animation</md-checkbox>
+                </md-input-container>
+            </div>
+        </md-dialog-content>
+        <md-dialog-actions layout="row">
+            <span flex></span>
+            <md-button class="md-button" ng-click="vm.cancel()">Cancel</md-button>
+            <md-button type="submit" class="md-button md-accent" ng-click="vm.save()">Save</md-button>
+        </md-dialog-actions>
+
+    </form>
+</md-dialog>

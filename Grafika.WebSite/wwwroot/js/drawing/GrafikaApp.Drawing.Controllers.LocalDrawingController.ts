@@ -12,6 +12,7 @@
                     $rootScope: angular.IRootScopeService
                 ) {
                     super(appCommon, authService, animationService, frameService, resourceService, $rootScope);
+                    this.supportsResources = false;
                 }
 
                 load(animationId?: string) {
@@ -91,7 +92,8 @@
                         name: 'New Animation',
                         width: 800,
                         height: 480,
-                        localId: Grafika.randomUid()
+                        localId: Grafika.randomUid(),
+                        type: 'Animation'
                     } as Grafika.IAnimation;
 
                     this.grafika.initialize('#canvas', { drawingMode: 'paint', useNavigationText: false }, this.animation);

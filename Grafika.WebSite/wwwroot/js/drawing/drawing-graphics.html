@@ -20,7 +20,7 @@
 			<md-input-container>
 				<label>Type</label>
 				<md-select ng-model="vm.graphics[vm.index].type">
-					<md-option ng-value="graphic" ng-repeat="graphic in vm.graphics" ng-bind="graphic | capitalizeFirstLetter"></md-option>
+					<md-option ng-value="graphic" ng-repeat="graphic in vm.graphics" ng-bind="graphic.type | capitalizeFirstLetter"></md-option>
 				</md-select>
 			</md-input-container>
 			<div layout="row">

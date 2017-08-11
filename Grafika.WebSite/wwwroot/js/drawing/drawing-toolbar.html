@@ -6,7 +6,7 @@
             </div>
             <md-menu-bar class="bg-dark">
                 <md-menu>
-                    <button ng-click="$mdOpenMenu()">File</button>
+                    <button ng-click="$mdMenu.open()">File</button>
                     <md-menu-content>
                         <md-menu-item>
                             <md-button ng-click="vm.grafika.play()">Preview</md-button>
@@ -30,7 +30,7 @@
                     </md-menu-content>
                 </md-menu>
                 <md-menu>
-                    <button ng-click="$mdOpenMenu()">Edit</button>
+                    <button ng-click="$mdMenu.open()">Edit</button>
                     <md-menu-content>
                         <md-menu-item ng-repeat="mode in ['none', 'paint', 'select' ]">
                             <md-button ng-click="vm.setOptions({ drawingMode: mode });">
@@ -48,7 +48,7 @@
                     </md-menu-content>
                 </md-menu>
                 <md-menu>
-                    <button ng-click="$mdOpenMenu()">Frames</button>
+                    <button ng-click="$mdMenu.open()">Frames</button>
                     <md-menu-content>
                         <md-menu-item class="md-indent">
                             <md-icon><i class="material-icons">navigate_next</i></md-icon>
@@ -98,8 +98,8 @@
                         </md-menu-item>
                     </md-menu-content>
                 </md-menu>
-                <md-menu>
-                    <button ng-click="$mdOpenMenu()">Resources</button>
+                <md-menu ng-if="vm.supportsResources">
+                    <button ng-click="$mdMenu.open()">Resources</button>
                     <md-menu-content>
                         <md-menu-item class="md-indent">
                             <md-button ng-click="vm.existingResources()">Existing Resources</md-button>
@@ -114,7 +114,7 @@
                     </md-menu-content>
                 </md-menu>
                 <md-menu>
-                    <button ng-click="$mdOpenMenu()">Graphics</button>
+                    <button ng-click="$mdMenu.open()">Graphics</button>
                     <md-menu-content>
                         <md-menu-item>
                             <md-slider style="margin: auto 18px" flex min="2" max="100" 
@@ -142,7 +142,7 @@
                         <md-menu-item ng-repeat="graphic in vm.graphics">
                             <md-button ng-click="vm.setOptions({ graphic: graphic })" md-prevent-menu-close="md-prevent-menu-close">
                                 <md-icon><i class="material-icons">{{vm.grafika.getOptions().graphic === graphic ? 'check_box' : 'check_box_outline_blank'}}</i></md-icon>
-                                {{graphic | capitalizeFirstLetter}}
+                                {{graphic.type | capitalizeFirstLetter}}
                             </md-button>
                         </md-menu-item>
                     </md-menu-content>
