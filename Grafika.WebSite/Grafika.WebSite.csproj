@@ -10,12 +10,6 @@
     <None Include="wwwroot\js\drawing\**\*.html" />
   </ItemGroup>
   <ItemGroup>
-    <None Remove="wwwroot\js\drawing\drawing-animation.html" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="wwwroot\js\drawing\drawing-animation.html" />
-  </ItemGroup>
-  <ItemGroup>
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.1.1" />
     <PackageReference Include="Microsoft.AspNetCore" Version="1.1.2" />
     <PackageReference Include="Microsoft.AspNetCore.Identity" Version="1.1.2" />
