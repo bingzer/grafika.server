@@ -137,12 +137,12 @@ module GrafikaApp {
         return url;
     }
 
-    export function toastError(message: any, title?: string): JQuery {
+    export function toastError(message: any, title?: string, options?: ToastrOptions): JQuery {
         return toastr.error(formatError(message).message, title);
     }
 
-    export function toast(message: string, title?: string): JQuery {
-        return toastr.success(message, title);
+    export function toast(message: string, title?: string, options?: ToastrOptions): JQuery {
+        return toastr.success(message, title, options);
     }
 
     export function putStorageItem(key: string, value: any): JQueryPromise<string> {
@@ -199,7 +199,8 @@ module GrafikaApp {
         let defer: any = jQuery.Deferred<T>();
         defer.originalPromise = defer.promise;
         defer.promise = (target?: any) => {
-            action(defer);
+            if (action)
+                action(defer);
             return defer.originalPromise(target);
         };
         return defer;
@@ -333,12 +334,11 @@ module GrafikaApp {
         }
 
         if (timeout && timeout > 0) {
-            return GrafikaApp.defer<any>((deferred) => {
-                setTimeout(() => {
-                    doSend().then((res, text, xhrReq) => deferred.resolve(res))
-                        .fail((err) => deferred.reject(err));
-                }, timeout);
-            }).promise();
+            let defer = GrafikaApp.defer();
+            setTimeout(() => {
+                doSend().then((res) => defer.resolve(res), (err) => defer.reject(err));
+            }, timeout);
+            return defer.promise();
         }
         else return doSend();
     }
