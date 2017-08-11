@@ -41,8 +41,6 @@ module GrafikaApp {
     // ---------------- document ready ----------- //
     $(document).ready(() => {
         GrafikaApp.loadElements();
-        GrafikaApp.Partials.loadElements();
-        GrafikaApp.Dialog.loadElements();
     });
 
     // ---------------- GrafikaApp.Configuration ----------- //
@@ -51,6 +49,7 @@ module GrafikaApp {
     export var User: Grafika.IUser;
     export const StorageAnimationKey = "LocalAnimation";
     export const StorageFramesKey = "LocalFrames";
+    export const StorageThumbnailKey = "LocalAnimationThumbnail";
 
     GrafikaApp.Configuration.getAuthenticationToken = function () {
         return window.localStorage.getItem('token');
@@ -147,9 +146,10 @@ module GrafikaApp {
 
     export function putStorageItem(key: string, value: any): JQueryPromise<string> {
         return GrafikaApp.defer<string>((defer) => {
-            if (GrafikaApp.isString(value)) {
+            if (!GrafikaApp.isString(value)) {
                 value = JSON.stringify(value);
             }
+
             sessionStorage.setItem(key, value);
             defer.resolve(key);
         }).promise();
@@ -175,9 +175,17 @@ module GrafikaApp {
 
     export function getStorageItem<T>(key: string): JQueryPromise<T> {
         return GrafikaApp.defer<T>((defer) => {
-            let item = sessionStorage.getItem(key);
+            let item: any = sessionStorage.getItem(key);
             if (!item) defer.resolve(null);
-            else return defer.resolve(JSON.parse(item));
+            else {
+                try {
+                    item = JSON.parse(item);
+                }
+                catch (e) {
+                    // do nothing
+                }
+                return defer.resolve(<T> item);
+            }
         }).promise();
     }
 
@@ -224,7 +232,10 @@ module GrafikaApp {
         return str.substring(0, 45);
     }
 
-    export function loadElements() {
+    export function loadElements(root?: any) {
+        if (root == null) root = $(document);
+        let $root = $(root);
+
         let queryAction = GrafikaApp.getQueryString("action");
         switch (queryAction) {
             case "authenticate":
@@ -237,6 +248,9 @@ module GrafikaApp {
                 clearQueryString();
                 break;
         }
+
+        GrafikaApp.Partials.loadElements($root);
+        GrafikaApp.Dialog.loadElements($root);
     }
 
     export function sendAjax(elem: any, onResult?: IAjaxResultCallback): JQueryPromise<any> {
@@ -301,7 +315,7 @@ module GrafikaApp {
                 let $result = res;
                 let $xhr = xhrReq;
                 if (typeof callback === 'function')
-                    callback();
+                    callback($result, $xhr);
                 else eval(callback);
             }
             return jQuery.when(res);
@@ -312,7 +326,7 @@ module GrafikaApp {
                 let $err = err;
                 let $xhr = xhrReq;
                 if (typeof callback === 'function')
-                    callback();
+                    callback($err, $xhr);
                 else eval(callback);
             }
             return jQuery.when(err);

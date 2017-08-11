@@ -25,21 +25,28 @@
 
                 save(exit: boolean) {
                     this.grafika.save();
-                    this.appCommon.putStorageItem(GrafikaApp.StorageAnimationKey, this.grafika.getAnimation());
-                    this.appCommon.putStorageItem(GrafikaApp.StorageFramesKey, this.grafika.getFrames());
+                    this.grafika.exts.getCanvasData((err, data) => {
+                        if (err) {
+                            toastError(GrafikaApp.formatError(err).message);
+                            return;
+                        }
 
-                    this.appCommon.toast('Successfully saved!');
+                        this.appCommon.putStorageItem(GrafikaApp.StorageAnimationKey, this.grafika.getAnimation());
+                        this.appCommon.putStorageItem(GrafikaApp.StorageFramesKey, this.grafika.getFrames());
+                        this.appCommon.putStorageItem(GrafikaApp.StorageThumbnailKey, data.base64);
 
-                    if (exit)
-                        this.exit();
+                        this.appCommon.toast('Successfully saved!');
+
+                        if (exit) {
+                            bootbox.alert('We will save this animation locally. In order to publish this, please register', () => this.exit());
+                        }
+                    });
                 }
 
                 exit() {
                     this.appCommon.showLoadingModal();
                     this.grafika.save();
-                    bootbox.alert('We will save this animation locally. In order to publish this, please register', () => {
-                        GrafikaApp.navigateTo('/');
-                    });
+                    GrafikaApp.navigateHome();
                 }
 
                 /////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -47,14 +54,19 @@
                 private tryLoadFromStorage(): ng.IPromise<any> {
                     let checkExistingPromise: ng.IPromise<any> = this.appCommon.$q((resolve, reject) => {
                         if (this.appCommon.hasStorageItem(GrafikaApp.StorageAnimationKey)) {
-                            bootbox.confirm({
-                                title: 'Unsaved Animation',
-                                message: 'Welcome back! <br/>It looks like you have unsaved animation.<br/> Would you like to reload it?',
-                                callback: (result) => {
-                                    if (result) resolve();
-                                    else reject();
-                                }
-                            });
+                            if (GrafikaApp.getQueryString('load') === 'true') {
+                                resolve();
+                            }
+                            else {
+                                bootbox.confirm({
+                                    title: 'Unsaved Animation',
+                                    message: 'Welcome back! <br/>It looks like you have unsaved animation.<br/> Would you like to reload it?',
+                                    callback: (result) => {
+                                        if (result) resolve();
+                                        else reject();
+                                    }
+                                });
+                            }
                         }
                         else reject();
                     });

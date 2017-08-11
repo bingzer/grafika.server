@@ -1,7 +1,10 @@
 ﻿module GrafikaApp {
     export class Dialog {
-        public static loadElements() {
-            $('[data-confirm]').each((index, elem) => {
+        public static loadElements(root?: any) {
+            if (root == null) root = $(document);
+            let $root = $(root);
+
+            $root.find('[data-confirm]').each((index, elem) => {
                 $(elem).on('click', (e: Event) => {
                     e.preventDefault();
                     let $elem = $(elem);
@@ -22,7 +25,7 @@
                     bootbox.confirm(options);
                 });
             });
-            $('a[data-dialog],button[data-dialog]').each((index, elem) => {
+            $root.find('a[data-dialog],button[data-dialog]').each((index, elem) => {
                 let options = $(elem).data() as IDialogOptions;
                 options.url = $(elem).data('url') || $(elem).attr('href');
                 $(elem).on('click', () => Dialog.dialog(options));
@@ -33,7 +36,10 @@
             if (options.url) {
                 let onResult: GrafikaApp.IAjaxResultCallback = (err: Error, result: any, elem: JQuery) => {
                     options.message = result;
-                    return jQuery.when(bootbox.dialog(options));
+                    let dialog = bootbox.dialog(options);
+
+                    GrafikaApp.loadElements(dialog);
+                    return jQuery.when(dialog);
                 };
 
                 return GrafikaApp.sendAjax(options, onResult);

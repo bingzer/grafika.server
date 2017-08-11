@@ -1,8 +1,11 @@
 ﻿module GrafikaApp {
     export class Partials {
-        public static loadElements() {
-            $('[data-partial=auto], [data-partial=tab].active').toArray().forEach((elem) => GrafikaApp.Partials.renderPartial(elem));
-            $('[data-partial=tab]').each((i, elem) => {
+        public static loadElements(root?: any) {
+            if (root == null) root = $(document);
+            let $root = $(root);
+
+            $root.find('[data-partial=auto], [data-partial=tab].active').toArray().forEach((elem) => GrafikaApp.Partials.renderPartial(elem));
+            $root.find('[data-partial=tab]').each((i, elem) => {
                 $('a[href="#' + $(elem).attr('id') + '"]').on('shown.bs.tab', (e) => {
                     GrafikaApp.Partials.renderPartial(elem).then(() => $(elem).data('loaded', true));
                 });
@@ -17,6 +20,9 @@
             let onResult: IAjaxResultCallback = (err: Error, result: any, elem: JQuery): JQueryPromise<any> => {
                 if (shouldAppend) target.append(result);
                 else target.html(result);
+
+                GrafikaApp.loadElements(target);
+
                 return jQuery.when(result);
             };
 

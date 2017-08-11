@@ -1,53 +1,35 @@
 @{
     var signUpUrl = Utility.CombineUrl(AppEnvironment.Default.Server.Url, "/api/accounts/register");
 }
-<div class="login-form">
-    <header class="login-header text-center">
-        <h1>Sign up now for free!</h1>
-    </header>
-    <div class="row text-center">
-        <a href="@Utility.CombineUrl(AppEnvironment.Default.Server.Url, "accounts/google")" type="button" class="login login-button login-oauth login-google" title="Use your Google account">
-            <img src="~/img/google_white.png" alt="Google Logo" />
-            Google
-        </a>
-        <a href="@Utility.CombineUrl(AppEnvironment.Default.Server.Url, "accounts/facebook")" type="button" class="login login-button login-oauth login-facebook" title="Use your Facebook account">
-            <img src="~/img/facebook_white.png" alt="Facebook Logo" />
-            Facebook
-        </a>
-    </div>
-    <hr />
-    <div class="row">
-        <div id="registration-form-controls">
-            <p>
-                After signing up you will receive a verification email to verify your email address.
-                Inside the email, you will have a link to create your password.
-            </p>
-            <form id="signup-form" action="@signUpUrl" method="post"
-                  data-callback="bootbox.alert({ message: 'Please check your email at ' + $('#email').val(), title: 'Verify your email' })"
-                  onsubmit="return GrafikaApp.Form.onSubmit(this)">
-                <input type="text" name="name" placeholder="Full Name" required>
-                <input type="email" id="email" name="email" placeholder="Email Address" required>
-                <div class="pull-right">
-                    <input type="submit" name="login" class="login-button login-login login-register" value="Sign up!" disabled="disabled">
-                </div>
-            </form>
-        </div>
-    </div>
-    <div class="row">
-        <div class="login-help">
-            <p>
-                By registering you agree to our <a href="/eula">license agreement</a> <br />
-                Already have an account? <a href="/signin"><strong>Login here</strong></a>
-            </p>
-        </div>
-    </div>
-</div>
-<script type="text/javascript">
+<section id="signin-section" class="login-form" style="display: none">
+    @await Html.PartialAsync("_SignInForm")
+</section>
+<section id="signup-section" class="login-form" style="display: none">
+    @await Html.PartialAsync("_SignUpForm")
+</section>
+
+<script type="text/javascript" defer>
     function validate() {
         if ($('#signup-form').valid())
             $('#signup-form input[type=submit]').removeAttr('disabled');
         else $('#signup-form input[type=submit]').attr('disabled', 'disabled');
     }
 
+    GrafikaApp.loadElements(this);
+
     $('#signup-form input[type=password], #signup-form input[type=email]').focus(validate).change(validate).keyup(validate);
+
+    $('#signin').click(function (e) {
+        e.preventDefault();
+        $('#signup-section').hide();
+        $('#signin-section').fadeIn();
+    });
+    $('#signup').click(function (e) {
+        e.preventDefault();
+        $('#signin-section').hide();
+        $('#signup-section').fadeIn();
+    });
+
+    $('a[href="/eula"],a.eula').attr('target', '_blank');
+    $('#signin-section').fadeIn();
 </script>
