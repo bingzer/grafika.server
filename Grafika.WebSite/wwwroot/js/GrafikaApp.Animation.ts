@@ -67,7 +67,7 @@
         }
 
         private static publishFrames(anim: Grafika.IAnimation): JQueryPromise<Grafika.IAnimation> {
-            return GrafikaApp.defer((defer) => {
+            return GrafikaApp.defer<Grafika.IAnimation>((defer) => {
                 GrafikaApp.getStorageItem(GrafikaApp.StorageFramesKey).then((frames) => {
                     let framesUrl = GrafikaApp.combineUrl(GrafikaApp.Configuration.baseApiUrl, "animations", anim._id, "frames");
                     GrafikaApp.sendAjax({
@@ -82,7 +82,7 @@
         }
 
         private static publishThumbnail(anim: Grafika.IAnimation): JQueryPromise<Grafika.IAnimation> {
-            return GrafikaApp.defer((defer) => {
+            return GrafikaApp.defer<Grafika.IAnimation>((defer) => {
                 let signedUrl: Grafika.ISignedUrl;
                 GrafikaApp.sendAjax({
                     url: GrafikaApp.combineUrl(GrafikaApp.Configuration.baseApiUrl, "animations", anim._id, "thumbnail"),

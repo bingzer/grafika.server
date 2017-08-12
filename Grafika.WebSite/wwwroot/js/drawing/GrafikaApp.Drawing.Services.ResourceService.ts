@@ -43,7 +43,7 @@
                     if (resource && (<Grafika.IResource>resource).id)
                         resourceId = (<Grafika.IResource>resource).id;
 
-                    return GrafikaApp.combineUrl(this.appCommon.appConfig.baseApiUrl, this.resourcePath(entity), entity._id, 'resources', resourceId);
+                    return GrafikaApp.combineUrl(this.appCommon.appConfig.baseApiUrl, this.resourcePath(entity), entity._id, 'resources', resourceId as string);
                 }
                 saveResource(entity: Grafika.IAnimation | Grafika.IBackground, resource: Grafika.IResource): ng.IHttpPromise<Grafika.ISignedUrl> {
                     return this.apiService.post(this.resourcePath(entity) + entity._id + '/resources', resource);

@@ -17,10 +17,14 @@
 
                 load(animationId?: string) {
                     this.tryLoadFromStorage()
-                        .catch(() => this.createNewAnimation())
+                        .then(() => this.appCommon.hideLoadingModal())
+                        .catch(() => {
+                            this.createNewAnimation();
+                            this.appCommon.hideLoadingModal();
+                            return this.showProperties(undefined);
+                        })
                         .finally(() => {
                             this.grafikaReady = true;
-                            this.appCommon.hideLoadingModal();
                         });
                 }
 

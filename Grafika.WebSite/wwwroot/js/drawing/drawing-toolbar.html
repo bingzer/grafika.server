@@ -14,7 +14,7 @@
                         <md-menu-item>
                             <md-button ng-click="vm.showProperties($event)">Properties</md-button>
                         </md-menu-item>
-                        <md-menu-item>
+                        <md-menu-item ng-if="false">
                             <md-button ng-click="vm.showFrameProperties($event)">Frame Properties</md-button>
                         </md-menu-item>
                         <md-menu-divider></md-menu-divider>
@@ -50,6 +50,49 @@
                 <md-menu>
                     <button ng-click="$mdMenu.open()">Frames</button>
                     <md-menu-content>
+                        <div class="md-indent menu-item-header">
+                            <h5>Background</h5>
+                            <div class="btn-group" role="group" style="width: 100%" ng-if="vm.supportsResources">
+                                <button type="button" class="btn btn-default" style="width: 50%"
+                                        md-prevent-menu-close="md-prevent-menu-close"
+                                        image-uploader
+                                        on-upload="vm.addResource($imageData)">
+                                    Upload Image
+                                </button>
+                                <button type="button" class="btn btn-default" style="width: 50%" 
+                                        md-prevent-menu-close="md-prevent-menu-close"
+                                        ng-disabled="!vm.grafika.getAnimation().resources"
+                                        ng-click="vm.existingResources()">
+                                    From Resources
+                                </button>
+                            </div>
+                            <div style="margin-top: 8px">
+                                <span>
+                                    <spectrum-colorpicker md-no-ink md-prevent-menu-close="md-prevent-menu-close"
+                                                          format="'hex'"
+                                                          style="margin-right: 4px"
+                                                          ng-model="vm.grafika.getOptions().backgroundColor"
+                                                          options="{flat: true}"
+                                                          on-change="vm.setOptions({ backgroundColor: color})" />
+                                </span>
+                                <div class="pull-right">
+                                    <button type="button" class="btn btn-sm btn-default"
+                                            ng-disabled="!vm.grafika.getFrame().backgroundResourceId"
+                                            md-prevent-menu-close="md-prevent-menu-close"
+                                            ng-click="vm.grafika.getFrame().backgroundResourceId = null; vm.grafika.navigateToFrame(vm.currentFrame - 1)"
+                                            ng-if="vm.supportsResources">
+                                        Remove Image
+                                    </button>
+                                    <button type="button" class="btn btn-sm btn-danger"
+                                            md-prevent-menu-close="md-prevent-menu-close"
+                                            ng-click="vm.resetBackground()">
+                                        Reset
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                        <md-menu-divider></md-menu-divider>
                         <md-menu-item class="md-indent">
                             <md-icon><i class="material-icons">navigate_next</i></md-icon>
                             <md-button ng-click="vm.grafika.nextFrame()">
@@ -77,17 +120,6 @@
                         </md-menu-item>
                         <md-menu-divider></md-menu-divider>
                         <md-menu-item class="md-indent">
-                            <md-button md-no-ink md-prevent-menu-close="md-prevent-menu-close">
-                                Background Color
-                                <spectrum-colorpicker 
-                                    format="'hex'"
-                                    style="margin-right: 4px"
-                                    ng-model="vm.grafika.getOptions().backgroundColor"
-                                    on-change="vm.setOptions({ backgroundColor: color})"/>
-                            </md-button>
-                        </md-menu-item>
-                        <md-menu-divider></md-menu-divider>
-                        <md-menu-item class="md-indent">
                             <md-button ng-click="vm.confirmClearFrame()">Clear</md-button>
                         </md-menu-item>
                         <md-menu-item class="md-indent">
@@ -98,55 +130,46 @@
                         </md-menu-item>
                     </md-menu-content>
                 </md-menu>
-                <md-menu ng-if="vm.supportsResources">
-                    <button ng-click="$mdMenu.open()">Resources</button>
-                    <md-menu-content>
-                        <md-menu-item class="md-indent">
-                            <md-button ng-click="vm.existingResources()">Existing Resources</md-button>
-                        </md-menu-item>
-                        <md-menu-item class="md-indent">
-                            <md-button image-uploader on-upload="vm.addResource($imageData)">Upload</md-button>
-                        </md-menu-item>
-                        <div ng-if="false">
-                            <md-menu-divider></md-menu-divider>
-                            <md-menu-item class="md-indent">
-                                <md-button ng-click="vm.promptBackgrounds()">My Backgrounds</md-button>
-                            </md-menu-item>
-                        </div>
-                    </md-menu-content>
-                </md-menu>
                 <md-menu>
                     <button ng-click="$mdMenu.open()">Graphics</button>
                     <md-menu-content>
-                        <md-menu-item>
-                            <md-slider style="margin: auto 18px" flex min="2" max="100" 
-                                    aria-label="brush"
-                                    ng-model="vm.grafika.getOptions().brushSize" md-no-ink md-prevent-menu-close="md-prevent-menu-close"></md-slider>
-                        </md-menu-item>
-                        <md-menu-item>
-                            <md-button style="padding-left: 18px" md-no-ink md-prevent-menu-close="md-prevent-menu-close">
-                                Brush
-                                <spectrum-colorpicker 
-                                    format="'hex'"
-                                    style="padding-bottom: 4px; margin-right: 4px"
-                                    ng-model="vm.grafika.getOptions().foregroundColor"
-                                    on-change="vm.setOptions({ foregroundColor: color})"/>
-                            </md-button>
-                        </md-menu-item>
-                        <md-menu-divider></md-menu-divider>
-                        <md-menu-item>
-                            <md-button ng-click="vm.setOptions({ graphicFill: !vm.grafika.getOptions().graphicFill })" md-prevent-menu-close="md-prevent-menu-close">
-                                <md-icon><i class="material-icons">{{vm.grafika.getOptions().graphicFill ? 'check_box' : 'check_box_outline_blank'}}</i></md-icon>
-                                Fill
-                            </md-button>
-                        </md-menu-item>
-                        <md-menu-divider></md-menu-divider>
-                        <md-menu-item ng-repeat="graphic in vm.graphics">
-                            <md-button ng-click="vm.setOptions({ graphic: graphic })" md-prevent-menu-close="md-prevent-menu-close">
-                                <md-icon><i class="material-icons">{{vm.grafika.getOptions().graphic === graphic ? 'check_box' : 'check_box_outline_blank'}}</i></md-icon>
-                                {{graphic.type | capitalizeFirstLetter}}
-                            </md-button>
-                        </md-menu-item>
+                        <div class="md-indent menu-item-header">
+                            <div>
+                                <select class="form-control">
+                                    <option ng-repeat="graphic in vm.graphics" ng-selected="vm.getOptions().graphic" value="graphic">
+                                        {{graphic | capitalizeFirstLetter}}
+                                    </option>
+                                </select>
+                            </div>
+                            <div style="margin-top: 16px">
+                                <md-slider flex min="2" max="100"
+                                           style="display: inline-block; min-width: 174px; height: 24px; margin-top: -8px"
+                                           aria-label="brush"
+                                           ng-model="vm.grafika.getOptions().brushSize" md-no-ink md-prevent-menu-close="md-prevent-menu-close"></md-slider>
+                                <input class="pull-right form-control" type="number" step="1" min="2" max="100" 
+                                       style="width: auto; display: inline-block"
+                                       ng-model="vm.grafika.getOptions().brushSize" required />
+                            </div>
+                            <div class="clearfix" style="margin-top: 24px">
+                                <span>
+                                    <spectrum-colorpicker format="'hex'"
+                                                          style="padding-bottom: 4px; margin-right: 4px"
+                                                          ng-model="vm.grafika.getOptions().foregroundColor"
+                                                          options="{flat: true}"
+                                                          on-change="vm.setOptions({ foregroundColor: color})" />
+                                </span>
+                                <div class="pull-right">
+                                    <md-switch ng-model="vm.grafika.getOptions().graphicFill" aria-label="Switch 1">
+                                        Fill
+                                    </md-switch>
+                                    <button type="button" class="btn btn-sm btn-danger"
+                                            md-prevent-menu-close="md-prevent-menu-close"
+                                            ng-click="vm.resetBrush()">
+                                        Reset
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
                     </md-menu-content>
                 </md-menu>
                 <div id="nav-menu" class="pull-right" layout="row" layout-align="end">
