@@ -153,5 +153,10 @@ namespace Grafika.Test.Services
         {
             return Task.FromResult(source);
         }
+
+        protected internal override Task<BaseEntity> PrepareEntityForCreate(BaseEntity source)
+        {
+            return Task.FromResult(source);
+        }
     }
 }

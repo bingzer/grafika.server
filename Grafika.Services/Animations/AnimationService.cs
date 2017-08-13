@@ -2,13 +2,14 @@
 using System.Threading.Tasks;
 using Grafika.Animations;
 using System;
+using Grafika.Utilities;
 
 namespace Grafika.Services.Animations
 {
     public class AnimationService : EntityService<Animation, AnimationQueryOptions, IAnimationRepository>, IAnimationService
     {
-        public AnimationService(IServiceContext userContext, IAnimationRepository repo, IAnimationValidator validator)
-            : base(userContext, repo, validator)
+        public AnimationService(IServiceContext serviceContext, IAnimationRepository repo, IAnimationValidator validator)
+            : base(serviceContext, repo, validator)
         {
         }
 
@@ -30,31 +31,6 @@ namespace Grafika.Services.Animations
             await Repository.RemoveByIds(animationIds);
         }
 
-        public Task<Animation> PrepareNewAnimation(Animation animation, User user)
-        {
-            var now = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
-
-            animation.UserId = user.Id;
-            animation.Type = EntityType.Animation;
-            animation.IsRemoved = false;
-            animation.Rating = 5;
-            animation.Views = 0;
-            if (animation.IsPublic == null)
-                animation.IsPublic = user.Prefs.DrawingIsPublic ?? true;
-            if (animation.DateCreated == null)
-                animation.DateCreated = now;
-            if (animation.DateModified == null)
-                animation.DateModified = now;
-            if (animation.Author == null)
-                animation.Author = user.Prefs.DrawingAuthor ?? user.Username;
-            if (animation.TotalFrame == null)
-                animation.TotalFrame = 0;
-            if (animation.Timer == null)
-                animation.Timer = user.Prefs.DrawingTimer ?? 500;
-
-            return Task.FromResult(animation);
-        }
-
         public async Task IncrementViewCount(string animationId)
         {
             var animation = await GetById(animationId);
@@ -72,6 +48,36 @@ namespace Grafika.Services.Animations
 
             animation.Rating = double.Parse(((animation.Rating + rating) / 2).Value.ToString("0.00"));
             await Repository.Update(animation);
+        }
+
+        protected internal override async Task<Animation> PrepareEntityForCreate(Animation source)
+        {
+            var now = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+            var userService = Context.ServiceProvider.Get<IUserService>();
+            var user = await userService.Get(User.Id);
+
+            if (user == null)
+                throw new NotAuthorizedException();
+
+            source.UserId = User.Id;
+            source.Type = EntityType.Animation;
+            source.IsRemoved = false;
+            source.Rating = 5;
+            source.Views = 0;
+            if (source.IsPublic == null)
+                source.IsPublic = user.Prefs.DrawingIsPublic ?? true;
+            if (source.DateCreated == null)
+                source.DateCreated = now;
+            if (source.DateModified == null)
+                source.DateModified = now;
+            if (source.Author == null)
+                source.Author = user.Prefs.DrawingAuthor ?? user.Username;
+            if (source.TotalFrame == null)
+                source.TotalFrame = 0;
+            if (source.Timer == null)
+                source.Timer = user.Prefs.DrawingTimer ?? 500;
+
+            return source;
         }
 
         protected internal override async Task<Animation> CreateEntityForUpdate(Animation source)

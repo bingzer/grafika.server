@@ -5,8 +5,8 @@ namespace Grafika
     public enum EntityType
     {
         [Display(Name = "Animation", GroupName = "animations")]
-        Animation,
+        Animation = 0,
         [Display(Name = "Background", GroupName = "backgrounds")]
-        Background
+        Background = 1
     }
 }

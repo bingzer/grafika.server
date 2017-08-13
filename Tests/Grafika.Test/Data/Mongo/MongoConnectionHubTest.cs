@@ -20,6 +20,8 @@ namespace Grafika.Test.Data.Mongo
             mockAnimations.Setup(c => c.EnsureIndex()).Returns(Task.FromResult(0)).Verifiable();
             var mockBackgrounds = new Mock<IMongoDataSet<Background>>();
             mockBackgrounds.Setup(c => c.EnsureIndex()).Returns(Task.FromResult(0)).Verifiable();
+            var mockSeries = new Mock<IMongoDataSet<Series>>();
+            mockSeries.Setup(c => c.EnsureIndex()).Returns(Task.FromResult(0)).Verifiable();
             var mockUsers = new Mock<IMongoDataSet<User>>();
             mockUsers.Setup(c => c.EnsureIndex()).Returns(Task.FromResult(0)).Verifiable();
 
@@ -28,6 +30,7 @@ namespace Grafika.Test.Data.Mongo
             mockMongoContext.Setup(c => c.Animations).Returns(mockAnimations.Object).Verifiable();
             mockMongoContext.Setup(c => c.Backgrounds).Returns(mockBackgrounds.Object).Verifiable();
             mockMongoContext.Setup(c => c.Users).Returns(mockUsers.Object).Verifiable();
+            mockMongoContext.Setup(c => c.Series).Returns(mockSeries.Object).Verifiable();
 
             var hub = new MongoConnectionHub(mockMongoConnector.Object, mockMongoContext.Object);
             

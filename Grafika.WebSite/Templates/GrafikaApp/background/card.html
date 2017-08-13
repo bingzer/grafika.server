@@ -1,0 +1,44 @@
+<!-- Background card -->
+<div class="animation-card">
+    <md-whiteframe class="md-whiteframe-2dp" layout="column">
+        <div class="thumbnail-image-container" ng-class="background.width > background.height ? 'landscape' : 'portrait'">
+            <a href ui-sref="drawingBackground({_id: background._id})">
+                <img class="card-image" ng-src="{{background.thumbnailUrl}}" alt="thumbnail">
+            </a>
+            <div class="thumbnail-overlay link">
+                <span class="thumbnail-left-icons" ng-if="!background.isPublic">
+                    <span>
+                        <md-tooltip md-direction="bottom">Private to you</md-tooltip>
+                        <i class="material-icons">lock_outline</i>
+                    </span>
+                </span>
+                <span class="thumbnail-right-icons" layout="row">
+                    <a href ui-sref="drawingBackground({_id: background._id})" ng-if="vm.canEdit()">
+                        <md-tooltip md-direction="bottom">Edit</md-tooltip>
+                        <i class="material-icons">mode_edit</i>
+                    </a>
+                    <a href ng-click="vm.confirmDelete(background)" ng-if="vm.canDelete()">
+                        <md-tooltip md-direction="bottom">Delete</md-tooltip>
+                        <i class="material-icons">delete</i>
+                    </a>
+                </span>
+            </div>
+        </div>
+        <div class="thumbnail-content" layout="row">
+            <div layout="column" flex>
+                <div layout="column">
+                    <a class="name md-body-2 link" ui-sref="drawingBackground({_id: background._id})">
+                        <span ng-bind="background.name"></span>
+                    </a>
+                    <avatar class="avatar avatar-xs" user-id="{{background.userId}}" username="{{background.author || 'anonymous'}}"></avatar>
+                </div>
+            </div>
+            <div class="caption" layout="column" layout-align="start end">
+                <div class="md-caption text-muted" layout-align="center end" layout="column">
+                    <span class="font-x-small">{{ background.totalFrame + ' frames'}}&nbsp;&middot;&nbsp;{{ background.views + ' views'}}</span>
+                    <rating-stars class="font-small" rating="{{background.rating}}" readonly></rating-stars>
+                </div>
+            </div>
+        </div>
+    </md-whiteframe>
+</div>

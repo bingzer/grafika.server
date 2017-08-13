@@ -3,10 +3,10 @@ using Microsoft.AspNetCore.Mvc;
 using Grafika.Services;
 using Microsoft.AspNetCore.Authorization;
 using Grafika.Web.Models;
-using Grafika.Web.Filters;
+using Grafika.Services.Web.Filters;
+using Grafika.Services.Web.Extensions;
 using Microsoft.Extensions.Options;
 using Grafika.Configurations;
-using Grafika.Web.Extensions;
 using Grafika.Utilities;
 
 namespace Grafika.Web.Controllers
@@ -23,6 +23,7 @@ namespace Grafika.Web.Controllers
         }
 
         [Authorize(Roles = Roles.Developer)]
+        [HttpGet]
         public async Task<IActionResult> GetUsers([FromQuery] UserQueryOptions options, [FromQuery] int? skip, [FromQuery] int? limit)
         {
             if (options == null)
@@ -60,8 +61,10 @@ namespace Grafika.Web.Controllers
 
         [SkipModelValidation]
         [HttpPut("{userId}")]
-        public async Task<IActionResult> Update([FromBody] User user)
+        public async Task<IActionResult> Update(string userId, [FromBody] User user)
         {
+            user.Id = userId;
+
             var identity = User?.Identity as UserIdentity;
             if (identity?.Id == user.Id)
             {

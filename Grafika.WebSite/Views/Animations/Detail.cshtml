@@ -1,0 +1,125 @@
+@model AnimationViewModel
+
+@{ 
+    var landscape = Model.Animation.Width >= Model.Animation.Height ? "landscape" : "portrait";
+    var playerViewModel = new AnimationPlayerViewModel
+    {
+        Animation = Model.Animation,
+        AnimationId = Model.Animation.Id,
+        AutoPlay = false
+    };
+    var relatedAnimationQueryOptions = new AnimationQueryOptions
+    {
+        RelatedToAnimationId = Model.Animation.Id,
+        TemplateName = "_ListSmall",
+        PageSize = 5
+    };
+}
+
+<div class="bg-dark page-heading"></div>
+<article id="watch" class="no-padding">
+    <div id="player-wrapper" class="player-wrapper">
+        @await Html.PartialAsync("_Player", playerViewModel)
+    </div>
+</article>
+<header id="title" class="bg-dark container-fluid">
+    <div class="col-lg-8 col-xl-10">
+        <div id="title-wrapper" class="title-container">
+            <h1 class="animation-title">
+                @Model.Animation.Name
+                @if (Model.Animation.IsPublic == false)
+                {
+                    <i class="fa fa-lock font-smaller" title="This animation is private. Can only be viewed by you"></i>
+                }
+            </h1>
+        </div>
+        <h2 class="animation-author font-larger">
+            <img class="img-circle user-avatar user-avatar-md" src="@Model.Animation.GetAuthorThumbnail()" alt="@Model.Animation.Author" />
+            <a href="@Html.UserUrl(Model.Animation.UserId)">
+                @Model.Animation.Author
+            </a>
+        </h2>
+        <p class="animation-details">
+            <span style="margin-right: 8px">
+                <i class="fa fa-eye"></i>&nbsp;@Model.Animation.Views
+            </span>
+            <span style="margin-right: 8px">
+                <i class="fa fa-image"></i>&nbsp;@Model.Animation.TotalFrame
+            </span>
+            <span style="margin-right: 8px">
+                <i class="fa fa-calendar"></i>&nbsp;@Html.DisplayDate(Model.Animation.DateTimeModified)
+            </span>
+        </p>
+        <p class="animation-description">
+            @if (!string.IsNullOrEmpty(Model.Animation.Description))
+            {
+                @Model.Animation.Description
+            }
+            else
+            {
+                <span class="text-muted">No description</span>
+            }
+        </p>
+    </div>
+    <div id="social-share" class="col-lg-4 col-xl-2">
+        <div class="sharethis-inline-share-buttons"></div>
+    </div>
+</header>
+<div id="comment" class="container-fluid">
+    <div id="comment-wrapper" class="">
+        <article id="info-comment" class="col-md-8 col-lg-7">
+            <header>
+                <h2>Comments</h2>
+            </header>
+            <div id="comments-container" data-partial="lazy" data-url="@Model.Animation.GetCommentUrl()">
+                <div id="load-comments-container" class="text-center">
+                    <h3>Join the discussion</h3>
+                    <button onclick="GrafikaApp.Partials.renderPartial('#comments-container')" class="btn btn-xl btn-primary" title="Click to load comments">
+                        Load comment
+                    </button>
+                </div>
+            </div>
+        </article>
+        <aside id="info-sidebar" class="col-md-4 col-lg-5">
+            <div id="info-ads">
+                <!-- grafika - https://grafika.bingzer.com -->
+                <ins class="adsbygoogle"
+                     style="display:block"
+                     data-ad-client="ca-pub-6423861965667645"
+                     data-ad-slot="2335720328"
+                     data-ad-format="auto"></ins>
+            </div>
+            <header id="watch-sidebar">
+                <h2 class="text-smaller">Related</h2>
+                <div role="tabpanel" id="related" data-partial="auto" data-url="/animations/list" data-data="@relatedAnimationQueryOptions.ToJson()" data-timeout="1000">
+                    <p class="text-center">                        
+                        Loading...
+                    </p>
+                </div>
+            </header>
+        </aside>
+    </div>
+</div>
+
+@section scripts {
+<script type="text/javascript" src="//platform-api.sharethis.com/js/sharethis.js#property=597aba86d82b6d0011d3ae5d&product=inline-share-buttons" async="async"></script>
+<environment names="Development,Production">
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+</environment>
+}
+@section styles {
+<environment names="Development">
+    <link href="~/css/GrafikaApp.Animation.Detail.css" rel="stylesheet" type="text/css" />
+</environment>
+<environment names="Production">
+    <link href="~/css/GrafikaApp.Bundle.Animation.Detail.min.css" rel="stylesheet" type="text/css"/>
+</environment>
+<style>
+    #st-4 {
+        visibility: hidden;
+    }
+</style>
+}

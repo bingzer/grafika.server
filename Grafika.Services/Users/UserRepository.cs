@@ -35,6 +35,8 @@ namespace Grafika.Services.Users
                 query = query.Where(q => q.Email == options.Email);
             if (!string.IsNullOrEmpty(options.Username))
                 query = query.Where(q => q.Username == options.Username);
+            if (!string.IsNullOrEmpty(options.IdOrUsername))
+                query = query.Where(q => q.Id == options.IdOrUsername || q.Username == options.IdOrUsername);
 
             return query;
         }

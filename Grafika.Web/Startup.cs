@@ -4,8 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Grafika.Services;
-using Grafika.Web.Middlewares;
-using Grafika.Web.Extensions;
+using Grafika.Services.Web;
 
 namespace Grafika.Web
 {
@@ -28,11 +27,6 @@ namespace Grafika.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddOptions();
-
-            services.AddGrafika();
-            services.ConfigureGrafika(Configuration);
-
             services.AddGrafikaMvc();
             services.ConfigureGrafikaMvc(Configuration);
         }
@@ -43,22 +37,8 @@ namespace Grafika.Web
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
-            app.UseCors(builder => builder.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin().AllowCredentials());
-            app.UseMiddleware<ExceptionHandlingMiddleware>();
-
-            app.UseIdentity();
-
-            app.UseGoogleOAuth();
-            app.UseFacebookOAuth();
-            app.UseJwtOAuth();
-
-            app.UseMvc();
-
+            app.UseGrafikaMvc();
             app.UseStaticFiles();
-
-            //app.UseScratch();
-
-            app.UseGrafika();
         }
     }
 }

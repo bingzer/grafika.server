@@ -1,0 +1,12 @@
+<div layout="column">
+    <ng-include src="'app/users/user-banner.html'" ng-if="app.isAuthenticated()" ng-init="user=app.getUser()"></ng-include>
+    <ng-include src="'app/users/guest-banner.html'" ng-if="!app.isAuthenticated()"></ng-include>
+    <md-list class="md-dense">
+        <md-list-item ng-repeat="menu in app.uxService.getNavigationMenus('sidenav')" ng-click="menu.onClick(app)">
+            <div class="md-list-item-text" layout="row">
+                <md-icon md-font-family="material icons">{{menu.icon}}</md-icon>
+                &nbsp;&nbsp;<h5 style="padding-top: 4px; margin-left: 4px;">{{menu.name}}</h5>
+            </div>
+        </md-list-item>
+    </md-list>
+</div>

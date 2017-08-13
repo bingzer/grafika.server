@@ -23,12 +23,17 @@ using Grafika.Services.Syncs;
 using Grafika.Services.Users;
 using Grafika.Services.Backgrounds;
 using Grafika.Utilities;
+using System;
+using Grafika.Services.AnimationSeries;
+using System.Threading.Tasks;
 
 namespace Grafika.Services
 {
     public static class GrafikaServices
     {
-        public static void AddGrafika(this IServiceCollection services)
+        internal static IServiceProvider ServiceProvider { get; private set; }
+
+        public static void AddGrafikaServices(this IServiceCollection services)
         {
             // -- Grafika.Data.MongoDB
             services.AddMongoDb();
@@ -58,6 +63,13 @@ namespace Grafika.Services
                 .AddScoped<IBackgroundService, BackgroundService>()
                 .AddScoped<IBackgroundRepository, BackgroundRepository>()
                 .AddSingleton<IBackgroundValidator, BackgroundValidator>()
+                ;
+
+            // -- Series
+            services
+                .AddScoped<ISeriesService, SeriesService>()
+                .AddScoped<ISeriesRepository, SeriesRepository>()
+                .AddScoped<ISeriesValidator, SeriesValidator>()
                 ;
 
             // -- Aws
@@ -115,7 +127,7 @@ namespace Grafika.Services
                 ;
         }
 
-        public static void ConfigureGrafika(this IServiceCollection services, IConfiguration configuration)
+        public static void ConfigureGrafikaServices(this IServiceCollection services, IConfiguration configuration)
         {
             configuration.GetSection("Grafika").Bind(AppEnvironment.Default);
 
@@ -134,8 +146,10 @@ namespace Grafika.Services
                 ;
         }
 
-        public static void UseGrafika(this IApplicationBuilder app)
+        public static void UseGrafikaServices(this IApplicationBuilder app)
         {
+            ServiceProvider = app.ApplicationServices;
+
             app.ApplicationServices.UseMongoDb();
 
             app.ApplicationServices.Get<IConnectionManager>().Register<IAwsConnectionHub>();
@@ -149,6 +163,8 @@ namespace Grafika.Services
                 connection.EnsureReady().GetAwaiter().GetResult();
                 connection.Dispose();
             }
+
+            app.ApplicationServices.Get<ISeriesService>().EnsureHandpickedSeriesCreated().GetAwaiter().GetResult();
         }
     }
 }

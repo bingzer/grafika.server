@@ -1,0 +1,69 @@
+﻿@model Animation
+@{
+    Layout = null;
+    var animationUrl = Html.AnimationUrl(Model);
+    var authorUrl = Utility.CombineUrl("/users", Model.UserId, Html.GenerateSlug(Model.Author));
+    var userIdentity = User.Identity as IUserIdentity;
+    var canEdit = userIdentity?.Id == Model.UserId;
+}
+<article class="col-xs-12 col-sm-6 col-md-4 col-lg-3 col-xl-1">
+    <div class="thumbnail">
+        <figure>
+            <a class="animation-thumbnail-link" href="@animationUrl">
+                <img class="animation-thumbnail" src="@Model.GetThumbnailUrl()" alt="@Model.Name">
+            </a>
+        </figure>
+        <div class="caption">
+            <header>
+                <h4>
+                    <a href="@animationUrl" class="font-stronger">@Model.Name</a>
+                    @if (Model.IsPublic == false)
+                    {
+                        <i class="fa fa-lock font-smaller text-muted" title="This animation is private. Can only be viewed by you"></i>
+                    }
+                </h4>
+            </header>
+            <div>
+                <p class="animation-author pull-left">
+                    <img src="@Model.GetAuthorThumbnail()" alt="@Model.Author" class="img-circle user-avatar" />
+                    <a href="@authorUrl">
+                        @Model.Author
+                    </a>
+                </p>
+                <p class="animation-views pull-right font-smaller text-muted">
+                    @Model.TotalFrame frames &#8226; @Model.Views views
+                </p>
+            </div>
+            <div class="clearfix"></div>
+            <p class="animation-description text-muted">
+                @if (Model.Description.IsNullOrEmptyOrWhitespace())
+                {
+                    <text>(no description)</text>
+                }
+                else
+                {
+                    @Model.Description
+                }
+            </p>
+            <p class="animation-edit">
+                @if (canEdit)
+                {
+                    <span class="pull-left font-smaller text-muted">
+                        <a href="javascript: void(0)" 
+                           class="btn btn-xs btn-danger"
+                           data-confirm="Are you sure you want to delete @Model.Name?" 
+                           data-confirmed="GrafikaApp.toast('Deleting...'); GrafikaApp.sendAjax($elem)"
+                           data-callback="GrafikaApp.refreshPage()"
+                           data-url="@Model.GetUrl()"
+                           data-method="delete">
+                            Delete
+                        </a>
+                        <a href="@animationUrl/edit" class="btn btn-xs btn-success">
+                            Edit
+                        </a>
+                    </span>
+                }
+            </p>
+        </div>
+    </div>
+</article>

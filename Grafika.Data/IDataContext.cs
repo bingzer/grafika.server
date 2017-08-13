@@ -7,6 +7,7 @@ namespace Grafika.Data
     {
         IDataSet<Animation> Animations { get; }
         IDataSet<Background> Backgrounds { get; }
+        IDataSet<Series> Series { get; }
         IDataSet<User> Users { get; }
 
         IDataSet<TEntity> Set<TEntity>() where TEntity : class, IEntity;

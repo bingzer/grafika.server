@@ -1,8 +1,8 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Grafika.Services;
+using Grafika.Services.Web.Filters;
 using Grafika.Web.Models;
-using Grafika.Web.Filters;
 
 namespace Grafika.Web.Controllers
 {

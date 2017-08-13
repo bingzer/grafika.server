@@ -20,8 +20,8 @@ namespace Grafika.Animations
 
         [Required, DefaultValue(EntityType.Background)]
         [JsonConverter(typeof(StringEnumConverter))]
-        [BsonElement("type"), BsonSerializer(typeof(EntityTypeBsonSerializer))]
-        public EntityType Type { get; set; }
+        [BsonElement("type"), BsonRepresentation(BsonType.String), BsonSerializer(typeof(EntityTypeBsonSerializer))]
+        public EntityType Type { get; set; } = EntityType.Background;
         [BsonElement("description")]
         public string Description { get; set; }
 

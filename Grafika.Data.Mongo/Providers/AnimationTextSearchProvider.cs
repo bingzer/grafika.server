@@ -2,6 +2,7 @@
 using Grafika.Data.Mongo.Supports;
 using MongoDB.Driver;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Grafika.Data.Mongo.Providers
@@ -14,6 +15,8 @@ namespace Grafika.Data.Mongo.Providers
 
             if (!string.IsNullOrEmpty(options.Id))
                 filter &= Builders<Animation>.Filter.Eq(anim => anim.Id, options.Id);
+            if (options.Ids != null && options.Ids.Any())
+                filter &= Builders<Animation>.Filter.In(anim => anim.Id, options.Ids);
             if (!string.IsNullOrEmpty(options.UserId))
                 filter &= Builders<Animation>.Filter.Eq(anim => anim.UserId, options.UserId);
             if (options.IsPublic.HasValue)

@@ -1,9 +1,9 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
-using Grafika.Services;
 using Grafika.Animations;
-using Grafika.Web.Extensions;
+using Grafika.Services;
+using Grafika.Services.Web.Extensions;
 
 namespace Grafika.Web.Controllers
 {
@@ -22,8 +22,7 @@ namespace Grafika.Web.Controllers
         [HttpGet("{animationId}/frames")]
         public async Task<IActionResult> GetFrameData(string animationId)
         {
-            var shouldInflateData = !Request.AcceptEncodings("deflate") && Request.HasHeader("X-inflate-frames");
-            var contentEncoding = shouldInflateData ? null : "deflate";
+            var contentEncoding = Request.SupportsDeflate() ? "deflate" : "";
             var frameData = await _service.GetFrameData(animationId, new FrameData { ContentEncoding = contentEncoding });
 
             if (frameData == null)

@@ -1,0 +1,80 @@
+@model ImageFileUploadViewModel
+
+<div class="form-horizontal">
+    <div class="form-group padding-side">
+        <label>&nbsp;</label>
+        <div class="input-group">
+            <span class="input-group-btn">
+                <span class="btn btn-default btn-file">
+                    Browse...<input type="file" id="imgInp">
+                </span>
+            </span>
+            <input type="text" class="form-control" readonly>
+        </div>
+    </div>
+    <div class="form-group text-center">
+        <canvas id="image-preview" 
+                class="border border-dotted"
+                width="@Model.Width"
+                height="@Model.Height"
+                style="width: @(Model.PreviewWidth)px; height: @(Model.PreviewHeight)px;"></canvas>
+    </div>
+    <div id="upload-button-container" class="form-group text-right modal-footer" style="display: none">
+        <button id="upload-button" type="button" class="btn btn-primary">Upload</button>
+    </div>
+</div>
+
+<script type="text/javascript" defer>
+    (function () {
+        var canvas = $('#image-preview')[0];
+        var context = canvas.getContext('2d');
+        var imageInput = $('#imgInp');
+
+        $('.btn-file :file').on('change', function () {
+            var input = $(this),
+                label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+            input.trigger('fileselect', [label]);
+        });
+
+        $('.btn-file :file').on('fileselect', function (event, label) {
+            var input = $(this).parents('.input-group').find(':text'),
+                log = label;
+
+            if (input.length) {
+                input.val(log);
+            } else {
+                if (log) alert(log);
+            }
+
+        });
+
+        imageInput.change(function () {
+            if (!imageInput[0].files && !imageInput[0].files[0])
+                throw new Error("No files");
+            var reader = new FileReader();
+
+            let img = new Image();
+            img.onload = function () {
+                context.drawImage(img, 0, 0, $(canvas).width(), $(canvas).height());
+            };
+            reader.onload = function (e) {
+                $(img).attr('src', e.target.result);
+            }
+
+            reader.readAsDataURL(imageInput[0].files[0]);
+            $("#upload-button-container").show();
+        });
+
+        $('#upload-button').click(function () {
+            var binary = atob(canvas.toDataURL("image/png", 100).split(',')[1]);
+            var array = [];
+            for(let i = 0; i < binary.length; i++) {
+                array.push(binary.charCodeAt(i));
+            }
+            var blob = new Blob([new Uint8Array(array)], { type: 'image/png' });
+
+            @(Model.UploadFunction)(blob);
+        });
+    })();
+
+</script>

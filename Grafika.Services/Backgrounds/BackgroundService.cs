@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System;
+using Grafika.Utilities;
 
 namespace Grafika.Services.Backgrounds
 {
@@ -19,6 +20,17 @@ namespace Grafika.Services.Backgrounds
         {
             _frameRepository = frameRepository;
             _resourceService = resourceService;
+        }
+
+        public override async Task<Background> Delete(string entityId)
+        {
+            var animation = await GetById(entityId);
+
+            animation.IsRemoved = true;
+            animation.DateModified = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+            Validator.Validate(animation);
+
+            return await Repository.Update(animation);
         }
 
         public Task Delete(IEnumerable<string> backgroundIds)
@@ -83,6 +95,30 @@ namespace Grafika.Services.Backgrounds
                 UserId = source.UserId,
                 Width = source.Width
             };
+        }
+
+        protected internal override async Task<Background> PrepareEntityForCreate(Background source)
+        {
+            var now = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+            var userService = Context.ServiceProvider.Get<IUserService>();
+            var user = await userService.Get(User.Id);
+
+            if (user == null)
+                throw new NotAuthorizedException();
+
+            source.UserId = User.Id;
+            source.Type = EntityType.Background;
+            source.IsRemoved = false;
+            if (source.IsPublic == null)
+                source.IsPublic = user.Prefs.DrawingIsPublic ?? true;
+            if (source.DateCreated == null)
+                source.DateCreated = now;
+            if (source.DateModified == null)
+                source.DateModified = now;
+            if (source.Author == null)
+                source.Author = user.Prefs.DrawingAuthor ?? user.Username;
+
+            return source;
         }
     }
 }

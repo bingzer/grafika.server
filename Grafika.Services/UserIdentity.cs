@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Security.Claims;
 using System.Linq;
 using Grafika.Utilities;
+using Newtonsoft.Json;
 
 namespace Grafika.Services
 {
@@ -19,6 +20,9 @@ namespace Grafika.Services
             Ensure.ArgumentNotNull(identity, "identity");
         }
 
+        [JsonIgnore]
+        public override IEnumerable<Claim> Claims => base.Claims;
+
         public string Id => FindClaimsValue("id", "_id", ClaimTypes.NameIdentifier, ClaimTypes.Sid);
 
         public string Email => FindClaimsValue("email", ClaimTypes.Email);
@@ -29,6 +33,7 @@ namespace Grafika.Services
 
         public string LastName => FindClaimsValue("lastName", "family_name", ClaimTypes.Surname);
 
+        [JsonProperty("active")]
         public bool? IsActive => bool.Parse(FindClaimsValue("active", "isActive")??"true");
 
         public long? DateCreated => long.Parse(FindClaimsValue("dateCreated") ?? DateTimeOffset.UtcNow.ToUnixTimeMilliseconds().ToString());

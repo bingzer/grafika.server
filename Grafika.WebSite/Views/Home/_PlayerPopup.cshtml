@@ -1,0 +1,16 @@
+@model AnimationPlayerViewModel
+
+@{
+    var landscape = Model.Animation.Width >= Model.Animation.Height ? "landscape" : "portrait";
+}
+
+<div class="bg-transparent">
+    @await Html.PartialAsync("~/Views/Animations/_Player.cshtml", Model)
+    <div class="row margin text-center text-primary">
+        <h3>@Model.Animation.Name</h3>
+        <h5>by <a href="/users/@Model.Animation.UserId/@Html.GenerateSlug(Model.Animation.Author)">@Model.Animation.Author</a></h5>
+        <p class="padding">
+            <a href="/animations/@Model.Animation.Id/@Model.Animation.GetSlug()" class="btn btn-round btn-xl btn-danger">Go to Animation</a>
+        </p>
+    </div>
+</div>

@@ -1,11 +1,11 @@
-using Microsoft.AspNetCore.Mvc;
+using System.Reflection;
 using Microsoft.AspNetCore.Authorization;
-using Grafika.Web.Models;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Grafika.Configurations;
-using System.Reflection;
-using Grafika.Web.Extensions;
-using Microsoft.AspNetCore.Hosting;
+using Grafika.Web.Models;
+using Grafika.Services.Web.Extensions;
 
 namespace Grafika.Web.Controllers
 {

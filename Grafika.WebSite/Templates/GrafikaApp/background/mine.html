@@ -1,0 +1,18 @@
+<div class="mine">
+    <ng-include src="'app/users/user-banner.html'" ng-init="user=vm.user"></ng-include>
+	<div display-block layout="column">
+		<form name="searchForm" ng-submit="vm.list()">
+			<md-input-container class="md-block">
+				<label>Search my backgrounds</label>
+				<input type="search" ng-model="vm.paging.term">
+			</md-input-container>
+		</form>
+        <ng-include src="'app/background/list.html'" flex></ng-include>
+	</div>
+
+    <md-button class="md-fab md-fab-bottom-right position-fixed" aria-label="Play" ng-click="vm.create($event)">
+		<md-icon>
+        	<i class="material-icons">add</i>
+		</md-icon>
+    </md-button>
+</div>

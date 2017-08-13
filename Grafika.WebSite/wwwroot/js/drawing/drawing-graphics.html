@@ -1,0 +1,80 @@
+<md-dialog style="min-width: 450px">
+<form name="graphicPropertiesForm" novalidate>
+	<md-toolbar>
+		<div class="md-toolbar-tools">
+			<h4>Selected Graphics</h4>
+		</div>
+	</md-toolbar>
+	<md-dialog-content layout-margin>
+		<div layout="column" layout-padding>
+			<md-input-container>
+				<label>Select Graphics</label>
+				<md-select ng-model="vm.index">
+					<md-option ng-value="$index" ng-repeat="graphic in vm.graphics" ng-bind="'Graphic ' + ($index + 1)"></md-option>
+				</md-select>
+			</md-input-container>
+			<md-input-container ng-show="false">
+				<label>Uid</label>
+				<input type="text" ng-model="vm.graphics[vm.index].uid" ng-required="true" ng-disabled="true">
+			</md-input-container>
+			<md-input-container>
+				<label>Type</label>
+				<md-select ng-model="vm.graphics[vm.index].type">
+					<md-option ng-value="graphic" ng-repeat="graphic in vm.graphics" ng-bind="graphic.type | capitalizeFirstLetter"></md-option>
+				</md-select>
+			</md-input-container>
+			<div layout="row">
+				<md-input-container>
+					<label>X</label>
+					<input type="number" ng-model="vm.graphics[vm.index].x" ng-required="true">
+				</md-input-container>
+				<md-input-container>
+					<label>Y</label>
+					<input type="number" ng-model="vm.graphics[vm.index].y" ng-required="true">
+				</md-input-container>
+			</div>
+			<div layout="row">
+				<!-- Rectangle of Square -->
+				<md-input-container ng-if="vm.graphics[vm.index].type == 'rectangle' || vm.graphics[vm.index].type == 'square'">
+					<label>Width</label>
+					<input type="number" ng-model="vm.graphics[vm.index].height" ng-required="true">
+				</md-input-container>
+				<md-input-container ng-if="vm.graphics[vm.index].type == 'rectangle' || vm.graphics[vm.index].type == 'square'">
+					<label>Height</label>
+					<input type="number" ng-model="vm.graphics[vm.index].y" ng-required="true">
+				</md-input-container>
+				<!-- Circle -->
+				<md-input-container ng-if="vm.graphics[vm.index].type == 'circle'">
+					<label>Radius</label>
+					<input type="number" ng-model="vm.graphics[vm.index].radius" ng-required="true">
+				</md-input-container>
+				<!-- Line -->
+				<md-input-container ng-if="vm.graphics[vm.index].type == 'line'">
+					<label>End X</label>
+					<input type="number" ng-model="vm.graphics[vm.index].endX" ng-required="true">
+				</md-input-container>
+				<md-input-container ng-if="vm.graphics[vm.index].type == 'line'">
+					<label>End Y</label>
+					<input type="number" ng-model="vm.graphics[vm.index].endY" ng-required="true">
+				</md-input-container>
+				<!-- Freeforms -->
+				<textarea rows="3" flex 
+					ng-if="vm.graphics[vm.index].type == 'freeform'" 
+					ng-bind="vm.stringify(vm.graphics[vm.index].points)" 
+					ng-required="true"
+					ng-disabled="true"></textarea>
+			</div>
+			<div layout="row" layout-margin>
+				<spectrum-colorpicker 
+					format="'hex'"
+					ng-model="vm.graphics[vm.index].foregroundColor"
+					on-change="vm.graphics[vm.index].foregroundColor = color"/>
+				<md-checkbox ng-model="vm.graphics[vm.index].isFilled" aria-label="fill color">Fill color</md-checkbox>
+			</div>
+		</div>
+	</md-dialog-content>
+    <md-dialog-actions layout="row">
+		<md-button type="submit" ng-click="vm.close(true)" ng-disabled="graphicPropertiesForm.$invalid">Done</md-button>
+	</md-dialog-actions>
+</form>
+</md-dialog>

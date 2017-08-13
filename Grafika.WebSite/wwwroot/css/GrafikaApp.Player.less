@@ -1,0 +1,62 @@
+﻿@import "variables.less";
+
+.player {
+    border-right: @border;
+    border-left: @border;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.player-container {
+    display: flex;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.player-container > #player-canvas-wrapper {
+    margin-right: auto;
+    margin-left: auto;
+    border-right: @border;
+    border-left: @border;
+}
+
+.player-controls {
+    height: 48px;
+    margin-top: -48px;
+    background-color: rgba(0, 0, 0, 0.50);
+    position: relative;
+    z-index: 30;
+}
+
+.player-controls > .player-buttons {
+    padding: 10px;
+}
+
+.player-controls > .player-buttons .btn {
+    background-color: transparent;
+    background-repeat: no-repeat;
+    border: none;
+    overflow: hidden;
+    outline: none;
+    color: white;
+}
+
+.player-controls > .player-buttons .btn:hover {
+    color: rgb(26, 137, 130)
+}
+
+.player-height {
+    height: 312px;
+
+    @media screen and (min-width: @media-sm) {
+        height: 360px;
+    }
+
+    @media screen and (min-width: @media-md) {
+        height: 426px;
+    }
+
+    @media screen and (min-width: @media-lg) {
+        height: 480px;
+    }
+}

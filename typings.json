@@ -1,0 +1,11 @@
+{
+  "globalDependencies": {
+    "bootbox": "registry:dt/bootbox#4.4.0+20170315085658",
+    "grafika": "github:bingzer/grafika.js/dist/grafika.d.ts",
+    "grafika.exts": "github:bingzer/grafika.js/dist/grafika.extensions.d.ts",
+    "grafika.interfaces": "github:bingzer/grafika.js/dist/grafika.interfaces.d.ts",
+    "jquery-validation-unobtrusive": "registry:dt/jquery-validation-unobtrusive#3.2.3+20161128184045",
+    "jquery.validation": "registry:dt/jquery.validation#1.13.1+20170203230002",
+    "toastr": "registry:dt/toastr#2.1.3+20170305192644"
+  }
+}

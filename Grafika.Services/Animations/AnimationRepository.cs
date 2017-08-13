@@ -37,6 +37,8 @@ namespace Grafika.Services.Animations
 
             if (!string.IsNullOrEmpty(options.Id))
                 query = query.Where(q => q.Id == options.Id);
+            if (options.Ids != null && options.Ids.Any())
+                query = query.Where(q => options.Ids.Contains(q.Id));
             if (!string.IsNullOrEmpty(options.UserId))
                 query = query.Where(q => q.UserId == options.UserId);
             if (options.IsPublic.HasValue)

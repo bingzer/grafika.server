@@ -1,0 +1,3 @@
+User-agent: *
+Disallow: 
+Sitemap: https://grafika.bingzer.com/sitemap.xml
