@@ -2,16 +2,17 @@
     export module Drawing {
         export module Controllers {
             export class LocalDrawingController extends DrawingController {
-                public static $inject = ['appCommon', 'authService', 'animationService', 'frameService', 'resourceService', '$rootScope'];
+                public static $inject = ['appCommon', 'authService', 'animationService', 'frameService', 'resourceService', '$rootScope', '$scope'];
                 constructor(
                     appCommon: AppCommon,
                     authService: Services.AuthService,
                     animationService: Services.AnimationService,
                     frameService: Services.FrameService,
                     resourceService: Services.ResourceService,
-                    $rootScope: angular.IRootScopeService
+                    $rootScope: angular.IRootScopeService,
+                    $scope: angular.IScope
                 ) {
-                    super(appCommon, authService, animationService, frameService, resourceService, $rootScope);
+                    super(appCommon, authService, animationService, frameService, resourceService, $rootScope, $scope);
                     this.supportsResources = false;
                 }
 

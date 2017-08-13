@@ -10,7 +10,7 @@ module GrafikaApp {
             'ngSanitize',
 
             'angular-jwt',
-            'angularSpectrumColorpicker',
+            'minicolors',
             //'angularUtils.directives.dirDisqus',
             //// -- analytics + adsense
             //'angulartics',

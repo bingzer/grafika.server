@@ -9,20 +9,34 @@
                 canvas: JQuery;
                 graphics = ['freeform', 'line', 'rectangle', 'square', 'circle', 'oval', 'triangle', 'text'];
                 supportsResources: boolean = true;
+                selectedBackgroundColor: string;
+                selectedForegroundColor: string;
+                selectedBackgroundColorText: string;
+                selectedForegroundColorText: string;
 
-                public static $inject = ['appCommon', 'authService', 'animationService', 'frameService', 'resourceService', '$rootScope'];
+                public static $inject = ['appCommon', 'authService', 'animationService', 'frameService', 'resourceService', '$rootScope', '$scope'];
                 constructor(
                     appCommon: AppCommon,
                     authService: Services.AuthService,
                     protected animationService: Services.AnimationService,
                     protected frameService: Services.FrameService,
                     protected resourceService: Services.ResourceService,
-                    protected $rootScope: angular.IRootScopeService
+                    protected $rootScope: angular.IRootScopeService,
+                    protected $scope: angular.IScope
                 ) {
                     super(appCommon, authService, animationService, frameService, resourceService, false);
                     this.grafika.setCallback(this);
 
                     window['grafika'] = this.grafika;
+
+                    $scope.$watch("vm.selectedBackgroundColor", (newValue: string, oldValue) => {
+                        this.selectedBackgroundColorText = newValue;
+                        this.setOptions({ backgroundColor: newValue } as Grafika.IOption);
+                    });
+                    $scope.$watch("vm.selectedForegroundColor", (newValue: string, oldValue) => {
+                        this.selectedForegroundColorText = newValue;
+                        this.setOptions({ foregroundColor: newValue } as Grafika.IOption);
+                    });
                 }
 
                 on(eventName: string, obj: any) {
@@ -30,6 +44,8 @@
                         case Grafika.EVT_FRAME_CHANGED:
                             this.currentFrame = (<number>obj) + 1;
                             $('#currentFrame').val(this.currentFrame);
+                            this.selectedBackgroundColor = this.grafika.frame.backgroundColor;
+                            this.selectedForegroundColor = this.grafika.frame.foregroundColor;
                             break;
                         case Grafika.EVT_FRAME_COUNT:
                             this.totalFrame = <number>obj;

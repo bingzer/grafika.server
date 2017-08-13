@@ -67,14 +67,23 @@
                                 </button>
                             </div>
                             <div style="margin-top: 8px">
-                                <span>
-                                    <spectrum-colorpicker md-no-ink md-prevent-menu-close="md-prevent-menu-close"
-                                                          format="'hex'"
-                                                          style="margin-right: 4px"
-                                                          ng-model="vm.grafika.getOptions().backgroundColor"
-                                                          options="{flat: true}"
-                                                          on-change="vm.setOptions({ backgroundColor: color})" />
-                                </span>
+                                <div>
+                                    <span class="input-group" style="max-width: 175px">
+                                        <input type="text" ng-model="vm.selectedBackgroundColorText" class="form-control">
+                                        <span class="input-group-btn">
+                                            <button type="button" class="btn btn-success"
+                                                    md-prevent-menu-close="md-prevent-menu-close"
+                                                    ng-click="vm.selectedBackgroundColor = vm.selectedBackgroundColorText">
+                                                Pick
+                                            </button>
+                                        </span>
+                                    </span><!-- /input-group -->
+                                    <input minicolors="{ inline: true, position: 'bottom-right' }"
+                                           id="color-input"
+                                           class="form-control"
+                                           type="text"
+                                           ng-model="vm.selectedBackgroundColor">
+                                </div>
                                 <div class="pull-right">
                                     <button type="button" class="btn btn-sm btn-default"
                                             ng-disabled="!vm.grafika.getFrame().backgroundResourceId"
@@ -135,8 +144,8 @@
                     <md-menu-content>
                         <div class="md-indent menu-item-header">
                             <div>
-                                <select class="form-control">
-                                    <option ng-repeat="graphic in vm.graphics" ng-selected="vm.getOptions().graphic" value="graphic">
+                                <select class="form-control" ng-model="vm.grafika.getOptions().graphic">
+                                    <option ng-repeat="graphic in vm.graphics" value="{{graphic}}">
                                         {{graphic | capitalizeFirstLetter}}
                                     </option>
                                 </select>
@@ -152,11 +161,19 @@
                             </div>
                             <div class="clearfix" style="margin-top: 24px">
                                 <span>
-                                    <spectrum-colorpicker format="'hex'"
-                                                          style="padding-bottom: 4px; margin-right: 4px"
-                                                          ng-model="vm.grafika.getOptions().foregroundColor"
-                                                          options="{flat: true}"
-                                                          on-change="vm.setOptions({ foregroundColor: color})" />
+                                    <span class="input-group" style="max-width: 175px">
+                                        <input type="text" ng-model="vm.selectedForegroundColorText" class="form-control">
+                                        <span class="input-group-btn">
+                                            <button type="button" class="btn btn-success" 
+                                                    md-prevent-menu-close="md-prevent-menu-close"
+                                                    ng-click="vm.selectedForegroundColor = vm.selectedForegroundColorText">Pick</button>
+                                        </span>
+                                    </span><!-- /input-group -->
+                                    <input minicolors="{ inline: true, position: 'bottom-right' }"
+                                           id="color-input"
+                                           class="form-control"
+                                           type="text"
+                                           ng-model="vm.selectedForegroundColor">
                                 </span>
                                 <div class="pull-right">
                                     <md-switch ng-model="vm.grafika.getOptions().graphicFill" aria-label="Switch 1">

@@ -107,7 +107,6 @@ gulp.task('copy-js', function () {
         'bower_components/grafika-js/dist/grafika.extensions.js',
         'bower_components/grafika-js/dist/grafika.random-drawing.js',
         'bower_components/grafika-js/dist/grafika.demo.js',
-        'bower_components/angular-spectrum-colorpicker/dist/angular-spectrum-colorpicker.js',
         'bower_components/jquery-serialize-object/jquery.serialize-object.js'
     ])
     .pipe(gulp.dest('Grafika.WebSite/wwwroot/js'));
@@ -229,7 +228,7 @@ gulp.task('min:scripts:GrafikaApp.Bundle.Account', function (callback) {
 
 gulp.task('min:scripts:GrafikaApp.Bundle.Drawing', function (callback) {
     return gulp.src([
-        'Grafika.WebSite/wwwroot/js/spectrum.js',
+        'Grafika.WebSite/wwwroot/js/jquery.minicolors.js',
         'Grafika.WebSite/wwwroot/js/angular.js',
         'Grafika.WebSite/wwwroot/js/angular-animate.js',
         'Grafika.WebSite/wwwroot/js/angular-aria.js',
@@ -240,7 +239,7 @@ gulp.task('min:scripts:GrafikaApp.Bundle.Drawing', function (callback) {
         'Grafika.WebSite/wwwroot/js/angular-material.js',
         'Grafika.WebSite/wwwroot/js/angular-ui-router.js',
         'Grafika.WebSite/wwwroot/js/angular-jwt.js',
-        'Grafika.WebSite/wwwroot/js/angular-spectrum-colorpicker.js',
+        'Grafika.WebSite/wwwroot/js/angular-minicolors.js',
         'Grafika.WebSite/wwwroot/js/drawing/GrafikaApp.Drawing.Theme.js',
         'Grafika.WebSite/wwwroot/js/drawing/GrafikaApp.Drawing.Base.js',
         'Grafika.WebSite/wwwroot/js/drawing/GrafikaApp.Drawing.AppCommon.js',
@@ -368,7 +367,7 @@ gulp.task('min:styles:GrafikaApp.Bundle.Animation.Detail', function(callback) {
 
 gulp.task('min:styles:GrafikaApp.Bundle.Drawing', function(callback) {
     return gulp.src([
-        'Grafika.WebSite/wwwroot/css/spectrum.css',
+        'Grafika.WebSite/wwwroot/css/jquery.minicolors.css',
         'Grafika.WebSite/wwwroot/css/angular-material.css',
         'Grafika.WebSite/wwwroot/css/GrafikaApp.Drawing.css',
         'Grafika.WebSite/wwwroot/css/GrafikaApp.Login.css'
