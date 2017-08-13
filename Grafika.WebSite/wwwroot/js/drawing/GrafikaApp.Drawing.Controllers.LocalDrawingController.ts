@@ -98,6 +98,8 @@
                         width: 800,
                         height: 480,
                         localId: Grafika.randomUid(),
+                        author: 'Anonymous',
+                        isPublic: true,
                         type: 'Animation'
                     } as Grafika.IAnimation;
 

@@ -1,13 +1,21 @@
 ﻿using Grafika.Configurations;
 using Grafika.Utilities;
+using System.Reflection;
 
 namespace Grafika.WebSite.ViewModels
 {
     public class PageViewModel
     {
+        private static readonly string AppVersion;
+        static PageViewModel()
+        {
+            AppVersion = Assembly.GetEntryAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>().InformationalVersion;
+        }
+
         public string Title { get; set; } = AppEnvironment.Default.Content.PageTitle;
         public string Description { get; set; } = AppEnvironment.Default.Content.PageDescription;
         public string Keyword { get; set; } = AppEnvironment.Default.Content.PageKeyword;
+        public string Version => AppVersion;
 
         public bool UseNavigationBar { get; set; } = true;
         public bool UseFooter { get; set; } = true;

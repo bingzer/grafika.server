@@ -161,6 +161,16 @@
                     else wrapper.removeClass("move");
                 }
 
+                resetBackground() {
+                    this.selectedBackgroundColor = '#ffffff';
+                    this.setOptions({ backgroundColor: this.selectedBackgroundColor } as Grafika.IOption);
+                }
+
+                resetBrush() {
+                    this.selectedForegroundColor = '#000000';
+                    this.setOptions({ foregroundColor: this.selectedForegroundColor, brushSize: 5, graphic: 'freeform' } as Grafika.IOption);
+                }
+
                 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
                 addResource(imageData: Models.IImageData) {

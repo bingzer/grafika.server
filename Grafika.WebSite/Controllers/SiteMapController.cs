@@ -24,14 +24,14 @@ namespace Grafika.WebSite.Controllers
             var nodes = new List<SitemapNode>
             {
                 new SitemapNode(Url.Action("Index", "Home")),
-                new SitemapNode(Url.Action("About", "Home")),
-                new SitemapNode(Url.Action("Eula", "Home")),
-                new SitemapNode(Url.Action("PrivacyPolicy", "Home")),
-                new SitemapNode(Url.Action("StickDraw", "Home")),
                 new SitemapNode(Url.Action("Platforms", "Home")),
                 new SitemapNode(Url.Action("Android", "Home")),
                 new SitemapNode(Url.Action("Online", "Home")),
-                new SitemapNode(Url.Action("IOS", "Home"))
+                new SitemapNode(Url.Action("IOS", "Home")),
+                new SitemapNode(Url.Action("StickDraw", "Home")),
+                new SitemapNode(Url.Action("About", "Home")),
+                new SitemapNode(Url.Action("Eula", "Home")),
+                new SitemapNode(Url.Action("PrivacyPolicy", "Home"))
                 //other nodes
             };
 
