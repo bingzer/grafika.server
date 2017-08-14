@@ -1,10 +1,15 @@
 ﻿module GrafikaApp {
-    export class Player {
+    export class Player implements Grafika.ICallback {
         public grafika: Grafika.IGrafika = new Grafika();
 
         constructor(canvasElementId: string) {
             this.grafika.initialize(canvasElementId, { debugMode: true, useCarbonCopy: false, useNavigationText: false, loop: true });
+            this.grafika.setCallback(this);
         }
+
+        on: (eventName: string, obj: any) => {
+
+        };
 
         togglePlay(): Q.IPromise<{ isPlaying: boolean }> {
             if (this.grafika.isPlaying()) {

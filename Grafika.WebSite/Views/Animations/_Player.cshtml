@@ -9,15 +9,22 @@
         <canvas id="player-canvas"></canvas>
     </figure>
     <div id="player-controls" class="player-controls" style="display: none">
-        <div class="player-buttons">
+        <div class="player-buttons text-center">
             <a href="javascript: void(0)" class="btn btn-sm" onclick="window.player.togglePlay().then(player.togglePlayCallback)">
                 <i class="play fa fa-play"></i>
                 <i class="pause fa fa-pause fa-spin" style="display: none"></i>
             </a>
-            <a href="javascript: void(0)" class="btn btn-sm" onclick="player.grafika.nextFrame()">
+            <input id="player-slider"
+                   type="text"
+                   data-provide="slider"
+                   data-slider-min="1"
+                   data-slider-max="@Model.Animation.TotalFrame"
+                   data-slider-step="1"
+                   data-slider-value="1">
+            <a href="javascript: void(0)" class="btn btn-sm" onclick="player.grafika.previousFrame()">
                 <i class="fa fa-arrow-left"></i>
             </a>
-            <a href="javascript: void(0)" class="btn btn-sm" onclick="player.grafika.previousFrame()">
+            <a href="javascript: void(0)" class="btn btn-sm" onclick="player.grafika.nextFrame()">
                 <i class="fa fa-arrow-right"></i>
             </a>
         </div>
@@ -26,6 +33,9 @@
     <script type="text/javascript" src="~/js/GrafikaApp.Player.js" defer></script>
     <script type="text/javascript" defer>
         $(document).ready(function () {
+            var slider = $('#player-slider').slider({ tooltip: "hide" }).change(function () {
+                player.grafika.navigateTo($(this).val());
+            });
             var player = new GrafikaApp.Player('#player-canvas');
             window.player = player;
 
@@ -46,6 +56,11 @@
                     <text>window.player.togglePlay().then(player.togglePlayCallback)</text>
                 }
             });
+            player.on = function (eventName, obj) {
+                if (eventName === Grafika.EVT_FRAME_CHANGED) {
+                    slider.slider('setValue', obj);
+                }
+            };
         });
     </script>
     <noscript>Unable to preview</noscript>
