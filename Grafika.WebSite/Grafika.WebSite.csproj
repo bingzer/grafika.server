@@ -41,7 +41,6 @@
     <ProjectReference Include="..\Grafika.Services.Web\Grafika.Services.Web.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Views\Comments\" />
     <Folder Include="Views\Users\" />
     <Folder Include="wwwroot\js\home\" />
   </ItemGroup>

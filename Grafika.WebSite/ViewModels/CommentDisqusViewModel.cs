@@ -26,5 +26,9 @@ namespace Grafika.WebSite.ViewModels
         public string JwtToken { get; set; }
 
         public string TemplateName { get; set; } = "_DisqusComment";
+
+        public string BackgroundColor { get; set; } = "#F5F5F5";
+
+        public bool IsPartial { get; set; } = false;
     }
 }

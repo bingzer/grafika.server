@@ -10,7 +10,10 @@ namespace Grafika.WebSite.Controllers
         [Route(""), AllowAnonymous]
         public IActionResult Index(CommentDisqusViewModel model)
         {
-            return PartialView(model.TemplateName, model);
+            if (model.IsPartial)
+                return PartialView(model.TemplateName, model);
+
+            return View(model);
         }
     }
 }

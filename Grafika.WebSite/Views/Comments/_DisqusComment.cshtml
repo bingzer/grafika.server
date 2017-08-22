@@ -1,8 +1,10 @@
 @model CommentDisqusViewModel
 
-<div>
+<div style="background-color: @Model.BackgroundColor; padding: 0; margin: 0">
     <div id="disqus_thread"></div>
-    <script type="text/javascript" defer>
+</div>
+
+<script type="text/javascript" defer>
         var params;
         var disqus_url;
         var disqus_title;
@@ -52,6 +54,5 @@
         }
 
         loadComments('@Model.ShortName', '@Model.Url', '@Model.PostUrl', '@Model.Title', '@Model.Identifier', '@Model.Pub', '@Model.DisqusToken', '@Model.JwtToken');
-    </script>
-    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-</div>
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>

@@ -3,6 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using Grafika.Services;
 using Grafika.Web.Models;
+using System;
+using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.AspNetCore.Http;
 
 namespace Grafika.Web.Controllers
 {
@@ -36,8 +39,13 @@ namespace Grafika.Web.Controllers
                 user = new User(User.Identity as IUserIdentity);
 
             var url = await _service.GenerateRemoteUrl(animation, user);
+            var urlBuilder = new UriBuilder(url);
 
-            return Redirect(url.ToString());
+            // append other query string
+            var queryString = QueryString.FromUriComponent(url.Query).Add(Request.QueryString);
+            urlBuilder.Query = queryString.ToUriComponent();
+
+            return Redirect(urlBuilder.ToString());
         }
 
         [HttpPost("{animationId}/comments")]

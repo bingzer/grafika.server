@@ -13,7 +13,7 @@ namespace Grafika.Services.Web.Extensions
 
         public static string GetCommentUrl(this Animation animation)
         {
-            return Utility.CombineUrl(GetUrl(animation), "comments");
+            return Utility.CombineUrl(GetUrl(animation), "comments?isPartial=true&BackgroundColor=transparent");
         }
 
         public static string GetThumbnailUrl(this Animation animation)
