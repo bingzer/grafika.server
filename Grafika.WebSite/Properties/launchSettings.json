@@ -10,12 +10,11 @@
   "profiles": {
     "Grafika.WebSite": {
       "commandName": "Project",
-      "launchUrl": "api/values",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
         "PORT": "5000"
       },
-      "applicationUrl": "http://localhost:5000"
+      "applicationUrl": "http://bingzcomputer:5000"
     }
   }
 }

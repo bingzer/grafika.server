@@ -67,7 +67,7 @@ namespace Grafika.Services.Web
             app.UseGlobalization();
 
             app.UseGrafikaServices();
-
+            
             app.UseMvc(routes =>
             {
                 routes.MapRoute(

@@ -8,22 +8,13 @@
     }
   },
   "profiles": {
-    "IIS Express": {
-      "commandName": "IISExpress",
-      "launchUrl": "api/values",
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development",
-        "PORT": "3000"
-      }
-    },
     "Grafika.Web": {
       "commandName": "Project",
-      "launchUrl": "api/values",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
         "PORT": "3000"
       },
-      "applicationUrl": "http://localhost:3000"
+      "applicationUrl": "http://bingzcomputer:3000"
     }
   }
 }

@@ -7,27 +7,25 @@ namespace Grafika.Syncs
 {
     public class SyncResult
     {
-        private readonly ISet<SyncEvent> _events;
-
         public string ClientId { get; private set; }
         public long SyncDate { get; private set; }
-        public IEnumerable<SyncEvent> Events => _events;
+        public ICollection<SyncEvent> Events { get; private set; }
 
         public SyncResult(string clientId)
         {
-            _events = new HashSet<SyncEvent>();
+            Events = new HashSet<SyncEvent>();
             ClientId = clientId;
             SyncDate = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
         }
 
         public void AddAction(SyncAction action, Background background)
         {
-            _events.Add(new SyncEvent { Action = action, EntityId = background.Id, EntityType = EntityType.Background, LocalId = background.LocalId });
+            Events.Add(new SyncEvent { Action = action, EntityId = background.Id, EntityType = EntityType.Background, LocalId = background.LocalId });
         }
 
         public void AddAction(SyncAction action, Animation animation)
         {
-            _events.Add(new SyncEvent { Action = action, EntityId = animation.Id, EntityType = EntityType.Animation, LocalId = animation.LocalId });
+            Events.Add(new SyncEvent { Action = action, EntityId = animation.Id, EntityType = EntityType.Animation, LocalId = animation.LocalId });
         }
 
         public override string ToString()

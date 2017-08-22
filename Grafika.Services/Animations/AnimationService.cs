@@ -59,6 +59,7 @@ namespace Grafika.Services.Animations
             if (user == null)
                 throw new NotAuthorizedException();
 
+            source.Id = null;
             source.UserId = User.Id;
             source.Type = EntityType.Animation;
             source.IsRemoved = false;
