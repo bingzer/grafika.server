@@ -52,11 +52,13 @@ namespace Grafika.Services.AnimationSeries
         {
             var grafikaUser = (await _userService.List(new UserQueryOptions { Email = "grafika@bingzer.com" })).First();
             var seriesOptions = new SeriesQueryOptions { UserId = grafikaUser.Id, Name = SeriesName };
+
+            var now = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+            Series series;
             if (! await Repository.Any(seriesOptions))
             {
                 // create one
-                var now = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
-                var series = new Series
+                series = new Series
                 {
                     UserId = grafikaUser.Id,
                     Name = SeriesName,
@@ -67,6 +69,14 @@ namespace Grafika.Services.AnimationSeries
                 };
 
                 await Repository.Add(series);
+            }
+
+            series = await Repository.First(seriesOptions);
+            if (series.AnimationIds == null || !series.AnimationIds.Any())
+            {
+                series.DateModified = now;
+                series.AnimationIds = AppEnvironment.Default.Content.HandpickedAnimationIds;
+                await Repository.Update(series);
             }
         }
 

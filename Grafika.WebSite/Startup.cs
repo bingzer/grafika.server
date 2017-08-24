@@ -15,6 +15,8 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Rewrite;
 using System.Net;
 using Microsoft.Net.Http.Headers;
+using Grafika.Utilities;
+using Grafika.WebSite.Infrastructure;
 
 namespace Grafika.WebSite
 {
@@ -58,6 +60,7 @@ namespace Grafika.WebSite
             }
 
             app.UseRewriter(new RewriteOptions()
+                .Add(ApiRewriteRules.RewriteToApi)
                 .AddRedirect(@"^assets/(.*)", "/$1", (int) HttpStatusCode.MovedPermanently)
                 .AddRewrite(@"^app/content/comment.html", "/comments", true)
             );
@@ -79,5 +82,6 @@ namespace Grafika.WebSite
             app.UseGrafikaMvc();
 
         }
+
     }
 }
