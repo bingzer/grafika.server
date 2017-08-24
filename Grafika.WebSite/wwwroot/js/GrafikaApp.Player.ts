@@ -1,5 +1,6 @@
 ﻿module GrafikaApp {
     export class Player {
+        private hasBeenPlayed: boolean = false;
         public grafika: Grafika.IGrafika = new Grafika();
 
         constructor(canvasElementId: string) {
@@ -17,6 +18,10 @@
 
         play(): Q.IPromise<{ isPlaying: boolean }> {
             this.grafika.play();
+            if (!this.hasBeenPlayed) {
+                GrafikaApp.sendAjax({ url: GrafikaApp.combineUrl(GrafikaApp.Configuration.baseApiUrl, "animations", this.grafika.getAnimation()._id, "view"), method: 'post' });
+                this.hasBeenPlayed = true;
+            }
             return jQuery.when({ isPlaying: this.grafika.isPlaying() });
         }
 

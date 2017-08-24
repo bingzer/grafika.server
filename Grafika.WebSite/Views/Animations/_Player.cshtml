@@ -33,33 +33,38 @@
 <script type="text/javascript" defer>
     $(document).ready(function () {
         var slider = $('#player-slider').slider({ tooltip: "hide" }).change(function () {
+            player.pause();
             player.grafika.navigateTo($(this).val());
         });
         var player = new GrafikaApp.Player('#player-canvas');
         window.player = player;
-
-        player.togglePlayCallback = function (res) {
-            if (res.isPlaying) {
-                $('i.fa-play').hide();
-                $('i.fa-pause').show();
-            }
-            else {
-                $('i.fa-play').show();
-                $('i.fa-pause').hide();
-            }
-        }
+        
         player.loadAnimation('@Model.Animation.Id').then(function () {
             $('#player-controls').show();
             @if (Model.AutoPlay == true)
             {
-                <text>window.player.togglePlay().then(player.togglePlayCallback)</text>
+                <text>player.togglePlay();</text>
             }
         });
-        player.on = function (eventName, obj) {
-            if (eventName === Grafika.EVT_FRAME_CHANGED) {
-                slider.slider('setValue', obj);
+        player.grafika.setCallback({
+            on: function (eventName, obj) {
+                switch (eventName) {
+                    case Grafika.EVT_FRAME_CHANGED:
+                        slider.slider('setValue', obj);
+                        break;
+                    case Grafika.EVT_PLAYING:
+                        if (obj) {
+                            $('i.fa-play').hide();
+                            $('i.fa-pause').show();
+                        }
+                        else {
+                            $('i.fa-play').show();
+                            $('i.fa-pause').hide();
+                        }
+                        break;
+                }
             }
-        };
+        });
     });
 </script>
 <noscript>Unable to preview</noscript>

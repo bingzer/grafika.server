@@ -13,7 +13,7 @@
       "environmentVariables": {
         "Grafika:Content:Url": "http://localhost:5000",
         "Grafika:Server:Url": "http://localhost:3000",
-        "ASPNETCORE_ENVIRONMENT": "Production",
+        "ASPNETCORE_ENVIRONMENT": "Development",
         "PORT": "3000"
       },
       "applicationUrl": "http://localhost:3000"
