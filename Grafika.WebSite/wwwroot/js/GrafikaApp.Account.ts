@@ -2,7 +2,7 @@
     export class Account {
 
         public static toggleExternalLogin(id: string, name: string) {
-            let url = GrafikaApp.combineUrl(GrafikaApp.Configuration.baseApiUrl, '/api/accounts/', name);
+            let url = GrafikaApp.combineUrl(GrafikaApp.Configuration.baseApiUrl, '/accounts/', name);
             if (id) {
                 let options = {
                     url: url,
@@ -33,7 +33,7 @@
         }
 
         private static uploadResource(imageType: "avatar" | "backdrop", blob: Blob) {
-            let apiUserAvatarUrl = GrafikaApp.combineUrl(GrafikaApp.Configuration.baseApiUrl, '/api/users/', GrafikaApp.User._id, imageType);
+            let apiUserAvatarUrl = GrafikaApp.combineUrl(GrafikaApp.Configuration.baseApiUrl, '/users/', GrafikaApp.User._id, imageType);
             var options = { url: apiUserAvatarUrl, data: { imageType: imageType, mime: blob.type }, method: 'post' };
             GrafikaApp.sendAjax(options, (err, result, elem) => {
                 return GrafikaApp.Account.uploadToAws(result as Grafika.ISignedUrl, blob)

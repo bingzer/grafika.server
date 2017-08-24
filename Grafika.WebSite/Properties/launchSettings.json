@@ -19,7 +19,7 @@
       "commandName": "Project",
       "environmentVariables": {
         "Grafika:Content:Url": "http://localhost:5000",
-        "Grafika:Server:Url": "http://localhost:3000",
+        "Grafika:Server:Url": "http://localhost:5000/api",
         "ASPNETCORE_ENVIRONMENT": "Development",
         "PORT": "5000"
       },

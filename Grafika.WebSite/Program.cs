@@ -12,6 +12,9 @@ namespace Grafika.WebSite
     {
         public static void Main(string[] args)
         {
+            var port = Environment.GetEnvironmentVariable("PORT");
+            Console.WriteLine("Assigned port is " + port);
+
             var host = new WebHostBuilder()
                 .UseKestrel()
                 .UseContentRoot(Directory.GetCurrentDirectory())

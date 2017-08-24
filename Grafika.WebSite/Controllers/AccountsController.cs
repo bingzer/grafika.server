@@ -36,8 +36,8 @@ namespace Grafika.WebSite.Controllers
             var model = new AccountProfileViewModel
             {
                 User = user,
-                ApiSaveProfileUrl = Utility.CombineUrl(AppEnvironment.Default.Server.Url, $"/api/users/{user.Id}"),
-                ApiPasswordUrl = Utility.CombineUrl(AppEnvironment.Default.Server.Url, "/api/accounts/pwd")
+                ApiSaveProfileUrl = Utility.CombineUrl(AppEnvironment.Default.Server.Url, $"/users/{user.Id}"),
+                ApiPasswordUrl = Utility.CombineUrl(AppEnvironment.Default.Server.Url, "/accounts/pwd")
             };
 
             return View("Profile", model);
@@ -121,14 +121,14 @@ namespace Grafika.WebSite.Controllers
         [Route("password"), AllowAnonymous]
         public IActionResult SetPassword(PasswordFormViewModel model)
         {
-            ViewBag.ApiPasswordUrl = Utility.CombineUrl(AppEnvironment.Default.Server.Url, "/api/accounts/pwd");
+            ViewBag.ApiPasswordUrl = Utility.CombineUrl(AppEnvironment.Default.Server.Url, "/accounts/pwd");
             return PartialView("_SetPassword", model);
         }
 
         [Route("recovery"), AllowAnonymous]
         public IActionResult Recovery()
         {
-            ViewBag.ApiRecoveryUrl = Utility.CombineUrl(AppEnvironment.Default.Server.Url, "/api/accounts/pwd/reset");
+            ViewBag.ApiRecoveryUrl = Utility.CombineUrl(AppEnvironment.Default.Server.Url, "/accounts/pwd/reset");
             return PartialView("_Recovery");
         }
 

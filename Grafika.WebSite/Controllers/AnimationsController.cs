@@ -124,7 +124,7 @@ namespace Grafika.WebSite.Controllers
                 }
             };
 
-            ViewBag.ApiCreateAnimationUrl = Utility.CombineUrl(AppEnvironment.Default.Server.Url, "api/animations");
+            ViewBag.ApiCreateAnimationUrl = Utility.CombineUrl(AppEnvironment.Default.Server.Url, "animations");
 
             return PartialView("_Create", model);
         }
