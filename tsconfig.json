@@ -1,0 +1,19 @@
+﻿{
+  "compileOnSave": true,
+  "compilerOptions": {
+    "target": "es5",
+    "sourceMap": true,
+    "allowJs": false
+  },
+  "include": [
+    "Grafika.WebSite/wwwroot/js/**/*.ts",
+    "typings/index.d.ts",
+    "typings/resource.d.ts",
+    "typings/user.d.ts"
+  ],
+  "exclude": [
+    "bower_components",
+    "node_modules",
+    "typings/globals"
+  ]
+}

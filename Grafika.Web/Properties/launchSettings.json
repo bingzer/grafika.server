@@ -8,18 +8,11 @@
     }
   },
   "profiles": {
-    "IIS Express": {
-      "commandName": "IISExpress",
-      "launchUrl": "api/values",
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development",
-        "PORT": "3000"
-      }
-    },
     "Grafika.Web": {
       "commandName": "Project",
-      "launchUrl": "api/values",
       "environmentVariables": {
+        "Grafika:Content:Url": "http://localhost:5000",
+        "Grafika:Server:Url": "http://localhost:3000",
         "ASPNETCORE_ENVIRONMENT": "Development",
         "PORT": "3000"
       },

@@ -1,0 +1,29 @@
+<div class="server-status" layout="column" flex>
+    <section>
+        <h3><i class="material-icons">computer</i> Versions</h3>
+        <section layout="row" layout-wrap>
+            <div flex="45">
+                <table class="table table-bordered">
+                    <tr ng-repeat="version in app.versionInfos">
+                        <td width="70%">
+                            <h4>{{ version.name }}</h4>
+                            <div>
+                                <span class="version-description" class="font-smaller text-muted">
+                                    {{ version.description }}
+                                </span>
+                            </div>
+                        </td>
+                        <td width="30%">
+                            <span class="version-version">{{ version.version }}</span>
+                            <div>
+                                <span id="version-description" class="font-smaller text-muted">
+                                    <a href="{{ version.url }}">{{ version.url }}</a>
+                                </span>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </section>
+    </section>
+</div>

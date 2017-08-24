@@ -30,28 +30,17 @@ namespace Grafika.Test.Services
         }
 
         [Fact]
-        public async void TestGet_IdNotWellFormed()
-        {
-            var mockRepo = new Mock<IRepository<BaseEntity, QueryOptions>>();
-            mockRepo.Setup(c => c.ValidateId(It.IsAny<string>()))
-                .Returns(false)
-                .Verifiable();
-
-            var entityService = new SimpleEntityService(MockHelpers.ServiceContext.Object, mockRepo.Object, null);
-            await Assert.ThrowsAsync<NotFoundExeption>(() => entityService.Get("not-well-formed-id"));
-
-            mockRepo.VerifyAll();
-        }
-
-        [Fact]
         public async void TestGet_NotFound()
         {
             var mockRepo = new Mock<IRepository<BaseEntity, QueryOptions>>();
-            mockRepo.Setup(c => c.ValidateId(It.IsAny<string>()))
-                .Returns(false)
+            mockRepo.Setup(c => c.First(It.IsAny<QueryOptions>()))
+                .ReturnsAsync((BaseEntity) null)
                 .Verifiable();
 
             var mockValidator = new Mock<IEntityValidator<BaseEntity>>();
+            mockValidator.Setup(c => c.ValidateId(It.IsAny<string>()))
+                .Returns(true)
+                .Verifiable();
 
             var entityService = new SimpleEntityService(MockHelpers.ServiceContext.Object, mockRepo.Object, mockValidator.Object);
 
@@ -66,15 +55,15 @@ namespace Grafika.Test.Services
         public async void TestGet_Found()
         {
             var mockRepo = new Mock<IRepository<BaseEntity, QueryOptions>>();
-            mockRepo.Setup(c => c.ValidateId(It.IsAny<string>()))
-                .Returns(true)
-                .Verifiable();
             mockRepo.Setup(c => c.First(It.IsAny<QueryOptions>()))
                 .ReturnsAsync(new BaseEntity { Id = "id" })
                 .Verifiable();
 
             var mockValidator = new Mock<IEntityValidator<BaseEntity>>();
             mockValidator.Setup(c => c.Sanitize(It.Is<BaseEntity>(entity => entity.Id == "id"), It.IsAny<IUser>()))
+                .Verifiable();
+            mockValidator.Setup(c => c.ValidateId(It.IsAny<string>()))
+                .Returns(true)
                 .Verifiable();
 
             var entityService = new SimpleEntityService(MockHelpers.ServiceContext.Object, mockRepo.Object, mockValidator.Object);
@@ -133,9 +122,6 @@ namespace Grafika.Test.Services
             var deleteEntity = new BaseEntity { Id = "id" };
 
             var mockRepo = new Mock<IRepository<BaseEntity, QueryOptions>>();
-            mockRepo.Setup(c => c.ValidateId(It.IsAny<string>()))
-                .Returns(true)
-                .Verifiable();
             mockRepo.Setup(c => c.First(It.IsAny<QueryOptions>()))
                 .ReturnsAsync(deleteEntity)
                 .Verifiable();
@@ -144,11 +130,15 @@ namespace Grafika.Test.Services
                 .Verifiable();
 
             var mockValidator = new Mock<IEntityValidator<BaseEntity>>();
+            mockValidator.Setup(c => c.ValidateId(It.IsAny<string>()))
+                .Returns(true)
+                .Verifiable();
 
             var entityService = new SimpleEntityService(MockHelpers.ServiceContext.Object, mockRepo.Object, mockValidator.Object);
             await entityService.Delete("id");
 
             mockRepo.VerifyAll();
+            mockValidator.VerifyAll();
         }
     }
 
@@ -160,6 +150,11 @@ namespace Grafika.Test.Services
         }
 
         protected internal override Task<BaseEntity> CreateEntityForUpdate(BaseEntity source)
+        {
+            return Task.FromResult(source);
+        }
+
+        protected internal override Task<BaseEntity> PrepareEntityForCreate(BaseEntity source)
         {
             return Task.FromResult(source);
         }

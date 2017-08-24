@@ -1,0 +1,153 @@
+﻿@import "variables.less";
+
+html, body {
+    background: unset !important;
+}
+
+md-card {
+    background: unset !important;
+}
+
+md-menu-bar.md-default-theme md-menu.md-open > button, 
+md-menu-bar md-menu.md-open > button, 
+md-menu-bar.md-default-theme md-menu > button:focus,
+md-menu-bar md-menu > button:focus {
+    background-color: @theme-primary !important;
+}
+
+.md-button.md-default-theme:not([disabled]).md-focused,
+.md-button:not([disabled]).md-focused,
+.md-button.md-default-theme:not([disabled]):hover,
+.md-button:not([disabled]):hover {
+    background-color: @theme-primary-alpha !important;
+}
+
+.form-control {
+    border: @border;
+    border-radius: 2px !important;
+}
+
+.sp-container {
+    border: @border;
+    border-radius: 2px !important;
+    background: none;
+}
+
+.menu-item-header {
+    padding: 0px 16px;
+}
+
+#mainNav {
+    .navbar-brand {
+        padding-left: 16px;
+        font-weight: 800;
+        padding-top: 8px;
+    }
+
+    #animation-title {
+        margin: 0;
+        padding: 0;
+    }
+}
+
+#drawing-section {
+    min-height: 100%;
+    position: absolute;
+}
+
+/*-- Progress Modal --*/
+.progress-modal {
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    z-index: 1000;
+    background-color: black;
+    opacity: 0.5;
+
+    > md-progress-circular {
+        position: absolute;
+        margin-right: auto;
+        margin-left: auto;
+        margin-top: auto;
+        top: 50%;
+        left: 0;
+        right: 0;
+    }
+}
+
+#nav-menu {
+    height: 40px;
+    min-height: 40px;
+    max-height: 40px;
+
+    #currentFrame {
+        height: 40px;
+        min-height: 40px;
+        max-height: 40px;
+        max-width: 150px;
+        padding-left: 8px;
+    }
+
+    #totalFrame {
+        height: 40px;
+        margin-top: 6px;
+        margin-left: 8px;
+    }
+}
+
+/*-- drawing context menu --*/
+.drawing-context-menu {
+    md-list {
+        margin: 0 !important;
+        padding: 0 !important;
+        min-width: 160px;
+
+        button {
+            padding-top: 2px !important;
+            padding-bottom: 2px !important;
+        }
+    }
+
+    md-icon {
+        margin-top: 2px !important;
+        margin-bottom: 2px !important;
+        margin-right: 16px !important;
+    }
+
+    p {
+        font-size: small !important;
+    }
+
+    md-list-item,
+    md-list-item:before {
+        min-height: inherit !important;
+    }
+
+    .md-list-item-inner,
+    ._md-list-item-inner {
+        height: 24px !important;
+        min-height: 24px !important;
+    }
+}
+
+.drawing {
+    #canvas-wrapper,
+    #canvas-wrapper.paint {
+        cursor: default;
+    }
+
+    #canvas-wrapper.none {
+        cursor: not-allowed;
+    }
+
+    #canvas-wrapper.select {
+        cursor: pointer;
+    }
+
+    #canvas-wrapper.move {
+        cursor: move;
+    }
+}

@@ -21,6 +21,14 @@ namespace Grafika.Services.Accounts
 
         public SecurityKey SecurityKey { get; private set; }
         public JwtSecurityTokenHandler TokenHandler { get; private set; }
+        public TokenValidationParameters ValidationParameters => new TokenValidationParameters
+        {
+            IssuerSigningKey = SecurityKey,
+            ValidateAudience = false,
+            ValidateIssuer = false,
+            ValidateLifetime = false,
+            AuthenticationType = "Bearer"
+        };
 
         private readonly IUserValidator _userValidator;
         private readonly JwtConfiguration _jwtConfigs;

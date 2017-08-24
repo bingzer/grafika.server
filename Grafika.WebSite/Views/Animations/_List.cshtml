@@ -1,0 +1,9 @@
+@model AnimationsViewModel
+@{
+    Layout = null;
+}
+
+@foreach (var anim in Model.Animations)
+{
+    @await Html.PartialAsync("~/Views/Animations/_Thumbnail.cshtml", anim)
+}

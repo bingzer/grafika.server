@@ -26,7 +26,7 @@ namespace Grafika.Utilities
             url = url.TrimEnd('/');
             other = other.TrimStart('/');
 
-            return $"{url}/{other}".TrimStart('/').TrimEnd('/');
+            return $"{url}/{other}".TrimEnd('/');
         }
 
         public static string CombineUrl(Uri uri, string other)
@@ -47,6 +47,11 @@ namespace Grafika.Utilities
         public static int RandomlyPickFrom(int min, int max)
         {
             return rand.Next(min, max);
+        }
+
+        public static string Guid()
+        {
+            return System.Guid.NewGuid().ToString();
         }
     }
 }

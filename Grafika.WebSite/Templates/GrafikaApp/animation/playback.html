@@ -1,0 +1,42 @@
+<!-------------------------- Start playback -------------------------->
+<div id="playback" class="playback" ng-controller="AnimationPlaybackController as vm" layout="column">
+    <!-- Canvas -->
+    <div id="canvas-container" ng-class="vm.animation.width > vm.animation.height ? 'landscape' : 'portrait'">
+        <canvas id="canvas" ></canvas>
+    </div>
+    <!-- Header -->
+    <div class="playback-header hidden" layout="row">
+        <div layout-margin></div>
+        <div layout="row" layout="center center">
+            <span class="md-subtitle text-center-vertical" ng-bind="vm.animationName"></span>
+        </div>
+    </div>
+    <!-- Footer -->
+    <div class="playback-footer" layout="row">
+        <div layout-margin></div>
+        <gf-spinner flex layout-align="center center" ng-show="vm.busy"></gf-spinner>
+        <div flex layout="row" layout="center center" ng-show="!vm.busy">
+            <md-button style="margin-top: 4px" class="md-mini md-icon-button" ng-click="vm.previousFrame()" ng-disabled="vm.currentFrame <= 0">
+                <md-icon md-font-library="material-icons">skip_previous</md-icon>
+            </md-button>
+            <md-button style="margin-top: 4px" class="md-mini md-icon-button" ng-click="vm.toggle()">
+                <md-icon md-font-library="material-icons" aria-label="{{vm.isPlaying ? 'Stop' : 'Play'}}" ng-bind="vm.isPlaying ? 'pause' : 'play_arrow'"></md-icon>
+            </md-button>
+            <md-button style="margin-top: 4px" class="md-mini md-icon-button" ng-click="vm.nextFrame()" ng-disabled="vm.currentFrame >= vm.totalFrame -1">
+                <md-icon md-font-library="material-icons">skip_next</md-icon>
+            </md-button>
+            <div layout-margin></div>
+            <md-slider style="margin: auto 16px" flex min="0" max="{{vm.totalFrame - 1}}" ng-model="vm.currentFrame" ng-change="vm.navigateToFrame()" 
+                title="Frame {{ vm.currentFrame + 1 }}"
+                aria-label="Animation tracker"></md-slider>
+            <md-button style="margin-top: 4px" class="md-mini md-icon-button" ng-click="vm.togglePlaybackLoop()">
+                <md-icon md-font-library="material-icons" ng-bind="vm.grafika.getOptions().loop ? 'loop' : 'not_interested'" 
+                    title="{{vm.grafika.getOptions().loop ? 'Loop playback' : 'Not looping'}}">loop</md-icon>
+            </md-button>
+        </div>
+        <div layout-margin></div>
+        <span class="md-subtitle text-muted text-center-vertical" style="margin-top: 14px;" ng-bind="vm.totalFrame + ' frames'" ng-show="!vm.busy"></span>
+        <div layout-margin></div>
+    </div>
+</div>
+<!-------------------------- End playback -------------------------->

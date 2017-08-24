@@ -1,0 +1,63 @@
+@model AnimationsViewModel
+
+<div class="bg-transparent page-heading"></div>
+<header id="header" class="page-content page-content-article text-center">
+    <h1>Available Platforms</h1>
+    <p class="font-larger">
+        Grafika is available in different platforms/environments <br />
+        Click on each different platform to find out more!
+    </p>
+    <hr class="light" />
+</header>
+<section class="page-section text-center container-fluid">
+    <article class="col-sm-6 col-lg-4">
+        <header class="padding-xl">
+            <i class="fa fa-5x fa-cloud text-default"></i>
+            <h2>
+                <a class="btn btn-xl btn-danger" href="/online">
+                    Online
+                </a>
+            </h2>
+        </header>
+    </article>
+    <article class="col-sm-6 col-lg-4">
+        <header class="padding-xl">
+            <i class="fa fa-5x fa-android" style="color:#7cfc00"></i>
+            <h2>
+                <a class="btn btn-xl btn-success" href="/android">
+                    Android
+                </a>
+            </h2>
+        </header>
+    </article>
+    <article class="col-sm-6 col-lg-4">
+        <header class="padding-xl">
+            <i class="fa fa-5x fa-apple" style="color: #dcdcdc"></i>
+            <h2>
+                <a class="btn btn-xl btn-default" href="/ios">
+                    iOS
+                </a>
+            </h2>
+        </header>
+    </article>
+</section>
+
+@section styles {
+    <environment names="Development">
+        <link href="~/css/GrafikaApp.Platforms.css" rel="stylesheet" type="text/css">
+    </environment>
+    <environment names="Production">
+        <link href="~/css/GrafikaApp.Bundle.Platforms.min.css" rel="stylesheet" type="text/css">
+    </environment>
+}
+
+
+@section scripts {
+    <environment names="Development">
+        <script type="text/javascript" src="~/js/jquery.easing.js"></script>
+        <script type="text/javascript" src="~/js/GrafikaApp.Platforms.js"></script>
+    </environment>
+    <environment names="Production">
+        <script type="text/javascript" src="~/js/GrafikaApp.Bundle.Platforms.min.js"></script>
+    </environment>
+}

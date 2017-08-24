@@ -35,12 +35,12 @@ namespace Grafika.Services.Comments
                 username = user.Username,
                 email = user.Email,
                 avatar = await _userService.GetAvatarOrBackdropUrl(user.Id, "avatar"),
-                url = Utility.CombineUrl(_serverConfig.Url, "users", user.Id)
+                url = Utility.CombineUrl(_serverConfig.Url, "users", user.Id, "seo")
             };
 
             return new AuthenticationToken
             {
-                Id = _disqusConfig.Id,
+                Id = _disqusConfig?.Id,
                 Token = GenerateSsoPayload(userdata.ToJson())
             };
         }
@@ -55,12 +55,18 @@ namespace Grafika.Services.Comments
             var seoUrl = Utility.CombineUrl(serverUrl, "animations", animation.Id, "seo");
             var animUrl = Utility.CombineUrl(serverUrl, "animations", animation.Id);
             var postUrl = Utility.CombineUrl(animUrl, "comments");
-            var queryString = $"url={seoUrl}&title={animation.Name}&shortname=grafika-app&identifier={animation.Id}&pub={disqusToken.Id}&disqusToken={disqusToken.Token}&postUrl={postUrl}&jwtToken={userToken.Token}";
+            var queryString = $"url={seoUrl}&title={EncodeAscii(animation.Name)}&shortname=grafika-app&identifier={animation.Id}&pub={disqusToken.Id}&disqusToken={disqusToken.Token}&postUrl={postUrl}&jwtToken={userToken.Token}";
 
             var urlBuilder = new UriBuilder(Utility.CombineUrl(_contentConfig.Url, "app", "content", "comment.html"));
             urlBuilder.Query = queryString;
 
             return urlBuilder.Uri;
+        }
+
+        private static string EncodeAscii(string any)
+        {
+            var utf8Bytes = Encoding.UTF8.GetBytes(any.Replace("\n", ""));
+            return Encoding.ASCII.GetString(utf8Bytes);
         }
 
         #region https://github.com/disqus/DISQUS-API-Recipes/blob/master/sso/cs/DisqusSSO.cs

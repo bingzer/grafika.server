@@ -24,15 +24,15 @@ namespace Grafika.Test.Services.Animations
             mockRepo.Setup(c => c.Update(It.Is<Animation>(anim => anim.Id == "toDelete")))
                 .ReturnsAsync(new Animation { Id = "wasDeleted " })
                 .Verifiable();
-            mockRepo.Setup(c => c.ValidateId(It.IsAny<string>()))
-                .Returns(true)
-                .Verifiable();
 
             var mockValidator = new Mock<IAnimationValidator>();
             mockValidator.Setup(c => c.Validate(It.IsAny<Animation>()))
                 .Verifiable();
+            mockValidator.Setup(c => c.ValidateId(It.IsAny<string>()))
+                .Returns(true)
+                .Verifiable();
 
-            var service = new AnimationService(MockHelpers.ServiceContext.Object, mockRepo.Object, mockValidator.Object, null, null);
+            var service = new AnimationService(MockHelpers.ServiceContext.Object, mockRepo.Object, mockValidator.Object);
             var animation = await service.Delete("toDelete");
 
             Assert.Equal(true, target.IsRemoved);
@@ -50,8 +50,8 @@ namespace Grafika.Test.Services.Animations
                 .Returns(Task.FromResult(0))
                 .Verifiable();
 
-            var service = new AnimationService(MockHelpers.ServiceContext.Object, mockRepo.Object, null, null, null);
-            await service.BulkDeleteAnimations(new string[] { "1", "2" });
+            var service = new AnimationService(MockHelpers.ServiceContext.Object, mockRepo.Object, null);
+            await service.Delete(new string[] { "1", "2" });
 
             mockRepo.VerifyAll();
         }

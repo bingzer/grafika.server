@@ -1,0 +1,181 @@
+@model AccountProfileViewModel
+@{ 
+    var userIdentity = (User.Identity as IUserIdentity);
+    var passwordTitle = Model.HasLocalAccount ? "Change Password" : "Set Password";
+    var checkUsernameUrl = Utility.CombineUrl(AppEnvironment.Default.Server.Url, "/api/accounts/username-check");
+    var userUrl = Utility.CombineUrl(AppEnvironment.Default.Content.Url, "u", Model.Username);
+    var apiUserBackdropUrl = Utility.CombineUrl(AppEnvironment.Default.Server.Url, "/api/users", Model.User.Id, "backdrop");
+}
+
+<header class="bg-transparent page-heading page-heading-lg text-center text-white"
+        style="background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.0)), url(@Model.User.GetUserBackdropUrl()) no-repeat; -webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover; background-size: cover; ">
+    <h1>
+        <a href="javascript: void(0)" data-dialog
+           data-title="Avatar"
+           data-url="/uploads/image"
+           data-eval-data="false"
+           data-method="get"
+           data-data='{"uploadFunction" : "GrafikaApp.Account.uploadAvatar"}'>
+            <img class="user-avatar user-avatar-xl" src="@userIdentity.GetUserAvatarUrl()" />
+        </a>
+        @userIdentity.Username
+    </h1>
+    <p>
+        <a href="javascript: void(0)" 
+           class="text-white font-smaller"
+           data-dialog
+           data-data='{"width": 450, "height": 150, "previewWidth": 450, "previewHeight": 150, "uploadFunction": "GrafikaApp.Account.uploadBackdrop"}'
+           data-title="Backdrop"
+           data-url="/uploads/image"
+           data-eval-data="false"
+           data-method="get">
+            Change Backdrop
+        </a>
+    </p>
+    <p class="page-toolbar">
+        <button class="btn btn-sm btn-success" onclick="$('#profile-form').submit()">
+            <i class="fa fa-cloud"></i>
+            Save Changes
+        </button>
+    </p>
+</header>
+<form class="page-content page-content-article" 
+        id="profile-form" action="@Model.ApiSaveProfileUrl" method="put"
+        data-callback="GrafikaApp.toast('Succesfully saved')"
+        onsubmit="return GrafikaApp.Form.onSubmit(this)">
+    <article class="row">
+        <header>
+            <h2>Profile</h2>
+        </header>
+        <div class="form-horizontal">
+            <div class="form-group">
+                <label class="control-label col-sm-2">Email</label>
+                <div class="col-sm-6">
+                    @Html.EditorFor(m => m.Email, new { htmlAttributes = new { @class = "form-control", disabled = "disabled" } })
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2">Password</label>
+                <div class="col-sm-8">
+                    <button type="button" class="btn btn-danger"
+                        data-dialog
+                        data-title="@passwordTitle"
+                        data-url="/accounts/password?RequiresCurrentPassword=@Model.HasLocalAccount"
+                        data-size="medium">@passwordTitle</button>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2">Name</label>
+                <div class="col-sm-6">
+                    <span class="col-sm-4 no-padding">
+                        @Html.EditorFor(m => m.FirstName, new { htmlAttributes = new { @class = "form-control" } })
+                    </span>
+                    <span class="col-sm-8 no-padding" style="padding-left: 8px">
+                        @Html.EditorFor(m => m.LastName, new { htmlAttributes = new { @class = "form-control" } })
+                    </span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2">Username</label>
+                <div class="col-sm-6">
+                    <div class="input-group">
+                        @Html.EditorFor(m => m.Username, new { htmlAttributes = new { @class = "form-control" } })
+                        <span class="input-group-btn">
+                            <button type="button" class="btn btn-default"
+                                    data-callback="GrafikaApp.toast('Username is available')"
+                                    data-data="(function() { return {email: '@Model.Email', username: $('#Username').val() } })"
+                                    data-url="@checkUsernameUrl"
+                                    data-method="post"
+                                    onclick="GrafikaApp.sendAjax(this)">
+                                Check
+                            </button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2">Accounts</label>
+                @{
+                    var hasGoogleAccount = Model?.Google?.Id != null;
+                    var hasFacebookAccount = Model?.Facebook?.Id != null;
+                }
+                <div class="col-sm-6">
+                    <button type="button" class="btn btn-danger @(hasGoogleAccount ? "active" : "")" 
+                            data-toggle="button" aria-pressed="false" autocomplete="off"
+                            onclick="GrafikaApp.Account.toggleExternalLogin('@Model?.Google?.Id', 'google')">
+                        <img src="~/img/google_white.png" height="16" />
+                        @(hasGoogleAccount ? "Google" : "Connect to Google")
+                    </button>
+                    <button type="button" class="btn btn-primary @(hasFacebookAccount ? "active" : "")"
+                            data-toggle="button" aria-pressed="false" autocomplete="off"
+                            onclick="GrafikaApp.Account.toggleExternalLogin('@Model?.Facebook?.Id', 'facebook')">
+                        <img src="~/img/facebook_white.png" height="16" />
+                        @(hasFacebookAccount ? "Facebook" : "Connect to Facebook")
+                    </button>
+                </div>
+            </div>
+        </div>
+    </article>
+
+    <article class="row">
+        <header>
+            <h2>Settings</h2>
+        </header>
+        <div class="form-horizontal">
+            <div class="form-group">
+                <label class="control-label col-sm-2">Default Animation</label>
+                <div class="col-sm-6">
+                    <select id="@Html.IdFor(m => m.Prefs.DrawingIsPublic)" name="@Html.NameFor(m => m.Prefs.DrawingIsPublic)" class="form-control">
+                        <option value="true" @(Model.Prefs.DrawingIsPublic == true ? "selected" : "")>Public</option>
+                        <option value="false" @(Model.Prefs.DrawingIsPublic != true ? "selected" : "")>Private</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2">Default Author</label>
+                <div class="col-sm-6">
+                    @Html.EditorFor(m => m.Prefs.DrawingAuthor, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2">Default Timer</label>
+                <div class="col-sm-6">
+                    @Html.EditorFor(m => m.Prefs.DrawingTimer, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2">Playback</label>
+                <div class="col-sm-6">
+                    <select id="@Html.IdFor(m => m.Prefs.PlaybackLoop)" name="@Html.NameFor(m => m.Prefs.PlaybackLoop)" class="form-control">
+                        <option value="true" @(Model.Prefs.PlaybackLoop == true ? "selected" : "")>Always loop</option>
+                        <option value="false" @(Model.Prefs.PlaybackLoop != true ? "selected" : "")>Don't loop</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-sm-2">&nbsp;</label>
+                <div class="col-sm-6">
+                    <label>
+                        <input name="Subscriptions.emailAnimationComment" type="checkbox" autocomplete="off" @(Model.Subscriptions?.EmailOnComments == true ? "checked" : "")>
+                        Notify me on new comments
+                    </label>
+                </div>
+            </div>
+        </div>
+    </article>
+</form>
+
+@section scripts {
+<environment names="Development">
+    <script type="text/javascript" src="~/js/GrafikaApp.Account.js"></script>
+</environment>
+<environment names="Production">
+    <script type="text/javascript" src="~/js/GrafikaApp.Bundle.Account.min.js"></script>
+</environment>
+}
+@section styles {
+<environment names="Development">
+</environment>
+<environment names="Production">
+</environment>
+}

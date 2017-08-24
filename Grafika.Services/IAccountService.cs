@@ -9,6 +9,7 @@ namespace Grafika.Services
         Task<AuthenticationToken> GenerateUserToken(User user);
 
         Task<IUserIdentity> Exchange(OAuthProvider authProvider, AuthenticationToken token);
+        Task Detach(IUser user, OAuthProvider authProvider);
 
         Task<User> Register(string email, string firstName, string lastName);
         Task<User> Register(IUserIdentity providerIdentity);

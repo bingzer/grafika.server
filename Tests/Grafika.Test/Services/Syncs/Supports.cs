@@ -12,6 +12,8 @@ namespace Grafika.Test.Services.Syncs
         public string UserId { get; set; }
         public IEnumerable<Animation> Animations { get; set; }
         public IEnumerable<Animation> Tombstones { get; set; }
+        public IEnumerable<Background> Backgrounds { get; set; }
+        public IEnumerable<Background> BackgroundTombstones { get; set; }
     }
 
     class ServerChanges : IServerChanges
@@ -19,5 +21,7 @@ namespace Grafika.Test.Services.Syncs
         public string UserId { get; set; }
         public IEnumerable<Animation> Animations { get; set; }
         public IEnumerable<Animation> Tombstones { get; set; }
+        public IEnumerable<Background> Backgrounds { get; set; }
+        public IEnumerable<Background> BackgroundTombstones { get; set; }
     }
 }

@@ -11,16 +11,16 @@ namespace Grafika.Services
 
     public interface IAwsFrameRepository : IAwsRepository
     {
-        Task PostFrameData(Animation animation, FrameData frameData);
-        //Task<FrameData> CreateFirstFrameData(Animation animation);
-        Task<FrameData> GetFrameData(Animation animation, FrameData frameData);
+        Task PostFrameData(IDrawableEntity entity, FrameData frameData);
+        Task<FrameData> GetFrameData(IDrawableEntity entity, FrameData frameData);
     }
 
     public interface IAwsResourceRepository : IAwsRepository
     {
-        Task<ISignedUrl> CreateSignedUrl(Animation animation, string resourceId, string contentType);
-        Task<string> GetResourceUrl(string animationId, string resourceId);
-        Task<bool> HasResource(string animationId, string resourceId);
+        Task<ISignedUrl> CreateSignedUrl(IDrawableEntity entity, string resourceId, string contentType);
+        Task<string> GetResourceUrl(EntityType entityType, string entityId, string resourceId);
+        Task<bool> HasResource(EntityType entityType, string entityId, string resourceId);
+        Task<bool> DeleteResource(EntityType entityType, string entityId, string resourceId);
     }
 
     public interface IAwsUsersRepository : IAwsRepository

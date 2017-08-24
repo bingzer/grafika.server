@@ -1,0 +1,125 @@
+@model AnimationDrawingViewModel
+
+<div ng-app="app" ng-controller="@(Model.DrawingControllerName) as vm">
+    <header id="mainNav" class="navbar navbar-default navbar-fixed-top">
+        <div class="container-fluid bg-dark">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header no-padding">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span> Menu <i class="fa fa-bars"></i>
+                </button>
+                <a class="navbar-brand">
+                    <h1 id="animation-title">
+                        <span ng-if="vm.grafikaReady" ng-bind="vm.animation.name">
+                        </span>
+                        <span ng-if="!vm.grafikaReady">
+                            <i class="fa fa-spinner fa-spin fa-fw"></i>
+                            Loading...
+                        </span>
+                    </h1>
+                </a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <nav class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <h2 style="display: none">Navigation</h2>
+                <ul class="nav navbar-nav navbar-right">
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        var userIdentity = User.Identity as IUserIdentity;
+                        <li>
+                            <a href="#" role="button" class="no-link">
+                                <img class="user-avatar user-avatar-md" src="@userIdentity.GetUserAvatarUrl()" alt="Avatar for @userIdentity.Email" />
+                                @User.Identity.Name
+                            </a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li>
+                            <a href="#" title="Login or register to publish your animation"
+                               ng-click="vm.save()"
+                               data-dialog
+                               data-url="/accounts/forms/signin">
+                                Login | Register
+                            </a>
+                        </li>
+                    }
+                </ul>
+            </nav>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container-fluid -->
+    </header>
+
+    <section id="drawing-section" layout="row" role="application" layout-fill>
+        <div id="progress-modal" layout-fill class="progress-modal" layout-align="center center">
+            <md-progress-circular md-mode="indeterminate" class="md-primary"></md-progress-circular>
+        </div>
+        <div id="content" ui-view flex></div>
+    </section>
+</div>
+
+
+@section scripts {
+@if (Model.Animation != null)
+{
+    <script type="text/javascript">
+        GrafikaApp.Drawing = {
+            animationId: '@Model.Animation.Id'
+        };
+    </script>
+}
+<environment names="Development">
+    <!-- Angular+ -->
+    <script type="text/javascript" src="~/js/jquery.minicolors.js"></script>
+    <script type="text/javascript" src="~/js/angular.js"></script>
+    <script type="text/javascript" src="~/js/angular-animate.js"></script>
+    <script type="text/javascript" src="~/js/angular-aria.js"></script>
+    <script type="text/javascript" src="~/js/angular-messages.js"></script>
+    <script type="text/javascript" src="~/js/angular-touch.js"></script>
+    <script type="text/javascript" src="~/js/angular-cookies.js"></script>
+    <script type="text/javascript" src="~/js/angular-sanitize.js"></script>
+    <script type="text/javascript" src="~/js/angular-material.js"></script>
+    <script type="text/javascript" src="~/js/angular-ui-router.js"></script>
+    <script type="text/javascript" src="~/js/angular-jwt.js"></script>
+    <script type="text/javascript" src="~/js/angular-minicolors.js"></script>
+    <script type="text/javascript" src="~/js/drawing/GrafikaApp.Drawing.Theme.js"></script>
+    <script type="text/javascript" src="~/js/drawing/GrafikaApp.Drawing.Base.js"></script>
+    <script type="text/javascript" src="~/js/drawing/GrafikaApp.Drawing.AppCommon.js"></script>
+    <script type="text/javascript" src="~/js/drawing/GrafikaApp.Drawing.AppAuthInterceptor.js"></script>
+    <script type="text/javascript" src="~/js/drawing/GrafikaApp.Drawing.AppHttpInterceptor.js"></script>
+    <script type="text/javascript" src="~/js/drawing/GrafikaApp.Drawing.AppRoutes.js"></script>
+    <script type="text/javascript" src="~/js/drawing/GrafikaApp.Drawing.Models.ImageData.js"></script>
+    <script type="text/javascript" src="~/js/drawing/GrafikaApp.Drawing.Models.User.js"></script>
+    <script type="text/javascript" src="~/js/drawing/GrafikaApp.Drawing.Filters.CapitalizeFirstLetter.js"></script>
+    <script type="text/javascript" src="~/js/drawing/GrafikaApp.Drawing.Directives.ContextMenuDirective.js"></script>
+    <script type="text/javascript" src="~/js/drawing/GrafikaApp.Drawing.Directives.ImageUploaderDirective.js"></script>
+    <script type="text/javascript" src="~/js/drawing/GrafikaApp.Drawing.Services.BaseService.js"></script>
+    <script type="text/javascript" src="~/js/drawing/GrafikaApp.Drawing.Services.AnimationService.js"></script>
+    <script type="text/javascript" src="~/js/drawing/GrafikaApp.Drawing.Services.ApiService.js"></script>
+    <script type="text/javascript" src="~/js/drawing/GrafikaApp.Drawing.Services.AuthService.js"></script>
+    <script type="text/javascript" src="~/js/drawing/GrafikaApp.Drawing.Services.FrameService.js"></script>
+    <script type="text/javascript" src="~/js/drawing/GrafikaApp.Drawing.Services.ResourceService.js"></script>
+    <script type="text/javascript" src="~/js/drawing/GrafikaApp.Drawing.Controllers.BaseController.js"></script>
+    <script type="text/javascript" src="~/js/drawing/GrafikaApp.Drawing.Controllers.AuthController.js"></script>
+    <script type="text/javascript" src="~/js/drawing/GrafikaApp.Drawing.Controllers.BaseAnimationController.js"></script>
+    <script type="text/javascript" src="~/js/drawing/GrafikaApp.Drawing.Controllers.DialogController.js"></script>
+    <script type="text/javascript" src="~/js/drawing/GrafikaApp.Drawing.Controllers.DrawingController.js"></script>
+    <script type="text/javascript" src="~/js/drawing/GrafikaApp.Drawing.Controllers.LocalDrawingController.js"></script>
+    <script type="text/javascript" src="~/js/GrafikaApp.Drawing.js"></script>
+</environment>
+<environment names="Production">
+    <script type="text/javascript" src="~/js/GrafikaApp.Bundle.Drawing.min.js"></script>
+</environment>
+}
+@section styles {
+<environment names="Development">
+    <link rel="stylesheet" type="text/css" href="~/css/jquery.minicolors.css"/>
+    <link rel="stylesheet" type="text/css" href="~/css/angular-material.css" />
+    <link rel="stylesheet" type="text/css" href="~/css/GrafikaApp.Drawing.css" />
+    <link rel="stylesheet" type="text/css" href="~/css/GrafikaApp.Login.css" />
+</environment>
+<environment names="Production">
+    <link rel="stylesheet" type="text/css" href="~/css/GrafikaApp.Bundle.Drawing.min.css" />
+</environment>
+}

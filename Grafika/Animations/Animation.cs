@@ -1,5 +1,7 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -8,9 +10,8 @@ using System.ComponentModel.DataAnnotations;
 namespace Grafika.Animations
 {
     [BsonIgnoreExtraElements]
-    public class Animation : BaseEntity, IDrawable, IEntity, IEquatable<Animation>
+    public class Animation : BaseEntity, IDrawableEntity, IEquatable<Animation>
     {
-        public const string DefaultType = "Animation";
         public const int DefaultTimer = 500;
         
         [BsonElement("localId")]
@@ -20,9 +21,10 @@ namespace Grafika.Animations
         [BsonElement("name")]
         public string Name { get; set; }
 
-        [Required, DefaultValue(DefaultType)]
-        [BsonElement("type")]
-        public string Type { get; set; }
+        [Required, DefaultValue(EntityType.Animation)]
+        [JsonConverter(typeof(StringEnumConverter))]
+        [BsonElement("type"), BsonSerializer(typeof(EntityTypeBsonSerializer))]
+        public EntityType Type { get; set; } = EntityType.Animation;
         [BsonElement("description")]
         public string Description { get; set; }
 
@@ -57,7 +59,7 @@ namespace Grafika.Animations
         public int? TotalFrame { get; set; }
 
         [BsonElement("resources")]
-        public IEnumerable<IResource> Resources { get; set; }
+        public IEnumerable<Resource> Resources { get; set; }
         [BsonElement("client")]
         public Client Client { get; set; }
 

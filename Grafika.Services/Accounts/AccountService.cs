@@ -55,6 +55,12 @@ namespace Grafika.Services.Accounts
                 user = await Register(userIdentity);
             }
 
+            // update third-party id if any
+            if (userIdentity.AuthenticationType == OAuthProvider.Google.GetName())
+                await _userRepository.Update(new User(user.Id) { Google = new UserOAuth { DisplayName = userIdentity.Name, Id = userIdentity.Id } });
+            else if (userIdentity.AuthenticationType == OAuthProvider.Facebook.GetName())
+                await  _userRepository.Update(new User(user.Id) { Facebook = new UserOAuth { DisplayName = userIdentity.Name, Id = userIdentity.Id } });
+
             var token = await GenerateUserToken(user);
             await UpdateLastSeen(user);
 
@@ -204,6 +210,21 @@ namespace Grafika.Services.Accounts
             return strategy.ExchangeToken(token.Token);
         }
 
+        public async Task Detach(IUser user, OAuthProvider authProvider)
+        {
+            var update = new User(user.Id);
+            switch (authProvider)
+            {
+                case OAuthProvider.Google:
+                    update.Google = new UserOAuth();
+                    await _userRepository.Update(update);
+                    break;
+                case OAuthProvider.Facebook:
+                    update.Facebook = new UserOAuth();
+                    await _userRepository.Update(update);
+                    break;
+            }
+        }
 
         #region Private Supporting Methods
 

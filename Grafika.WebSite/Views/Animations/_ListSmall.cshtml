@@ -1,0 +1,34 @@
+@model AnimationsViewModel
+@{
+    Layout = null;
+}
+
+<ul class="list-group">
+    @foreach (var anim in Model.Animations)
+    {
+        var linkUrl = Html.AnimationUrl(anim);
+        <li class="list-group-item">
+            <div class="media">
+                <div class="media-left">
+                    <a href="@linkUrl">
+                        <img class="animation-thumbnail animation-thumbnail-sm" src="@anim.GetThumbnailUrl()" alt="@anim.Name">
+                    </a>
+                </div>
+                <div class="media-body">
+                    <h4 class="media-heading">
+                        <a href="@linkUrl" class="font-stronger">
+                            @anim.Name
+                        </a>
+                    </h4>
+                    <p style="margin-top: 0">
+                        <img src="@anim.GetAuthorThumbnail()" alt="@anim.Author" class="img-circle user-avatar" />
+                        <a href="@Utility.CombineUrl("/users", anim.UserId, Html.GenerateSlug(anim.Author))">
+                            @anim.Author
+                        </a>
+                    </p>
+                    <p>@anim.Description</p>
+                </div>
+            </div>
+        </li>
+    }
+</ul>

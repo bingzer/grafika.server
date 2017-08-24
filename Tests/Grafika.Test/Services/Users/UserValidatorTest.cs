@@ -1,4 +1,5 @@
 ﻿using Grafika.Services.Users;
+using Moq;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -23,7 +24,9 @@ namespace Grafika.Test.Services.Users
                 Stats = new UserStats { DateLastSeen = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() }
             };
 
-            var validator = new UserValidator();
+            var mockEntityIdValidator = new Mock<IEntityIdValidator>();
+
+            var validator = new UserValidator(mockEntityIdValidator.Object);
             validator.Sanitize(targetUser, user);
 
             Assert.NotNull(targetUser.Email);
@@ -52,7 +55,10 @@ namespace Grafika.Test.Services.Users
                 Stats = new UserStats { DateLastSeen = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() }
             };
 
-            var validator = new UserValidator();
+
+            var mockEntityIdValidator = new Mock<IEntityIdValidator>();
+
+            var validator = new UserValidator(mockEntityIdValidator.Object);
             validator.Sanitize(targetUser, user);
 
             Assert.NotNull(targetUser.Email);
@@ -80,7 +86,9 @@ namespace Grafika.Test.Services.Users
                 Stats = new UserStats { DateLastSeen = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() }
             };
 
-            var validator = new UserValidator();
+            var mockEntityIdValidator = new Mock<IEntityIdValidator>();
+
+            var validator = new UserValidator(mockEntityIdValidator.Object);
             validator.Sanitize(targetUser, user);
 
             Assert.NotNull(targetUser.Email);
@@ -109,7 +117,9 @@ namespace Grafika.Test.Services.Users
                 Subscriptions = new UserSubscriptions()
             };
 
-            var validator = new UserValidator();
+            var mockEntityIdValidator = new Mock<IEntityIdValidator>();
+
+            var validator = new UserValidator(mockEntityIdValidator.Object);
             validator.Sanitize(targetUser, user);
 
             Assert.Null(targetUser.Email);
@@ -138,7 +148,9 @@ namespace Grafika.Test.Services.Users
                 Subscriptions = new UserSubscriptions()
             };
 
-            var validator = new UserValidator();
+            var mockEntityIdValidator = new Mock<IEntityIdValidator>();
+
+            var validator = new UserValidator(mockEntityIdValidator.Object);
             validator.Sanitize(targetUser, null);
 
             Assert.Null(targetUser.Email);

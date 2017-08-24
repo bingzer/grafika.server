@@ -59,11 +59,25 @@ namespace Grafika.Web.Controllers
             return Challenge("Google");
         }
 
+        [HttpDelete("google")]
+        public async Task<IActionResult> GoogleLogout()
+        {
+            await _accountService.Detach((User.Identity as IUserIdentity), OAuthProvider.Google);
+            return Ok();
+        }
+
         [AllowAnonymous]
         [HttpGet("facebook")]
         public IActionResult FacebookLogin()
         {
             return Challenge("Facebook");
+        }
+
+        [HttpDelete("facebook")]
+        public async Task<IActionResult> FacebookLogout()
+        {
+            await _accountService.Detach((User.Identity as IUserIdentity), OAuthProvider.Facebook);
+            return Ok();
         }
 
         [HttpGet("disqus")]
@@ -84,7 +98,7 @@ namespace Grafika.Web.Controllers
 
             var token = await _accountService.Login(userIdentity);
 
-            var url = $"{contentConfig.Value.Url}?action=authenticate&token={Utility.UrlEncode(token.Token)}";
+            var url = $"{Utility.CombineUrl(contentConfig.Value.Url, contentConfig.Value.OAuthCallbackPath)}?action=authenticate&token={Utility.UrlEncode(token.Token)}";
             return Redirect(url);
         }
 
