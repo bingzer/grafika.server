@@ -70,6 +70,7 @@
             }
             GrafikaApp.Configuration = {
                 baseApiUrl: '@AppEnvironment.Default.Server.Url.TrimEnd("/".ToCharArray())',
+                debug: @(AppEnvironment.Default.HostingType == "Production" ? "true" : "false")
             };
         })(GrafikaApp || (GrafikaApp = {}));
     </script>    

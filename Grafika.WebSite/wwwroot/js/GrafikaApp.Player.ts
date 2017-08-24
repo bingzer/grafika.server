@@ -3,7 +3,7 @@
         public grafika: Grafika.IGrafika = new Grafika();
 
         constructor(canvasElementId: string) {
-            this.grafika.initialize(canvasElementId, { debugMode: true, useCarbonCopy: false, useNavigationText: false, loop: true });
+            this.grafika.initialize(canvasElementId, { debugMode: this.getConfiguration().debug, useCarbonCopy: false, useNavigationText: false, loop: true });
         }
 
         togglePlay(): Q.IPromise<{ isPlaying: boolean }> {
@@ -60,6 +60,7 @@
     }
 
     export class DefaultConfiguration implements GrafikaApp.IGrafikaAppConfiguration {
+        debug: boolean = true;
         baseApiUrl: string = "http://localhost:3000";
         shouldInflateFrame: boolean = true;
         getAuthenticationToken(): string {

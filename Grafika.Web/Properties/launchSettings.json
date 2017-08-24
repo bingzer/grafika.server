@@ -11,10 +11,12 @@
     "Grafika.Web": {
       "commandName": "Project",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development",
+        "Grafika:Content:Url": "http://localhost:5000",
+        "Grafika:Server:Url": "http://localhost:3000",
+        "ASPNETCORE_ENVIRONMENT": "Production",
         "PORT": "3000"
       },
-      "applicationUrl": "http://bingzcomputer:3000"
+      "applicationUrl": "http://localhost:3000"
     }
   }
 }
