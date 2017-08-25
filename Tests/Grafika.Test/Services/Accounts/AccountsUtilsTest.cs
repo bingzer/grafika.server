@@ -21,8 +21,8 @@ namespace Grafika.Test.Services.Accounts
         [Fact]
         public void TestRandomlyPickBackdrop()
         {
-            var contentConfig = new ContentConfiguration { Url = "url" };
-            var backdrop = AccountsUtils.RandomlyPickBackdrop(contentConfig);
+            var serverConfig = new ServerConfiguration { Url = "url" };
+            var backdrop = AccountsUtils.RandomlyPickBackdrop(serverConfig);
             Assert.StartsWith("url/", backdrop);
         }
 
@@ -39,7 +39,7 @@ namespace Grafika.Test.Services.Accounts
         [Fact]
         public void TestNewUserPreference()
         {
-            var contentConfig = new ContentConfiguration { Url = "url", DefaultAvatarPath = "avatar" };
+            var contentConfig = new ServerConfiguration { Url = "url", DefaultAvatarPath = "avatar" };
             var pref = AccountsUtils.NewUserPreference("username", contentConfig);
 
             Assert.Equal("url/avatar", pref.Avatar);

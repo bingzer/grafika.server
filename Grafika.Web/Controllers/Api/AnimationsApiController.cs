@@ -127,7 +127,7 @@ namespace Grafika.Web.Controllers
 
         [AllowAnonymous]
         [HttpGet("{animationId}/seo"), HttpGet("{animationId}/link")]
-        public async Task<IActionResult> SeoCrawlerLink([FromServices] IOptions<ContentConfiguration> contentConfig, 
+        public async Task<IActionResult> SeoCrawlerLink([FromServices] IOptions<ServerConfiguration> serverOpts, 
             [FromServices] IOptions<ClientConfiguration> clientConfig,
             string animationId)
         {
@@ -138,7 +138,7 @@ namespace Grafika.Web.Controllers
             if (Request.IsCrawler(clientConfig.Value))
                 return View("AnimationSeo", animation);
 
-            var redirectUrl = Utility.CombineUrl(contentConfig.Value.Url, "animations", animation.Id);
+            var redirectUrl = Utility.CombineUrl(serverOpts.Value.Url, "animations", animation.Id);
             return Redirect(redirectUrl);
         }
     }

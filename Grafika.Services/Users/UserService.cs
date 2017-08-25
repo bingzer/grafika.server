@@ -9,17 +9,17 @@ namespace Grafika.Services.Users
     public class UserService : EntityService<User, UserQueryOptions, IUserRepository>, IUserService
     {
         private readonly IAwsUsersRepository _awsUsers;
-        private readonly ContentConfiguration _contentConfig;
+        private readonly ServerConfiguration _serverConfig;
 
         public UserService(IServiceContext userContext, 
             IUserRepository userRepo, 
             IUserValidator validator,
             IAwsUsersRepository awsUsers,
-            IOptions<ContentConfiguration> contentOpts)
+            IOptions<ServerConfiguration> serverOpts)
             : base(userContext, userRepo, validator)
         {
             _awsUsers = awsUsers;
-            _contentConfig = contentOpts.Value;
+            _serverConfig = serverOpts.Value;
         }
 
         public async Task UpdateLastSeen(User user)
@@ -37,19 +37,19 @@ namespace Grafika.Services.Users
             switch (type)
             {
                 case "avatar":
-                    url = user?.Prefs?.Avatar ?? Utility.CombineUrl(_contentConfig.Url, _contentConfig.DefaultAvatarPath);
+                    url = user?.Prefs?.Avatar ?? Utility.CombineUrl(_serverConfig.Url, _serverConfig.DefaultAvatarPath);
                     break;
                 case "backdrop":
-                    url = user?.Prefs?.Backdrop ?? Utility.CombineUrl(_contentConfig.Url, _contentConfig.DefaultBackdropPath);
+                    url = user?.Prefs?.Backdrop ?? Utility.CombineUrl(_serverConfig.Url, _serverConfig.DefaultBackdropPath);
                     break;
                 default: throw new NotValidException("type = " + type);
             }
 
             // fixed stupid relative url
             if (url.StartsWith("/") || url.StartsWith("//"))
-                url = Utility.CombineUrl(_contentConfig.Url, url);
+                url = Utility.CombineUrl(_serverConfig.Url, url);
             if (!url.StartsWith("http", StringComparison.CurrentCultureIgnoreCase))
-                url = Utility.CombineUrl(_contentConfig.Url, url);
+                url = Utility.CombineUrl(_serverConfig.Url, url);
 
             return url;
         }

@@ -45,7 +45,7 @@ namespace Grafika.Web.Controllers
         [AllowAnonymous]
         [HttpGet("{userId}/seo"), HttpGet("{userId}/link")]
         public async Task<IActionResult> SeoCrawlerLink([FromServices] IOptions<ClientConfiguration> clientConfig, 
-            [FromServices] IOptions<ContentConfiguration> contentConfig,
+            [FromServices] IOptions<ServerConfiguration> serverOpts,
             string userId)
         {
             var user = await _service.Get(userId);
@@ -55,7 +55,7 @@ namespace Grafika.Web.Controllers
             if (Request.IsCrawler(clientConfig.Value))
                 return View("UserSeo", user);
 
-            var redirectUrl = Utility.CombineUrl(contentConfig.Value.Url, "users", user.Id);
+            var redirectUrl = Utility.CombineUrl(serverOpts.Value.Url, "users", user.Id);
             return Redirect(redirectUrl);
         }
 

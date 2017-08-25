@@ -18,7 +18,7 @@ namespace Grafika.Test.Services.Emails
 {
     public class TemplatedEmailServiceTest
     {
-        ContentConfiguration contentConfig = new ContentConfiguration
+        ServerConfiguration contentConfig = new ServerConfiguration
         {
             Url = "Url",
             PrivacyPath = "PrivacyPath",
@@ -41,7 +41,7 @@ namespace Grafika.Test.Services.Emails
             mockServiceProvider.Setup(c => c.GetService(It.Is<Type>(t => t == typeof(IOptions<EmailConfiguration>))))
                 .Returns(mockEmail.Object)
                 .Verifiable();
-            mockServiceProvider.Setup(c => c.GetService(It.Is<Type>(t => t == typeof(IOptions<ContentConfiguration>))))
+            mockServiceProvider.Setup(c => c.GetService(It.Is<Type>(t => t == typeof(IOptions<ServerConfiguration>))))
                 .Returns(mockContent.Object)
                 .Verifiable();
 
@@ -70,7 +70,7 @@ namespace Grafika.Test.Services.Emails
             mockServiceProvider.Setup(c => c.GetService(It.Is<Type>(t => t == typeof(IOptions<EmailConfiguration>))))
                 .Returns(mockEmail.Object)
                 .Verifiable();
-            mockServiceProvider.Setup(c => c.GetService(It.Is<Type>(t => t == typeof(IOptions<ContentConfiguration>))))
+            mockServiceProvider.Setup(c => c.GetService(It.Is<Type>(t => t == typeof(IOptions<ServerConfiguration>))))
                 .Returns(mockContent.Object)
                 .Verifiable();
 
@@ -99,7 +99,7 @@ namespace Grafika.Test.Services.Emails
             var mockServiceProvider = MockHelpers.ServiceProvider;
             mockServiceProvider.Setup(c => c.GetService(It.Is<Type>(t => t == typeof(IOptions<EmailConfiguration>))))
                 .Returns(mockEmail.Object);
-            mockServiceProvider.Setup(c => c.GetService(It.Is<Type>(t => t == typeof(IOptions<ContentConfiguration>))))
+            mockServiceProvider.Setup(c => c.GetService(It.Is<Type>(t => t == typeof(IOptions<ServerConfiguration>))))
                 .Returns(mockContent.Object);
             mockServiceProvider.Setup(c => c.GetService(It.Is<Type>(t => t == typeof(ITemplatedRenderingEngine<string>))))
                 .Returns(new Mock<ITemplatedRenderingEngine<string>>().Object);

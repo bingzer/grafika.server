@@ -32,8 +32,8 @@ namespace Grafika.Web.Controllers
             var model = new HomeViewModel
             {
                 HandpickedSeries = handpickedSeries,
-                UsersCount = AppEnvironment.Default.Content.UsersCount,
-                AnimationsCount = AppEnvironment.Default.Content.AnimationsCount
+                UsersCount = AppEnvironment.Default.Server.UsersCount,
+                AnimationsCount = AppEnvironment.Default.Server.AnimationsCount
             };
 
             ViewBag.Page = new PageViewModel();

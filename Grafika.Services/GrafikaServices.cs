@@ -134,7 +134,6 @@ namespace Grafika.Services
             services
                 .AddSingleton<IOptions<ServerConfiguration>>(new OptionsWrapper<ServerConfiguration>(AppEnvironment.Default.Server))
                 .AddSingleton<IOptions<ClientConfiguration>>(new OptionsWrapper<ClientConfiguration>(AppEnvironment.Default.Client))
-                .AddSingleton<IOptions<ContentConfiguration>>(new OptionsWrapper<ContentConfiguration>(AppEnvironment.Default.Content))
                 .AddSingleton<IOptions<AuthConfiguration>>(new OptionsWrapper<AuthConfiguration>(AppEnvironment.Default.Auth))
                 .AddSingleton<IOptions<DataConfiguration>>(new OptionsWrapper<DataConfiguration>(AppEnvironment.Default.Data))
                 .AddSingleton<IOptions<EmailConfiguration>>(new OptionsWrapper<EmailConfiguration>(AppEnvironment.Default.Email))

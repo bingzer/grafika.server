@@ -90,7 +90,7 @@ namespace Grafika.Web.Controllers
         [AllowAnonymous]
         [Authorize(ActiveAuthenticationSchemes = "Google,Facebook")]
         [HttpGet("{provider}/callback")]
-        public async Task<IActionResult> OAuthCallback([FromServices] IOptions<ContentConfiguration> contentConfig, [FromRoute] OAuthProvider provider)
+        public async Task<IActionResult> OAuthCallback([FromServices] IOptions<ServerConfiguration> serverOpts, [FromRoute] OAuthProvider provider)
         {
             var userIdentity = new UserIdentity(User);
             if (userIdentity.AuthenticationType != provider.GetName())
@@ -98,7 +98,7 @@ namespace Grafika.Web.Controllers
 
             var token = await _accountService.Login(userIdentity);
 
-            var url = $"{Utility.CombineUrl(contentConfig.Value.Url, contentConfig.Value.OAuthCallbackPath)}?action=authenticate&token={Utility.UrlEncode(token.Token)}";
+            var url = $"{Utility.CombineUrl(serverOpts.Value.Url, serverOpts.Value.OAuthCallbackPath)}?action=authenticate&token={Utility.UrlEncode(token.Token)}";
             return Redirect(url);
         }
 

@@ -65,7 +65,7 @@ namespace Grafika.Services.AnimationSeries
                     Description = "",
                     DateCreated = now,
                     DateModified = now,
-                    AnimationIds = AppEnvironment.Default.Content.HandpickedAnimationIds
+                    AnimationIds = AppEnvironment.Default.Server.HandpickedAnimationIds
                 };
 
                 await Repository.Add(series);
@@ -75,7 +75,7 @@ namespace Grafika.Services.AnimationSeries
             if (series.AnimationIds == null || !series.AnimationIds.Any())
             {
                 series.DateModified = now;
-                series.AnimationIds = AppEnvironment.Default.Content.HandpickedAnimationIds;
+                series.AnimationIds = AppEnvironment.Default.Server.HandpickedAnimationIds;
                 await Repository.Update(series);
             }
         }

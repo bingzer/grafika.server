@@ -16,8 +16,7 @@ namespace Grafika.Web.Controllers
         [AllowAnonymous]
         [HttpGet, HttpPost]
         public ServerModel Index([FromServices] IHostingEnvironment env, 
-            [FromServices] IOptions<ServerConfiguration> serverOpts,
-            [FromServices] IOptions<ContentConfiguration> contentOpts)
+            [FromServices] IOptions<ServerConfiguration> serverOpts)
         {
             return new ServerModel
             {
@@ -25,7 +24,7 @@ namespace Grafika.Web.Controllers
                 Description = serverOpts.Value.Description,
                 Version = Assembly.GetEntryAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>().InformationalVersion,
                 Url = Request.GetServerUrl().ToString(),
-                ContentUrl = contentOpts.Value.Url,
+                ContentUrl = serverOpts.Value.Url,
                 HealthUrl = Url.Action(nameof(GetHealthStatus)),
                 EnvironmentName = env.EnvironmentName
             };

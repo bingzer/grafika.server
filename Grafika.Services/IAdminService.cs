@@ -7,7 +7,7 @@ namespace Grafika.Services
 {
     public interface IAdminService
     {
-        Task<ServerInfo> GetServerInfo();
+        Task<BaseEnvironment> GetServerInfo();
         Task<IEnumerable<User>> GetUsers(UserQueryOptions options);
         Task<IEnumerable<Animation>> GetAnimations(AnimationQueryOptions options);
 

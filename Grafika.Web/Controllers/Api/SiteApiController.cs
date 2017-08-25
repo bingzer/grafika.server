@@ -18,33 +18,6 @@ namespace Grafika.Web.Controllers
     public class SiteApiController : Controller
     {
         [AllowAnonymous]
-        [HttpGet("sitemap.xml")]
-        public async Task<IActionResult> GetSiteMap([FromServices] IAnimationService animationService,
-            [FromServices] IOptions<ContentConfiguration> contentOpts)
-        {
-            ViewBag.ContentUrl = contentOpts.Value.Url;
-            ViewBag.ApiUrl = Request.GetServerUrl().ToString();
-
-            var queryOptions = new AnimationQueryOptions
-            {
-                IsPublic = true,
-                IsRemoved = false,
-                PageSize = 100,
-                Sort = new SortOptions
-                {
-                    Direction = SortDirection.Descending,
-                    Name = "views"
-                }
-            };
-            var animations = await animationService.List(queryOptions);
-
-            var result = View("AnimationSiteMap", animations);
-            result.ContentType = ContentTypes.Xml;
-
-            return result;
-        }
-
-        [AllowAnonymous]
         [HttpPost("content/feedback")]
         public async Task<IActionResult> SubmitFeedback([FromServices] ITemplatedEmailService emailService,
             [FromServices] IOptions<EmailConfiguration> emailOpts,

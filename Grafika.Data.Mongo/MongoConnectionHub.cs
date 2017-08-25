@@ -34,8 +34,8 @@ namespace Grafika.Data.Mongo
             if (_dbConnector.Client.Cluster.Description.State != MongoDB.Driver.Core.Clusters.ClusterState.Connected)
                 throw new Exception();
 
-            AppEnvironment.Default.Content.AnimationsCount = (int)await _context.Animations.ToMongoDataSet().Collection.CountAsync(new BsonDocument());
-            AppEnvironment.Default.Content.UsersCount = (int)await _context.Users.ToMongoDataSet().Collection.CountAsync(new BsonDocument());
+            AppEnvironment.Default.Server.AnimationsCount = (int)await _context.Animations.ToMongoDataSet().Collection.CountAsync(new BsonDocument());
+            AppEnvironment.Default.Server.UsersCount = (int)await _context.Users.ToMongoDataSet().Collection.CountAsync(new BsonDocument());
         }
     }
 }

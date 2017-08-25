@@ -14,7 +14,7 @@ namespace Grafika.Test.Services.Users
 {
     public class UserServiceTest
     {
-        ContentConfiguration contentConfig = new ContentConfiguration
+        ServerConfiguration serverConfig = new ServerConfiguration
         {
             Url = "http://me.com/",
             DefaultAvatarPath = "default/avatar",
@@ -131,10 +131,10 @@ namespace Grafika.Test.Services.Users
         }
 
 
-        private Mock<IOptions<ContentConfiguration>> CreateMockContentOptions()
+        private Mock<IOptions<ServerConfiguration>> CreateMockContentOptions()
         {
-            var mock = new Mock<IOptions<ContentConfiguration>>();
-            mock.Setup(c => c.Value).Returns(contentConfig);
+            var mock = new Mock<IOptions<ServerConfiguration>>();
+            mock.Setup(c => c.Value).Returns(serverConfig);
             return mock;
         }
     }
