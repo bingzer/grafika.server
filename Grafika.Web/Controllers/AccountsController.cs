@@ -1,176 +1,147 @@
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Grafika.Web.Models;
-using Microsoft.AspNetCore.Authorization;
 using Grafika.Configurations;
-using Microsoft.Extensions.Options;
 using Grafika.Services;
+using Grafika.Services.Accounts;
 using Grafika.Utilities;
+using Grafika.Web.ViewModels;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http.Authentication;
+using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace Grafika.Web.Controllers
 {
-    [Produces("application/json")]
-    [Route("[controller]"), Route("api/[controller]")]
-    public partial class AccountsController : Controller
+    [Route("accounts")]
+    public class AccountsController : Controller
     {
-        private readonly IAccountService _accountService;
-        private readonly GoogleOAuthProviderConfiguration _googleOAuthConfig;
+        private readonly IAccountService _service;
+        private readonly AccountTokenProvider _tokenProvider;
 
-        public AccountsController(IAccountService accountService, IOptions<GoogleOAuthProviderConfiguration> options)
+        public AccountsController(IAccountService service, AccountTokenProvider tokenProvider)
         {
-            _accountService = accountService;
-            _googleOAuthConfig = options.Value;
+            _service = service;
+            _tokenProvider = tokenProvider;
         }
 
-        [AllowAnonymous]
-        [HttpPost("")]
-        public async Task<IActionResult> Login([FromBody] LoginModel model)
+        [HttpGet, Route("/me"), Route("profile")]
+        public async Task<IActionResult> Profile([FromServices] IUserService userService)
         {
-            var token = await _accountService.Login(model.Email, model.Password);
-            return Json(token);
+            var userIdentity = User.Identity as IUserIdentity;
+            var user = await userService.Get(userIdentity.Id);
+            ViewBag.Page = new PageViewModel
+            {
+                Title = $"{userIdentity.Name} | Grafika",
+                Description = $"Account profile page for {userIdentity.Name}"
+            };
+
+            var model = new AccountProfileViewModel
+            {
+                User = user,
+                ApiSaveProfileUrl = Utility.CombineUrl(AppEnvironment.Default.Server.Url, $"/users/{user.Id}"),
+                ApiPasswordUrl = Utility.CombineUrl(AppEnvironment.Default.Server.Url, "/accounts/pwd")
+            };
+
+            return View("Profile", model);
         }
 
-        /// <summary>
-        /// Called when user register for the first time and again after email verification
-        /// to set the password
-        /// </summary>
-        /// <param name="model"></param>
-        /// <returns></returns>
-        [AllowAnonymous]
-        [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] RegistrationModel model)
+        [Route("verify"), AllowAnonymous]
+        public IActionResult Verify([FromQuery] RerouteViewModel model)
         {
-            if (model == null || model.Email == null)
-                return BadRequest();
+            if (string.IsNullOrEmpty(model?.Hash))
+                return Redirect("/");
 
-            if (model.Password != null && model.Hash != null)
-                await _accountService.ConfirmActivation(model.Email, model.Hash, model.Password);
-            else if (model.FirstName != null)
-                await _accountService.Register(model.Email, model.FirstName, model.LastName);
-            else return BadRequest();
+            ViewBag.ApiPasswordUrl = Utility.CombineUrl(AppEnvironment.Default.Server.Url, "/accounts/register");
+            ViewBag.Page = new PageViewModel
+            {
+                Title = "Welcome | Grafika"
+            };
 
-            return Ok();
+            return View(model);
         }
 
-        [AllowAnonymous]
-        [HttpGet("google")]
-        public IActionResult GoogleLogin()
+        [Route("reset"), AllowAnonymous]
+        public IActionResult Reset([FromQuery] RerouteViewModel model)
         {
-            return Challenge("Google");
+            if (string.IsNullOrEmpty(model?.Hash))
+                return Redirect("/");
+
+            ViewBag.ApiPasswordUrl = Utility.CombineUrl(AppEnvironment.Default.Server.Url, "/accounts/register");
+            ViewBag.Page = new PageViewModel
+            {
+                Title = "Reset Password | Grafika"
+            };
+
+            return View(model);
         }
 
-        [HttpDelete("google")]
-        public async Task<IActionResult> GoogleLogout()
+        [Route("/signin"), AllowAnonymous]
+        public IActionResult Login()
         {
-            await _accountService.Detach((User.Identity as IUserIdentity), OAuthProvider.Google);
-            return Ok();
+            if (User.Identity?.IsAuthenticated == true)
+                return Redirect("/");
+
+            ViewBag.Page = new PageViewModel
+            {
+                Title = "Sign In | Grafika"
+            };
+
+            return View("SignIn");
         }
 
-        [AllowAnonymous]
-        [HttpGet("facebook")]
-        public IActionResult FacebookLogin()
+        [Route("/signup"), AllowAnonymous]
+        public IActionResult Register()
         {
-            return Challenge("Facebook");
+            ViewBag.Page = new PageViewModel
+            {
+                Title = "Sign Up | Grafika"
+            };
+            ViewBag.IsRegistration = true;
+
+            return View("SignUp");
         }
 
-        [HttpDelete("facebook")]
-        public async Task<IActionResult> FacebookLogout()
+        [Route("/signout"), Route("/logout")]
+        public async Task<IActionResult> Logout(string url = "/")
         {
-            await _accountService.Detach((User.Identity as IUserIdentity), OAuthProvider.Facebook);
-            return Ok();
+            await HttpContext.Authentication.SignOutAsync("cookie-auth");
+            url += $"?action=deauthenticate";
+            return Redirect(url);
         }
-
-        [HttpGet("disqus")]
-        public async Task<IActionResult> DisqusLogin([FromServices] ICommentService commentService)
+        
+        [HttpGet, Route("login/callback"), AllowAnonymous]
+        public async Task<IActionResult> Authenticate(string token, string url = "/")
         {
-            var token = await commentService.GenerateAuthenticationToken(User.Identity as IUserIdentity);
-            return Json(token);
-        }
+            var principal = _tokenProvider.TokenHandler.ValidateToken(token, _tokenProvider.ValidationParameters, out var validatedToken);
 
-        [AllowAnonymous]
-        [Authorize(ActiveAuthenticationSchemes = "Google,Facebook")]
-        [HttpGet("{provider}/callback")]
-        public async Task<IActionResult> OAuthCallback([FromServices] IOptions<ContentConfiguration> contentConfig, [FromRoute] OAuthProvider provider)
-        {
-            var userIdentity = new UserIdentity(User);
-            if (userIdentity.AuthenticationType != provider.GetName())
-                return BadRequest("Authentication mistmached");
+            await HttpContext.Authentication.SignInAsync("cookie-auth", principal, new AuthenticationProperties { IsPersistent = true });
+            url += $"?action=authenticate&token={token}";
 
-            var token = await _accountService.Login(userIdentity);
-
-            var url = $"{Utility.CombineUrl(contentConfig.Value.Url, contentConfig.Value.OAuthCallbackPath)}?action=authenticate&token={Utility.UrlEncode(token.Token)}";
             return Redirect(url);
         }
 
-        /// <summary>
-        /// Authenticate and return the json
-        /// </summary>
-        /// <returns></returns>
-        [HttpPost("authenticate")]
-        public async Task<IActionResult> Authenticate()
+        [Route("password"), AllowAnonymous]
+        public IActionResult SetPassword(PasswordFormViewModel model)
         {
-            var userIdentity = new UserIdentity(User);
-
-            var token = await _accountService.Login(userIdentity);
-            if (token != null)
-                return Json(token);
-
-            return Unauthorized();
+            ViewBag.ApiPasswordUrl = Utility.CombineUrl(AppEnvironment.Default.Server.Url, "/accounts/pwd");
+            return PartialView("_SetPassword", model);
         }
 
-        [AllowAnonymous]
-        [HttpPost("authenticate/{provider}")]
-        public async Task<IActionResult> AuthenticateOAuthToken(OAuthProvider authProvider, [FromBody] OAuthIdTokenModel model)
+        [Route("recovery"), AllowAnonymous]
+        public IActionResult Recovery()
         {
-            var identity = await _accountService.Exchange(authProvider, new AuthenticationToken { Token = model.FindToken() });
-            var userToken = await _accountService.Login(identity);
-
-            return Json(userToken);
-        }
-        
-        [HttpPost("pwd")]
-        public async Task<IActionResult> ChangePassword([FromBody] PasswordModel model)
-        {
-            var userIdentity = User.Identity as IUserIdentity;
-
-            await _accountService.ChangePassword(userIdentity.Email, model.CurrentPassword, model.Password);
-            return Ok();
+            ViewBag.ApiRecoveryUrl = Utility.CombineUrl(AppEnvironment.Default.Server.Url, "/accounts/pwd/reset");
+            return PartialView("_Recovery");
         }
 
-        [AllowAnonymous]
-        [HttpPost("pwd/reset")]
-        public async Task<IActionResult> RequestPasswordReset([FromBody] RegistrationModel model)
+        [Route("forms/password"), AllowAnonymous]
+        public IActionResult GetPasswordForm(PasswordFormViewModel model)
         {
-            await _accountService.RequestPasswordReset(model.Email);
-            return Ok();
+            return PartialView("_PasswordForm", model);
         }
 
-        [AllowAnonymous]
-        [HttpPost("username-check")]
-        public async Task<IActionResult> CheckUsernameAvailability([FromBody] CheckUsernameModel model)
+        [Route("forms/signin"), AllowAnonymous]
+        public IActionResult SignInDialog()
         {
-            await _accountService.CheckUsernameAvailability(model.Email, model.Username);
-            return Ok();
-        }
-
-        /// <summary>
-        /// This is a bug after external login.
-        /// Redirect to authenticate
-        /// </summary>
-        /// <param name="returnUrl"></param>
-        /// <returns></returns>
-        // GET: /Account/AccessDenied
-        [AllowAnonymous]
-        [Authorize(ActiveAuthenticationSchemes = "Google,Facebook")]
-        [HttpGet("~/Account/AccessDenied")]
-        public IActionResult AccessDenied(string returnUrl = null)
-        {
-            // workaround
-            if (Request.Cookies["Identity.External"] != null)
-            {
-                return RedirectToAction(nameof(OAuthCallback), new { provider = User?.Identity?.AuthenticationType });
-            }
-            return RedirectToAction(nameof(Login));
+            return PartialView("_SignInDialogForm");
         }
     }
 }

@@ -3,7 +3,7 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:49595/",
+      "applicationUrl": "http://localhost:55649/",
       "sslPort": 0
     }
   },
@@ -15,15 +15,15 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "Grafika.Web": {
+    "Grafika.WebSite": {
       "commandName": "Project",
       "environmentVariables": {
         "Grafika:Content:Url": "http://localhost:5000",
-        "Grafika:Server:Url": "http://localhost:3000",
+        "Grafika:Server:Url": "http://localhost:5000/api",
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "PORT": "3000"
+        "PORT": "5000"
       },
-      "applicationUrl": "http://localhost:3000"
+      "applicationUrl": "http://localhost:5000"
     }
   }
 }

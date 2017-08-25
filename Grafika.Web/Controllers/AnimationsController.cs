@@ -1,19 +1,16 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Grafika.Animations;
 using Grafika.Services;
+using Grafika.Web.ViewModels;
 using Microsoft.AspNetCore.Authorization;
-using System.Linq;
-using Grafika.Configurations;
-using Microsoft.Extensions.Options;
-using Grafika.Utilities;
 using Grafika.Services.Web.Extensions;
-using Grafika.Services.Web.Filters;
+using Grafika.Configurations;
+using Grafika.Animations;
+using Grafika.Utilities;
 
 namespace Grafika.Web.Controllers
 {
-    [Produces("application/json")]
-    [Route("[controller]"), Route("api/[controller]")]
+    [Route("/animations")]
     public class AnimationsController : Controller
     {
         private readonly IAnimationService _service;
@@ -22,10 +19,9 @@ namespace Grafika.Web.Controllers
         {
             _service = animationService;
         }
-        
-        [AllowAnonymous]
-        [HttpGet]
-        public async Task<IActionResult> Get(AnimationQueryOptions options, [FromQuery] int? skip = null, [FromQuery] int? limit = null)
+
+        [Route(""), AllowAnonymous]
+        public async Task<IActionResult> Index(AnimationQueryOptions options)
         {
             if (options == null)
                 options = new AnimationQueryOptions();
@@ -34,112 +30,103 @@ namespace Grafika.Web.Controllers
             else
                 options = AnimationQueryOptions.PublicAnimations(options);
 
-            options.SetPaging(skip, limit);
-
             var animations = await _service.List(options);
-            return Ok(animations);
+            var model = new AnimationsViewModel
+            {
+                Animations = animations,
+                Options = options
+            };
+
+            return View(model);
         }
 
-        [AllowAnonymous]
-        [HttpGet("{animationId}")]
-        public async Task<IActionResult> GetDetail(string animationId)
+        [Route("{animationId}/{slug?}/edit")]
+        public async Task<IActionResult> Edit(string animationId, string slug = null)
+        {
+            var model = new AnimationDrawingViewModel
+            {
+                Animation = await _service.Get(animationId)
+            };
+
+            ViewBag.Page = new PageViewModel
+            {
+                Title = $"{model.Animation.Name} | Grafika",
+                Description = $"{model.Animation.Name}. An animation by {model.Animation.Author} | Grafika Animation",
+                Thumbnail = new ThumbnailViewModel(model.Animation.GetThumbnailUrl(), model.Animation.Width, model.Animation.Height),
+                UseNavigationBar = false,
+                UseFooter = false
+            };
+
+            return View("Edit", model);
+        }
+
+        [Route("{animationId}/{slug?}/player"), AllowAnonymous]
+        public async Task<IActionResult> Player(AnimationPlayerViewModel model, string slug = null)
+        {
+            model.Animation = await _service.Get(model.AnimationId);
+            return PartialView(model.TemplateName, model);
+        }
+
+        [Route("{animationId}/{slug?}"), AllowAnonymous]
+        public async Task<IActionResult> Detail([FromRoute] string animationId, string slug = null)
         {
             var animation = await _service.Get(animationId);
-            if (animation == null) return NotFound();
-            return Ok(animation);
+            var model = new AnimationViewModel
+            {
+                Animation = animation
+            };
+
+            ViewBag.Page = new PageViewModel
+            {
+                Title = $"{animation.Name} | Grafika",
+                Description = $"{animation.Name} by {animation.Author} | Grafika Animation",
+                Thumbnail = new ThumbnailViewModel(animation.GetThumbnailUrl(), animation.Width, animation.Height)
+            };
+
+            return View(model);
         }
 
-        [AllowAnonymous]
-        [HttpGet("{animationId}/related")]
-        public async Task<IActionResult> GetRelatedAnimations(string animationId, int count = 5)
+        [Route("list"), AllowAnonymous]
+        public async Task<IActionResult> List(AnimationQueryOptions options)
         {
-            var options = new AnimationQueryOptions { RelatedToAnimationId = animationId, PageSize = count };
+            if (string.IsNullOrEmpty(options.TemplateName))
+                options.TemplateName = "_List";
 
             var animations = await _service.List(options);
-            return Ok(animations);
+            var model = new AnimationsViewModel
+            {
+                Animations = animations,
+                Options = options
+            };
+
+            return PartialView(options.TemplateName, model);
         }
 
-        [AllowAnonymous]
-        [HttpGet("random")]
-        public async Task<IActionResult> GetRandomAnimation()
+        [Route("forms/create")]
+        public async Task<IActionResult> Create([FromServices] IUserService userService)
         {
-            var options = new AnimationQueryOptions { IsRandom = true };
+            var user = await userService.Get((User.Identity as IUserIdentity).Id);
 
-            var animations = await _service.List(options);
-            var animation = animations.FirstOrDefault();
-            if (animation == null)
-                return NotFound();
+            var model = new Animation
+            {
+                UserId = user.Id,
+                Author = user.Username,
+                LocalId = Utility.Guid(),
+                Width = 800,
+                Height = 480,
+                Timer = user.Prefs.DrawingTimer,
+                IsPublic = user.Prefs.DrawingIsPublic,
+                Client = new Client
+                {
+                    Name = "GrafikaApp",
+                    Browser = Request.Headers["User-Agent"],
+                    Version = AppEnvironment.Default.AppVersion
+                }
+            };
 
-            return Ok(animation);
-        }
+            ViewBag.ApiCreateAnimationUrl = Utility.CombineUrl(AppEnvironment.Default.Server.Url, "animations");
 
-        [HttpGet("mine")]
-        public Task<IActionResult> GetMine([FromQuery] AnimationQueryOptions options = null)
-        {
-            if (options == null)
-                options = new AnimationQueryOptions();
-            options.UserId = ((UserIdentity)User.Identity).Id;
-
-            return Get(options);
-        }
-
-        [SkipModelValidation]
-        [HttpPost]
-        public async Task<IActionResult> Create([FromBody] Animation animation)
-        {
-            animation = await _service.Create(animation);
-
-            return Created(Url.Action(nameof(GetDetail), new { animationId = animation.Id }), animation);
-        }
-
-        [SkipModelValidation]
-        [HttpPut("{animationId}")]
-        public async Task<IActionResult> Update(string animationId, [FromBody] Animation animation)
-        {
-            animation.Id = animationId;
-
-            animation = await _service.Update(animation);
-            return Ok();
-        }
-
-        [HttpDelete("{animationId}")]
-        public async Task<IActionResult> Delete(string animationId)
-        {
-            await _service.Delete(animationId);
-            return Ok();
-        }
-
-        [AllowAnonymous]
-        [HttpPost("{animationId}/view")]
-        public async Task<IActionResult> IncrementViewCount(string animationId)
-        {
-            await _service.IncrementViewCount(animationId);
-            return Ok();
-        }
-
-        [AllowAnonymous]
-        [HttpPost("{animationId}/rating/{rating:range(1,5)}")]
-        public async Task<IActionResult> SubmitRating(string animationId, int rating)
-        {
-            await _service.SubmitRating(animationId, rating);
-            return Ok();
-        }
-
-        [AllowAnonymous]
-        [HttpGet("{animationId}/seo"), HttpGet("{animationId}/link")]
-        public async Task<IActionResult> SeoCrawlerLink([FromServices] IOptions<ContentConfiguration> contentConfig, 
-            [FromServices] IOptions<ClientConfiguration> clientConfig,
-            string animationId)
-        {
-            var animation = await _service.Get(animationId);
-            if (animation == null)
-                throw new NotFoundExeption();
-
-            if (Request.IsCrawler(clientConfig.Value))
-                return View("AnimationSeo", animation);
-
-            var redirectUrl = Utility.CombineUrl(contentConfig.Value.Url, "animations", animation.Id);
-            return Redirect(redirectUrl);
+            return PartialView("_Create", model);
         }
     }
 }

@@ -1,10 +1,22 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Grafika.Services;
 using Grafika.Services.Web;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Rewrite;
+using System.Net;
+using Microsoft.Net.Http.Headers;
+using Grafika.Utilities;
+using Grafika.Web.Infrastructure;
 
 namespace Grafika.Web
 {
@@ -18,16 +30,17 @@ namespace Grafika.Web
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
-                .AddEnvironmentVariables()
-                ;
-
+                .AddEnvironmentVariables();
             Configuration = builder.Build();
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddResponseCompression();
             services.AddGrafikaMvc();
+            services.AddMemoryCache();
+            services.AddResponseCaching();
             services.ConfigureGrafikaMvc(Configuration);
         }
 
@@ -37,8 +50,38 @@ namespace Grafika.Web
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
+            else
+            {
+                app.UseExceptionHandler("/Home/Error");
+            }
+
+            app.UseRewriter(new RewriteOptions()
+                .Add(ApiRewriteRules.RewriteToApi)
+                .AddRedirect(@"^assets/(.*)", "/$1", (int) HttpStatusCode.MovedPermanently)
+                .AddRewrite(@"^app/content/comment.html", "/comments", true)
+            );
+
+            app.UseResponseCompression();
+            app.UseResponseCaching();
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                OnPrepareResponse = (context) =>
+                {
+                    var headers = context.Context.Response.GetTypedHeaders();
+                    headers.CacheControl = new CacheControlHeaderValue()
+                    {
+                        MaxAge = TimeSpan.FromHours(1),
+                        Public = true,
+                    };
+                }
+            });
             app.UseGrafikaMvc();
-            app.UseStaticFiles();
+
         }
+
     }
 }
