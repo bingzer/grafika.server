@@ -6,23 +6,22 @@
 <ul class="list-group">
     @foreach (var anim in Model.Animations)
     {
-        var linkUrl = Html.AnimationUrl(anim);
         <li class="list-group-item">
             <div class="media">
                 <div class="media-left">
-                    <a href="@linkUrl">
-                        <img class="animation-thumbnail animation-thumbnail-sm" src="@anim.GetThumbnailUrl()" alt="@anim.Name">
+                    <a href="@anim.GetUrl()">
+                        <img class="animation-thumbnail animation-thumbnail-sm" src="@anim.GetThumbnailApiUrl()" alt="@anim.Name">
                     </a>
                 </div>
                 <div class="media-body">
                     <h4 class="media-heading">
-                        <a href="@linkUrl" class="font-stronger">
+                        <a href="@anim.GetUrl()" class="font-stronger">
                             @anim.Name
                         </a>
                     </h4>
                     <p style="margin-top: 0">
-                        <img src="@anim.GetAuthorThumbnail()" alt="@anim.Author" class="img-circle user-avatar" />
-                        <a href="@Utility.CombineUrl("/users", anim.UserId, Html.GenerateSlug(anim.Author))">
+                        <img src="@anim.GetAuthorAvatarApiUrl()" alt="@anim.Author" class="img-circle user-avatar" />
+                        <a href="@anim.GetAuthorUrl()">
                             @anim.Author
                         </a>
                     </p>

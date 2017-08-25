@@ -1,5 +1,5 @@
 @{
-    var signUpUrl = Utility.CombineUrl(AppEnvironment.Default.Server.Url, "/accounts/register");
+    var signUpUrl = Utility.CombineUrl(AppEnvironment.Default.Server.ApiUrl, "/accounts/register");
 }
 <section id="signin-section" class="login-form" style="display: none">
     @await Html.PartialAsync("_SignInForm")

@@ -7,6 +7,7 @@ using Grafika.Configurations;
 using Grafika.Animations;
 using Grafika.Utilities;
 using Grafika.Web.Infrastructure.Extensions;
+using Grafika.Services.Extensions;
 
 namespace Grafika.Web.Controllers
 {
@@ -52,7 +53,7 @@ namespace Grafika.Web.Controllers
             {
                 Title = $"{model.Animation.Name} | Grafika",
                 Description = $"{model.Animation.Name}. An animation by {model.Animation.Author} | Grafika Animation",
-                Thumbnail = new ThumbnailViewModel(model.Animation.GetThumbnailUrl(), model.Animation.Width, model.Animation.Height),
+                Thumbnail = new ThumbnailViewModel(model.Animation.GetThumbnailApiUrl(), model.Animation.Width, model.Animation.Height),
                 UseNavigationBar = false,
                 UseFooter = false
             };
@@ -80,7 +81,7 @@ namespace Grafika.Web.Controllers
             {
                 Title = $"{animation.Name} | Grafika",
                 Description = $"{animation.Name} by {animation.Author} | Grafika Animation",
-                Thumbnail = new ThumbnailViewModel(animation.GetThumbnailUrl(), animation.Width, animation.Height)
+                Thumbnail = new ThumbnailViewModel(animation.GetThumbnailApiUrl(), animation.Width, animation.Height)
             };
 
             return View(model);
@@ -124,7 +125,7 @@ namespace Grafika.Web.Controllers
                 }
             };
 
-            ViewBag.ApiCreateAnimationUrl = Utility.CombineUrl(AppEnvironment.Default.Server.Url, "animations");
+            ViewBag.ApiCreateAnimationUrl = Utility.CombineUrl(AppEnvironment.Default.Server.ApiUrl, "animations");
 
             return PartialView("_Create", model);
         }

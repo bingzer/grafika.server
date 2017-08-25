@@ -36,8 +36,8 @@ namespace Grafika.Web.Controllers
             var model = new AccountProfileViewModel
             {
                 User = user,
-                ApiSaveProfileUrl = Utility.CombineUrl(AppEnvironment.Default.Server.Url, $"/users/{user.Id}"),
-                ApiPasswordUrl = Utility.CombineUrl(AppEnvironment.Default.Server.Url, "/accounts/pwd")
+                ApiSaveProfileUrl = Utility.CombineUrl(AppEnvironment.Default.Server.ApiUrl, $"/users/{user.Id}"),
+                ApiPasswordUrl = Utility.CombineUrl(AppEnvironment.Default.Server.ApiUrl, "/accounts/pwd")
             };
 
             return View("Profile", model);
@@ -49,7 +49,7 @@ namespace Grafika.Web.Controllers
             if (string.IsNullOrEmpty(model?.Hash))
                 return Redirect("/");
 
-            ViewBag.ApiPasswordUrl = Utility.CombineUrl(AppEnvironment.Default.Server.Url, "/accounts/register");
+            ViewBag.ApiPasswordUrl = Utility.CombineUrl(AppEnvironment.Default.Server.ApiUrl, "/accounts/register");
             ViewBag.Page = new PageViewModel
             {
                 Title = "Welcome | Grafika"
@@ -64,7 +64,7 @@ namespace Grafika.Web.Controllers
             if (string.IsNullOrEmpty(model?.Hash))
                 return Redirect("/");
 
-            ViewBag.ApiPasswordUrl = Utility.CombineUrl(AppEnvironment.Default.Server.Url, "/accounts/register");
+            ViewBag.ApiPasswordUrl = Utility.CombineUrl(AppEnvironment.Default.Server.ApiUrl, "/accounts/register");
             ViewBag.Page = new PageViewModel
             {
                 Title = "Reset Password | Grafika"
@@ -121,14 +121,14 @@ namespace Grafika.Web.Controllers
         [Route("password"), AllowAnonymous]
         public IActionResult SetPassword(PasswordFormViewModel model)
         {
-            ViewBag.ApiPasswordUrl = Utility.CombineUrl(AppEnvironment.Default.Server.Url, "/accounts/pwd");
+            ViewBag.ApiPasswordUrl = Utility.CombineUrl(AppEnvironment.Default.Server.ApiUrl, "/accounts/pwd");
             return PartialView("_SetPassword", model);
         }
 
         [Route("recovery"), AllowAnonymous]
         public IActionResult Recovery()
         {
-            ViewBag.ApiRecoveryUrl = Utility.CombineUrl(AppEnvironment.Default.Server.Url, "/accounts/pwd/reset");
+            ViewBag.ApiRecoveryUrl = Utility.CombineUrl(AppEnvironment.Default.Server.ApiUrl, "/accounts/pwd/reset");
             return PartialView("_Recovery");
         }
 

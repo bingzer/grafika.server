@@ -1,15 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 
-namespace Grafika.Web.Infrastructure.Extensions
+namespace Grafika.Services.Extensions
 {
     public static class SeoFriendlyUrlExtensions
     {
-        public static string GenerateSlug(this IHtmlHelper htmlHelper, string name)
-        {
-            return GenerateSlug(name);
-        }
-
         public static string GenerateSlug(string name, string defaultIfEmpty = "unknown")
         {
             string phrase = name;

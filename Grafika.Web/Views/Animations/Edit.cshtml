@@ -28,7 +28,7 @@
                         var userIdentity = User.Identity as IUserIdentity;
                         <li>
                             <a href="#" role="button" class="no-link">
-                                <img class="user-avatar user-avatar-md" src="@userIdentity.GetUserAvatarUrl()" alt="Avatar for @userIdentity.Email" />
+                                <img class="user-avatar user-avatar-md" src="@userIdentity.GetAvatarApiUrl()" alt="Avatar for @userIdentity.Email" />
                                 @User.Identity.Name
                             </a>
                         </li>

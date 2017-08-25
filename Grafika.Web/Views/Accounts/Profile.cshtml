@@ -2,9 +2,9 @@
 @{ 
     var userIdentity = (User.Identity as IUserIdentity);
     var passwordTitle = Model.HasLocalAccount ? "Change Password" : "Set Password";
-    var checkUsernameUrl = Utility.CombineUrl(AppEnvironment.Default.Server.Url, "/accounts/username-check");
-    var userUrl = Utility.CombineUrl(AppEnvironment.Default.Content.Url, "u", Model.Username);
-    var apiUserBackdropUrl = Utility.CombineUrl(AppEnvironment.Default.Server.Url, "/users", Model.User.Id, "backdrop");
+    var checkUsernameUrl = Utility.CombineUrl(AppEnvironment.Default.Server.ApiUrl, "/accounts/username-check");
+    var userUrl = Utility.CombineUrl(AppEnvironment.Default.Server.ApiUrl, "u", Model.Username);
+    var apiUserBackdropUrl = Utility.CombineUrl(AppEnvironment.Default.Server.ApiUrl, "/users", Model.User.Id, "backdrop");
 }
 
 <header class="bg-transparent page-heading page-heading-lg text-center text-white"

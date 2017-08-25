@@ -34,8 +34,8 @@
             </h1>
         </div>
         <h2 class="animation-author font-larger">
-            <img class="img-circle user-avatar user-avatar-md" src="@Model.Animation.GetAuthorThumbnail()" alt="@Model.Animation.Author" />
-            <a href="@Html.UserUrl(Model.Animation.UserId)">
+            <img class="img-circle user-avatar user-avatar-md" src="@Model.Animation.GetAuthorAvatarApiUrl()" alt="@Model.Animation.Author" />
+            <a href="@Model.Animation.GetAuthorUrl()">
                 @Model.Animation.Author
             </a>
         </h2>
@@ -71,7 +71,7 @@
             <header>
                 <h2>Comments</h2>
             </header>
-            <div id="comments-container" data-partial="lazy" data-url="@Model.Animation.GetCommentUrl()">
+            <div id="comments-container" data-partial="lazy" data-url="@Model.Animation.GetCommentApiUrl()">
                 <div id="load-comments-container" class="text-center">
                     <h3>Join the discussion</h3>
                     <button onclick="GrafikaApp.Partials.renderPartial('#comments-container')" class="btn btn-xl btn-primary" title="Click to load comments">

@@ -1,22 +1,20 @@
 ﻿@model Animation
 @{
     Layout = null;
-    var animationUrl = Html.AnimationUrl(Model);
-    var authorUrl = Utility.CombineUrl("/users", Model.UserId, Html.GenerateSlug(Model.Author));
     var userIdentity = User.Identity as IUserIdentity;
     var canEdit = userIdentity?.Id == Model.UserId;
 }
 <article class="col-xs-12 col-sm-6 col-md-4 col-lg-3 col-xl-1">
     <div class="thumbnail">
         <figure>
-            <a class="animation-thumbnail-link" href="@animationUrl">
-                <img class="animation-thumbnail" src="@Model.GetThumbnailUrl()" alt="@Model.Name">
+            <a class="animation-thumbnail-link" href="@Model.GetUrl()">
+                <img class="animation-thumbnail" src="@Model.GetThumbnailApiUrl()" alt="@Model.Name">
             </a>
         </figure>
         <div class="caption">
             <header>
                 <h4>
-                    <a href="@animationUrl" class="font-stronger">@Model.Name</a>
+                    <a href="@Model.GetUrl()" class="font-stronger">@Model.Name</a>
                     @if (Model.IsPublic == false)
                     {
                         <i class="fa fa-lock font-smaller text-muted" title="This animation is private. Can only be viewed by you"></i>
@@ -25,8 +23,8 @@
             </header>
             <div>
                 <p class="animation-author pull-left">
-                    <img src="@Model.GetAuthorThumbnail()" alt="@Model.Author" class="img-circle user-avatar" />
-                    <a href="@authorUrl">
+                    <img src="@Model.GetAuthorAvatarApiUrl()" alt="@Model.Author" class="img-circle user-avatar" />
+                    <a href="@Model.GetAuthorUrl()">
                         @Model.Author
                     </a>
                 </p>
@@ -54,11 +52,11 @@
                            data-confirm="Are you sure you want to delete @Model.Name?" 
                            data-confirmed="GrafikaApp.toast('Deleting...'); GrafikaApp.sendAjax($elem)"
                            data-callback="GrafikaApp.refreshPage()"
-                           data-url="@Model.GetUrl()"
+                           data-url="@Model.GetApiUrl()"
                            data-method="delete">
                             Delete
                         </a>
-                        <a href="@animationUrl/edit" class="btn btn-xs btn-success">
+                        <a href="@Model.GetUrlForEdit()" class="btn btn-xs btn-success">
                             Edit
                         </a>
                     </span>

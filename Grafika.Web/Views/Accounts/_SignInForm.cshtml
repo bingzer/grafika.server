@@ -1,16 +1,16 @@
 @{ 
-    var loginUrl = Utility.CombineUrl(AppEnvironment.Default.Server.Url, "/accounts");
+    var loginUrl = Utility.CombineUrl(AppEnvironment.Default.Server.ApiUrl, "/accounts");
 }
 <div class="login-form">
     <header id="login-header" class="login-header">
         <h1>Login to Grafika</h1><br>
     </header>
     <div class="row text-center">
-        <a href="@Utility.CombineUrl(AppEnvironment.Default.Server.Url, "accounts/google")" type="button" class="login login-button login-oauth login-google" title="Use your Google account">
+        <a href="@Utility.CombineUrl(AppEnvironment.Default.Server.ApiUrl, "accounts/google")" type="button" class="login login-button login-oauth login-google" title="Use your Google account">
             <img src="~/img/google_white.png" alt="Google Logo" />
             Google
         </a>
-        <a href="@Utility.CombineUrl(AppEnvironment.Default.Server.Url, "accounts/facebook")" type="button" class="login login-button login-oauth login-facebook" title="Use your Facebook account">
+        <a href="@Utility.CombineUrl(AppEnvironment.Default.Server.ApiUrl, "accounts/facebook")" type="button" class="login login-button login-oauth login-facebook" title="Use your Facebook account">
             <img src="~/img/facebook_white.png" alt="Facebook Logo" />
             Facebook
         </a>

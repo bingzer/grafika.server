@@ -69,7 +69,7 @@
             </text>
             }
             GrafikaApp.Configuration = {
-                baseApiUrl: '@AppEnvironment.Default.Server.Url.TrimEnd("/".ToCharArray())',
+                baseApiUrl: '@Utility.CombineUrl(AppEnvironment.Default.Server.Url, "api")',
                 debug: @(AppEnvironment.Default.HostingType == "Production" ? "true" : "false")
             };
         })(GrafikaApp || (GrafikaApp = {}));
@@ -114,15 +114,15 @@
                         {
                             <li>
                                 <a href="javascript: void(0)" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                                    <img class="img-circle user-avatar user-avatar-md" src="@userIdentity.GetUserAvatarUrl()" alt="Avatar for @userIdentity.Email" style="margin-top: -2px" />
+                                    <img class="img-circle user-avatar user-avatar-md" src="@userIdentity.GetAvatarApiUrl()" alt="Avatar for @userIdentity.Email" style="margin-top: -2px" />
                                     @User.Identity.Name <span class="caret"></span>
                                 </a>
                                 <div class="dropdown-menu no-padding no-margin">
                                     <div class="panel panel-default no-padding no-margin" style="width: 250px">
                                         <div class="panel-body text-center">
-                                            <img src="@userIdentity.GetUserAvatarUrl()" alt="User avatar" width="48" />
+                                            <img src="@userIdentity.GetAvatarApiUrl()" alt="User avatar" width="48" />
                                             <p class="row no-margin">
-                                                <a href="/users/@userIdentity.Id" class="font-larger">@userIdentity.Email</a><br />
+                                                <a href="@userIdentity.GetUrl()" class="font-larger">@userIdentity.Email</a><br />
                                                 @userIdentity.Username
                                             </p>
                                         </div>

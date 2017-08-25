@@ -8,6 +8,7 @@ using Grafika.Services;
 using SimpleMvcSitemap.Images;
 using Microsoft.AspNetCore.Authorization;
 using Grafika.Web.Infrastructure.Extensions;
+using Grafika.Services.Extensions;
 
 namespace Grafika.Web.Controllers
 {
@@ -56,15 +57,15 @@ namespace Grafika.Web.Controllers
             var animations = handpicked.Union(otherAnimations).Distinct();
 
             var nodes = animations.Select(animation => 
-                new SitemapNode($"/animations/{animation.Id}/{animation.GetSlug()}")
+                new SitemapNode(animation.GetUrl())
                 {
                     Images = new List<SitemapImage>
                     {
-                        new SitemapImage(animation.GetThumbnailUrl())
+                        new SitemapImage(animation.GetThumbnailApiUrl())
                         {
                             Caption =  $"{animation.Name}. An animation by {animation.Author} | Grafika",
                             Title = $"{animation.Name} | Grafika",
-                            Url = animation.GetThumbnailUrl()
+                            Url = animation.GetThumbnailApiUrl()
                         }
                         
                     }

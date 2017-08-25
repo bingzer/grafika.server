@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using Grafika.Utilities;
+using System.Collections.Generic;
 
 namespace Grafika.Configurations
 {
     public class ServerConfiguration
     {
         public string Url { get; set; }
+        public string ApiUrl => Utility.CombineUrl(Url, "api");
         public string Name { get; set; }
         public string Description { get; set; }
         public string Version { get; set; }

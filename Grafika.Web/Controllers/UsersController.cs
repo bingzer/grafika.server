@@ -1,5 +1,6 @@
 using Grafika.Configurations;
 using Grafika.Services;
+using Grafika.Services.Extensions;
 using Grafika.Utilities;
 using Grafika.Web.Infrastructure.Extensions;
 using Grafika.Web.ViewModels;
@@ -36,7 +37,7 @@ namespace Grafika.Web.Controllers
             {
                 Title = $"{user.Username} | Grafika",
                 Description = $"List of all grafika animations created by {user.Username} | Grafika",
-                Thumbnail = new ThumbnailViewModel(user.GetUserAvatarUrl(), 100, 100)
+                Thumbnail = new ThumbnailViewModel(user.GetAvatarApiUrl(), 100, 100)
             };
 
             var model = new UserViewModel

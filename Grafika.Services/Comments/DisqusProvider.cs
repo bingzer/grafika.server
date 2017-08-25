@@ -1,5 +1,6 @@
 ﻿using Grafika.Animations;
 using Grafika.Configurations;
+using Grafika.Services.Extensions;
 using Grafika.Utilities;
 using Microsoft.Extensions.Options;
 using System;
@@ -32,7 +33,7 @@ namespace Grafika.Services.Comments
                 username = user.Username,
                 email = user.Email,
                 avatar = await _userService.GetAvatarOrBackdropUrl(user.Id, "avatar"),
-                url = Utility.CombineUrl(_serverConfig.Url, "users", user.Id, "seo")
+                url = user.GetUrl()
             };
 
             return new AuthenticationToken
@@ -49,13 +50,15 @@ namespace Grafika.Services.Comments
             var disqusToken = context.User == null ? AuthenticationToken.Empty : await GenerateAuthenticationToken(context.User);
             var userToken = context.UserToken;
 
-            var seoUrl = Utility.CombineUrl(serverUrl, "animations", animation.Id, "seo");
-            var animUrl = Utility.CombineUrl(serverUrl, "animations", animation.Id);
-            var postUrl = Utility.CombineUrl(animUrl, "comments");
+            var seoUrl = animation.GetUrl();
+            var animUrl = animation.GetUrl();
+            var postUrl = Utility.CombineUrl(animation.GetApiUrl(), "comments");
             var queryString = $"url={seoUrl}&title={EncodeAscii(animation.Name)}&shortname=grafika-app&identifier={animation.Id}&pub={disqusToken.Id}&disqusToken={disqusToken.Token}&postUrl={postUrl}&jwtToken={userToken.Token}";
 
-            var urlBuilder = new UriBuilder(Utility.CombineUrl(_serverConfig.Url, "app", "content", "comment.html"));
-            urlBuilder.Query = queryString;
+            var urlBuilder = new UriBuilder(Utility.CombineUrl(_serverConfig.Url, "comments"))
+            {
+                Query = queryString
+            };
 
             return urlBuilder.Uri;
         }
@@ -63,7 +66,10 @@ namespace Grafika.Services.Comments
         private static string EncodeAscii(string any)
         {
             var utf8Bytes = Encoding.UTF8.GetBytes(any.Replace("\n", ""));
-            return Encoding.ASCII.GetString(utf8Bytes);
+            var ascii = Encoding.ASCII.GetString(utf8Bytes);
+            ascii = ascii.Replace("#", "").Replace("?", "");
+
+            return ascii;
         }
 
         #region https://github.com/disqus/DISQUS-API-Recipes/blob/master/sso/cs/DisqusSSO.cs
