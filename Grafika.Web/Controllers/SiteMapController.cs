@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using SimpleMvcSitemap;
 using Grafika.Services;
-using Grafika.Services.Web.Extensions;
 using SimpleMvcSitemap.Images;
 using Microsoft.AspNetCore.Authorization;
+using Grafika.Web.Infrastructure.Extensions;
 
 namespace Grafika.Web.Controllers
 {

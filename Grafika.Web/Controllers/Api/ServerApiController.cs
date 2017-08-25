@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Grafika.Configurations;
 using Grafika.Web.Models;
-using Grafika.Services.Web.Extensions;
+using Grafika.Web.Infrastructure.Extensions;
 
 namespace Grafika.Web.Controllers
 {

@@ -1,7 +1,7 @@
 using Grafika.Configurations;
 using Grafika.Services;
-using Grafika.Services.Web.Extensions;
 using Grafika.Utilities;
+using Grafika.Web.Infrastructure.Extensions;
 using Grafika.Web.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

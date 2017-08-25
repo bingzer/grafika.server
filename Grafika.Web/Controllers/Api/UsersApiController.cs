@@ -1,13 +1,13 @@
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
 using Grafika.Services;
-using Microsoft.AspNetCore.Authorization;
 using Grafika.Web.Models;
-using Grafika.Services.Web.Filters;
-using Grafika.Services.Web.Extensions;
-using Microsoft.Extensions.Options;
 using Grafika.Configurations;
 using Grafika.Utilities;
+using Grafika.Web.Infrastructure.Filters;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Options;
+using Grafika.Web.Infrastructure.Extensions;
 
 namespace Grafika.Web.Controllers
 {

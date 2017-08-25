@@ -24,7 +24,7 @@ namespace Grafika.Web.Controllers
 
         [AllowAnonymous]
         [HttpPost("")]
-        public async Task<IActionResult> Login([FromBody] LoginModel model)
+        public async Task<IActionResult> Login([FromBody] LoginViewModel model)
         {
             var token = await _accountService.Login(model.Email, model.Password);
             return Json(token);

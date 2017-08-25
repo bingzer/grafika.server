@@ -7,8 +7,8 @@ using System.Linq;
 using Grafika.Configurations;
 using Microsoft.Extensions.Options;
 using Grafika.Utilities;
-using Grafika.Services.Web.Extensions;
-using Grafika.Services.Web.Filters;
+using Grafika.Web.Infrastructure.Filters;
+using Grafika.Web.Infrastructure.Extensions;
 
 namespace Grafika.Web.Controllers
 {

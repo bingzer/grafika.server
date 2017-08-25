@@ -1,12 +1,10 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Grafika.Services;
 using Microsoft.Extensions.Options;
 using Grafika.Configurations;
 using Microsoft.AspNetCore.Authorization;
 using Grafika.Services.Models;
 using Grafika.Services.Emails;
-using Grafika.Services.Web.Extensions;
 using Grafika.Web.Models;
 using Grafika.Connections;
 using System.Linq;

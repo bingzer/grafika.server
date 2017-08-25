@@ -1,7 +1,4 @@
 ﻿using Grafika.Animations;
-using Grafika.Services.Web.Extensions;
-using Grafika.Web.ViewModels;
-using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Grafika.Web.Infrastructure.Extensions

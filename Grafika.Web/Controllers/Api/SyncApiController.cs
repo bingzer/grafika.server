@@ -1,10 +1,8 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Grafika.Services;
-using Grafika.Services.Web.Filters;
 using Grafika.Web.Models;
-using System.IO;
-using System.Linq;
+using Grafika.Web.Infrastructure.Filters;
 
 namespace Grafika.Web.Controllers
 {

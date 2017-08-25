@@ -4,11 +4,10 @@ using Grafika.Services;
 using System.Threading.Tasks;
 using Grafika.Web.ViewModels;
 using Grafika.Configurations;
-using Grafika.Services.Web.Extensions;
 using Microsoft.Extensions.Caching.Memory;
-using System.Collections;
 using Grafika.Animations;
 using System;
+using Grafika.Web.Infrastructure.Extensions;
 
 namespace Grafika.Web.Controllers
 {
