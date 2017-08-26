@@ -11,9 +11,9 @@ namespace Grafika.Services.Extensions
         /// </summary>
         /// <param name="animation"></param>
         /// <returns></returns>
-        public static string GetUrl(this Animation animation)
+        public static string GetUrl(this Animation animation, bool useSlug = true)
         {
-            return Utility.CombineUrl(AppEnvironment.Default.Server.Url, "animations", animation.Id, GetSlug(animation));
+            return Utility.CombineUrl(AppEnvironment.Default.Server.Url, "animations", animation.Id, useSlug ? GetSlug(animation) : "");
         }
 
         /// <summary>

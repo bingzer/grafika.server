@@ -51,8 +51,8 @@ namespace Grafika.Services.Comments
             var userToken = context.UserToken;
 
             var seoUrl = animation.GetUrl();
-            var animUrl = animation.GetUrl();
-            var postUrl = Utility.CombineUrl(animation.GetApiUrl(), "comments");
+            var animUrl = animation.GetUrl(useSlug: false);
+            var postUrl = Utility.CombineUrl(animUrl, "comments");
             var queryString = $"url={seoUrl}&title={EncodeAscii(animation.Name)}&shortname=grafika-app&identifier={animation.Id}&pub={disqusToken.Id}&disqusToken={disqusToken.Token}&postUrl={postUrl}&jwtToken={userToken.Token}";
 
             var urlBuilder = new UriBuilder(Utility.CombineUrl(_serverConfig.Url, "comments"))

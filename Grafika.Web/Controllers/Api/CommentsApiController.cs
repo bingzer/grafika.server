@@ -9,7 +9,6 @@ using Microsoft.AspNetCore.Http;
 
 namespace Grafika.Web.Controllers
 {
-    [Produces("application/json")]
     [Route("api/animations")]
     public class CommentsApiController : Controller
     {
