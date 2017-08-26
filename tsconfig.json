@@ -6,7 +6,7 @@
     "allowJs": false
   },
   "include": [
-    "Grafika.WebSite/wwwroot/js/**/*.ts",
+    "Grafika.Web/wwwroot/js/**/*.ts",
     "typings/index.d.ts",
     "typings/resource.d.ts",
     "typings/user.d.ts"

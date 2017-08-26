@@ -9,16 +9,20 @@ namespace Grafika.Web.Infrastructure
 {
     public class ApiRewriteRules
     {
-        static Regex regex = new Regex("\\/?api", RegexOptions.IgnoreCase);
+        static Regex ApiUrlPattern = new Regex(@"\/?api", RegexOptions.IgnoreCase);
+        static Regex ApiAnimationCommentsPattern = new Regex(@"\/?animations\/[a-z0-9]*\/comments", RegexOptions.IgnoreCase);
 
         public static void RewriteToApi(RewriteContext context)
         {
+            var path = context.HttpContext.Request.Path.Value;
+            if (ApiUrlPattern.IsMatch(path))
+                return;
+
             var rules = new List<Func<RewriteContext, bool>>
             {
                 (ctx) =>
                 {
-                    var path = ctx.HttpContext.Request.Path.Value;
-                    return !regex.IsMatch(path);
+                    return ApiAnimationCommentsPattern.IsMatch(path);
                 },
 
                 (ctx) =>
@@ -28,10 +32,10 @@ namespace Grafika.Web.Infrastructure
                 }
             };
 
-            if (rules.All(rule => rule(context)))
+            if (rules.Any(rule => rule(context)))
             {
                 var apiUrl = Utility.CombineUrl("/api", context.HttpContext.Request.Path);
-                context.HttpContext.Response.Redirect(apiUrl, true);
+                context.HttpContext.Request.Path = apiUrl;
             }
         }
     }

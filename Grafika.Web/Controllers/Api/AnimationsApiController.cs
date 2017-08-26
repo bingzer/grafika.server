@@ -6,9 +6,8 @@ using Microsoft.AspNetCore.Authorization;
 using System.Linq;
 using Grafika.Configurations;
 using Microsoft.Extensions.Options;
-using Grafika.Utilities;
 using Grafika.Web.Infrastructure.Filters;
-using Grafika.Web.Infrastructure.Extensions;
+using Grafika.Services.Extensions;
 
 namespace Grafika.Web.Controllers
 {
@@ -135,11 +134,7 @@ namespace Grafika.Web.Controllers
             if (animation == null)
                 throw new NotFoundExeption();
 
-            if (Request.IsCrawler(clientConfig.Value))
-                return View("AnimationSeo", animation);
-
-            var redirectUrl = Utility.CombineUrl(serverOpts.Value.Url, "animations", animation.Id);
-            return Redirect(redirectUrl);
+            return Redirect(animation.GetUrl());
         }
     }
 }
