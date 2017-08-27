@@ -2,9 +2,14 @@
 
 namespace Grafika.Services.Animations
 {
-    public class AnimationValidator : Validator<Animation>, IAnimationValidator
+    public class AnimationValidator : EntityValidator<Animation>, IAnimationValidator
     {
-        public void Sanitize(Animation entity, IUser caller = null)
+        public AnimationValidator(IEntityIdValidator entityIdValidator) 
+            : base(entityIdValidator)
+        {
+        }
+
+        public override void Sanitize(Animation entity, IUser caller = null)
         {
             if (caller?.IsAdmin() == true || caller?.IsSystem() == true) return;
             

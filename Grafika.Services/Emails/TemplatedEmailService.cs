@@ -9,13 +9,13 @@ namespace Grafika.Services.Emails
 {
     class TemplatedEmailService : EmailService, ITemplatedEmailService
     {
-        public ContentConfiguration ContentConfig { get; private set; }
+        public ServerConfiguration ServerConfig { get; private set; }
         public ITemplatedRenderingEngine<string> Engine { get; private set; }
 
         public TemplatedEmailService(IServiceContext userContext) 
             : base(userContext)
         {
-            ContentConfig = Context.ServiceProvider.Get<IOptions<ContentConfiguration>>().Value;
+            ServerConfig = Context.ServiceProvider.Get<IOptions<ServerConfiguration>>().Value;
             Engine = Context.ServiceProvider.Get<ITemplatedRenderingEngine<string>>();
         }
 
@@ -25,8 +25,8 @@ namespace Grafika.Services.Emails
             return new TEmailModel
             {
                 Email = to,
-                HomeUrl = ContentConfig.Url,
-                PrivacyUrl = Utility.CombineUrl(ContentConfig.Url, ContentConfig.PrivacyPath),
+                HomeUrl = ServerConfig.Url,
+                PrivacyUrl = Utility.CombineUrl(ServerConfig.Url, ServerConfig.PrivacyPath),
                 Sender = EmailConfig.DefaultFrom,
                 Subject = subject
             };

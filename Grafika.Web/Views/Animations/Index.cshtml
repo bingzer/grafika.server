@@ -1,0 +1,33 @@
+@model AnimationsViewModel
+
+<header class="bg-dark page-heading page-heading-lg text-center">
+    <h1>Public Animations</h1>
+    <form class="page-toolbar" data-url="@Url.Action()" method="get">
+        <div class="input-group search-input-group search-input-sm">
+            <input type="text" name="term" class="search-query form-control" value="@Model.Options.Term" placeholder="Search" />
+            <span class="input-group-btn">
+                <button class="btn btn-danger" type="button">
+                    <span class="fa fa-search"></span>
+                </button>
+            </span>
+        </div>
+    </form>
+</header>
+<div class="page-content page-content-gutter" id="animations">
+    <div id="animation-thumbnails-container">
+        @await  Html.PartialAsync("~/Views/Animations/_List.cshtml")
+    </div>
+    <article id="more-button-container" class="text-center">
+        <button id="more-button"
+                class="btn btn-danger @(Model.Animations.Count() == Model.Options.PageSize ? "" : "hidden")"
+                onclick="GrafikaApp.Partials.renderPartial(this)"
+                title="Load more..."
+                data-partial="append"
+                data-url="/animations/list"
+                data-target="#animation-thumbnails-container"
+                data-callback="var d = $('#more-button').data();d.data.pageNumber++;$('#more-button').attr('data-data', JSON.stringify(d));"
+                data-data="@Model.Options.NextPage().ToJson()">
+            <i class="fa fa-arrow-down"></i>
+        </button>
+    </article>
+</div>

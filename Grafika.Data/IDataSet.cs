@@ -17,7 +17,5 @@ namespace Grafika.Data
         Task<TEntity> UpdateAsync(TEntity entity);
 
         Task<TEntity> RemoveAsync(TEntity entity);
-
-        TEnumerable As<TEnumerable>();
     }
 }

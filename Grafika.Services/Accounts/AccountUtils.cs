@@ -13,7 +13,7 @@ namespace Grafika.Services.Accounts
             return "user-" + string.Format("{0:x6}", new Random((int)DateTime.Now.Ticks).Next(0x1000000));
         }
 
-        internal static string RandomlyPickBackdrop(ContentConfiguration config)
+        internal static string RandomlyPickBackdrop(ServerConfiguration config)
         {
             var backdrop = Utility.RandomlyPickOne("001.png", "002.png", "003.png", "004.png", "005.png");
             return Utility.CombineUrl(config.Url, config.BackdropsPath, backdrop);
@@ -28,7 +28,7 @@ namespace Grafika.Services.Accounts
             };
         }
 
-        internal static UserPreference NewUserPreference(string username, ContentConfiguration config)
+        internal static UserPreference NewUserPreference(string username, ServerConfiguration config)
         {
             return new UserPreference
             {

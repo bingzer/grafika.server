@@ -20,8 +20,7 @@ namespace Grafika.Web
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseIISIntegration()
                 .UseStartup<Startup>()
-                //.UseApplicationInsights()
-                .UseUrls("http://+:" + port)
+                .UseApplicationInsights()
                 .Build();
 
             host.Run();

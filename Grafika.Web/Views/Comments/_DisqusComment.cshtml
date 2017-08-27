@@ -1,0 +1,58 @@
+@model CommentDisqusViewModel
+
+<div style="background-color: @Model.BackgroundColor; padding: 0; margin: 0">
+    <div id="disqus_thread"></div>
+</div>
+
+<script type="text/javascript" defer>
+        var params;
+        var disqus_url;
+        var disqus_title;
+        var disqus_shortname;
+        var disqus_identifier;
+        var disqus_config;
+
+        function loadComments(shortname, url, postUrl, title, identifier, pub, disqusToken, jwtToken) {
+            disqus_url = url;
+            disqus_title = title;
+            disqus_shortname = shortname;
+
+            if (identifier !== undefined)
+                disqus_identifier = identifier;
+            else
+                disqus_identifier = "";
+
+            disqus_config = function () {
+                this.page.api_key = pub;
+                this.page.remote_auth_s3 = disqusToken;
+                this.callbacks.onNewComment = [function (comment) {
+                    var url = postUrl + '?token=' + jwtToken;
+                    postAjax(url, comment, function (text) {
+                        console.log('postComment: ' + text);
+                    });
+                }];
+            };
+
+            (function () {
+                var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = false;
+                dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+        }
+
+        function postAjax(url, data, success) {
+            var xhr = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
+            xhr.open('POST', url);
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState > 3 && xhr.status == 200) { success(xhr.responseText); }
+            };
+            xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+            xhr.setRequestHeader('Access-Control-Allow-Origin', '*');
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.send(JSON.stringify(data));
+            return xhr;
+        }
+
+        loadComments('@Model.ShortName', '@Model.Url', '@Model.PostUrl', '@Model.Title', '@Model.Identifier', '@Model.Pub', '@Model.DisqusToken', '@Model.JwtToken');
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>

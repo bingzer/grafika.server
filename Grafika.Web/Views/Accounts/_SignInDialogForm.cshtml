@@ -1,0 +1,35 @@
+@{
+    var signUpUrl = Utility.CombineUrl(AppEnvironment.Default.Server.ApiUrl, "/accounts/register");
+}
+<section id="signin-section" class="login-form" style="display: none">
+    @await Html.PartialAsync("_SignInForm")
+</section>
+<section id="signup-section" class="login-form" style="display: none">
+    @await Html.PartialAsync("_SignUpForm")
+</section>
+
+<script type="text/javascript" defer>
+    function validate() {
+        if ($('#signup-form').valid())
+            $('#signup-form input[type=submit]').removeAttr('disabled');
+        else $('#signup-form input[type=submit]').attr('disabled', 'disabled');
+    }
+
+    GrafikaApp.loadElements(this);
+
+    $('#signup-form input[type=password], #signup-form input[type=email]').focus(validate).change(validate).keyup(validate);
+
+    $('#signin').click(function (e) {
+        e.preventDefault();
+        $('#signup-section').hide();
+        $('#signin-section').fadeIn();
+    });
+    $('#signup').click(function (e) {
+        e.preventDefault();
+        $('#signin-section').hide();
+        $('#signup-section').fadeIn();
+    });
+
+    $('a[href="/eula"],a.eula').attr('target', '_blank');
+    $('#signin-section').fadeIn();
+</script>

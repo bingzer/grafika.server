@@ -17,12 +17,12 @@ namespace Grafika.Test.Services.Animations
 {
     public class AnimationEmailServiceTest
     {
-        ContentConfiguration contentConfiguration = new ContentConfiguration();
+        ServerConfiguration serverConfiguration = new ServerConfiguration();
         EmailConfiguration emailConfiguration = new EmailConfiguration { DefaultFrom = "system@email.com" };
 
         Mock<IMailTransport> mockMailTransport = new Mock<IMailTransport>();
         Mock<IOptions<EmailConfiguration>> mockEmailOptions = new Mock<IOptions<EmailConfiguration>>();
-        Mock<IOptions<ContentConfiguration>> mockContentOptions = new Mock<IOptions<ContentConfiguration>>();
+        Mock<IOptions<ServerConfiguration>> mockContentOptions = new Mock<IOptions<ServerConfiguration>>();
         Mock<ITemplatedRenderingEngine<string>> mockTemplatedEngine = new Mock<ITemplatedRenderingEngine<string>>();
 
         [Fact]
@@ -87,7 +87,10 @@ namespace Grafika.Test.Services.Animations
                 .ReturnsAsync(new User { Subscriptions = new UserSubscriptions { EmailOnComments = true }, Email = "user@email.com" })
                 .Verifiable();
             var mockAwsRepo = new Mock<IAwsResourceRepository>();
-            mockAwsRepo.Setup(c => c.GetResourceUrl(It.Is<string>(str => str == "animationId"), It.Is<string>(str => str == Thumbnail.ResourceId)))
+            mockAwsRepo.Setup(c => c.GetResourceUrl(
+                    It.Is<EntityType>(e => e == EntityType.Animation),
+                    It.Is<string>(str => str == "animationId"), 
+                    It.Is<string>(str => str == Thumbnail.ResourceId)))
                 .ReturnsAsync("resource-url")
                 .Verifiable();
 
@@ -115,8 +118,8 @@ namespace Grafika.Test.Services.Animations
                 .Returns(mockMailTransport.Object);
             mockServiceProvider.Setup(c => c.GetService(It.Is<Type>(t => t == typeof(IOptions<EmailConfiguration>))))
                 .Returns(() => new OptionsWrapper<EmailConfiguration>(emailConfiguration));
-            mockServiceProvider.Setup(c => c.GetService(It.Is<Type>(t => t == typeof(IOptions<ContentConfiguration>))))
-                .Returns(() => new OptionsWrapper<ContentConfiguration>(contentConfiguration));
+            mockServiceProvider.Setup(c => c.GetService(It.Is<Type>(t => t == typeof(IOptions<ServerConfiguration>))))
+                .Returns(() => new OptionsWrapper<ServerConfiguration>(serverConfiguration));
             mockServiceProvider.Setup(c => c.GetService(It.Is<Type>(t => t == typeof(ITemplatedRenderingEngine<string>))))
                 .Returns(mockTemplatedEngine.Object);
 

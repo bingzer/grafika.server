@@ -3,27 +3,26 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:49595/",
+      "applicationUrl": "http://localhost:65416/",
       "sslPort": 0
     }
   },
   "profiles": {
     "IIS Express": {
       "commandName": "IISExpress",
-      "launchUrl": "api/values",
+      "launchBrowser": true,
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development",
-        "PORT": "3000"
+        "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "Grafika.Web": {
+    "Grafika.WebSite": {
       "commandName": "Project",
-      "launchUrl": "api/values",
       "environmentVariables": {
+        "Grafika:Server:Url": "http://bingzcomputer:3000",
         "ASPNETCORE_ENVIRONMENT": "Development",
         "PORT": "3000"
       },
-      "applicationUrl": "http://localhost:3000"
+      "applicationUrl": "http://bingzcomputer:3000"
     }
   }
 }

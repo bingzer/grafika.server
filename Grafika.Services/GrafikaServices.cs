@@ -1,7 +1,12 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using MailKit;
+using MailKit.Net.Smtp;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Grafika.Connections;
 using Grafika.Configurations;
 using Grafika.Data.Mongo;
 using Grafika.Services.Accounts;
@@ -11,22 +16,31 @@ using Grafika.Services.Admins;
 using Grafika.Services.Animations;
 using Grafika.Services.Aws;
 using Grafika.Services.Comments;
+using Grafika.Services.Connections;
 using Grafika.Services.Disqus;
 using Grafika.Services.Emails;
 using Grafika.Services.Syncs;
 using Grafika.Services.Users;
+using Grafika.Services.Backgrounds;
+using Grafika.Utilities;
+using System;
+using Grafika.Services.AnimationSeries;
+using System.Threading.Tasks;
 
 namespace Grafika.Services
 {
     public static class GrafikaServices
     {
-        public static void AddGrafika(this IServiceCollection services)
+        internal static IServiceProvider ServiceProvider { get; private set; }
+
+        public static void AddGrafikaServices(this IServiceCollection services)
         {
             // -- Grafika.Data.MongoDB
-            services.AddMongoDB();
+            services.AddMongoDb();
 
             services
                 .AddSingleton(AppEnvironment.Default)
+                .AddSingleton<IConnectionManager, ConnectionManager>()
                 .AddScoped<IHttpClient, HttpClientDecorator>()
                 .AddScoped<IHttpClientFactory, HttpClientFactory>()
                 ;
@@ -36,17 +50,34 @@ namespace Grafika.Services
                 .AddScoped<IAnimationService, AnimationService>()
                 .AddScoped<IAnimationEmailService, AnimationEmailService>()
                 .AddScoped<IAnimationRepository, AnimationRepository>()
+                .AddScoped<IFrameService, FrameService>()
+                .AddScoped<IResourceService, ResourceService>()
                 .AddSingleton<IAnimationValidator, AnimationValidator>()
                 .AddSingleton<IFrameDataProcessingFactory, FrameDataProcesingFactory>()
                 .AddScoped<FrameDataDeflatedProcessingStrategy, FrameDataDeflatedProcessingStrategy>()
                 .AddScoped<FrameDataRawProcessingStrategy, FrameDataRawProcessingStrategy>()
-            ;
+                ;
+
+            // -- Backgrounds
+            services
+                .AddScoped<IBackgroundService, BackgroundService>()
+                .AddScoped<IBackgroundRepository, BackgroundRepository>()
+                .AddSingleton<IBackgroundValidator, BackgroundValidator>()
+                ;
+
+            // -- Series
+            services
+                .AddScoped<ISeriesService, SeriesService>()
+                .AddScoped<ISeriesRepository, SeriesRepository>()
+                .AddScoped<ISeriesValidator, SeriesValidator>()
+                ;
 
             // -- Aws
             services
                 .AddScoped<IAwsFrameRepository, AwsFrameRepository>()
                 .AddScoped<IAwsResourceRepository, AwsResourceRepository>()
                 .AddScoped<IAwsUsersRepository, AwsUsersRepository>()
+                .AddScoped<IAwsConnectionHub, AwsConnectionHub>()
                 ;
 
             // -- Users
@@ -75,6 +106,8 @@ namespace Grafika.Services
             services
                 .AddScoped<IEmailService, EmailService>()
                 .AddScoped<ITemplatedEmailService, TemplatedEmailService>()
+                .AddScoped<IEmailConnectionHub, EmailConnectionHub>()
+                .AddScoped<IMailTransport, SmtpClient>()
                 ;
 
             // -- Syncs
@@ -94,14 +127,13 @@ namespace Grafika.Services
                 ;
         }
 
-        public static void ConfigureGrafika(this IServiceCollection services, IConfiguration configuration)
+        public static void ConfigureGrafikaServices(this IServiceCollection services, IConfiguration configuration)
         {
             configuration.GetSection("Grafika").Bind(AppEnvironment.Default);
 
             services
                 .AddSingleton<IOptions<ServerConfiguration>>(new OptionsWrapper<ServerConfiguration>(AppEnvironment.Default.Server))
                 .AddSingleton<IOptions<ClientConfiguration>>(new OptionsWrapper<ClientConfiguration>(AppEnvironment.Default.Client))
-                .AddSingleton<IOptions<ContentConfiguration>>(new OptionsWrapper<ContentConfiguration>(AppEnvironment.Default.Content))
                 .AddSingleton<IOptions<AuthConfiguration>>(new OptionsWrapper<AuthConfiguration>(AppEnvironment.Default.Auth))
                 .AddSingleton<IOptions<DataConfiguration>>(new OptionsWrapper<DataConfiguration>(AppEnvironment.Default.Data))
                 .AddSingleton<IOptions<EmailConfiguration>>(new OptionsWrapper<EmailConfiguration>(AppEnvironment.Default.Email))
@@ -111,6 +143,27 @@ namespace Grafika.Services
                 .AddSingleton<IOptions<DisqusOAuthProviderConfiguration>>(new OptionsWrapper<DisqusOAuthProviderConfiguration>(AppEnvironment.Default.Auth.Disqus))
                 .AddSingleton<IOptions<JwtConfiguration>>(new OptionsWrapper<JwtConfiguration>(AppEnvironment.Default.Auth.Jwt));
                 ;
+        }
+
+        public static void UseGrafikaServices(this IApplicationBuilder app)
+        {
+            ServiceProvider = app.ApplicationServices;
+
+            app.ApplicationServices.UseMongoDb();
+
+            app.ApplicationServices.Get<IConnectionManager>().Register<IAwsConnectionHub>();
+            app.ApplicationServices.Get<IConnectionManager>().Register<IEmailConnectionHub>();
+
+            var logger = app.ApplicationServices.Get<ILoggerFactory>().CreateLogger("Startup");
+            foreach (var connection in app.ApplicationServices.Get<IConnectionManager>().Connections)
+            {
+                logger.LogInformation("Ensure {0} is ready...", connection.Name);
+
+                connection.EnsureReady().GetAwaiter().GetResult();
+                connection.Dispose();
+            }
+
+            app.ApplicationServices.Get<ISeriesService>().EnsureHandpickedSeriesCreated().GetAwaiter().GetResult();
         }
     }
 }

@@ -9,71 +9,18 @@ namespace Grafika.Services.Users
     public class UserService : EntityService<User, UserQueryOptions, IUserRepository>, IUserService
     {
         private readonly IAwsUsersRepository _awsUsers;
-        private readonly ContentConfiguration _contentConfig;
+        private readonly ServerConfiguration _serverConfig;
 
         public UserService(IServiceContext userContext, 
             IUserRepository userRepo, 
             IUserValidator validator,
             IAwsUsersRepository awsUsers,
-            IOptions<ContentConfiguration> contentOpts)
+            IOptions<ServerConfiguration> serverOpts)
             : base(userContext, userRepo, validator)
         {
             _awsUsers = awsUsers;
-            _contentConfig = contentOpts.Value;
+            _serverConfig = serverOpts.Value;
         }
-
-        //public async Task<IEnumerable<User>> GetUsers(UserQueryOptions options)
-        //{
-        //    var users = await _repo.Find(options);
-
-        //    _validator.Sanitize(users, User);
-
-        //    return users;
-        //}
-
-        //public async Task<User> GetUser(string userId)
-        //{
-        //    var user = await FindById(userId);
-
-        //    _validator.Sanitize(new User[] { user }, User);
-
-        //    return user;
-        //}
-
-        //public async Task<User> CreateUser(User user)
-        //{
-        //    Ensure.ArgumentNotNull(user, "user");
-
-        //    _validator.Validate(user);
-
-        //    return await _repo.Add(user);
-        //}
-
-        //public async Task<User> UpdateUser(User user)
-        //{
-        //    Ensure.ArgumentNotNull(user, "user");
-
-        //    await _repo.CheckUsernameAvailability(user, user.Username);
-
-        //    var update = new User(user.Id)
-        //    {
-        //        DateModified = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds(),
-        //        FirstName = user.FirstName,
-        //        LastName = user.LastName,
-        //        Prefs = user.Prefs,
-        //        Subscriptions = user.Subscriptions,
-        //        Username = user.Username
-        //    };
-
-        //    return await _repo.Update(update);
-        //}
-
-        //public async Task<User> DeleteUser(string userId)
-        //{
-        //    var user = await FindById(userId);
-
-        //    return await _repo.Remove(user);
-        //}
 
         public async Task UpdateLastSeen(User user)
         {
@@ -90,17 +37,19 @@ namespace Grafika.Services.Users
             switch (type)
             {
                 case "avatar":
-                    url = user?.Prefs?.Avatar ?? Utility.CombineUrl(_contentConfig.Url, _contentConfig.DefaultAvatarPath);
+                    url = user?.Prefs?.Avatar ?? Utility.CombineUrl(_serverConfig.Url, _serverConfig.DefaultAvatarPath);
                     break;
                 case "backdrop":
-                    url = user?.Prefs?.Backdrop ?? Utility.CombineUrl(_contentConfig.Url, _contentConfig.DefaultBackdropPath);
+                    url = user?.Prefs?.Backdrop ?? Utility.CombineUrl(_serverConfig.Url, _serverConfig.DefaultBackdropPath);
                     break;
                 default: throw new NotValidException("type = " + type);
             }
 
             // fixed stupid relative url
             if (url.StartsWith("/") || url.StartsWith("//"))
-                url = Utility.CombineUrl(_contentConfig.Url, url);
+                url = Utility.CombineUrl(_serverConfig.Url, url);
+            if (!url.StartsWith("http", StringComparison.CurrentCultureIgnoreCase))
+                url = Utility.CombineUrl(_serverConfig.Url, url);
 
             return url;
         }
@@ -126,16 +75,9 @@ namespace Grafika.Services.Users
             };
         }
 
-        //private async Task<User> FindById(string userId)
-        //{
-        //    if (!_repo.ValidateId(userId))
-        //        throw new NotFoundExeption();
-
-        //    var user = await _repo.First(new UserQueryOptions { Id = userId });
-        //    if (user == null)
-        //        throw new NotFoundExeption();
-
-        //    return user;
-        //}
+        protected internal override Task<User> PrepareEntityForCreate(User source)
+        {
+            return Task.FromResult(source);
+        }
     }
 }

@@ -1,0 +1,46 @@
+@model RerouteViewModel
+
+<div class="bg-dark page-heading"></div>
+<section class="page-content page-content-article">
+    <header class="text-center">
+        <h3>Welcome, @Model.User,</h3>
+        <p>
+            Thank you for verifying your email address<br/>
+            Please enter and confirm your new password
+        </p>
+        <hr class="primary" />
+    </header>
+    <div class="login-form">
+        <form class="form-horizontal" id="password-form" action="@ViewBag.ApiPasswordUrl" method="post"
+              data-callback="onPasswordSet()"
+              onsubmit="return GrafikaApp.Form.onSubmit(this)">
+            <input type="hidden" name="email" value="@Model.User" />
+            <input type="hidden" name="hash" value="@Model.Hash" />
+            @await Html.PartialAsync("_PasswordForm", new PasswordFormViewModel())
+        </form>
+    </div>
+</section>
+
+@section scripts {
+<script type="text/javascript">
+    function onPasswordSet() {
+        GrafikaApp.toast('Password is successfully set');
+        bootbox.alert({
+            message: 'Your password is now set. You will now be taken to the login page.',
+            title: 'Password is set',
+            callback: function () {
+                GrafikaApp.navigateTo('/signin');
+            }
+        });
+    }
+</script>
+
+}
+@section styles {
+<environment names="Development">
+    <link href="~/css/GrafikaApp.Login.css" rel="stylesheet" type="text/css" />
+</environment>
+<environment names="Production">
+    <link href="~/css/GrafikaApp.Bundle.Login.min.css" rel="stylesheet" type="text/css" />
+</environment>
+}

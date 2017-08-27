@@ -1,0 +1,107 @@
+@model AnimationsViewModel
+
+<header id="header" class="stickdraw">
+    <div id="header-content" class="header-content">
+        <div class="row text-center">
+            <h1 style="visibility: hidden">
+                StickDraw
+            </h1>
+            <p id="stickdraw-logo">
+            </p>
+            <p class="font-larger">Saying goodbye :(</p>
+            <hr class="primary">
+            <p class="text-faded font-larger">
+                StickDraw is one of the first animation maker app ever wandered in Google Play Store. <br />
+                Due to limitation of its design, we have decided to deprecate the app. <br />
+                Although, it will still be around in the Play Store, the excitement and the time to maintain the application has <i>gone</i>.
+            </p>
+            <p class="padding-xl">
+                <a href="https://play.google.com/store/apps/details?id=com.bingzer.android.stickdraw" title="Get it from Google Play Store">
+                    <img src="~/img/google-play-badge.png" alt="StickDraw on Google Play Store" />
+                </a>
+                <a href="https://www.amazon.com/bingzer-StickDraw/dp/B007IWIOME" title="Get it from Amazon App Store">
+                    <img src="~/img/amazon-app-store-badge.png" alt="StickDraw on Amazon App Store" />
+                </a>
+            </p>
+            <hr class="primary">
+            <p class="text-faded font-larger margin-xl">
+                We would like to thank the users and all of the positive and negative feedbacks. <br/>
+            </p>
+            <p class="margin-xl">
+                <a href="#youtube" class="btn btn-lg btn-danger page-scroll" title="Scroll for more">
+                    <i class="fa fa-arrow-down sr-icons"></i>
+                </a>
+            </p>
+        </div>
+    </div>
+</header>
+<section id="youtube" class="bg-dark padding-xxl">
+    <div class="row">
+        <header class="col-lg-12 text-center">
+            <h2 class="text-faded">
+                Youtube Channels
+            </h2>
+            <p class="font-larger">
+                While the app is quietly being disbanded, these amazing users keep creating amazing animations.<br />
+                We compiled a list of animations published in YouTube created by StickDraw
+            </p>
+        </header>
+    </div>
+    <div class="row">
+        <iframe class="youtube-embedd" width="560" height="315" src="https://www.youtube.com/embed/videoseries?list=PLqadUo4AdKXyx9zDy5MJ00JqeHOkPnTHT" frameborder="0" allowfullscreen></iframe>
+    </div>
+</section>
+<section id="migration" class="padding-xxl">
+    <div class="row">
+        <header class="col-lg-12 text-center">
+            <i class="fa fa-4x fa-upload sr-icons"></i>
+            <h2>
+                Export animations to Grafika
+            </h2>
+            <p class="font-larger">
+                In the future we will provide an export functionality from StickDraw animations to Grafika animations
+            </p>
+        </header>
+    </div>
+</section>
+<section class="bg-primary padding-xxl">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <h1 class="text-faded">
+                    Ready to switch?
+                </h1>
+                <p>
+                    <a href="/">
+                        <img src="~/img/logo.png" alt="Grafika logo" width="250">
+                    </a>
+                </p>
+                <p class="text-faded font-larger">
+                    A cross-platform and simpler animation maker app
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section styles {
+    <environment names="Development">
+        <link href="~/css/GrafikaApp.StickDraw.css" rel="stylesheet" type="text/css">
+    </environment>
+    <environment names="Production">
+        <link rel="stylesheet" href="~/css/GrafikaApp.Bundle.StickDraw.min.css"
+              asp-fallback-href="~/css/GrafikaApp.StickDraw.css"
+              asp-fallback-test-class="btn" asp-fallback-test-property="border" asp-fallback-test-value="none" />
+    </environment>
+}
+
+
+@section scripts {
+    <environment names="Development">
+        <script type="text/javascript" src="~/js/jquery.easing.js"></script>
+        <script type="text/javascript" src="~/js/GrafikaApp.Stickdraw.js"></script>
+    </environment>
+    <environment names="Production">
+        <script type="text/javascript" src="~/js/GrafikaApp.Bundle.StickDraw.min.js"></script>
+    </environment>
+}

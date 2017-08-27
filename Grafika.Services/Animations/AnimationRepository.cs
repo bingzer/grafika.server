@@ -25,24 +25,28 @@ namespace Grafika.Services.Animations
 
         public Task RemoveByIds(IEnumerable<string> animationIds)
         {
-            return _bulkRemoveProvider.BulkRemove(_dataContext.Animations, animationIds);
+            return _bulkRemoveProvider.BulkRemove(DataContext.Animations, animationIds);
         }
 
         protected override async Task<IEnumerable<Animation>> Query(AnimationQueryOptions options = null)
         {
-            IQueryable<Animation> query = _dataContext.Animations;
+            IQueryable<Animation> query = DataContext.Animations;
 
             if (!string.IsNullOrEmpty(options.Term))
-                return await _textSearchProvider.TextSearchAsync(_dataContext.Animations, options);
+                return await _textSearchProvider.TextSearchAsync(DataContext.Animations, options);
 
             if (!string.IsNullOrEmpty(options.Id))
                 query = query.Where(q => q.Id == options.Id);
+            if (options.Ids != null && options.Ids.Any())
+                query = query.Where(q => options.Ids.Contains(q.Id));
             if (!string.IsNullOrEmpty(options.UserId))
                 query = query.Where(q => q.UserId == options.UserId);
             if (options.IsPublic.HasValue)
                 query = query.Where(q => q.IsPublic == options.IsPublic);
             if (options.IsRemoved.HasValue)
                 query = query.Where(q => q.IsRemoved == options.IsRemoved);
+            if (options.MinimumFrames.HasValue)
+                query = query.Where(q => q.TotalFrame >= options.MinimumFrames);
             if (options.IsRandom == true)
                 query = CreateRandomQuery(query);
             if (!string.IsNullOrEmpty(options.RelatedToAnimationId))
@@ -90,7 +94,7 @@ namespace Grafika.Services.Animations
         {
             Func<Animation, bool> criteria = (anim) => anim.IsRemoved == false && anim.IsPublic == true && anim.TotalFrame > 5;
 
-            var totalCount = _dataContext.Animations.Count(criteria);
+            var totalCount = DataContext.Animations.Count(criteria);
             var random = Utility.RandomlyPickFrom(0, totalCount);
 
             return query.Where(criteria).Skip(random).Take(1).AsQueryable();
@@ -100,7 +104,7 @@ namespace Grafika.Services.Animations
         {
             Func<Animation, bool> criteria = (anim) => anim.IsRemoved == false && anim.IsPublic == true && anim.TotalFrame > 5 && anim.Id != options.RelatedToAnimationId;
 
-            var totalCount = _dataContext.Animations.Count(criteria);
+            var totalCount = DataContext.Animations.Count(criteria);
             var random = Utility.RandomlyPickFrom(0, totalCount);
 
             return query.Where(criteria).Skip(random).Take(options.PageSize).ToList().AsQueryable();

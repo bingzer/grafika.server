@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+@model IEnumerable<Grafika.User>
+@{
+    var contentUrl = ViewBag.ContentUrl;
+    var apiUrl = ViewBag.ApiUrl;
+}
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+    @foreach (var user in Model)
+    {
+        var userUrl = Grafika.Utilities.Utility.CombineUrl(apiUrl, "users", user.Id);
+        var lastModified = DateTimeOffset.FromUnixTimeMilliseconds(user.DateModified.Value).ToString("yyyy-MM-dd");
+        <url>
+            <loc>@Grafika.Utilities.Utility.CombineUrl(userUrl, "link")</loc>
+            <lastmod>@lastModified</lastmod>
+            <image:image>
+                <image:loc>@Grafika.Utilities.Utility.CombineUrl(userUrl, "avatar")</image:loc>
+                <image:title>See all the Grafika animations created by @user.Username</image:title>
+                <image:caption>@user.Username</image:caption>
+            </image:image>
+            <changefreq>monthly</changefreq>
+        </url>
+    }
+</urlset>

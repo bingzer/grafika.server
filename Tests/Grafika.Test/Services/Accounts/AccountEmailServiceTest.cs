@@ -22,7 +22,7 @@ namespace Grafika.Test.Services.Accounts
         {
             var user = new User { Email = "user@email.com", Activation = new UserActivation { Hash = "sdf" } };
             var emailConfiguration = new EmailConfiguration { DefaultFrom = "from@email.com" };
-            var contentConfiguration = new ContentConfiguration();
+            var serverConfig = new ServerConfiguration();
 
             var mockMailTransport = new Mock<IMailTransport>();
             var mockTemplateEngine = new Mock<ITemplatedRenderingEngine<string>>();
@@ -34,7 +34,7 @@ namespace Grafika.Test.Services.Accounts
             mockServiceProvider.Setup(c => c.GetService(It.Is<Type>(t => t == typeof(IMailTransport)))).Returns(mockMailTransport.Object);
             mockServiceProvider.Setup(c => c.GetService(It.Is<Type>(t => t == typeof(ITemplatedRenderingEngine<string>)))).Returns(mockTemplateEngine.Object);
             mockServiceProvider.Setup(c => c.GetService(It.Is<Type>(t => t == typeof(IOptions<EmailConfiguration>)))).Returns(new OptionsWrapper<EmailConfiguration>(emailConfiguration));
-            mockServiceProvider.Setup(c => c.GetService(It.Is<Type>(t => t == typeof(IOptions<ContentConfiguration>)))).Returns(new OptionsWrapper<ContentConfiguration>(contentConfiguration));
+            mockServiceProvider.Setup(c => c.GetService(It.Is<Type>(t => t == typeof(IOptions<ServerConfiguration>)))).Returns(new OptionsWrapper<ServerConfiguration>(serverConfig));
             mockUserRepository.Setup(c => c.First(It.IsAny<UserQueryOptions>())).Returns(Task.FromResult(user));
 
             var service = new AccountEmailService(mockServiceContext.Object, mockUserRepository.Object);
@@ -55,7 +55,7 @@ namespace Grafika.Test.Services.Accounts
         {
             var user = new User { Email = "user@email.com", Activation = new UserActivation { Hash = "sdf" } };
             var emailConfiguration = new EmailConfiguration { DefaultFrom = "from@email.com" };
-            var contentConfiguration = new ContentConfiguration();
+            var serverConfig = new ServerConfiguration();
 
             var mockMailTransport = new Mock<IMailTransport>();
             var mockTemplateEngine = new Mock<ITemplatedRenderingEngine<string>>();
@@ -67,7 +67,7 @@ namespace Grafika.Test.Services.Accounts
             mockServiceProvider.Setup(c => c.GetService(It.Is<Type>(t => t == typeof(IMailTransport)))).Returns(mockMailTransport.Object);
             mockServiceProvider.Setup(c => c.GetService(It.Is<Type>(t => t == typeof(ITemplatedRenderingEngine<string>)))).Returns(mockTemplateEngine.Object);
             mockServiceProvider.Setup(c => c.GetService(It.Is<Type>(t => t == typeof(IOptions<EmailConfiguration>)))).Returns(new OptionsWrapper<EmailConfiguration>(emailConfiguration));
-            mockServiceProvider.Setup(c => c.GetService(It.Is<Type>(t => t == typeof(IOptions<ContentConfiguration>)))).Returns(new OptionsWrapper<ContentConfiguration>(contentConfiguration));
+            mockServiceProvider.Setup(c => c.GetService(It.Is<Type>(t => t == typeof(IOptions<ServerConfiguration>)))).Returns(new OptionsWrapper<ServerConfiguration>(serverConfig));
             mockUserRepository.Setup(c => c.First(It.IsAny<UserQueryOptions>())).Returns(Task.FromResult(user));
 
             var service = new AccountEmailService(mockServiceContext.Object, mockUserRepository.Object);

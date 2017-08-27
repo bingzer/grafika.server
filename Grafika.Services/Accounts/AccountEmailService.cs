@@ -24,7 +24,7 @@ namespace Grafika.Services.Accounts
                 throw new NotFoundExeption();
 
             var model = CreateModel<AccountPasswordResetEmail>(user.Email, "Grafika: Password Reset");
-            model.Link = Utility.CombineUrl(ContentConfig.Url, $"r?action=reset-pwd&hash={Utility.UrlEncode(user.Activation.Hash)}&user={Utility.UrlEncode(user.Email)}");
+            model.Link = Utility.CombineUrl(ServerConfig.Url, $"r?action=reset-pwd&hash={Utility.UrlEncode(user.Activation.Hash)}&user={Utility.UrlEncode(user.Email)}");
 
             await SendEmail(model);
         }
@@ -36,7 +36,7 @@ namespace Grafika.Services.Accounts
                 throw new NotFoundExeption();
 
             var model = CreateModel<AccountVerificationEmail>(user.Email, "Grafika: Please verify your email");
-            model.Link = Utility.CombineUrl(ContentConfig.Url, $"r?action=verify&hash={Utility.UrlEncode(user.Activation.Hash)}&user={Utility.UrlEncode(user.Email)}");
+            model.Link = Utility.CombineUrl(ServerConfig.Url, $"r?action=verify&hash={Utility.UrlEncode(user.Activation.Hash)}&user={Utility.UrlEncode(user.Email)}");
 
             await SendEmail(model);
         }

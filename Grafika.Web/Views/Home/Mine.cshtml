@@ -1,0 +1,57 @@
+@model AnimationsViewModel
+@{
+    var userIdentity = (User.Identity as IUserIdentity);
+}
+
+<header class="bg-transparent page-heading page-heading-lg text-center text-white"
+        style="background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.0)), url('@userIdentity.GetBackdropApiUrl()') no-repeat; -webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover; background-size: cover; ">
+    <h1>
+        <img class="user-avatar user-avatar-xl" src="@userIdentity.GetAvatarApiUrl()"/>
+        @userIdentity.Username
+    </h1>
+    <p class="page-toolbar">
+        <button class="btn btn-sm btn-danger"
+                data-dialog
+                data-title="New Animation"
+                data-size="medium"
+                data-url="/animations/forms/create">
+            <i class="fa fa-plus"></i>
+            Create Animation
+        </button>
+        <a href="/me" class="btn btn-sm btn-default">
+            <i class="fa fa-user"></i>
+            My profile
+        </a>
+    </p>
+</header>
+<div class="page-content page-content-gutter" id="animations">
+    <div id="animation-thumbnails-container">
+        @foreach (var anim in Model.Animations)
+        {
+            @await Html.PartialAsync("~/Views/Animations/_Thumbnail.cshtml", anim)
+        }
+    </div>
+    <article id="more-button-container" class="text-center">
+        <button id="more-button"
+                class="btn btn-danger @(Model.Animations.Count() == Model.Options.PageSize ? "" : "hidden")"
+                onclick="GrafikaApp.Partials.renderPartial(this)"
+                data-partial="append"
+                data-url="/animations/list"
+                data-target="#animation-thumbnails-container"
+                data-callback="var d = $('#more-button').data();d.data.pageNumber++;$('#more-button').attr('data-data', JSON.stringify(d))"
+                data-data="@Model.Options.NextPage().ToJson()">
+            <i class="fa fa-arrow-down"></i>
+        </button>
+    </article>
+</div>
+@section scripts {
+    <environment names="Development">
+        <script type="text/javascript" src="~/js/GrafikaApp.Animation.js"></script>
+    </environment>
+    <environment names="Production">
+        <script type="text/javascript" src="~/js/GrafikaApp.Bundle.Animation.min.js"></script>
+    </environment>
+    <script type="text/javascript" defer>
+        GrafikaApp.Animation.checkLocalAnimation();
+    </script>
+}

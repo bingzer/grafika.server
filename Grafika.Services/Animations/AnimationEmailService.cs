@@ -38,8 +38,8 @@ namespace Grafika.Services.Animations
                 var model = CreateModel<AnimationCommentEmail>(owner.Email, "New comment on " + animation.Name);
                 model.CommentUser = User != null ? User.Username : Grafika.User.Anonymous;
                 model.Comment = userComment.Text;
-                model.ThumbnailUrl = await _awsRepository.GetResourceUrl(animationId, Thumbnail.ResourceId);
-                model.Link = Utility.CombineUrl(ContentConfig.Url, "animations", animation.Id);
+                model.ThumbnailUrl = await _awsRepository.GetResourceUrl(EntityType.Animation, animationId, Thumbnail.ResourceId);
+                model.Link = Utility.CombineUrl(ServerConfig.Url, "animations", animation.Id);
 
                 await SendEmail(model);
             }

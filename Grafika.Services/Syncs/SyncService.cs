@@ -10,13 +10,15 @@ namespace Grafika.Services.Syncs
     class SyncService : Service, ISyncService
     {
         private readonly IServiceProvider _serviceProvider;
-        private readonly IAnimationRepository _animRepo;
+        private readonly IAnimationRepository _animationRepo;
+        private readonly IBackgroundRepository _backgroundRepo;
 
-        public SyncService(IServiceProvider serviceProvider, IAnimationRepository animRepo, IServiceContext userContext) 
-            : base(userContext)
+        public SyncService(IServiceContext serviceContext, IAnimationRepository animationRepo, IBackgroundRepository backgroundRepo) 
+            : base(serviceContext)
         {
-            _serviceProvider = serviceProvider;
-            _animRepo = animRepo;
+            _serviceProvider = serviceContext.ServiceProvider;
+            _animationRepo = animationRepo;
+            _backgroundRepo = backgroundRepo;
         }
 
         public async Task<SyncResult> Sync(ILocalChanges localChanges)
@@ -64,8 +66,10 @@ namespace Grafika.Services.Syncs
             var serverChanges = new ServerChanges
             {
                 UserId = userId,
-                Animations = await _animRepo.Find(new AnimationQueryOptions { UserId = userId, IsRemoved = false, PageSize = -1 }),
-                Tombstones = await _animRepo.Find(new AnimationQueryOptions { UserId = userId, IsRemoved = true, PageSize = -1 })
+                Animations = await _animationRepo.Find(new AnimationQueryOptions { UserId = userId, IsRemoved = false, PageSize = -1 }),
+                Tombstones = await _animationRepo.Find(new AnimationQueryOptions { UserId = userId, IsRemoved = true, PageSize = -1 }),
+                Backgrounds = await _backgroundRepo.Find(new BackgroundQueryOptions { UserId = userId, IsRemoved = false, PageSize = -1 }),
+                BackgroundTombstones = await _backgroundRepo.Find(new BackgroundQueryOptions { UserId = userId, IsRemoved = true, PageSize = -1 })
             };
             return serverChanges;
         }
@@ -76,7 +80,8 @@ namespace Grafika.Services.Syncs
         public string UserId { get; set; }
 
         public IEnumerable<Animation> Animations { get; set; }
-
         public IEnumerable<Animation> Tombstones { get; set; }
+        public IEnumerable<Background> Backgrounds { get; set; }
+        public IEnumerable<Background> BackgroundTombstones { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Grafika.Animations;
 using Grafika.Configurations;
+using Grafika.Services.Extensions;
 using Grafika.Utilities;
 using Microsoft.Extensions.Options;
 using System;
@@ -13,17 +14,14 @@ namespace Grafika.Services.Comments
     {
         private readonly IUserService _userService;
         private readonly DisqusOAuthProviderConfiguration _disqusConfig;
-        private readonly ContentConfiguration _contentConfig;
         private readonly ServerConfiguration _serverConfig;
 
         public DisqusProvider(IUserService userService, 
             IOptions<DisqusOAuthProviderConfiguration> disqusOpts, 
-            IOptions<ContentConfiguration> contentOpts,
             IOptions<ServerConfiguration> serverOpts)
         {
             _userService = userService;
             _disqusConfig = disqusOpts.Value;
-            _contentConfig = contentOpts.Value;
             _serverConfig = serverOpts.Value;
         }
 
@@ -35,12 +33,12 @@ namespace Grafika.Services.Comments
                 username = user.Username,
                 email = user.Email,
                 avatar = await _userService.GetAvatarOrBackdropUrl(user.Id, "avatar"),
-                url = Utility.CombineUrl(_serverConfig.Url, "users", user.Id)
+                url = user.GetUrl()
             };
 
             return new AuthenticationToken
             {
-                Id = _disqusConfig.Id,
+                Id = _disqusConfig?.Id,
                 Token = GenerateSsoPayload(userdata.ToJson())
             };
         }
@@ -52,15 +50,26 @@ namespace Grafika.Services.Comments
             var disqusToken = context.User == null ? AuthenticationToken.Empty : await GenerateAuthenticationToken(context.User);
             var userToken = context.UserToken;
 
-            var seoUrl = Utility.CombineUrl(serverUrl, "animations", animation.Id, "seo");
-            var animUrl = Utility.CombineUrl(serverUrl, "animations", animation.Id);
+            var seoUrl = animation.GetUrl();
+            var animUrl = animation.GetUrl(useSlug: false);
             var postUrl = Utility.CombineUrl(animUrl, "comments");
-            var queryString = $"url={seoUrl}&title={animation.Name}&shortname=grafika-app&identifier={animation.Id}&pub={disqusToken.Id}&disqusToken={disqusToken.Token}&postUrl={postUrl}&jwtToken={userToken.Token}";
+            var queryString = $"url={seoUrl}&title={EncodeAscii(animation.Name)}&shortname=grafika-app&identifier={animation.Id}&pub={disqusToken.Id}&disqusToken={disqusToken.Token}&postUrl={postUrl}&jwtToken={userToken.Token}";
 
-            var urlBuilder = new UriBuilder(Utility.CombineUrl(_contentConfig.Url, "app", "content", "comment.html"));
-            urlBuilder.Query = queryString;
+            var urlBuilder = new UriBuilder(Utility.CombineUrl(_serverConfig.Url, "comments"))
+            {
+                Query = queryString
+            };
 
             return urlBuilder.Uri;
+        }
+
+        private static string EncodeAscii(string any)
+        {
+            var utf8Bytes = Encoding.UTF8.GetBytes(any.Replace("\n", ""));
+            var ascii = Encoding.ASCII.GetString(utf8Bytes);
+            ascii = ascii.Replace("#", "").Replace("?", "");
+
+            return ascii;
         }
 
         #region https://github.com/disqus/DISQUS-API-Recipes/blob/master/sso/cs/DisqusSSO.cs

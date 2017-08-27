@@ -50,7 +50,7 @@ namespace Grafika.Services.Accounts.Stores
                 DateModified = now.ToUnixTimeMilliseconds(),
                 Activation = user.Activation,
                 IsActive = user.IsActive,
-                Prefs = AccountsUtils.NewUserPreference(username, _contentConfig),
+                Prefs = AccountsUtils.NewUserPreference(username, _serverConfiguration),
                 Roles = new HashSet<string> { Roles.User },
                 Stats = AccountsUtils.NewUserStats(now),
                 Subscriptions = AccountsUtils.NewUserSubscriptions(),

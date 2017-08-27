@@ -7,16 +7,16 @@ namespace Grafika.Services.Accounts.Stores
     internal partial class AccountStore : IAccountStore
     {
         private readonly IUserRepository _userRepository;
-        private readonly ContentConfiguration _contentConfig;
+        private readonly ServerConfiguration _serverConfiguration;
         private readonly EmailConfiguration _emailConfig;
 
         public AccountStore(
             IUserRepository userRepo,
-            IOptions<ContentConfiguration> contentOpts,
+            IOptions<ServerConfiguration> serverOpts,
             IOptions<EmailConfiguration> mailOpts)
         {
             _userRepository = userRepo;
-            _contentConfig = contentOpts.Value;
+            _serverConfiguration = serverOpts.Value;
             _emailConfig = mailOpts.Value;
         }
 

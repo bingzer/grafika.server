@@ -1,0 +1,266 @@
+@model HomeViewModel
+
+<header>
+    <div id="header-canvas-container">
+        <canvas id="header-canvas"></canvas>
+    </div>
+    <div id="header-content" class="header-content">
+        <div class="row text-center">
+            <div id="logo-big" class="logo-grafika"></div>
+        </div>
+        <div class="header-content-inner">
+            <h1>A simpler animation maker</h1>
+            <hr>
+            <p class="font-larger">
+                Create a stop-motion animation using your device.<br/>
+                <span id="random-animation-author" class="font-smaller"></span>
+            </p>
+            <p>
+                <a href="#featured" class="btn btn-round btn-danger btn-xl page-scroll margin-sm">Explore More</a>
+                <a href="javascript: void(0)" class="btn btn-round btn-default btn-xl margin-sm" onclick="home.loadRandomAnimation()" role="button">Next Animation</a>
+            </p>
+        </div>
+    </div>
+</header>
+
+<section id="featured" class="bg-dark no-padding">
+    <div class="container-fluid">
+        <div class="row text-center">
+            <h2>Animations</h2>
+            <hr class="light">
+        </div>
+        <div class="row no-gutter popup-gallery">
+            @foreach (var animation in Model.HandpickedSeries.Animations.PickRandom(6))
+            {
+                <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+                    <a href="@animation.GetUrl()" 
+                       data-mfp-src="/animations/popup/@animation.Id/@animation.GetSlug()"
+                       class="portfolio-box" style="background-image: linear-gradient(rgba(0, 0, 0, 0.0), rgba(0, 0, 0, 0.3)), url('@animation.GetThumbnailApiUrl()')">
+                        <div class="portfolio-box-caption">
+                            <div class="portfolio-box-caption-content">
+                                <h3 class="project-category text-faded">
+                                    @animation.Name
+                                </h3>
+                                <p class="project-name font-larger">
+                                    by @animation.Author
+                                </p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            }
+        </div>
+        <div class="row text-center padding-lg">
+            <p class="text-faded font-larger">
+            </p>
+            <p class="text-faded font-larger">
+                Animations are editable and viewable in any modern browser that supports HTML5.<br />
+                This makes Grafika Animations are playable in any modern device.
+            </p>
+            <p class="font-larger">
+                <a href="/animations" class="btn btn-round btn-xl btn-danger">Browse more animations</a>
+            </p>
+            <p>
+                <a href="#highlight" class="btn btn-round btn-lg btn-default page-scroll" title="Scroll for more">
+                    <i class="fa fa-arrow-down sr-icons"></i>
+                </a>
+            </p>
+        </div>
+    </div>
+</section>
+
+<section id="highlight" class="bg-transparent no-padding no-gutter">
+    <div class="bg-primary padding-xl">
+        <header class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <i class="fa fa-4x fa-globe sr-icons"></i>
+                    <h2 class="section-heading">Global Community</h2>
+                    <hr class="light">
+                    <p class="text-faded font-larger">
+                        Join our growing community of animators<br />
+                        More than <strong>@Model.AnimationsCount</strong> animations...<br />
+                        More than <strong>@Model.UsersCount</strong> users and counting...
+                    </p>
+                </div>
+            </div>
+        </header>
+    </div>
+    <section class="bg-primary padding-xl" style="padding-top: 0">
+        <div class="container">
+            <div class="row">
+
+                <div class="col-lg-4 text-center padding-xl">
+                    <h3 class="section-heading">
+                        <i class="fa fa-star sr-icons"></i>
+                        Draw it!
+                    </h3>
+                    <p class="text-faded font-larger">
+                        Multiple graphics are supported: freeform, circle, triangles and more.<br />
+                        Copy and paste. Fill with colors. Backgrounds and Pictures!<br />
+                    </p>
+                </div>
+
+                <div class="col-lg-4 text-center padding-xl">
+                    <h3 class="section-heading">
+                        <i class="fa fa-share-alt sr-icons"></i>
+                        Share Everything
+                        <span style="font-size: small">Or not</span>
+                    </h3>
+                    <p class="text-faded font-larger">
+                        It's up to you to decide.<br />
+                        Animations are either public or private. <br/>
+                        Everybody is also anonymous<br />
+                    </p>
+                </div>
+
+                <div class="col-lg-4 text-center padding-xl">
+                    <h3 class="section-heading">
+                        <i class="fa fa-comments sr-icons"></i>
+                        Comments &amp; Ratings
+                    </h3>
+                    <p class="text-faded font-larger">
+                        Leave feedback, comments and rate others animations<br />
+                        Fun!<br />
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="text-center" style="margin-top: 24px">
+            <a href="/signin" class="page-scroll btn btn-round btn-default btn-xl sr-button">
+                Join Now
+            </a>
+        </div>
+    </section>
+</section>
+
+<section id="about" class="landing">
+    <header class="container text-dark">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <h2 class="section-heading">About this little project</h2>
+                <hr class="primary">
+            </div>
+        </div>
+    </header>
+    <div class="container">
+        <div class="row text-center">
+            <article class="col-lg-4 col-md-6 text-center">
+                <div class="service-box">
+                    <a class="static-link" href="/about">
+                        <i class="fa fa-4x fa-question text-primary sr-icons sr-contact"></i>
+                        <h3>Why</h3>
+                    </a>
+                    <p class="text-muted font-larger">
+                        Why we make this app?<br/>
+                    </p>
+                </div>
+            </article>
+            <article class="col-lg-4 col-md-6 text-center">
+                <div class="service-box">
+                    <a class="static-link" href="/platforms">
+                        <i class="fa fa-4x fa-cubes text-primary sr-icons sr-contact"></i>
+                        <h3>Cross-Platform</h3>
+                    </a>
+                    <p class="text-muted font-larger">
+                        Everything is BETA. We're still cooking the Web and Android app, but feel free to test it out.
+                    </p>
+                </div>
+            </article>
+            <article class="col-lg-4 col-md-12 text-center">
+                <div class="service-box">
+                    <i class="fa fa-4x fa-code text-primary sr-icons sr-contact"></i>
+                    <h3>Contribute</h3>
+                    <p class="text-muted font-larger">
+                        Many ways to contribute to better this project. Find out how!
+                    </p>
+                </div>
+            </article>
+        </div>
+    </div>
+</section>
+
+<aside class="bg-dark landing">
+    <div class="container text-center">
+        <div class="call-to-action">
+            <h2>Try Grafika now!</h2>
+            <a href="https://play.google.com/store/apps/details?id=com.bingzer.android.grafika" class="btn btn-round btn-default btn-xl sr-button margin-sm" title="Get it now for Android devices">Google Play Store</a>
+            <a href="/try-grafika" class="btn btn-round btn-default btn-xl sr-button margin-sm" title="Try grafika now">Online</a>
+        </div>
+    </div>
+</aside>
+
+<section class="landing" id="contact">
+    <header class="container text-dark">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <h2 class="section-heading">Let's Get Social</h2>
+                <hr class="primary">
+                <p class="font-larger">Keep the community growing by joining our networks over in social media</p>
+            </div>
+        </div>
+    </header>
+    <div class="container">
+        <div class="row">
+            <article class="col-lg-offset-2 col-lg-2 col-md-3 text-center">
+                <a class="no-link" href="https://www.facebook.com/grafikaapp" title="Grafika at Facebook">
+                    <i class="fa fa-facebook fa-2x sr-contact"></i>
+                    <h3 class="font-larger">
+                        grafika<br/> on Facebook
+                    </h3>
+                </a>
+            </article>
+            <article class="col-lg-2 col-md-3 text-center">
+                <a class="no-link" href="https://twitter.com/grafikaapp">
+                    <i class="fa fa-twitter fa-2x sr-contact"></i>
+                    <h3 class="font-larger">
+                        @@grafikapp<br /> on Twitter
+                    </h3>
+                </a>
+            </article>
+            <article class="col-lg-2 col-md-3 text-center">
+                <a class="no-link" href="https://www.youtube.com/channel/UC12gvZkSSLCK3XG26wfajVA">
+                    <i class="fa fa-youtube fa-2x sr-contact"></i>
+                    <h3 class="font-larger">
+                        grafika<br /> on YouTube
+                    </h3>
+                </a>
+            </article>
+            <article class="col-lg-2 col-md-3 text-center">
+                <a class="no-link" href="/feedback">
+                    <i class="fa fa-envelope fa-2x sr-contact"></i>
+                    <h3 class="font-larger">
+                        grafika<br /> Online
+                    </h3>
+                </a>
+            </article>
+        </div>
+        <div class="row padding-lg">
+            <article class="text-center">
+                <h5>Looking for <a href="/stickdraw">StickDraw?</a></h5>
+            </article>
+        </div>
+    </div>
+</section>
+
+@section scripts {
+<environment names="Development">
+    <script type="text/javascript" src="~/js/jquery.easing.js"></script>
+    <script type="text/javascript" src="~/js/jquery.magnific-popup.js"></script>
+    <script type="text/javascript" src="~/js/GrafikaApp.Home.js"></script>
+</environment>
+<environment names="Production">
+    <script type="text/javascript" src="~/js/GrafikaApp.Bundle.Home.min.js"></script>
+</environment>
+<script type="text/javascript" src="//platform-api.sharethis.com/js/sharethis.js#property=597aba86d82b6d0011d3ae5d&product=sticky-share-buttons" async="async"></script>
+}
+
+@section styles {
+<environment names="Development">
+    <link href="~/css/magnific-popup.css" rel="stylesheet" type="text/css">
+    <link href="~/css/GrafikaApp.Home.css" rel="stylesheet" type="text/css" />
+</environment>
+<environment names="Production">
+    <link href="~/css/GrafikaApp.Bundle.Home.min.css" rel="stylesheet" type="text/css">
+</environment>
+}

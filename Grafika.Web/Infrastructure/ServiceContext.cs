@@ -1,5 +1,5 @@
 ﻿using Grafika.Services;
-using Grafika.Web.Extensions;
+using Grafika.Web.Infrastructure.Extensions;
 using Microsoft.AspNetCore.Http;
 using System;
 

@@ -58,10 +58,10 @@ namespace Grafika.Services.Admins
             return _animationRepository.Find(options);
         }
 
-        public Task<ServerInfo> GetServerInfo()
+        public Task<BaseEnvironment> GetServerInfo()
         {
             var env = Context.ServiceProvider.Get<AppEnvironment>();
-            return Task.FromResult<ServerInfo>(env);
+            return Task.FromResult<BaseEnvironment>(env);
         }
 
         public Task<IEnumerable<User>> GetUsers(UserQueryOptions options)

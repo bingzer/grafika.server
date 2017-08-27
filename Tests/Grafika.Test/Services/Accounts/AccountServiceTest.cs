@@ -22,7 +22,7 @@ namespace Grafika.Test.Services.Accounts
     {
         BCryptPasswordHasher passwordHasher = new BCryptPasswordHasher();
         IdentityErrorDescriber errorDescriber;
-        ContentConfiguration contentConfig;
+        ServerConfiguration serverConfig;
         EmailConfiguration emailConfig;
 
         Mock<IServiceContext> mockServiceContext = MockHelpers.ServiceContext;
@@ -445,7 +445,7 @@ namespace Grafika.Test.Services.Accounts
         AccountService SetupAccountService()
         {
             errorDescriber = new IdentityErrorDescriber();
-            contentConfig = new ContentConfiguration();
+            serverConfig = new ServerConfiguration();
             emailConfig = new EmailConfiguration();
 
             mockServiceProvider = MockHelpers.ServiceProvider;
@@ -467,7 +467,7 @@ namespace Grafika.Test.Services.Accounts
             };
 
             var accountStore = new AccountStore(mockUserRepository.Object,
-                new OptionsWrapper<ContentConfiguration>(contentConfig),
+                new OptionsWrapper<ServerConfiguration>(serverConfig),
                 new OptionsWrapper<EmailConfiguration>(emailConfig));
 
             var userManager = new UserManager<User>(accountStore, new OptionsWrapper<IdentityOptions>(identityOptions), passwordHasher, null, null, null, errorDescriber, null, new ConsoleLogger<UserManager<User>>());

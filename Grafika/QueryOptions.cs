@@ -14,6 +14,11 @@ namespace Grafika
         public virtual int PageSize { get; set; } = 25;
 
         /// <summary>
+        /// A template name
+        /// </summary>
+        public virtual string TemplateName { get; set; }
+
+        /// <summary>
         /// Sort Options
         /// </summary>
         public virtual SortOptions Sort { get; set; }
@@ -35,6 +40,12 @@ namespace Grafika
                     PageNumber = 1;
             }
 
+            return this;
+        }
+
+        public QueryOptions NextPage()
+        {
+            PageNumber++;
             return this;
         }
     }

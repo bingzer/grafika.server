@@ -1,0 +1,27 @@
+@model UserViewModel
+
+<header class="bg-transparent page-heading page-heading-lg text-center text-white" 
+    style="background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.0)), url(@Model.User.GetBackdropApiUrl()) no-repeat; -webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover; background-size: cover; ">
+    <h1>
+        <img class="user-avatar user-avatar-xl" src="@Model.User.GetAvatarApiUrl()" />
+        @Model.User.Username
+    </h1>
+</header>
+<div class="page-content page-content-gutter" id="animations">
+    <div id="animation-thumbnails-container">
+        @await Html.PartialAsync("~/Views/Animations/_List.cshtml")
+    </div>
+    <article id="more-button-container" class="text-center">
+        <button id="more-button"
+                class="btn btn-danger @(Model.Animations.Count() == Model.Options.PageSize ? "" : "hidden")"
+                onclick="GrafikaApp.Partials.renderPartial(this)"
+                title="Load more..."
+                data-partial="append"
+                data-url="/animations/list"
+                data-target="#animation-thumbnails-container"
+                data-callback="var d = $('#more-button').data();d.data.pageNumber++;$('#more-button').attr('data-data', JSON.stringify(d));"
+                data-data="@Model.Options.NextPage().ToJson()">
+            <i class="fa fa-arrow-down"></i>
+        </button>
+    </article>
+</div>

@@ -24,10 +24,10 @@ namespace Grafika.Services.Users
 
         protected override async Task<IEnumerable<User>> Query(UserQueryOptions options = null)
         {
-            IQueryable<User> query = _dataContext.Users;
+            IQueryable<User> query = DataContext.Users;
 
             if (!string.IsNullOrEmpty(options.Term))
-                return await _textSearchProvider.TextSearchAsync(_dataContext.Users, options);
+                return await _textSearchProvider.TextSearchAsync(DataContext.Users, options);
 
             if (!string.IsNullOrEmpty(options.Id))
                 query = query.Where(q => q.Id == options.Id);
@@ -35,6 +35,8 @@ namespace Grafika.Services.Users
                 query = query.Where(q => q.Email == options.Email);
             if (!string.IsNullOrEmpty(options.Username))
                 query = query.Where(q => q.Username == options.Username);
+            if (!string.IsNullOrEmpty(options.IdOrUsername))
+                query = query.Where(q => q.Id == options.IdOrUsername || q.Username == options.IdOrUsername);
 
             return query;
         }

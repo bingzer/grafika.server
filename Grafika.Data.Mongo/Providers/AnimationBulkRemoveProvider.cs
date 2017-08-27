@@ -4,18 +4,17 @@ using System.Linq;
 using System.Threading.Tasks;
 using System;
 using System.Collections.Generic;
+using Grafika.Data.Mongo.Supports;
 
 namespace Grafika.Data.Mongo.Providers
 {
-    public class AnimationBulkRemoveProvider : IBulkRemoveProvider<Animation>
+    class AnimationBulkRemoveProvider : IBulkRemoveProvider<Animation>
     {
-        public async Task BulkRemove(IDataSet<Animation> dataset, IEnumerable<string> idsToRemove)
+        public Task BulkRemove(IDataSet<Animation> dataset, IEnumerable<string> idsToRemove)
         {
-            var mongoCollection = dataset.As<IMongoCollection<Animation>>();
-
             var filterDefinition = new ExpressionFilterDefinition<Animation>(doc => idsToRemove.Contains(doc.Id));
             var updateDefinition = new JsonUpdateDefinition<Animation>("{ $set: { removed: true } }");
-            await mongoCollection.UpdateManyAsync(filterDefinition, updateDefinition);
+            return dataset.ToMongoDataSet().Collection.UpdateManyAsync(filterDefinition, updateDefinition);
         }
     }
 }

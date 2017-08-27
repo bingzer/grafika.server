@@ -4,6 +4,6 @@ namespace Grafika.Animations
 {
     public interface IDrawable
     {
-        string Type { get; }
+        EntityType Type { get; }
     }
 }

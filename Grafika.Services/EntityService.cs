@@ -41,13 +41,15 @@ namespace Grafika.Services
             return entity;
         }
 
-        public virtual Task<TEntity> Create(TEntity entity)
+        public virtual async Task<TEntity> Create(TEntity entity)
         {
             Ensure.ArgumentNotNull(entity, "entity");
 
+            entity = await PrepareEntityForCreate(entity);
+
             Validator.Validate(entity);
 
-            return Repository.Add(entity);
+            return await Repository.Add(entity);
         }
 
         public virtual async Task<TEntity> Update(TEntity entity)
@@ -66,7 +68,7 @@ namespace Grafika.Services
 
         protected virtual async Task<TEntity> GetById(string entityId)
         {
-            if (!Repository.ValidateId(entityId))
+            if (!Validator.ValidateId(entityId))
                 throw new NotFoundExeption();
 
             var entity = await Repository.First(new TQueryOptions { Id = entityId });
@@ -77,5 +79,6 @@ namespace Grafika.Services
         }
 
         protected internal abstract Task<TEntity> CreateEntityForUpdate(TEntity source);
+        protected internal abstract Task<TEntity> PrepareEntityForCreate(TEntity source);
     }
 }
