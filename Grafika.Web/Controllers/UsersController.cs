@@ -44,9 +44,7 @@ namespace Grafika.Web.Controllers
             {
                 Animations = animations,
                 Options = options,
-                User = user,
-                AvatarUrl = Utility.CombineUrl(serverOpts.Value.Url, "users", user.Id, "avatar"),
-                BackdropUrl = Utility.CombineUrl(serverOpts.Value.Url, "users", user.Id, "backdrop")
+                User = user
             };
 
             return View(model);

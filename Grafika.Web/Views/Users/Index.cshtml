@@ -1,9 +1,9 @@
 @model UserViewModel
 
 <header class="bg-transparent page-heading page-heading-lg text-center text-white" 
-    style="background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.0)), url(@Model.BackdropUrl) no-repeat; -webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover; background-size: cover; ">
+    style="background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.0)), url(@Model.User.GetBackdropApiUrl()) no-repeat; -webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover; background-size: cover; ">
     <h1>
-        <img class="user-avatar user-avatar-xl" src="@Model.AvatarUrl" />
+        <img class="user-avatar user-avatar-xl" src="@Model.User.GetAvatarApiUrl()" />
         @Model.User.Username
     </h1>
 </header>

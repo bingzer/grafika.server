@@ -28,7 +28,7 @@ namespace Grafika
         {
             if (value is string)
             {
-                if (Enum.TryParse<OAuthProvider>((string) value, out var result))
+                if (Enum.TryParse<OAuthProvider>((string) value, true, out var result))
                     return result;
             }
 

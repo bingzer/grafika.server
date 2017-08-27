@@ -120,9 +120,9 @@ namespace Grafika.Web.Controllers
 
         [AllowAnonymous]
         [HttpPost("authenticate/{provider}")]
-        public async Task<IActionResult> AuthenticateOAuthToken(OAuthProvider authProvider, [FromBody] OAuthIdTokenModel model)
+        public async Task<IActionResult> AuthenticateOAuthToken(OAuthProvider provider, [FromBody] OAuthIdTokenModel model)
         {
-            var identity = await _accountService.Exchange(authProvider, new AuthenticationToken { Token = model.FindToken() });
+            var identity = await _accountService.Exchange(provider, new AuthenticationToken { Token = model.FindToken() });
             var userToken = await _accountService.Login(identity);
 
             return Json(userToken);
