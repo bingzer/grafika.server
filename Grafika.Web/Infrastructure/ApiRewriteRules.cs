@@ -29,7 +29,7 @@ namespace Grafika.Web.Infrastructure
                 var loggerFactory = requestServices.Get<ILoggerFactory>();
                 var apiUrl = Utility.CombineUrl("/api", httpContext.Request.Path);
 
-                loggerFactory.CreateLogger<ApiRewriteRules>().LogInformation($"Rewrite URL path from {httpContext.Request.Path} to {apiUrl}. Host is {httpContext.Request.Scheme}://{httpContext.Request.Host}");
+                loggerFactory.CreateLogger<ApiRewriteRules>().LogInformation($"Rewrite URL path from {httpContext.Request.Path} to {apiUrl}. {(httpContext.Request.IsHttps ? "https" : "http")}://{httpContext.Request.Host}");
 
                 context.HttpContext.Request.Path = apiUrl;
             }
