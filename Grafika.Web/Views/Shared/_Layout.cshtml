@@ -1,5 +1,6 @@
 ﻿@{ 
     PageViewModel page = ViewBag.Page ?? new PageViewModel();
+    ViewBag.Page = page;
     var userIdentity = (User.Identity as IUserIdentity);
 }
 <!DOCTYPE html>
