@@ -55,6 +55,13 @@ namespace Grafika.Web.Infrastructure.Middlewares
             {
                 detail = exception.ToString();
             }
+
+            if (ApiRewriteRules.IsLegacyApiCall(context))
+            {
+                context.Response.ContentType = ContentTypes.Text;
+                context.Response.StatusCode = (int)code;
+                return context.Response.WriteAsync(message);
+            }
             
             context.Response.ContentType = ContentTypes.Json;
             context.Response.StatusCode = (int)code;

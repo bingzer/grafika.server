@@ -1,4 +1,5 @@
 ﻿using Grafika.Utilities;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Rewrite;
 using System;
 using System.Collections.Generic;
@@ -14,11 +15,23 @@ namespace Grafika.Web.Infrastructure
 
         public static void RewriteToApi(RewriteContext context)
         {
-            var path = context.HttpContext.Request.Path.Value;
+            var httpContext = context.HttpContext;
+            var path = httpContext.Request.Path.Value;
+
             if (ApiUrlPattern.IsMatch(path))
                 return;
 
-            var rules = new List<Func<RewriteContext, bool>>
+            if (IsLegacyApiCall(httpContext))
+            {
+                var apiUrl = Utility.CombineUrl("/api", context.HttpContext.Request.Path);
+                context.HttpContext.Request.Path = apiUrl;
+            }
+        }
+
+        public static bool IsLegacyApiCall(HttpContext httpContext)
+        {
+            var path = httpContext.Request.Path.Value;
+            var rules = new List<Func<HttpContext, bool>>
             {
                 (ctx) =>
                 {
@@ -27,16 +40,13 @@ namespace Grafika.Web.Infrastructure
 
                 (ctx) =>
                 {
-                    var userAgent = ctx.HttpContext.Request.Headers["User-Agent"].ElementAtOrDefault(0);
+                    var userAgent = ctx.Request.Headers["User-Agent"].ElementAtOrDefault(0);
                     return string.IsNullOrEmpty(userAgent) || userAgent.ContainsIgnoreCase("okHttp");
                 }
             };
 
-            if (rules.Any(rule => rule(context)))
-            {
-                var apiUrl = Utility.CombineUrl("/api", context.HttpContext.Request.Path);
-                context.HttpContext.Request.Path = apiUrl;
-            }
+            return rules.Any(rule => rule(httpContext));
         }
+
     }
 }
