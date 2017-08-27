@@ -1,6 +1,8 @@
-﻿using Grafika.Utilities;
+﻿using Grafika.Configurations;
+using Grafika.Utilities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Rewrite;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +18,7 @@ namespace Grafika.Web.Infrastructure
         public static void RewriteToApi(RewriteContext context)
         {
             var httpContext = context.HttpContext;
+            var requestServices = httpContext.RequestServices;
             var path = httpContext.Request.Path.Value;
 
             if (ApiUrlPattern.IsMatch(path))
@@ -23,7 +26,11 @@ namespace Grafika.Web.Infrastructure
 
             if (IsLegacyApiCall(httpContext))
             {
-                var apiUrl = Utility.CombineUrl("/api", context.HttpContext.Request.Path);
+                var loggerFactory = requestServices.Get<ILoggerFactory>();
+                var apiUrl = Utility.CombineUrl("/api", httpContext.Request.Path);
+
+                loggerFactory.CreateLogger<ApiRewriteRules>().LogInformation($"Rewrite URL path from {httpContext.Request.Path} to {apiUrl}. Host is {httpContext.Request.Scheme}://{httpContext.Request.Host}");
+
                 context.HttpContext.Request.Path = apiUrl;
             }
         }

@@ -67,7 +67,7 @@
             </text>
             }
             GrafikaApp.Configuration = {
-                baseApiUrl: '@Utility.CombineUrl(AppEnvironment.Default.Server.Url, "api")',
+                baseApiUrl: '/api',
                 debug: @(AppEnvironment.Default.HostingType == "Production" ? "true" : "false")
             };
         })(GrafikaApp || (GrafikaApp = {}));
