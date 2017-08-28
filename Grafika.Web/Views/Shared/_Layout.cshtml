@@ -13,9 +13,6 @@
     <meta name="keyword" content="@page.Keyword" />
     <meta name="author" content="@page.SiteAuthor">
     <title>@(ViewBag.Title ?? page.Title)</title>    
-    <!-- Core CSS -->
-    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/icon?family=Material+Icons" />
-    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Roboto:400,500,700" />
     <!-- Base CSS -->
 <environment names="Development">
     <link href="~/css/toastr.css" rel="stylesheet">
@@ -31,7 +28,7 @@
 </environment>
     @RenderSection("styles", false)
 
-    <link rel="canonical" href="https://grafika.bingzer.com/" />
+    <link rel="canonical" href="http://grafika.bingzer.com/" />
 
     <meta itemprop="name" content="@page.SiteName" />
     <meta itemprop="description" content="@page.Description" />
@@ -70,7 +67,7 @@
             </text>
             }
             GrafikaApp.Configuration = {
-                baseApiUrl: '@Utility.CombineUrl(AppEnvironment.Default.Server.Url, "api")',
+                baseApiUrl: '/api',
                 debug: @(AppEnvironment.Default.HostingType == "Production" ? "true" : "false")
             };
         })(GrafikaApp || (GrafikaApp = {}));
