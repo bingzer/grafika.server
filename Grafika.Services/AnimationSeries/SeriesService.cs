@@ -11,17 +11,17 @@ namespace Grafika.Services.AnimationSeries
     {
         private const string SeriesName = "Handpicked";
         private readonly IUserService _userService;
-        private readonly IAnimationService _animService;
+        private readonly IAnimationRepository _animRepo;
 
         public SeriesService(IServiceContext context, 
             ISeriesRepository repository, 
             ISeriesValidator validator,
             IUserService userService,
-            IAnimationService animationService) 
+            IAnimationRepository animRepo) 
             : base(context, repository, validator)
         {
             _userService = userService;
-            _animService = animationService;
+            _animRepo = animRepo;
         }
 
         public override async Task<IEnumerable<Series>> List(SeriesQueryOptions options)
@@ -31,10 +31,9 @@ namespace Grafika.Services.AnimationSeries
             if (options.LoadAnimations == true)
             {
                 var animationIds = list.SelectMany(s => s.AnimationIds);
-                var animations = await _animService.List(new AnimationQueryOptions { Ids = animationIds });
                 foreach (var series in list)
                 {
-                    series.Animations = animations.Where(anim => series.AnimationIds.Contains(anim.Id)).ToList();
+                    series.Animations = await GetAnimationByIds(series.AnimationIds);
                 }
             }
 
@@ -44,8 +43,15 @@ namespace Grafika.Services.AnimationSeries
         public override async Task<Series> Get(string entityId)
         {
             var series = await base.Get(entityId);
-            series.Animations = await _animService.List(new AnimationQueryOptions { Ids = series.AnimationIds });
+            series.Animations = await GetAnimationByIds(series.AnimationIds);
             return series;
+        }
+
+        private async Task<IEnumerable<Animation>> GetAnimationByIds(IEnumerable<string> animationIds)
+        {
+            var animations = await _animRepo.Find(new AnimationQueryOptions { Ids = animationIds });
+            return animations.Where(anim => animationIds.Contains(anim.Id) && anim.IsPublic == true && anim.IsRemoved == false)
+                           .ToList();
         }
 
         public async Task EnsureHandpickedSeriesCreated()
