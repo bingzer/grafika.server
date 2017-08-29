@@ -19,7 +19,7 @@
       "commandName": "Project",
       "environmentVariables": {
         "Grafika:Server:Url": "http://bingzcomputer:3000",
-        "ASPNETCORE_ENVIRONMENT": "Development",
+        "ASPNETCORE_ENVIRONMENT": "Production",
         "PORT": "3000"
       },
       "applicationUrl": "http://bingzcomputer:3000"

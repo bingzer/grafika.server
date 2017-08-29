@@ -29,9 +29,9 @@ namespace Grafika.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddResponseCompression();
             services.AddGrafikaMvc();
             services.AddMemoryCache();
+            services.AddResponseCompression();
             services.AddResponseCaching();
             services.ConfigureGrafikaMvc(Configuration);
         }
@@ -57,8 +57,8 @@ namespace Grafika.Web
                 .AddRewrite(@"^app/content/comment.html", "/comments", true)
             );
 
-            app.UseResponseCompression();
             app.UseResponseCaching();
+            app.UseResponseCompression();
             app.UseStaticFiles(new StaticFileOptions
             {
                 OnPrepareResponse = (context) =>
