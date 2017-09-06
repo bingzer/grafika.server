@@ -9,6 +9,9 @@ using SimpleMvcSitemap.Images;
 using Microsoft.AspNetCore.Authorization;
 using Grafika.Web.Infrastructure.Extensions;
 using Grafika.Services.Extensions;
+using Microsoft.Extensions.Options;
+using Grafika.Configurations;
+using Grafika.Utilities;
 
 namespace Grafika.Web.Controllers
 {
@@ -20,19 +23,20 @@ namespace Grafika.Web.Controllers
         /// </summary>
         /// <returns></returns>
         [Route("sitemap.xml")]
-        public IActionResult Index()
+        public IActionResult Index([FromServices] IOptions<ServerConfiguration> serverOpts)
         {
+            var config = serverOpts.Value;
             var nodes = new List<SitemapNode>
             {
-                new SitemapNode(Url.Action("Index", "Home")),
-                new SitemapNode(Url.Action("Platforms", "Home")),
-                new SitemapNode(Url.Action("Android", "Home")),
-                new SitemapNode(Url.Action("Online", "Home")),
-                new SitemapNode(Url.Action("IOS", "Home")),
-                new SitemapNode(Url.Action("StickDraw", "Home")),
-                new SitemapNode(Url.Action("About", "Home")),
-                new SitemapNode(Url.Action("Eula", "Home")),
-                new SitemapNode(Url.Action("PrivacyPolicy", "Home"))
+                new SitemapNode(Utility.CombineUrl(config.Url)),
+                new SitemapNode(Utility.CombineUrl(config.Url, "platforms")),
+                new SitemapNode(Utility.CombineUrl(config.Url, "android")),
+                new SitemapNode(Utility.CombineUrl(config.Url, "online")),
+                new SitemapNode(Utility.CombineUrl(config.Url, "ios")),
+                new SitemapNode(Utility.CombineUrl(config.Url, "stickdraw")),
+                new SitemapNode(Utility.CombineUrl(config.Url, "about")),
+                new SitemapNode(Utility.CombineUrl(config.Url, "eula")),
+                new SitemapNode(Utility.CombineUrl(config.Url, "privacy-policy")),
                 //other nodes
             };
 
@@ -46,9 +50,12 @@ namespace Grafika.Web.Controllers
         /// <param name="animationService"></param>
         /// <returns></returns>
         [Route("sitemap-animations.xml")]
-        public async Task<IActionResult> Animations([FromServices] ISeriesService seriesService, [FromServices] IAnimationService animationService)
+        public async Task<IActionResult> Animations([FromServices] IOptions<ServerConfiguration> serverOpts,
+            [FromServices] ISeriesService seriesService, 
+            [FromServices] IAnimationService animationService)
         {
             // TODO: Moved this code a service
+            var config = serverOpts.Value;
 
             var handpicked = (await seriesService.GetHandpickedSeries()).Animations;
 
@@ -81,14 +88,17 @@ namespace Grafika.Web.Controllers
         /// <param name="animationService"></param>
         /// <returns></returns>
         [Route("sitemap-users.xml")]
-        public async Task<IActionResult> Users([FromServices] IUserService userService)
+        public async Task<IActionResult> Users([FromServices] IOptions<ServerConfiguration> serverOpts,
+            [FromServices] IUserService userService)
         {
+            var config = serverOpts.Value;
+
             // TODO: Moved this code a service
             var options = new UserQueryOptions { PageSize = 100 };
             var users = await userService.List(options);
 
             // TODO: also support /users/{username}
-            var nodes = users.Select(user => new SitemapNode($"/animations/{user.Id}"));
+            var nodes = users.Select(user => new SitemapNode(user.GetUrl()));
 
             return new SitemapProvider().CreateSitemap(new SitemapModel(nodes.ToList()));
         }
