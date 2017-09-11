@@ -1,0 +1,86 @@
+@model AnimationsViewModel
+
+<div class="bg-transparent page-heading"></div>
+<header id="header" class="page-content page-content-article text-center">
+    <h1>Contribute</h1>
+    <p class="font-larger">
+        Grafika is in active development. <br/>
+        It's a big project and we do need help... alot of help
+    </p>
+    <hr class="light" />
+</header>
+<section class="page-section text-center container-fluid">
+    <article class="col-sm-6 col-lg-4">
+        <header class="padding-xl">
+            <h2>
+                <a class="btn btn-xl btn-warning" href="https://github.com/bingzer/grafika.js" target="_blank">
+                    grafika.js
+                </a>
+            </h2>
+            <p>
+                The rendering engine that renders the animation. Written in Typescript
+            </p>
+        </header>
+    </article>
+    <article class="col-sm-6 col-lg-4">
+        <header class="padding-xl">
+            <h2>
+                <a class="btn btn-xl btn-success" href="https://github.com/bingzer/grafika.server" target="_blank">
+                    grafika.server
+                </a>
+            </h2>
+            <p>
+                Web application that serves as this website and the API server.
+            </p>
+        </header>
+    </article>
+    <article class="col-sm-6 col-lg-4">
+        <header class="padding-xl">
+            <h2>
+                <a class="btn btn-xl btn-default" href="#" 
+                   data-dialog 
+                   data-title="Grafika Xamarin"
+                   data-message="Grafika Xamarin is still in active development. The source code is not yet uploaded to Github">
+                    grafika.xamarin
+                </a>
+            </h2>
+            <p>
+                Multi-platforms grafika client. 
+                Xamarin allows write once run anywhere in Mobile development.
+                (in development)
+            </p>
+        </header>
+    </article>
+</section>
+<section class="page-section text-center container-fluid">
+    <article class="col-sm-offset-3 col-lg-offset-4 col-sm-6 col-lg-4">
+        <header class="padding-xl">
+            <h2>
+                Have any other contributions?
+            </h2>
+            <p> 
+                <a class="btn btn-xl btn-default" href="/feedback">contact us</a>
+            </p>
+        </header>
+    </article>
+</section>
+
+@section styles {
+    <environment names="Development">
+        <link href="~/css/GrafikaApp.Platforms.css" rel="stylesheet" type="text/css">
+    </environment>
+    <environment names="Production">
+        <link href="~/css/GrafikaApp.Bundle.Platforms.min.css" rel="stylesheet" type="text/css">
+    </environment>
+}
+
+
+@section scripts {
+    <environment names="Development">
+        <script type="text/javascript" src="~/js/jquery.easing.js"></script>
+        <script type="text/javascript" src="~/js/GrafikaApp.Platforms.js"></script>
+    </environment>
+    <environment names="Production">
+        <script type="text/javascript" src="~/js/GrafikaApp.Bundle.Platforms.min.js"></script>
+    </environment>
+}

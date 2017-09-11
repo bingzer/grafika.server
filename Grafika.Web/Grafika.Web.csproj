@@ -3,9 +3,9 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp1.1</TargetFramework>
     <PackageTargetFallback>portable-net45+win8</PackageTargetFallback>
-    <Version>1.0.1.591</Version>
-    <AssemblyVersion>1.0.1.591</AssemblyVersion>
-    <FileVersion>1.0.1.591</FileVersion>
+    <Version>1.0.1.599</Version>
+    <AssemblyVersion>1.0.1.599</AssemblyVersion>
+    <FileVersion>1.0.1.599</FileVersion>
     <PackageProjectUrl>https://github.com/bingzer/grafika.server</PackageProjectUrl>
     <RepositoryUrl>https://github.com/bingzer/grafika.server</RepositoryUrl>
     <Authors>Grafika Team</Authors>
@@ -16,6 +16,12 @@
     <None Include="wwwroot\css\**\*.less"/>
     <None Include="wwwroot\js\**\*.ts"/>
     <None Include="wwwroot\js\drawing\**\*.html"/>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="wwwroot\img\portfolio\**"/>
+    <Content Remove="wwwroot\img\portfolio\**"/>
+    <EmbeddedResource Remove="wwwroot\img\portfolio\**"/>
+    <None Remove="wwwroot\img\portfolio\**"/>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.1.1"/>

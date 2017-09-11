@@ -95,7 +95,8 @@ namespace Grafika.Web.Controllers
             {
                 Title = $"Create Animation | Grafika",
                 UseNavigationBar = false,
-                UseFooter = false
+                UseFooter = false,
+                Description = "Create a stop-motion animation using Grafika web editor. It's free!"
             };
 
             return View("~/Views/Animations/Edit.cshtml", model);
@@ -138,6 +139,18 @@ namespace Grafika.Web.Controllers
             ViewBag.Page = new PageViewModel
             {
                 Title = "Available Platforms | Grafika"
+            };
+
+            return View();
+        }
+
+        [Route("contribute"), AllowAnonymous]
+        public IActionResult Contribute()
+        {
+            ViewBag.Page = new PageViewModel
+            {
+                Title = "Contribute! | Grafika",
+                Description = "Contribute to the development of Grafika."
             };
 
             return View();

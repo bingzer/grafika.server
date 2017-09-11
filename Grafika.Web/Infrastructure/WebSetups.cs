@@ -66,6 +66,7 @@ namespace Grafika.Web.Infrastructure
             app.UseJwtOAuth();
             app.UseCookieOAuth();
             app.UseGlobalization();
+            app.UseStatusCodePagesWithReExecute("/error/{0}");
 
             app.UseGrafikaServices();
             

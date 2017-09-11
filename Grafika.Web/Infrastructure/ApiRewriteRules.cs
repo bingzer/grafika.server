@@ -1,5 +1,6 @@
 ﻿using Grafika.Configurations;
 using Grafika.Utilities;
+using Grafika.Web.Infrastructure.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Rewrite;
 using Microsoft.Extensions.Logging;
@@ -53,6 +54,12 @@ namespace Grafika.Web.Infrastructure
             };
 
             return rules.Any(rule => rule(httpContext));
+        }
+
+        public static bool IsApiCall(HttpContext httpContext)
+        {
+            var request = httpContext.Request;
+            return ApiUrlPattern.IsMatch(request.Path.Value);
         }
 
     }

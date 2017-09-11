@@ -12,9 +12,9 @@ namespace Grafika.Web.ViewModels
             AppVersion = Assembly.GetEntryAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>().InformationalVersion;
         }
 
-        public string Title { get; set; } = AppEnvironment.Default.Server.PageTitle;
-        public string Description { get; set; } = AppEnvironment.Default.Server.PageDescription;
-        public string Keyword { get; set; } = AppEnvironment.Default.Server.PageKeyword;
+        public virtual string Title { get; set; } = AppEnvironment.Default.Server.PageTitle;
+        public virtual string Description { get; set; } = AppEnvironment.Default.Server.PageDescription;
+        public virtual string Keyword { get; set; } = AppEnvironment.Default.Server.PageKeyword;
         public string Version => AppVersion;
 
         public bool UseNavigationBar { get; set; } = true;
