@@ -30,11 +30,13 @@ namespace Grafika.Web.Controllers
             {
                 new SitemapNode(Utility.CombineUrl(config.Url)),
                 new SitemapNode(Utility.CombineUrl(config.Url, "animations")),
+                new SitemapNode(Utility.CombineUrl(config.Url, "try-grafika")),
                 new SitemapNode(Utility.CombineUrl(config.Url, "platforms")),
                 new SitemapNode(Utility.CombineUrl(config.Url, "android")),
                 new SitemapNode(Utility.CombineUrl(config.Url, "online")),
                 new SitemapNode(Utility.CombineUrl(config.Url, "ios")),
                 new SitemapNode(Utility.CombineUrl(config.Url, "stickdraw")),
+                new SitemapNode(Utility.CombineUrl(config.Url, "contribute")),
                 new SitemapNode(Utility.CombineUrl(config.Url, "about")),
                 new SitemapNode(Utility.CombineUrl(config.Url, "eula")),
                 new SitemapNode(Utility.CombineUrl(config.Url, "privacy-policy")),

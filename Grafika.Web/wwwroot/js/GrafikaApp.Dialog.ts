@@ -27,7 +27,7 @@
             });
             $root.find('a[data-dialog],button[data-dialog]').each((index, elem) => {
                 let options = $(elem).data() as IDialogOptions;
-                options.url = $(elem).data('url') || $(elem).attr('href');
+                options.url = $(elem).data('url') || Dialog.checkUrlInHref(elem);
                 $(elem).on('click', () => Dialog.dialog(options));
             });
         }
@@ -55,6 +55,13 @@
 
         public static close(elemOrSelected: any) {
             return (jQuery(elemOrSelected).closest('.modal') as any).modal('hide');
+        }
+
+        private static checkUrlInHref(elem: Element): string {
+            let href = $(elem).attr('href');
+            if (href && (/^javascript:$|^\#$/.test(href)))
+                return undefined;
+            return href;
         }
     }
 
