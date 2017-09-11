@@ -24,12 +24,6 @@
     <None Remove="wwwroot\img\portfolio\**" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="wwwroot\img\js_icon.png" />
-    <Content Include="wwwroot\img\xamarin-icon.png">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.1.1" />
     <PackageReference Include="Microsoft.AspNetCore" Version="1.1.2" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="1.1.2" />

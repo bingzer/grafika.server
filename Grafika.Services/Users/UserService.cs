@@ -51,6 +51,14 @@ namespace Grafika.Services.Users
             if (!url.StartsWith("http", StringComparison.CurrentCultureIgnoreCase))
                 url = Utility.CombineUrl(_serverConfig.Url, url);
 
+            // fixed https://grafika.bingzer.com
+            if (url.StartsWith("https://grafika.bingzer.com", StringComparison.CurrentCultureIgnoreCase))
+            {
+                var serverUri = new Uri(_serverConfig.Url);
+                var uri = new UriBuilder(url) { Host = serverUri.Host, Port = serverUri.Port, Scheme = serverUri.Scheme };
+                url = uri.ToString();
+            }
+
             return url;
         }
 

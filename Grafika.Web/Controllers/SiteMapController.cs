@@ -28,8 +28,8 @@ namespace Grafika.Web.Controllers
             var config = serverOpts.Value;
             var nodes = new List<SitemapNode>
             {
-                new SitemapNode(Utility.CombineUrl(config.Url)),
-                new SitemapNode(Utility.CombineUrl(config.Url, "animations")),
+                new SitemapNode(Utility.CombineUrl(config.Url)) { Priority = 1 },
+                new SitemapNode(Utility.CombineUrl(config.Url, "animations")) { Priority = (decimal) 0.9 },
                 new SitemapNode(Utility.CombineUrl(config.Url, "try-grafika")),
                 new SitemapNode(Utility.CombineUrl(config.Url, "platforms")),
                 new SitemapNode(Utility.CombineUrl(config.Url, "android")),
@@ -62,13 +62,14 @@ namespace Grafika.Web.Controllers
 
             var handpicked = (await seriesService.GetHandpickedSeries()).Animations;
 
-            var options = new AnimationQueryOptions { IsPublic = true, IsRemoved = false, MinimumFrames = 10, PageSize = 100 };
+            var options = new AnimationQueryOptions { IsPublic = true, IsRemoved = false, MinimumFrames = 10, PageSize = config.AnimationsSearchableCount };
             var otherAnimations = await animationService.List(options);
             var animations = handpicked.Union(otherAnimations).Distinct();
 
             var nodes = animations.Select(animation => 
                 new SitemapNode(animation.GetUrl())
                 {
+                    LastModificationDate = animation.DateTimeModified?.UtcDateTime,
                     Images = new List<SitemapImage>
                     {
                         new SitemapImage(animation.GetThumbnailApiUrl())
@@ -97,7 +98,7 @@ namespace Grafika.Web.Controllers
             var config = serverOpts.Value;
 
             // TODO: Moved this code a service
-            var options = new UserQueryOptions { PageSize = 100 };
+            var options = new UserQueryOptions { PageSize = config.UsersSearchableCount };
             var users = await userService.List(options);
 
             // TODO: also support /users/{username}

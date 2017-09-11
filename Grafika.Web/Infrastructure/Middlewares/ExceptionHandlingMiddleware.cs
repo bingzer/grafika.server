@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using Grafika.Web.Infrastructure.Extensions;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
@@ -12,28 +13,28 @@ namespace Grafika.Web.Infrastructure.Middlewares
 {
     public class ExceptionHandlingMiddleware
     {
-        private readonly RequestDelegate next;
+        private readonly RequestDelegate _next;
 
         public ExceptionHandlingMiddleware(RequestDelegate next)
         {
-            this.next = next;
+            _next = next;
         }
 
         public async Task Invoke(HttpContext context, ILogger<ExceptionHandlingMiddleware> logger, IHostingEnvironment env /* other scoped dependencies */)
         {
             try
             {
-                await next(context);
+                await _next(context);
             }
             catch (Exception ex)
             {
                 logger.LogCritical("{0}", ex);
 
-                await HandleExceptionAsync(env, context, ex);
+                await HandleExceptionAsync(env, _next, context, ex);
             }
         }
 
-        private static Task HandleExceptionAsync(IHostingEnvironment env, HttpContext context, Exception exception)
+        private static Task HandleExceptionAsync(IHostingEnvironment env, RequestDelegate next, HttpContext context, Exception exception)
         {
             var message = UserException.DefaultErrorMessage;
             var code = HttpStatusCode.InternalServerError; // 500 if unexpected
@@ -62,7 +63,13 @@ namespace Grafika.Web.Infrastructure.Middlewares
                 context.Response.StatusCode = (int)code;
                 return context.Response.WriteAsync(message);
             }
-            
+
+            if (!ApiRewriteRules.IsApiCall(context))
+            {
+                context.Response.Redirect("/error/" + (int) code);
+                return Task.FromResult(0);
+            }
+
             context.Response.ContentType = ContentTypes.Json;
             context.Response.StatusCode = (int)code;
 
