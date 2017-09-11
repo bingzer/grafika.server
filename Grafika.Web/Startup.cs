@@ -31,7 +31,7 @@ namespace Grafika.Web
         {
             services.AddGrafikaMvc();
             services.AddMemoryCache();
-            services.AddResponseCompression();
+            //services.AddResponseCompression();
             services.AddResponseCaching();
             services.ConfigureGrafikaMvc(Configuration);
         }
@@ -58,7 +58,7 @@ namespace Grafika.Web
             );
 
             app.UseResponseCaching();
-            app.UseResponseCompression();
+            //app.UseResponseCompression();
             app.UseStaticFiles(new StaticFileOptions
             {
                 OnPrepareResponse = (context) =>
