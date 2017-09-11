@@ -29,6 +29,7 @@ namespace Grafika.Web.Controllers
             var nodes = new List<SitemapNode>
             {
                 new SitemapNode(Utility.CombineUrl(config.Url)),
+                new SitemapNode(Utility.CombineUrl(config.Url, "animations")),
                 new SitemapNode(Utility.CombineUrl(config.Url, "platforms")),
                 new SitemapNode(Utility.CombineUrl(config.Url, "android")),
                 new SitemapNode(Utility.CombineUrl(config.Url, "online")),
