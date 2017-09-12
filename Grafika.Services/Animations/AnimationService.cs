@@ -50,6 +50,19 @@ namespace Grafika.Services.Animations
             await Repository.Update(animation);
         }
 
+        protected internal override AnimationQueryOptions PrepareQueryOptions(AnimationQueryOptions options)
+        {
+            if (Validator.ValidateId(options.Term))
+            {
+                options.Id = options.Term;
+                options.Term = null;
+                options.IsRemoved = null;
+                options.IsPublic = null;
+            }
+
+            return options;
+        }
+
         protected internal override async Task<Animation> PrepareEntityForCreate(Animation source)
         {
             var now = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();

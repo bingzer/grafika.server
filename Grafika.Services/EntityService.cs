@@ -23,6 +23,8 @@ namespace Grafika.Services
 
         public virtual async Task<IEnumerable<TEntity>> List(TQueryOptions options)
         {
+            options = PrepareQueryOptions(options);
+
             var list = await Repository.Find(options);
             foreach (var item in list)
             {
@@ -76,6 +78,16 @@ namespace Grafika.Services
                 throw new NotFoundExeption();
 
             return entity;
+        }
+
+        /// <summary>
+        /// This method is called before List(QueryOptions)
+        /// </summary>
+        /// <param name="options"></param>
+        /// <returns></returns>
+        protected internal virtual TQueryOptions PrepareQueryOptions(TQueryOptions options)
+        {
+            return options;
         }
 
         protected internal abstract Task<TEntity> CreateEntityForUpdate(TEntity source);

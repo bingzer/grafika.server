@@ -3,9 +3,9 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp1.1</TargetFramework>
     <PackageTargetFallback>portable-net45+win8</PackageTargetFallback>
-    <Version>1.0.1.609</Version>
-    <AssemblyVersion>1.0.1.609</AssemblyVersion>
-    <FileVersion>1.0.1.609</FileVersion>
+    <Version>1.0.1.612</Version>
+    <AssemblyVersion>1.0.1.612</AssemblyVersion>
+    <FileVersion>1.0.1.612</FileVersion>
     <PackageProjectUrl>https://github.com/bingzer/grafika.server</PackageProjectUrl>
     <RepositoryUrl>https://github.com/bingzer/grafika.server</RepositoryUrl>
     <Authors>Grafika Team</Authors>
@@ -48,6 +48,7 @@
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="1.0.0"/>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Views\Admin\"/>
     <Folder Include="Views\Users\"/>
     <Folder Include="wwwroot\js\home\"/>
   </ItemGroup>

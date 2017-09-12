@@ -185,5 +185,17 @@ namespace Grafika.Test.Services.Animations
 
             validator.Sanitize(animation, user);
         }
+
+        [Fact]
+        public void TestValidateId()
+        {
+            var mockEntityIdValidator = new Mock<IEntityIdValidator>();
+            mockEntityIdValidator.Setup(c => c.ValidateId(It.Is<string>(str => str == "SomeId"))).Verifiable();
+
+            var validator = new AnimationValidator(mockEntityIdValidator.Object);
+            validator.ValidateId("SomeId");
+
+            mockEntityIdValidator.VerifyAll();
+        }
     }
 }

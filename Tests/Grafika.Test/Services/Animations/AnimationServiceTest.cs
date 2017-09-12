@@ -55,5 +55,23 @@ namespace Grafika.Test.Services.Animations
 
             mockRepo.VerifyAll();
         }
+
+        [Fact]
+        public void TestPrepareQueryOptions_TermIsAnId()
+        {
+            var mockValidator = new Mock<IAnimationValidator>();
+            mockValidator.Setup(c => c.ValidateId(It.IsAny<string>()))
+                .Returns(true)
+                .Verifiable();
+
+            var queryOptions = new AnimationQueryOptions { Term = "IsAnId", IsRemoved = true, IsPublic = true };
+            var service = new AnimationService(MockHelpers.ServiceContext.Object, null, mockValidator.Object);
+            var result = service.PrepareQueryOptions(queryOptions);
+
+            Assert.Equal("IsAnId", result.Id);
+            Assert.Null(result.Term);
+            Assert.Null(result.IsRemoved);
+            Assert.Null(result.IsPublic);
+        }
     }
 }
