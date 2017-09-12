@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 namespace Grafika.Web.Controllers
 {
     [Produces("application/json")]
-    [Authorize("Administrator")]
+    [Authorize(Roles.Administrator)]
     [Route("api/admin")]
     public class AdminApiController : Controller
     {

@@ -48,6 +48,7 @@
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="1.0.0" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Views\Admin\" />
     <Folder Include="Views\Users\" />
     <Folder Include="wwwroot\js\home\" />
   </ItemGroup>
