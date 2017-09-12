@@ -1,3 +1,5 @@
+@inject IOptions<ServerConfiguration> serverOpts;
+
 <div class="bg-dark page-heading"></div>
 <div class="page-content page-content-article">
 
@@ -117,7 +119,7 @@
                 <h3>Web</h3>
             </header>
             <p>
-                Available in <a href="https://grafika.bingzer.com">https://grafika.bingzer.com</a>
+                Available in <a href="@serverOpts.Value.Url">@serverOpts.Value.Url</a>
             </p>
         </section>
         <section>
