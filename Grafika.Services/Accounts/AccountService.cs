@@ -30,10 +30,7 @@ namespace Grafika.Services.Accounts
         public async Task<AuthenticationToken> Login(string email, string password)
         {
             var user = await _userManager.FindByEmailAsync(email);
-            if (user == null)
-                throw new NotFoundExeption();
-
-            if (user.IsActive == true)
+            if (user?.IsActive == true)
             {
                 user.Activation = new UserActivation(); // do not provide hash
                 var result = await _userManager.CheckPasswordAsync(user, password);
@@ -44,7 +41,7 @@ namespace Grafika.Services.Accounts
                 }
             }
 
-            throw new NotAuthorizedException();
+            throw new NotAuthorizedException("Email or password is invalid");
         }
 
         public async Task<AuthenticationToken> Login(IUserIdentity userIdentity)

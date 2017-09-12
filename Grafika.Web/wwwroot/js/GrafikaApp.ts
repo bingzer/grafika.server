@@ -326,9 +326,9 @@ module GrafikaApp {
             if (errorCallback) {
                 let $err = err;
                 let $xhr = xhrReq;
-                if (typeof callback === 'function')
-                    callback($err, $xhr);
-                else eval(callback);
+                if (typeof errorCallback === 'function')
+                    errorCallback($err, $xhr);
+                else eval(errorCallback);
             }
             return jQuery.when(err);
         }

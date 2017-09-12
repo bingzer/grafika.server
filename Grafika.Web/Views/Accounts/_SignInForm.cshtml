@@ -49,5 +49,11 @@
         else $('#signin-form input[type=submit]').attr('disabled', 'disabled');
     }
 
+    function onLoginFailed($err, $xhr) {
+        var error = GrafikaApp.formatError($xhr);
+        bootbox.alert({ message: error.message, title: 'Unable to login' });
+        $('input[name=password]').val('');
+    }
+
     $('#signin-form input[type=password], #signin-form input[type=email]').focus(validate).change(validate).keyup(validate);
 </script>
