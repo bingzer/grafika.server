@@ -15,10 +15,16 @@ namespace Grafika.Web.Infrastructure.Extensions
     /// </summary>
     public static class HttpRequestExtensions
     {
+        public static bool Accept(this HttpRequest req, string contentType)
+        {
+            var acceptHeader = req.Headers.FirstOrDefault(h => "accept".EqualsIgnoreCase(h.Key));
+            return acceptHeader.Value.Any(str => str.ContainsIgnoreCase(contentType));
+        }
+
         public static bool AcceptEncodings(this HttpRequest req, string encoding)
         {
             var acceptEncodingHeader = req.Headers.FirstOrDefault(h => "accept-encoding".EqualsIgnoreCase(h.Key));
-            return acceptEncodingHeader.Value.Any(str => str.ContainsIgnoreCase("deflate"));
+            return acceptEncodingHeader.Value.Any(str => str.ContainsIgnoreCase(encoding));
         }
 
         public static bool HasHeaderWithValue(this HttpRequest req, string key, string value)

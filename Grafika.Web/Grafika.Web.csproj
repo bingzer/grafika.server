@@ -18,6 +18,12 @@
     <None Include="wwwroot\js\drawing\**\*.html" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Remove="wwwroot\img\portfolio\**" />
+    <Content Remove="wwwroot\img\portfolio\**" />
+    <EmbeddedResource Remove="wwwroot\img\portfolio\**" />
+    <None Remove="wwwroot\img\portfolio\**" />
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.1.1" />
     <PackageReference Include="Microsoft.AspNetCore" Version="1.1.2" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="1.1.2" />
