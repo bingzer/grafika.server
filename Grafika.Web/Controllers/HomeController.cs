@@ -125,7 +125,7 @@ namespace Grafika.Web.Controllers
             return View();
         }
 
-        [Route("feedback"), AllowAnonymous]
+        [Route("feedback"), Route("about/feedback"), AllowAnonymous]
         public IActionResult Feedback()
         {
             ViewBag.Page = new PageViewModel { Title = "Feedback | Grafika" };
