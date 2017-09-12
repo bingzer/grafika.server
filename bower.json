@@ -21,7 +21,7 @@
     "font-awesome": "^4.7.0",
     "magnific-popup": "^1.1.0",
     "scrollreveal": "^3.3.6",
-    "grafika-js": "grafika.js#^1.0.4",
+    "grafika-js": "grafika.js#^1.1.5",
     "angular-spectrum-colorpicker": "latest",
     "angulartics-google-analytics": "^0.4.0",
     "angular-google-adsense": "^0.4.5",
