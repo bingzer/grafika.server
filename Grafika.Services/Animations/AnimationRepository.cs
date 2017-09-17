@@ -65,6 +65,7 @@ namespace Grafika.Services.Animations
                 case "views" when sortOptions.Direction == SortDirection.Ascending:
                     query = query.OrderBy(q => q.Views);
                     break;
+                default:
                 case "views" when sortOptions.Direction == SortDirection.Descending:
                     query = query.OrderByDescending(q => q.Views);
                     break;
@@ -79,9 +80,6 @@ namespace Grafika.Services.Animations
                     break;
                 case "rating" when sortOptions.Direction == SortDirection.Descending:
                     query = query.OrderByDescending(q => q.Rating);
-                    break;
-                default:
-                    query = query.OrderByDescending(anim => anim.DateModified);
                     break;
             }
 

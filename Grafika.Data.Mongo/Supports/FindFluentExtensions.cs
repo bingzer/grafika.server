@@ -19,6 +19,7 @@ namespace Grafika.Data.Mongo.Supports
                 case "views" when sortOptions.Direction == SortDirection.Ascending:
                     findFluent = findFluent.SortBy(q => q.Views);
                     break;
+                default:
                 case "views" when sortOptions.Direction == SortDirection.Descending:
                     findFluent = findFluent.SortByDescending(q => q.Views);
                     break;
@@ -33,9 +34,6 @@ namespace Grafika.Data.Mongo.Supports
                     break;
                 case "rating" when sortOptions.Direction == SortDirection.Descending:
                     findFluent = findFluent.SortByDescending(q => q.Rating);
-                    break;
-                default:
-                    findFluent = findFluent.SortByDescending(anim => anim.DateModified);
                     break;
             }
 
