@@ -38,6 +38,12 @@ namespace Grafika.Web.Controllers
                 Options = options
             };
 
+            ViewBag.Page = new PageViewModel
+            {
+                Description = "View all published stop motion animations from Grafika animators around the world",
+                Title = "Public Animations | Grafika"
+            };
+
             return View(model);
         }
 

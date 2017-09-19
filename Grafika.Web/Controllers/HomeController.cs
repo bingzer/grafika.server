@@ -8,6 +8,8 @@ using Microsoft.Extensions.Caching.Memory;
 using Grafika.Animations;
 using System;
 using Grafika.Web.Infrastructure.Extensions;
+using Grafika.Utilities;
+using Microsoft.Extensions.Options;
 
 namespace Grafika.Web.Controllers
 {
@@ -157,11 +159,15 @@ namespace Grafika.Web.Controllers
         }
 
         [Route("android"), AllowAnonymous]
-        public IActionResult Android()
+        public IActionResult Android([FromServices] IOptions<ServerConfiguration> serverOpts)
         {
+            var serverConfig = serverOpts.Value;
+
             ViewBag.Page = new PageViewModel
             {
-                Title = "Android app | Grafika"
+                Thumbnail = new ThumbnailViewModel(Utility.CombineUrl(serverConfig.Url, "img/feature-graphics-android-min.png"), 1024, 500),
+                Title = "Android app | Grafika",
+                Description = "A simple stop animation maker for Android. Grafika is now available for Android. Start creating your stop-motion animations today."
             };
 
             return View();
