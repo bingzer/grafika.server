@@ -47,13 +47,14 @@ namespace Grafika.Services.Users
 
             switch (sortOptions?.Name)
             {
-                case "lastSeen" when sortOptions.Direction == SortDirection.Ascending:
+                case UserQueryOptions.SortByLastSeen when sortOptions.Direction == SortDirection.Ascending:
                     query = query.OrderBy(u => u.Stats?.DateLastSeen);
                     break;
-                case "lastSeen" when sortOptions.Direction == SortDirection.Descending:
+                case UserQueryOptions.SortByLastSeen when sortOptions.Direction == SortDirection.Descending:
                     query = query.OrderByDescending(u => u.Stats?.DateLastSeen);
                     break;
                 default:
+                case UserQueryOptions.SortById:
                     query = query.OrderBy(u => u.Id);
                     break;
             }

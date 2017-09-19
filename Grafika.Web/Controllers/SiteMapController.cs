@@ -30,6 +30,7 @@ namespace Grafika.Web.Controllers
             {
                 new SitemapNode(Utility.CombineUrl(config.Url)) { Priority = 1 },
                 new SitemapNode(Utility.CombineUrl(config.Url, "animations")) { Priority = (decimal) 0.9 },
+                new SitemapNode(Utility.CombineUrl(config.Url, "animations/recents")) { Priority = (decimal) 0.5 },
                 new SitemapNode(Utility.CombineUrl(config.Url, "try-grafika")),
                 new SitemapNode(Utility.CombineUrl(config.Url, "platforms")),
                 new SitemapNode(Utility.CombineUrl(config.Url, "android")),

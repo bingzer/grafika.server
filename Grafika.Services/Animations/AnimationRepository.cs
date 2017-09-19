@@ -62,23 +62,23 @@ namespace Grafika.Services.Animations
             // order by
             switch (sortOptions?.Name)
             {
-                case "views" when sortOptions.Direction == SortDirection.Ascending:
+                case AnimationQueryOptions.SortByViews when sortOptions.Direction == SortDirection.Ascending:
                     query = query.OrderBy(q => q.Views);
                     break;
                 default:
-                case "views" when sortOptions.Direction == SortDirection.Descending:
+                case AnimationQueryOptions.SortByViews when sortOptions.Direction == SortDirection.Descending:
                     query = query.OrderByDescending(q => q.Views);
                     break;
-                case "lastModified" when sortOptions.Direction == SortDirection.Ascending:
+                case AnimationQueryOptions.SortByLastModified when sortOptions.Direction == SortDirection.Ascending:
                     query = query.OrderBy(q => q.DateModified);
                     break;
-                case "lastModified" when sortOptions.Direction == SortDirection.Descending:
+                case AnimationQueryOptions.SortByLastModified when sortOptions.Direction == SortDirection.Descending:
                     query = query.OrderByDescending(q => q.DateModified);
                     break;
-                case "rating" when sortOptions.Direction == SortDirection.Ascending:
+                case AnimationQueryOptions.SortByRatings when sortOptions.Direction == SortDirection.Ascending:
                     query = query.OrderBy(q => q.Rating);
                     break;
-                case "rating" when sortOptions.Direction == SortDirection.Descending:
+                case AnimationQueryOptions.SortByRatings when sortOptions.Direction == SortDirection.Descending:
                     query = query.OrderByDescending(q => q.Rating);
                     break;
             }

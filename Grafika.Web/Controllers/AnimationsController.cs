@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Authorization;
 using Grafika.Configurations;
 using Grafika.Animations;
 using Grafika.Utilities;
-using Grafika.Web.Infrastructure.Extensions;
 using Grafika.Services.Extensions;
 
 namespace Grafika.Web.Controllers
@@ -38,13 +37,30 @@ namespace Grafika.Web.Controllers
                 Options = options
             };
 
+            if (ViewBag.Page as PageViewModel == null)
+            {
+                ViewBag.Page = new PageViewModel
+                {
+                    Description = "View all published stop motion animations from Grafika animators around the world",
+                    Title = "Public Animations | Grafika"
+                };
+            }
+
+            return View("Index", model);
+        }
+
+        [Route("recents"), AllowAnonymous]
+        public Task<IActionResult> Recents(AnimationQueryOptions options)
+        {
+            options.Sort = new SortOptions { Name = AnimationQueryOptions.SortByLastModified, Direction = SortDirection.Descending };
+
             ViewBag.Page = new PageViewModel
             {
-                Description = "View all published stop motion animations from Grafika animators around the world",
-                Title = "Public Animations | Grafika"
+                Description = "List of recently created stop motion animations from Grafika animators around the world",
+                Title = "Recent Animations"
             };
 
-            return View(model);
+            return Index(options);
         }
 
         [Route("{animationId}/{slug?}/edit")]
@@ -58,7 +74,7 @@ namespace Grafika.Web.Controllers
             ViewBag.Page = new PageViewModel
             {
                 Title = $"{model.Animation.Name} | Grafika",
-                Description = $"{model.Animation.Name}. An animation by {model.Animation.Author} | Grafika Animation",
+                Description = GenerateFriendlyDescription(model.Animation),
                 Thumbnail = new ThumbnailViewModel(model.Animation.GetThumbnailApiUrl(), model.Animation.Width, model.Animation.Height),
                 UseNavigationBar = false,
                 UseFooter = false
@@ -82,11 +98,11 @@ namespace Grafika.Web.Controllers
             {
                 Animation = animation
             };
-
+            
             ViewBag.Page = new PageViewModel
             {
                 Title = $"{animation.Name} | Grafika",
-                Description = $"{animation.Name} by {animation.Author} | Grafika Animation",
+                Description = GenerateFriendlyDescription(animation),
                 Thumbnail = new ThumbnailViewModel(animation.GetThumbnailApiUrl(), animation.Width, animation.Height)
             };
 
@@ -134,6 +150,12 @@ namespace Grafika.Web.Controllers
             ViewBag.ApiCreateAnimationUrl = Utility.CombineUrl(AppEnvironment.Default.Server.ApiUrl, "animations");
 
             return PartialView("_Create", model);
+        }
+
+        private string GenerateFriendlyDescription(Animation animation)
+        {
+            var defaultDescription = $"{animation.Name} by {animation.Author} | Grafika Animation";
+            return string.IsNullOrEmpty(animation.Description) ? defaultDescription : animation.Description;
         }
     }
 }

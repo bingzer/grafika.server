@@ -2,15 +2,16 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp1.1</TargetFramework>
-    <PackageTargetFallback>portable-net45+win8</PackageTargetFallback>
-    <Version>1.0.1.624</Version>
-    <AssemblyVersion>1.0.1.624</AssemblyVersion>
-    <FileVersion>1.0.1.624</FileVersion>
+    <PackageTargetFallback>$(PackageTargetFallback);dotnet5.6;portable-net45+win8</PackageTargetFallback>
+    <Version>1.0.1.630</Version>
+    <AssemblyVersion>1.0.1.630</AssemblyVersion>
+    <FileVersion>1.0.1.630</FileVersion>
     <PackageProjectUrl>https://github.com/bingzer/grafika.server</PackageProjectUrl>
     <RepositoryUrl>https://github.com/bingzer/grafika.server</RepositoryUrl>
     <Authors>Grafika Team</Authors>
     <Company>Bingzer</Company>
     <Description>The website for for https://grafika.bingzer.com</Description>
+    <AssemblyName>Grafika.Web</AssemblyName>
   </PropertyGroup>
   <ItemGroup>
     <None Include="wwwroot\css\**\*.less"/>
