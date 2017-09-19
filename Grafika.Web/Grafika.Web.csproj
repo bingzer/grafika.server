@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp1.1</TargetFramework>
-    <PackageTargetFallback>portable-net45+win8</PackageTargetFallback>
+    <PackageTargetFallback>$(PackageTargetFallback);dotnet5.6;portable-net45+win8</PackageTargetFallback>
     <Version>1.0.0.384</Version>
     <AssemblyVersion>1.0.0.384</AssemblyVersion>
     <FileVersion>1.0.0.384</FileVersion>
@@ -11,6 +11,7 @@
     <Authors>Grafika Team</Authors>
     <Company>Bingzer</Company>
     <Description>The website for for https://grafika.bingzer.com</Description>
+    <AssemblyName>Grafika.Web</AssemblyName>
   </PropertyGroup>
   <ItemGroup>
     <None Include="wwwroot\css\**\*.less" />
