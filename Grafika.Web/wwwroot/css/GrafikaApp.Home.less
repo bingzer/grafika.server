@@ -35,6 +35,10 @@ aside.landing {
 .navbar {
     #logo {
         visibility: collapse;
+
+        @media (max-width: @media-sm) {
+            visibility: visible;
+        }
     }
 
     &.affix {
@@ -46,6 +50,10 @@ aside.landing {
             visibility: collapse;
         }
     }
+
+    @media (max-width: @media-sm) {
+        background-color: rgba(66,66,68,0.6);
+    }
 }
 
 #logo-big {
@@ -55,6 +63,11 @@ aside.landing {
     background-position-x: center;
     height: 100px;
     margin-bottom: 8px;
+
+    @media (max-width: @media-sm) {
+        visibility: collapse;
+        display: none;
+    }
 }
 
 header {
