@@ -114,7 +114,7 @@ namespace Grafika.Test.Services.Animations
         public async void TestSort()
         {
             var repo = await SetupAnimationRepository();
-            var options = new AnimationQueryOptions { Sort = new SortOptions { Direction = SortDirection.Ascending, Name = "views" } };
+            var options = new AnimationQueryOptions { Sort = new SortOptions { Direction = SortDirection.Ascending, Name = AnimationQueryOptions.SortByViews} };
             var results = (await repo.Find(options)).ToList();
             Assert.Equal("1", results[0].Id);
             Assert.Equal("2", results[1].Id);
@@ -122,7 +122,7 @@ namespace Grafika.Test.Services.Animations
             Assert.Equal("4", results[3].Id);
             Assert.Equal("5", results[4].Id);
 
-            options = new AnimationQueryOptions { Sort = new SortOptions { Direction = SortDirection.Descending, Name = "views" } };
+            options = new AnimationQueryOptions { Sort = new SortOptions { Direction = SortDirection.Descending, Name = AnimationQueryOptions.SortByViews } };
             results = (await repo.Find(options)).ToList();
             Assert.Equal("5", results[0].Id);
             Assert.Equal("4", results[1].Id);
@@ -130,7 +130,7 @@ namespace Grafika.Test.Services.Animations
             Assert.Equal("2", results[3].Id);
             Assert.Equal("1", results[4].Id);
 
-            options = new AnimationQueryOptions { Sort = new SortOptions { Direction = SortDirection.Ascending, Name = "rating" } };
+            options = new AnimationQueryOptions { Sort = new SortOptions { Direction = SortDirection.Ascending, Name = AnimationQueryOptions.SortByRatings } };
             results = (await repo.Find(options)).ToList();
             Assert.Equal("5", results[0].Id);
             Assert.Equal("4", results[1].Id);
@@ -139,7 +139,7 @@ namespace Grafika.Test.Services.Animations
             Assert.Equal("1", results[4].Id);
 
 
-            options = new AnimationQueryOptions { Sort = new SortOptions { Direction = SortDirection.Descending, Name = "rating" } };
+            options = new AnimationQueryOptions { Sort = new SortOptions { Direction = SortDirection.Descending, Name = AnimationQueryOptions.SortByRatings } };
             results = (await repo.Find(options)).ToList();
             Assert.Equal("1", results[0].Id);
             Assert.Equal("2", results[1].Id);

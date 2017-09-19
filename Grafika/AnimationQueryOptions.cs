@@ -4,6 +4,10 @@ namespace Grafika
 {
     public class AnimationQueryOptions : SearchQueryOptions
     {
+        public const string SortByViews = "views";
+        public const string SortByLastModified = "lastModified";
+        public const string SortByRatings = "rating";
+
         public IEnumerable<string> Ids { get; set; }
 
         public string UserId { get; set; }

@@ -16,23 +16,23 @@ namespace Grafika.Data.Mongo.Supports
             // order by
             switch (sortOptions?.Name)
             {
-                case "views" when sortOptions.Direction == SortDirection.Ascending:
+                case AnimationQueryOptions.SortByViews when sortOptions.Direction == SortDirection.Ascending:
                     findFluent = findFluent.SortBy(q => q.Views);
                     break;
                 default:
-                case "views" when sortOptions.Direction == SortDirection.Descending:
+                case AnimationQueryOptions.SortByViews when sortOptions.Direction == SortDirection.Descending:
                     findFluent = findFluent.SortByDescending(q => q.Views);
                     break;
-                case "lastModified" when sortOptions.Direction == SortDirection.Ascending:
+                case AnimationQueryOptions.SortByLastModified when sortOptions.Direction == SortDirection.Ascending:
                     findFluent = findFluent.SortBy(q => q.DateModified);
                     break;
-                case "lastModified" when sortOptions.Direction == SortDirection.Descending:
+                case AnimationQueryOptions.SortByLastModified when sortOptions.Direction == SortDirection.Descending:
                     findFluent = findFluent.SortByDescending(q => q.DateModified);
                     break;
-                case "rating" when sortOptions.Direction == SortDirection.Ascending:
+                case AnimationQueryOptions.SortByRatings when sortOptions.Direction == SortDirection.Ascending:
                     findFluent = findFluent.SortBy(q => q.Rating);
                     break;
-                case "rating" when sortOptions.Direction == SortDirection.Descending:
+                case AnimationQueryOptions.SortByRatings when sortOptions.Direction == SortDirection.Descending:
                     findFluent = findFluent.SortByDescending(q => q.Rating);
                     break;
             }
@@ -51,13 +51,11 @@ namespace Grafika.Data.Mongo.Supports
             // order by
             switch (sortOptions?.Name)
             {
-                case "lastModified" when sortOptions.Direction == SortDirection.Ascending:
+                case BackgroundQueryOptions.SortByLastModified when sortOptions.Direction == SortDirection.Ascending:
                     findFluent = findFluent.SortBy(q => q.DateModified);
                     break;
-                case "lastModified" when sortOptions.Direction == SortDirection.Descending:
-                    findFluent = findFluent.SortByDescending(q => q.DateModified);
-                    break;
                 default:
+                case BackgroundQueryOptions.SortByLastModified when sortOptions.Direction == SortDirection.Descending:
                     findFluent = findFluent.SortByDescending(q => q.DateModified);
                     break;
             }
@@ -76,13 +74,11 @@ namespace Grafika.Data.Mongo.Supports
             // order by
             switch (sortOptions?.Name)
             {
-                case "lastModified" when sortOptions.Direction == SortDirection.Ascending:
+                case SeriesQueryOptions.SortByLastModified when sortOptions.Direction == SortDirection.Ascending:
                     findFluent = findFluent.SortBy(q => q.DateModified);
                     break;
-                case "lastModified" when sortOptions.Direction == SortDirection.Descending:
-                    findFluent = findFluent.SortByDescending(q => q.DateModified);
-                    break;
                 default:
+                case SeriesQueryOptions.SortByLastModified when sortOptions.Direction == SortDirection.Descending:
                     findFluent = findFluent.SortByDescending(q => q.DateModified);
                     break;
             }

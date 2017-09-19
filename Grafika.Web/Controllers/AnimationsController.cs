@@ -38,13 +38,30 @@ namespace Grafika.Web.Controllers
                 Options = options
             };
 
+            if (ViewBag.Page as PageViewModel == null)
+            {
+                ViewBag.Page = new PageViewModel
+                {
+                    Description = "View all published stop motion animations from Grafika animators around the world",
+                    Title = "Public Animations | Grafika"
+                };
+            }
+
+            return View("Index", model);
+        }
+
+        [Route("recents"), AllowAnonymous]
+        public Task<IActionResult> Recents(AnimationQueryOptions options)
+        {
+            options.Sort = new SortOptions { Name = AnimationQueryOptions.SortByLastModified, Direction = SortDirection.Descending };
+
             ViewBag.Page = new PageViewModel
             {
-                Description = "View all published stop motion animations from Grafika animators around the world",
-                Title = "Public Animations | Grafika"
+                Description = "List of recently created stop motion animations from Grafika animators around the world",
+                Title = "Recent Animations"
             };
 
-            return View(model);
+            return Index(options);
         }
 
         [Route("{animationId}/{slug?}/edit")]

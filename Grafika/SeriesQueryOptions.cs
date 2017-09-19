@@ -2,6 +2,8 @@
 {
     public class SeriesQueryOptions : SearchQueryOptions
     {
+        public const string SortByLastModified = "lastModified";
+
         public string Name { get; set; }
         public string UserId { get; set; }
         public string AnimationId { get; set; }
