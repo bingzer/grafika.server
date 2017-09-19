@@ -48,6 +48,12 @@ md-menu-bar md-menu > button:focus {
         margin: 0;
         padding: 0;
     }
+
+    @media (max-width: @media-sm) {
+        .navbar-toggle.collapsed {
+            display: none !important;
+        }
+    }
 }
 
 #drawing-section {
@@ -149,5 +155,11 @@ md-menu-bar md-menu > button:focus {
 
     #canvas-wrapper.move {
         cursor: move;
+    }
+}
+
+md-dialog {
+    @media (min-width: @media-sm) {
+        min-width: 450px !important;
     }
 }

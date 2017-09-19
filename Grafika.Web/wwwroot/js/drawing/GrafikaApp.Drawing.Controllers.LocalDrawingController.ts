@@ -95,8 +95,8 @@
                 private createNewAnimation(): ng.IPromise<any> {
                     this.animation = {
                         name: 'New Animation',
-                        width: 800,
-                        height: 480,
+                        width: this.getDrawableWidth(),
+                        height: this.getDrawableHeight(),
                         localId: Grafika.randomUid(),
                         author: 'Anonymous',
                         isPublic: true,
@@ -107,6 +107,24 @@
                     this.grafika.setFrames(this.createFirstFrames());
 
                     return this.appCommon.$q.when(true);
+                }
+
+                private getDrawableWidth(): number {
+                    let width = $('.drawing').width();
+                    if (width > 800) {
+                        width = 800;
+                    }
+
+                    return width;
+                }
+
+                private getDrawableHeight(): number {
+                    let height = $('.drawing').height() - $('.drawing md-toolbar').height();
+                    if (height > 400) {
+                        height = 400;
+                    }
+
+                    return height;
                 }
 
             }
