@@ -13,6 +13,7 @@
                 selectedForegroundColor: string;
                 selectedBackgroundColorText: string;
                 selectedForegroundColorText: string;
+                copiedFrame: Grafika.IFrame;
 
                 public static $inject = ['appCommon', 'authService', 'animationService', 'frameService', 'resourceService', '$rootScope', '$scope'];
                 constructor(
@@ -220,6 +221,51 @@
                 pasteGraphics() {
                     this.grafika.pasteSelectedGraphics();
                     this.appCommon.toast("Graphics pasted");
+                }
+
+                hasCopiedFrame() {
+                    return this.copiedFrame;
+                }
+
+                copyToNextFrame() {
+                    this.grafika.exts.copyFrameToNext();
+                }
+
+                copyToPreviousFrame() {
+                    this.grafika.exts.copyFrameToPrevious();
+                }
+
+                copyFrame() {
+                    this.copiedFrame = Grafika.clone(this.grafika.frame);
+                    this.appCommon.toast("Frame copied");
+                }
+
+                cutFrame() {
+                    this.copiedFrame = Grafika.clone(this.grafika.frame);
+
+                    this.grafika.clearFrame();
+                    this.appCommon.toast("Frame cut");
+                }
+
+                pasteFrame() {
+                    if (!this.copiedFrame) {
+                        this.appCommon.toastError("No copied frame");
+                        return;
+                    }
+
+                    let pastedFrame: Grafika.IFrame = Grafika.clone(this.copiedFrame);
+                    pastedFrame.id = Grafika.randomUid();
+
+                    this.grafika.frame = pastedFrame;
+                    this.grafika.refreshFrame({ drawBackground: true });
+                    this.appCommon.toast("Frame pasted");
+                }
+
+                deleteFrame() {
+                    this.appCommon.confirm("Delete this frame?").then(() => {
+                        this.grafika.exts.deleteFrame();
+                        this.appCommon.toast("Frame deleted");
+                    });
                 }
 
                 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
