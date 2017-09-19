@@ -17,14 +17,14 @@
             <input id="player-slider"
                    type="text"
                    data-provide="slider"
-                   data-slider-min="1"
-                   data-slider-max="@Model.Animation.TotalFrame"
+                   data-slider-min="0"
+                   data-slider-max="@(Model.Animation.TotalFrame - 1)"
                    data-slider-step="1"
-                   data-slider-value="1">
-            <a href="javascript: void(0)" class="btn btn-sm" onclick="player.grafika.previousFrame()">
+                   data-slider-value="0">
+            <a href="javascript: void(0)" class="btn btn-sm" onclick="player.previousFrame()">
                 <i class="fa fa-arrow-left"></i>
             </a>
-            <a href="javascript: void(0)" class="btn btn-sm" onclick="player.grafika.nextFrame()">
+            <a href="javascript: void(0)" class="btn btn-sm" onclick="player.nextFrame()">
                 <i class="fa fa-arrow-right"></i>
             </a>
         </div>

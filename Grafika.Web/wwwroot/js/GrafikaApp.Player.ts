@@ -25,6 +25,16 @@
             return jQuery.when({ isPlaying: this.grafika.isPlaying() });
         }
 
+        previousFrame() {
+            this.grafika.previousFrame();
+        }
+
+        nextFrame() {
+            if (this.grafika.frame.index < this.grafika.animation.totalFrame - 1) {
+                this.grafika.nextFrame();
+            }
+        }
+
         pause(): Q.IPromise<{ isPlaying: boolean }> {
             this.grafika.pause();
             return jQuery.when({ isPlaying: this.grafika.isPlaying() });
