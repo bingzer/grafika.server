@@ -26,6 +26,11 @@ namespace Grafika.Services.Disqus
             return _provider.GenerateAuthenticationToken(user);
         }
 
+        public Task<Uri> GenerateRemoteUrl(ICommentAuthenticationContext context)
+        {
+            return _provider.GetCommentUrl(context);
+        }
+
         public async Task<Uri> GenerateRemoteUrl(Animation animation, User user = null)
         {
             var context = new AnimationCommentAuthenticationContext(animation)
@@ -34,7 +39,8 @@ namespace Grafika.Services.Disqus
                 ServerUrl = Context.ServerUrl.ToString(),
                 UserToken = user == null ? AuthenticationToken.Empty : await _accountService.GenerateUserToken(user)
             };
-            return await _provider.GetCommentUrl(context);
+
+            return await GenerateRemoteUrl(context);
         }
     }
 }

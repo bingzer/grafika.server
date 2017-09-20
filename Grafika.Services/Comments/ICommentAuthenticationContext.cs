@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Grafika.Services.Comments
 {
-    interface ICommentAuthenticationContext
+    public interface ICommentAuthenticationContext
     {
         /// <summary>
         /// Super unique Id
