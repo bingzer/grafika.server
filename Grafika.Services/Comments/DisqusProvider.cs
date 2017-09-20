@@ -1,5 +1,4 @@
-﻿using Grafika.Animations;
-using Grafika.Configurations;
+﻿using Grafika.Configurations;
 using Grafika.Services.Extensions;
 using Grafika.Utilities;
 using Microsoft.Extensions.Options;
@@ -45,15 +44,13 @@ namespace Grafika.Services.Comments
 
         public async Task<Uri> GetCommentUrl(ICommentAuthenticationContext context)
         {
-            var animation = context.Animation;
             var serverUrl = context.ServerUrl.ToString();
             var disqusToken = context.User == null ? AuthenticationToken.Empty : await GenerateAuthenticationToken(context.User);
             var userToken = context.UserToken;
 
-            var seoUrl = animation.GetUrl();
-            var animUrl = animation.GetUrl(useSlug: false);
-            var postUrl = Utility.CombineUrl(animUrl, "comments");
-            var queryString = $"url={seoUrl}&title={EncodeAscii(animation.Name)}&shortname=grafika-app&identifier={animation.Id}&pub={disqusToken.Id}&disqusToken={disqusToken.Token}&postUrl={postUrl}&jwtToken={userToken.Token}";
+            var seoUrl = context.Url;
+            var postUrl = context.PostUrl;
+            var queryString = $"url={seoUrl}&title={EncodeAscii(context.Title)}&shortname=grafika-app&identifier={context.Id}&pub={disqusToken.Id}&disqusToken={disqusToken.Token}&postUrl={postUrl}&jwtToken={userToken.Token}";
 
             var urlBuilder = new UriBuilder(Utility.CombineUrl(_serverConfig.Url, "comments"))
             {
