@@ -28,24 +28,13 @@ namespace Grafika.Services.Disqus
 
         public async Task<Uri> GenerateRemoteUrl(Animation animation, User user = null)
         {
-            var context = new CommentAuthenticationContext
+            var context = new AnimationCommentAuthenticationContext(animation)
             {
-                Animation = animation,
                 User = user,
-                ServerUrl = Context.ServerUrl,
+                ServerUrl = Context.ServerUrl.ToString(),
                 UserToken = user == null ? AuthenticationToken.Empty : await _accountService.GenerateUserToken(user)
             };
             return await _provider.GetCommentUrl(context);
         }
-
-        #region CommentAuthenticationContext impl
-        private class CommentAuthenticationContext : ICommentAuthenticationContext
-        {
-            public Uri ServerUrl { get; set; }
-            public Animation Animation { get; set; }
-            public User User { get; set; }
-            public AuthenticationToken UserToken { get; set; }
-        }
-        #endregion
     }
 }
