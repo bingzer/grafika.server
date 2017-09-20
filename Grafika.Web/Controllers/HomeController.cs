@@ -104,13 +104,6 @@ namespace Grafika.Web.Controllers
             return View("~/Views/Animations/Edit.cshtml", model);
         }
 
-        [Route("stickdraw"), AllowAnonymous]
-        public IActionResult StickDraw()
-        {
-            ViewBag.Page = PageViewModel.StickDrawPageViewModel;
-            return View();
-        }
-
         [Route("about"), AllowAnonymous]
         public IActionResult About()
         {
