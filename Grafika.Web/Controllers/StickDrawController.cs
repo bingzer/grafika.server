@@ -7,8 +7,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Grafika.Web.Controllers
@@ -17,10 +15,32 @@ namespace Grafika.Web.Controllers
     public class StickDrawController : Controller
     {
 
-        [Route(""), AllowAnonymous]
+        [Route(""), Route("about"), AllowAnonymous]
         public IActionResult Index()
         {
             ViewBag.Page = PageViewModel.StickDrawPageViewModel;
+            return View();
+        }
+
+        [Route("contribute"), AllowAnonymous]
+        public IActionResult Contribute()
+        {
+            var page = PageViewModel.StickDrawPageViewModel;
+            page.Title = "Contribute | StickDraw";
+            page.Description = "Contribute to the development of StickDraw app";
+
+            ViewBag.Page = page;
+            return View();
+        }
+
+        [Route("open-source"), AllowAnonymous]
+        public IActionResult OpenSource()
+        {
+            var page = PageViewModel.StickDrawPageViewModel;
+            page.Title = "Open Source | StickDraw";
+            page.Description = "List of great open source projcects used by StickDraw";
+
+            ViewBag.Page = page;
             return View();
         }
 

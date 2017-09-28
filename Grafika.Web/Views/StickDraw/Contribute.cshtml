@@ -1,0 +1,43 @@
+<header id="header" class="stickdraw">
+    <div id="header-content" class="header-content">
+        <div class="row text-center">
+            <h1 style="visibility: hidden">
+                Contribute
+            </h1>
+            <p id="stickdraw-logo">
+            </p>
+            <p class="font-larger">Contact us to contribute</p>
+            <hr class="primary">
+            <p class="text-faded font-larger">
+                Interested in helping with the development of StickDraw?<br/>
+                Help is much appreciated. While we can't give you anything for contributing, <br/>
+                we will never forget to credit your help.
+            </p>
+            <p>
+                Contact us at stickdraw[at]bingzer.com to find out how to contribute
+            </p>
+        </div>
+    </div>
+</header>
+
+@section styles {
+    <environment names="Development">
+        <link href="~/css/GrafikaApp.StickDraw.css" rel="stylesheet" type="text/css">
+    </environment>
+    <environment names="Production">
+        <link rel="stylesheet" href="~/css/GrafikaApp.Bundle.StickDraw.min.css"
+              asp-fallback-href="~/css/GrafikaApp.StickDraw.css"
+              asp-fallback-test-class="btn" asp-fallback-test-property="border" asp-fallback-test-value="none" />
+    </environment>
+}
+
+
+@section scripts {
+    <environment names="Development">
+        <script type="text/javascript" src="~/js/jquery.easing.js"></script>
+        <script type="text/javascript" src="~/js/GrafikaApp.Stickdraw.js"></script>
+    </environment>
+    <environment names="Production">
+        <script type="text/javascript" src="~/js/GrafikaApp.Bundle.StickDraw.min.js"></script>
+    </environment>
+}
