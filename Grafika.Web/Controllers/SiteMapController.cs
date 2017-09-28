@@ -107,5 +107,27 @@ namespace Grafika.Web.Controllers
 
             return new SitemapProvider().CreateSitemap(new SitemapModel(nodes.ToList()));
         }
+
+
+        /// <summary>
+        /// For StickDraw
+        /// </summary>
+        /// <param name="seriesService"></param>
+        /// <param name="animationService"></param>
+        /// <returns></returns>
+        [Route("sitemap-stickdraw.xml")]
+        public IActionResult StickDraw([FromServices] IOptions<ServerConfiguration> serverOpts)
+        {
+            var config = serverOpts.Value;
+            var nodes = new List<SitemapNode>
+            {
+                new SitemapNode(Utility.CombineUrl(config.Url, "/stickdraw")),
+                new SitemapNode(Utility.CombineUrl(config.Url, "/stickdraw/contribute")),
+                new SitemapNode(Utility.CombineUrl(config.Url, "/stickdraw/open-source"))
+                //other nodes
+            };
+
+            return new SitemapProvider().CreateSitemap(new SitemapModel(nodes));
+        }
     }
 }
